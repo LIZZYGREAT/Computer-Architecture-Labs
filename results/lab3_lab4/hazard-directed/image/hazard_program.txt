@@ -1,0 +1,67 @@
+# MIPS-I directed hazard image; expected behavior is checked by cpu132_gettrace.
+# Word index 64 is the shared END_PC sentinel at 0xbfc00100.
+00  0xbfc00000  24010005  addiu r1, r0, 5
+01  0xbfc00004  24220003  addiu r2, r1, 3
+02  0xbfc00008  24030001  addiu r3, r0, 1
+03  0xbfc0000c  00412021  addu r4, r2, r1
+04  0xbfc00010  24050001  addiu r5, r0, 1
+05  0xbfc00014  24050002  addiu r5, r0, 2
+06  0xbfc00018  00a03021  addu r6, r5, r0
+07  0xbfc0001c  3c0a800d  lui r10, 0x800d
+08  0xbfc00020  24080055  addiu r8, r0, 85
+09  0xbfc00024  ad480000  sw r8, 0(r10)
+10  0xbfc00028  8d490000  lw r9, 0(r10)
+11  0xbfc0002c  01285821  addu r11, r9, r8
+12  0xbfc00030  8d4c0000  lw r12, 0(r10)
+13  0xbfc00034  ad4c0004  sw r12, 4(r10)
+14  0xbfc00038  8d560004  lw r22, 4(r10)
+15  0xbfc0003c  240d0001  addiu r13, r0, 1
+16  0xbfc00040  11a10002  beq r13, r1, after_not_taken (offset 2)
+17  0xbfc00044  240e0007  addiu r14, r0, 7
+18  0xbfc00048  240e0063  addiu r14, r0, 99
+19  0xbfc0004c  8d4f0000  lw r15, 0(r10)
+20  0xbfc00050  11e80002  beq r15, r8, after_taken (offset 2)
+21  0xbfc00054  24100002  addiu r16, r0, 2
+22  0xbfc00058  24100063  addiu r16, r0, 99
+23  0xbfc0005c  24110003  addiu r17, r0, 3
+24  0xbfc00060  3c14bfc0  lui r20, 0xbfc0
+25  0xbfc00064  26940078  addiu r20, r20, 120
+26  0xbfc00068  02800008  jr r20
+27  0xbfc0006c  24120004  addiu r18, r0, 4
+28  0xbfc00070  24120063  addiu r18, r0, 99
+29  0xbfc00074  24120058  addiu r18, r0, 88
+30  0xbfc00078  24130005  addiu r19, r0, 5
+31  0xbfc0007c  24000005  addiu r0, r0, 5
+32  0xbfc00080  0001a821  addu r21, r0, r1
+33  0xbfc00084  00000000  nop
+34  0xbfc00088  00000000  nop
+35  0xbfc0008c  00000000  nop
+36  0xbfc00090  00000000  nop
+37  0xbfc00094  00000000  nop
+38  0xbfc00098  00000000  nop
+39  0xbfc0009c  00000000  nop
+40  0xbfc000a0  00000000  nop
+41  0xbfc000a4  00000000  nop
+42  0xbfc000a8  00000000  nop
+43  0xbfc000ac  00000000  nop
+44  0xbfc000b0  00000000  nop
+45  0xbfc000b4  00000000  nop
+46  0xbfc000b8  00000000  nop
+47  0xbfc000bc  00000000  nop
+48  0xbfc000c0  00000000  nop
+49  0xbfc000c4  00000000  nop
+50  0xbfc000c8  00000000  nop
+51  0xbfc000cc  00000000  nop
+52  0xbfc000d0  00000000  nop
+53  0xbfc000d4  00000000  nop
+54  0xbfc000d8  00000000  nop
+55  0xbfc000dc  00000000  nop
+56  0xbfc000e0  00000000  nop
+57  0xbfc000e4  00000000  nop
+58  0xbfc000e8  00000000  nop
+59  0xbfc000ec  00000000  nop
+60  0xbfc000f0  00000000  nop
+61  0xbfc000f4  00000000  nop
+62  0xbfc000f8  00000000  nop
+63  0xbfc000fc  00000000  nop
+64  0xbfc00100  00000000  nop

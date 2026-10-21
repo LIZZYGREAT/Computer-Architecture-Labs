@@ -1,0 +1,1044 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Wed Oct 21 16:13:56 2026
+# Process ID         : 7296
+# Current directory  : D:/Verilog/2025.2/Vivado/bin
+# Command line       : vivado.exe -mode batch -source C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\run_behavioral_sim.tcl -log C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab3_lab4\lab3-20261021T081224Z\simulation-vivado.log -journal C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab3_lab4\lab3-20261021T081224Z\simulation-vivado.jou -tclargs C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab3\CPU_CDE\mycpu_verify\run_vivado\mycpu_prj1\mycpu_prj1.xpr lab3 5000000 forwarding C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab3\CPU_CDE\cpu132_gettrace\golden_trace.txt C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab3\CPU_CDE\soft\func_lab3\obj\inst_ram.mif C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab3_lab4\lab3-20261021T081224Z
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab3_lab4/lab3-20261021T081224Z/simulation-vivado.log
+# Journal file       : C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab3_lab4\lab3-20261021T081224Z\simulation-vivado.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 9281 MB
+# Total Virtual      : 32741 MB
+# Available Virtual  : 4253 MB
+#-----------------------------------------------------------
+source {C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\run_behavioral_sim.tcl}
+# proc fail {message} {
+#     puts stderr "ENVIRONMENT_ERROR: $message"
+#     catch {clear_runtime_sim_options}
+#     catch {close_project}
+#     error $message
+# }
+# proc clear_runtime_sim_options {} {
+#     set sim_set [get_filesets -quiet sim_1]
+#     if {$sim_set eq ""} { return }
+#     foreach property {
+#         XSIM.COMPILE.TCL.PRE
+#         XSIM.ELABORATE.XELAB.MORE_OPTIONS
+#         XSIM.SIMULATE.XSIM.MORE_OPTIONS
+#         XSIM.SIMULATE.RUNTIME
+#         XSIM.SIMULATE.CUSTOM_TCL
+#     } {
+#         catch {set_property -name $property -value "" -objects $sim_set}
+#     }
+# }
+# if {[llength $argv] < 7} {
+#     fail "usage: run_behavioral_sim.tcl <project.xpr> <case> <max-ns> <pipeline-mode> <trace-file> <inst-mif> <result-dir> ?capture-waveform?"
+# }
+# set xpr [file normalize [lindex $argv 0]]
+# set test_case [lindex $argv 1]
+# set max_ns [lindex $argv 2]
+# set pipeline_mode [lindex $argv 3]
+# set trace_file [file normalize [lindex $argv 4]]
+# set inst_mif [file normalize [lindex $argv 5]]
+# set result_dir [file normalize [lindex $argv 6]]
+# set capture_waveform 0
+# if {[llength $argv] >= 8} {
+#     set capture_waveform [lindex $argv 7]
+# }
+# if {![file isfile $xpr]} {
+#     fail "Vivado project not found: $xpr"
+# }
+# if {$test_case ni {lab3 lab4}} {
+#     fail "unsupported case: $test_case"
+# }
+# if {![string is integer -strict $max_ns] || $max_ns <= 0} {
+#     fail "max-ns must be a positive integer"
+# }
+# if {$pipeline_mode ni {blocking forwarding}} {
+#     fail "pipeline-mode must be blocking or forwarding"
+# }
+# if {$capture_waveform ni {0 1}} {
+#     fail "capture-waveform must be 0 or 1"
+# }
+# if {![file isfile $trace_file] || [file size $trace_file] == 0} {
+#     fail "reference trace is missing or empty: $trace_file"
+# }
+# if {![file isfile $inst_mif] || [file size $inst_mif] == 0} {
+#     fail "instruction image is missing or empty: $inst_mif"
+# }
+# if {![file isdirectory $result_dir]} {
+#     fail "result directory is missing: $result_dir"
+# }
+# if {[catch {open_project -quiet $xpr} message]} {
+#     fail "cannot open existing project: $message"
+# }
+# set sim_set [get_filesets -quiet sim_1]
+# if {$sim_set eq ""} {
+#     fail "sim_1 fileset is missing"
+# }
+# set_property TOP tb_top $sim_set
+# set_property INCREMENTAL false $sim_set
+# set source_set_name [get_property SOURCE_SET $sim_set]
+# set source_set [get_filesets -quiet $source_set_name]
+# if {$source_set eq ""} {
+#     fail "simulation source set is missing: $source_set_name"
+# }
+# set hdl_sources {}
+# foreach f [get_files -quiet -of_objects $source_set] {
+#     set ext [string tolower [file extension [string trim $f "{}"]]]
+#     if {$ext in {.v .sv .vhd .vhdl}} {
+#         lappend hdl_sources $f
+#     }
+# }
+# if {[llength $hdl_sources] == 0} {
+#     fail "no HDL sources found in $source_set_name"
+# }
+# puts "SIM_EXPLICIT_DESIGN_SOURCE_COUNT=[llength $hdl_sources]"
+SIM_EXPLICIT_DESIGN_SOURCE_COUNT=12
+# foreach f $hdl_sources {
+#     puts "SIM_EXPLICIT_DESIGN_SOURCE=[string trim $f "{}"]"
+# }
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v
+# if {[catch {add_files -fileset $sim_set -norecurse $hdl_sources} message]} {
+#     fail "cannot add design HDL to simulation set: $message"
+# }
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v' cannot be added to the project because it already exists in the project, skipping this file
+# set sim_file_names {}
+# foreach f [get_files -quiet -of_objects $sim_set] {
+#     lappend sim_file_names [string tolower [file normalize [string trim $f "{}"]]]
+# }
+# set project_source_root [file normalize [file join [file dirname $xpr] .. ..]]
+# set top_source [file normalize [file join $project_source_root testbench mycpu_tb.v]]
+# set design_top_source [file normalize [file join $project_source_root rtl soc_lite_top.v]]
+# set old_tb [get_files -quiet -of_objects $sim_set $top_source]
+# if {[llength $old_tb] > 0} {
+#     remove_files -fileset $sim_set $old_tb
+# }
+# if {[catch {add_files -fileset $sim_set -norecurse $top_source} message]} {
+#     fail "cannot re-add simulation testbench: $message"
+# }
+# set tb_file [get_files -quiet -of_objects $sim_set $top_source]
+# if {[llength $tb_file] != 1} {
+#     fail "expected one testbench file in simulation set, got [llength $tb_file]"
+# }
+# set_property FILE_TYPE Verilog $tb_file
+# set_property USED_IN {simulation} $tb_file
+# set_property IS_ENABLED true $tb_file
+# set_property USED_IN_SIMULATION true $tb_file
+# set_property USED_IN_SYNTHESIS false $tb_file
+# set_property USED_IN_IMPLEMENTATION false $tb_file
+# set sim_file_names {}
+# foreach f [get_files -quiet -of_objects $sim_set] {
+#     lappend sim_file_names [string tolower [file normalize [string trim $f "{}"]]]
+# }
+# if {[lsearch -exact $sim_file_names [string tolower $top_source]] < 0} {
+#     fail "testbench file is missing from simulation set: $top_source"
+# }
+# if {[lsearch -exact $sim_file_names [string tolower $design_top_source]] < 0} {
+#     fail "design top file is missing from simulation set: $design_top_source"
+# }
+# if {[get_property TOP $sim_set] ne "tb_top"} {
+#     fail "sim_1 must use tb_top"
+# }
+# puts "SIM_CASE=$test_case"
+SIM_CASE=lab3
+# puts "SIM_MAX_NS=$max_ns"
+SIM_MAX_NS=5000000
+# puts "PIPELINE_MODE=$pipeline_mode"
+PIPELINE_MODE=forwarding
+# puts "TRACE_FILE=$trace_file"
+TRACE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/cpu132_gettrace/golden_trace.txt
+# puts "INSTRUCTION_MIF=$inst_mif"
+INSTRUCTION_MIF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/soft/func_lab3/obj/inst_ram.mif
+# puts "SIM_TOP=[get_property TOP $sim_set]"
+SIM_TOP=tb_top
+# puts "SIM_INCREMENTAL=[get_property INCREMENTAL $sim_set]"
+SIM_INCREMENTAL=0
+# puts "SIM_SOURCE_SET=$source_set_name"
+SIM_SOURCE_SET=sources_1
+# puts "SIM_FILES_IN_SET=[llength [get_files -quiet -of_objects $sim_set]]"
+SIM_FILES_IN_SET=13
+# set pipeline_forwarding [expr {$pipeline_mode eq "forwarding" ? 1 : 0}]
+# set_property -name XSIM.ELABORATE.XELAB.MORE_OPTIONS \
+#     -value [format {-generic_top "PIPELINE_FORWARDING=%d"} $pipeline_forwarding] \
+#     -objects $sim_set
+# set_property -name XSIM.SIMULATE.XSIM.MORE_OPTIONS \
+#     -value [format {--testplusarg "TRACE_REF=%s"} $trace_file] \
+#     -objects $sim_set
+# set_property -name XSIM.SIMULATE.RUNTIME -value "${max_ns}ns" -objects $sim_set
+# puts "XSIM_GENERIC_TOP=PIPELINE_FORWARDING=$pipeline_forwarding"
+XSIM_GENERIC_TOP=PIPELINE_FORWARDING=1
+# puts "XSIM_TRACE_PLUSARG=TRACE_REF=$trace_file"
+XSIM_TRACE_PLUSARG=TRACE_REF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/cpu132_gettrace/golden_trace.txt
+# puts "XSIM_RUNTIME=${max_ns}ns"
+XSIM_RUNTIME=5000000ns
+# set project_name [file rootname [file tail $xpr]]
+# set sim_working_dir [file normalize [file join [file dirname $xpr] "$project_name.sim" sim_1 behav xsim]]
+# file mkdir $sim_working_dir
+# cd $sim_working_dir
+# puts "SIM_WORKING_DIRECTORY=[pwd]"
+SIM_WORKING_DIRECTORY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim
+# set sim_custom_tcl [file join $result_dir xsim-run.tcl]
+# set sim_inst_mif [file join $sim_working_dir inst_ram.mif]
+# set sim_tcl_file [open $sim_custom_tcl w]
+# puts $sim_tcl_file "file copy -force [list $inst_mif] [list $sim_inst_mif]"
+# puts $sim_tcl_file "puts [list STAGED_INSTRUCTION_MIF=$sim_inst_mif]"
+# if {$capture_waveform} {
+#     puts $sim_tcl_file {log_wave -r /tb_top}
+#     puts "XSIM_WAVE_LOGGING=log_wave -r /tb_top"
+# }
+# puts $sim_tcl_file "run $max_ns ns"
+# puts $sim_tcl_file "quit"
+# close $sim_tcl_file
+# if {[catch {set_property -name XSIM.COMPILE.TCL.PRE -value "" -objects $sim_set} message]} {
+#     fail "cannot clear Vivado's compile hook: $message"
+# }
+# puts "XSIM_COMPILE_PRE_HOOK=[get_property XSIM.COMPILE.TCL.PRE $sim_set]"
+XSIM_COMPILE_PRE_HOOK=
+# set_property -name XSIM.SIMULATE.CUSTOM_TCL -value $sim_custom_tcl -objects $sim_set
+# puts "XSIM_CUSTOM_TCL=$sim_custom_tcl"
+XSIM_CUSTOM_TCL=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab3_lab4/lab3-20261021T081224Z/xsim-run.tcl
+# puts "XSIM_STAGED_INSTRUCTION_MIF=$sim_inst_mif"
+XSIM_STAGED_INSTRUCTION_MIF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.mif
+# if {[catch {launch_simulation -simset sim_1 -mode behavioral -scripts_only} message]} {
+#     fail "cannot generate behavioral simulation scripts: $message"
+# }
+Command: launch_simulation  -simset sim_1 -mode behavioral -scripts_only
+INFO: [Vivado 12-25912] Generating simulation scripts for 'XSim' simulator
+INFO: [Vivado 12-28535] Process started - Wed Oct 21 16:15:02 2026
+
+INFO: [Vivado 12-12493] Simulation top is 'tb_top'
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5680] Creating behavioral simulation scripts in 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-72] Using boost library from 'D:/Verilog/2025.2/Vivado/tps/boost_1_72_0'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_top' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.mif'
+INFO: [SIM-utils-43] Exported 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.coe'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-60] Script generated:C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/compile.bat
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-60] Script generated:C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/elaborate.bat
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-60] Script generated:C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/simulate.bat
+launch_simulation: Time (s): cpu = 00:00:04 ; elapsed = 00:00:19 . Memory (MB): peak = 562.699 ; gain = 21.348
+# clear_runtime_sim_options
+# set manifest_file [file join $sim_working_dir tb_top_vlog.prj]
+# if {![file isfile $manifest_file]} {
+#     fail "XSim source manifest was not generated: $manifest_file"
+# }
+# set manifest_handle [open $manifest_file r]
+# set manifest_text [read $manifest_handle]
+# close $manifest_handle
+# set relative_tb "../../../../../../testbench/mycpu_tb.v"
+# if {[string first $relative_tb $manifest_text] < 0} {
+#     set marker "\n\n# compile glbl module"
+#     set marker_index [string last $marker $manifest_text]
+#     if {$marker_index < 0} {
+#         fail "XSim manifest does not contain the expected glbl section: $manifest_file"
+#     }
+#     set entry [format "\n\"%s\" \\\n\n# compile glbl module" $relative_tb]
+#     set replace_end [expr {$marker_index + [string length $marker] - 1}]
+#     set manifest_text [string replace $manifest_text $marker_index $replace_end $entry]
+#     set manifest_handle [open $manifest_file w]
+#     puts -nonewline $manifest_handle $manifest_text
+#     close $manifest_handle
+#     puts "TB_MANIFEST_INSERTED=$relative_tb"
+# } else {
+#     puts "TB_MANIFEST_ALREADY_PRESENT=$relative_tb"
+# }
+TB_MANIFEST_ALREADY_PRESENT=../../../../../../testbench/mycpu_tb.v
+# if {[catch {file copy -force $inst_mif $sim_inst_mif} message]} {
+#     fail "cannot stage instruction memory image: $message"
+# }
+# puts "STAGED_INSTRUCTION_MIF=$sim_inst_mif"
+STAGED_INSTRUCTION_MIF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.mif
+# set sim_step_error ""
+# foreach step {compile elaborate simulate} {
+#     set batch_file [file join $sim_working_dir "$step.bat"]
+#     if {![file isfile $batch_file]} {
+#         fail "Vivado did not generate the XSim $step script: $batch_file"
+#     }
+#     if {[catch {exec cmd.exe /d /c $batch_file} message]} {
+#         set sim_step_error "XSim $step step failed: $message"
+#         break
+#     }
+# }
+# if {$sim_step_error ne ""} {
+#     fail $sim_step_error
+# }
+# puts "SIM_RUN_COMMAND_RETURNED=1"
+SIM_RUN_COMMAND_RETURNED=1
+# close_project
+# exit 0
+INFO: [Common 17-206] Exiting Vivado at Wed Oct 21 16:16:39 2026...
+
+
+****** Vivado v2025.2 (64-bit)
+  **** SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+  **** IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+  **** SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+  **** Start of session at: Wed Oct 21 16:13:56 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source {C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\run_behavioral_sim.tcl}
+# proc fail {message} {
+#     puts stderr "ENVIRONMENT_ERROR: $message"
+#     catch {clear_runtime_sim_options}
+#     catch {close_project}
+#     error $message
+# }
+# proc clear_runtime_sim_options {} {
+#     set sim_set [get_filesets -quiet sim_1]
+#     if {$sim_set eq ""} { return }
+#     foreach property {
+#         XSIM.COMPILE.TCL.PRE
+#         XSIM.ELABORATE.XELAB.MORE_OPTIONS
+#         XSIM.SIMULATE.XSIM.MORE_OPTIONS
+#         XSIM.SIMULATE.RUNTIME
+#         XSIM.SIMULATE.CUSTOM_TCL
+#     } {
+#         catch {set_property -name $property -value "" -objects $sim_set}
+#     }
+# }
+# if {[llength $argv] < 7} {
+#     fail "usage: run_behavioral_sim.tcl <project.xpr> <case> <max-ns> <pipeline-mode> <trace-file> <inst-mif> <result-dir> ?capture-waveform?"
+# }
+# set xpr [file normalize [lindex $argv 0]]
+# set test_case [lindex $argv 1]
+# set max_ns [lindex $argv 2]
+# set pipeline_mode [lindex $argv 3]
+# set trace_file [file normalize [lindex $argv 4]]
+# set inst_mif [file normalize [lindex $argv 5]]
+# set result_dir [file normalize [lindex $argv 6]]
+# set capture_waveform 0
+# if {[llength $argv] >= 8} {
+#     set capture_waveform [lindex $argv 7]
+# }
+# if {![file isfile $xpr]} {
+#     fail "Vivado project not found: $xpr"
+# }
+# if {$test_case ni {lab3 lab4}} {
+#     fail "unsupported case: $test_case"
+# }
+# if {![string is integer -strict $max_ns] || $max_ns <= 0} {
+#     fail "max-ns must be a positive integer"
+# }
+# if {$pipeline_mode ni {blocking forwarding}} {
+#     fail "pipeline-mode must be blocking or forwarding"
+# }
+# if {$capture_waveform ni {0 1}} {
+#     fail "capture-waveform must be 0 or 1"
+# }
+# if {![file isfile $trace_file] || [file size $trace_file] == 0} {
+#     fail "reference trace is missing or empty: $trace_file"
+# }
+# if {![file isfile $inst_mif] || [file size $inst_mif] == 0} {
+#     fail "instruction image is missing or empty: $inst_mif"
+# }
+# if {![file isdirectory $result_dir]} {
+#     fail "result directory is missing: $result_dir"
+# }
+# if {[catch {open_project -quiet $xpr} message]} {
+#     fail "cannot open existing project: $message"
+# }
+# set sim_set [get_filesets -quiet sim_1]
+# if {$sim_set eq ""} {
+#     fail "sim_1 fileset is missing"
+# }
+# set_property TOP tb_top $sim_set
+# set_property INCREMENTAL false $sim_set
+# set source_set_name [get_property SOURCE_SET $sim_set]
+# set source_set [get_filesets -quiet $source_set_name]
+# if {$source_set eq ""} {
+#     fail "simulation source set is missing: $source_set_name"
+# }
+# set hdl_sources {}
+# foreach f [get_files -quiet -of_objects $source_set] {
+#     set ext [string tolower [file extension [string trim $f "{}"]]]
+#     if {$ext in {.v .sv .vhd .vhdl}} {
+#         lappend hdl_sources $f
+#     }
+# }
+# if {[llength $hdl_sources] == 0} {
+#     fail "no HDL sources found in $source_set_name"
+# }
+# puts "SIM_EXPLICIT_DESIGN_SOURCE_COUNT=[llength $hdl_sources]"
+SIM_EXPLICIT_DESIGN_SOURCE_COUNT=12
+# foreach f $hdl_sources {
+#     puts "SIM_EXPLICIT_DESIGN_SOURCE=[string trim $f "{}"]"
+# }
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v
+# if {[catch {add_files -fileset $sim_set -norecurse $hdl_sources} message]} {
+#     fail "cannot add design HDL to simulation set: $message"
+# }
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v' cannot be added to the project because it already exists in the project, skipping this file
+# set sim_file_names {}
+# foreach f [get_files -quiet -of_objects $sim_set] {
+#     lappend sim_file_names [string tolower [file normalize [string trim $f "{}"]]]
+# }
+# set project_source_root [file normalize [file join [file dirname $xpr] .. ..]]
+# set top_source [file normalize [file join $project_source_root testbench mycpu_tb.v]]
+# set design_top_source [file normalize [file join $project_source_root rtl soc_lite_top.v]]
+# set old_tb [get_files -quiet -of_objects $sim_set $top_source]
+# if {[llength $old_tb] > 0} {
+#     remove_files -fileset $sim_set $old_tb
+# }
+# if {[catch {add_files -fileset $sim_set -norecurse $top_source} message]} {
+#     fail "cannot re-add simulation testbench: $message"
+# }
+# set tb_file [get_files -quiet -of_objects $sim_set $top_source]
+# if {[llength $tb_file] != 1} {
+#     fail "expected one testbench file in simulation set, got [llength $tb_file]"
+# }
+# set_property FILE_TYPE Verilog $tb_file
+# set_property USED_IN {simulation} $tb_file
+# set_property IS_ENABLED true $tb_file
+# set_property USED_IN_SIMULATION true $tb_file
+# set_property USED_IN_SYNTHESIS false $tb_file
+# set_property USED_IN_IMPLEMENTATION false $tb_file
+# set sim_file_names {}
+# foreach f [get_files -quiet -of_objects $sim_set] {
+#     lappend sim_file_names [string tolower [file normalize [string trim $f "{}"]]]
+# }
+# if {[lsearch -exact $sim_file_names [string tolower $top_source]] < 0} {
+#     fail "testbench file is missing from simulation set: $top_source"
+# }
+# if {[lsearch -exact $sim_file_names [string tolower $design_top_source]] < 0} {
+#     fail "design top file is missing from simulation set: $design_top_source"
+# }
+# if {[get_property TOP $sim_set] ne "tb_top"} {
+#     fail "sim_1 must use tb_top"
+# }
+# puts "SIM_CASE=$test_case"
+SIM_CASE=lab3
+# puts "SIM_MAX_NS=$max_ns"
+SIM_MAX_NS=5000000
+# puts "PIPELINE_MODE=$pipeline_mode"
+PIPELINE_MODE=forwarding
+# puts "TRACE_FILE=$trace_file"
+TRACE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/cpu132_gettrace/golden_trace.txt
+# puts "INSTRUCTION_MIF=$inst_mif"
+INSTRUCTION_MIF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/soft/func_lab3/obj/inst_ram.mif
+# puts "SIM_TOP=[get_property TOP $sim_set]"
+SIM_TOP=tb_top
+# puts "SIM_INCREMENTAL=[get_property INCREMENTAL $sim_set]"
+SIM_INCREMENTAL=0
+# puts "SIM_SOURCE_SET=$source_set_name"
+SIM_SOURCE_SET=sources_1
+# puts "SIM_FILES_IN_SET=[llength [get_files -quiet -of_objects $sim_set]]"
+SIM_FILES_IN_SET=13
+# set pipeline_forwarding [expr {$pipeline_mode eq "forwarding" ? 1 : 0}]
+# set_property -name XSIM.ELABORATE.XELAB.MORE_OPTIONS \
+#     -value [format {-generic_top "PIPELINE_FORWARDING=%d"} $pipeline_forwarding] \
+#     -objects $sim_set
+# set_property -name XSIM.SIMULATE.XSIM.MORE_OPTIONS \
+#     -value [format {--testplusarg "TRACE_REF=%s"} $trace_file] \
+#     -objects $sim_set
+# set_property -name XSIM.SIMULATE.RUNTIME -value "${max_ns}ns" -objects $sim_set
+# puts "XSIM_GENERIC_TOP=PIPELINE_FORWARDING=$pipeline_forwarding"
+XSIM_GENERIC_TOP=PIPELINE_FORWARDING=1
+# puts "XSIM_TRACE_PLUSARG=TRACE_REF=$trace_file"
+XSIM_TRACE_PLUSARG=TRACE_REF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/cpu132_gettrace/golden_trace.txt
+# puts "XSIM_RUNTIME=${max_ns}ns"
+XSIM_RUNTIME=5000000ns
+# set project_name [file rootname [file tail $xpr]]
+# set sim_working_dir [file normalize [file join [file dirname $xpr] "$project_name.sim" sim_1 behav xsim]]
+# file mkdir $sim_working_dir
+# cd $sim_working_dir
+# puts "SIM_WORKING_DIRECTORY=[pwd]"
+SIM_WORKING_DIRECTORY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim
+# set sim_custom_tcl [file join $result_dir xsim-run.tcl]
+# set sim_inst_mif [file join $sim_working_dir inst_ram.mif]
+# set sim_tcl_file [open $sim_custom_tcl w]
+# puts $sim_tcl_file "file copy -force [list $inst_mif] [list $sim_inst_mif]"
+# puts $sim_tcl_file "puts [list STAGED_INSTRUCTION_MIF=$sim_inst_mif]"
+# if {$capture_waveform} {
+#     puts $sim_tcl_file {log_wave -r /tb_top}
+#     puts "XSIM_WAVE_LOGGING=log_wave -r /tb_top"
+# }
+# puts $sim_tcl_file "run $max_ns ns"
+# puts $sim_tcl_file "quit"
+# close $sim_tcl_file
+# if {[catch {set_property -name XSIM.COMPILE.TCL.PRE -value "" -objects $sim_set} message]} {
+#     fail "cannot clear Vivado's compile hook: $message"
+# }
+# puts "XSIM_COMPILE_PRE_HOOK=[get_property XSIM.COMPILE.TCL.PRE $sim_set]"
+XSIM_COMPILE_PRE_HOOK=
+# set_property -name XSIM.SIMULATE.CUSTOM_TCL -value $sim_custom_tcl -objects $sim_set
+# puts "XSIM_CUSTOM_TCL=$sim_custom_tcl"
+XSIM_CUSTOM_TCL=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab3_lab4/lab3-20261021T081224Z/xsim-run.tcl
+# puts "XSIM_STAGED_INSTRUCTION_MIF=$sim_inst_mif"
+XSIM_STAGED_INSTRUCTION_MIF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.mif
+# if {[catch {launch_simulation -simset sim_1 -mode behavioral -scripts_only} message]} {
+#     fail "cannot generate behavioral simulation scripts: $message"
+# }
+Command: launch_simulation  -simset sim_1 -mode behavioral -scripts_only
+INFO: [Vivado 12-25912] Generating simulation scripts for 'XSim' simulator
+INFO: [Vivado 12-28535] Process started - Wed Oct 21 16:15:02 2026
+
+INFO: [Vivado 12-12493] Simulation top is 'tb_top'
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5680] Creating behavioral simulation scripts in 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-72] Using boost library from 'D:/Verilog/2025.2/Vivado/tps/boost_1_72_0'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_top' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.mif'
+INFO: [SIM-utils-43] Exported 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.coe'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-60] Script generated:C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/compile.bat
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-60] Script generated:C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/elaborate.bat
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-60] Script generated:C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/simulate.bat
+launch_simulation: Time (s): cpu = 00:00:04 ; elapsed = 00:00:19 . Memory (MB): peak = 562.699 ; gain = 21.348
+# clear_runtime_sim_options
+# set manifest_file [file join $sim_working_dir tb_top_vlog.prj]
+# if {![file isfile $manifest_file]} {
+#     fail "XSim source manifest was not generated: $manifest_file"
+# }
+# set manifest_handle [open $manifest_file r]
+# set manifest_text [read $manifest_handle]
+# close $manifest_handle
+# set relative_tb "../../../../../../testbench/mycpu_tb.v"
+# if {[string first $relative_tb $manifest_text] < 0} {
+#     set marker "\n\n# compile glbl module"
+#     set marker_index [string last $marker $manifest_text]
+#     if {$marker_index < 0} {
+#         fail "XSim manifest does not contain the expected glbl section: $manifest_file"
+#     }
+#     set entry [format "\n\"%s\" \\\n\n# compile glbl module" $relative_tb]
+#     set replace_end [expr {$marker_index + [string length $marker] - 1}]
+#     set manifest_text [string replace $manifest_text $marker_index $replace_end $entry]
+#     set manifest_handle [open $manifest_file w]
+#     puts -nonewline $manifest_handle $manifest_text
+#     close $manifest_handle
+#     puts "TB_MANIFEST_INSERTED=$relative_tb"
+# } else {
+#     puts "TB_MANIFEST_ALREADY_PRESENT=$relative_tb"
+# }
+TB_MANIFEST_ALREADY_PRESENT=../../../../../../testbench/mycpu_tb.v
+# if {[catch {file copy -force $inst_mif $sim_inst_mif} message]} {
+#     fail "cannot stage instruction memory image: $message"
+# }
+# puts "STAGED_INSTRUCTION_MIF=$sim_inst_mif"
+STAGED_INSTRUCTION_MIF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.mif
+# set sim_step_error ""
+# foreach step {compile elaborate simulate} {
+#     set batch_file [file join $sim_working_dir "$step.bat"]
+#     if {![file isfile $batch_file]} {
+#         fail "Vivado did not generate the XSim $step script: $batch_file"
+#     }
+#     if {[catch {exec cmd.exe /d /c $batch_file} message]} {
+#         set sim_step_error "XSim $step step failed: $message"
+#         break
+#     }
+# }
+# if {$sim_step_error ne ""} {
+#     fail $sim_step_error
+# }
+# puts "SIM_RUN_COMMAND_RETURNED=1"
+SIM_RUN_COMMAND_RETURNED=1
+# close_project
+# exit 0
+INFO: [Common 17-206] Exiting Vivado at Wed Oct 21 16:16:39 2026...
+
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Verilog/2025.2/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv" into library xpm
+INFO: [VRFC 10-311] analyzing module xpm_cdc_single
+INFO: [VRFC 10-311] analyzing module xpm_cdc_gray
+INFO: [VRFC 10-311] analyzing module xpm_cdc_handshake
+INFO: [VRFC 10-311] analyzing module xpm_cdc_pulse
+INFO: [VRFC 10-311] analyzing module xpm_cdc_array_single
+INFO: [VRFC 10-311] analyzing module xpm_cdc_sync_rst
+INFO: [VRFC 10-311] analyzing module xpm_cdc_async_rst
+INFO: [VRFC 10-311] analyzing module xpm_cdc_low_latency_handshake
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Verilog/2025.2/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv" into library xpm
+INFO: [VRFC 10-311] analyzing module xpm_memory_base
+INFO: [VRFC 10-311] analyzing module asym_bwe_bb
+INFO: [VRFC 10-311] analyzing module xpm_memory_dpdistram
+INFO: [VRFC 10-311] analyzing module xpm_memory_dprom
+INFO: [VRFC 10-311] analyzing module xpm_memory_sdpram
+INFO: [VRFC 10-311] analyzing module xpm_memory_spram
+INFO: [VRFC 10-311] analyzing module xpm_memory_sprom
+INFO: [VRFC 10-311] analyzing module xpm_memory_tdpram
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/clk_pll_clk_wiz.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module clk_pll_clk_wiz
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/clk_pll.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module clk_pll
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.ip_user_files/ipstatic/simulation/blk_mem_gen_v8_4.v" into library blk_mem_gen_v8_4_12
+INFO: [VRFC 10-311] analyzing module STATE_LOGIC_v8_4
+INFO: [VRFC 10-311] analyzing module beh_vlog_muxf7_v8_4
+INFO: [VRFC 10-311] analyzing module beh_vlog_ff_clr_v8_4
+INFO: [VRFC 10-311] analyzing module beh_vlog_ff_pre_v8_4
+INFO: [VRFC 10-311] analyzing module beh_vlog_ff_ce_clr_v8_4
+INFO: [VRFC 10-311] analyzing module write_netlist_v8_4
+INFO: [VRFC 10-311] analyzing module read_netlist_v8_4
+INFO: [VRFC 10-311] analyzing module blk_mem_axi_write_wrapper_beh_v8_4
+INFO: [VRFC 10-311] analyzing module blk_mem_axi_read_wrapper_beh_v8_4
+INFO: [VRFC 10-311] analyzing module blk_mem_axi_regs_fwd_v8_4
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_v8_4_12_output_stage
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_v8_4_12_softecc_output_reg_stage
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_v8_4_12_mem_module
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_v8_4_12
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/data_ram/sim/data_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module data_ram
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/inst_ram/sim/inst_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module inst_ram
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module exe_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module id_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module if_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module wb_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module alu
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module bridge_1x2
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module confreg
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mycpu_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module regfile
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module soc_lite_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module decoder_5_32
+INFO: [VRFC 10-311] analyzing module decoder_6_64
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/testbench/mycpu_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [VRFC 10-163] Analyzing VHDL file "D:/Verilog/2025.2/data/ip/xpm/xpm_VCOMP.vhd" into library xpm
+
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Verilog/2025.2/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv" into library xpm
+INFO: [VRFC 10-311] analyzing module xpm_cdc_single
+INFO: [VRFC 10-311] analyzing module xpm_cdc_gray
+INFO: [VRFC 10-311] analyzing module xpm_cdc_handshake
+INFO: [VRFC 10-311] analyzing module xpm_cdc_pulse
+INFO: [VRFC 10-311] analyzing module xpm_cdc_array_single
+INFO: [VRFC 10-311] analyzing module xpm_cdc_sync_rst
+INFO: [VRFC 10-311] analyzing module xpm_cdc_async_rst
+INFO: [VRFC 10-311] analyzing module xpm_cdc_low_latency_handshake
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Verilog/2025.2/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv" into library xpm
+INFO: [VRFC 10-311] analyzing module xpm_memory_base
+INFO: [VRFC 10-311] analyzing module asym_bwe_bb
+INFO: [VRFC 10-311] analyzing module xpm_memory_dpdistram
+INFO: [VRFC 10-311] analyzing module xpm_memory_dprom
+INFO: [VRFC 10-311] analyzing module xpm_memory_sdpram
+INFO: [VRFC 10-311] analyzing module xpm_memory_spram
+INFO: [VRFC 10-311] analyzing module xpm_memory_sprom
+INFO: [VRFC 10-311] analyzing module xpm_memory_tdpram
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/clk_pll_clk_wiz.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module clk_pll_clk_wiz
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/clk_pll.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module clk_pll
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.ip_user_files/ipstatic/simulation/blk_mem_gen_v8_4.v" into library blk_mem_gen_v8_4_12
+INFO: [VRFC 10-311] analyzing module STATE_LOGIC_v8_4
+INFO: [VRFC 10-311] analyzing module beh_vlog_muxf7_v8_4
+INFO: [VRFC 10-311] analyzing module beh_vlog_ff_clr_v8_4
+INFO: [VRFC 10-311] analyzing module beh_vlog_ff_pre_v8_4
+INFO: [VRFC 10-311] analyzing module beh_vlog_ff_ce_clr_v8_4
+INFO: [VRFC 10-311] analyzing module write_netlist_v8_4
+INFO: [VRFC 10-311] analyzing module read_netlist_v8_4
+INFO: [VRFC 10-311] analyzing module blk_mem_axi_write_wrapper_beh_v8_4
+INFO: [VRFC 10-311] analyzing module blk_mem_axi_read_wrapper_beh_v8_4
+INFO: [VRFC 10-311] analyzing module blk_mem_axi_regs_fwd_v8_4
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_v8_4_12_output_stage
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_v8_4_12_softecc_output_reg_stage
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_v8_4_12_mem_module
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_v8_4_12
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/data_ram/sim/data_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module data_ram
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/inst_ram/sim/inst_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module inst_ram
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module exe_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module id_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module if_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module wb_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module alu
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module bridge_1x2
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module confreg
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mycpu_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module regfile
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module soc_lite_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module decoder_5_32
+INFO: [VRFC 10-311] analyzing module decoder_6_64
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/testbench/mycpu_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+
+Vivado Simulator v2025.2
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Verilog/2025.2/Vivado/bin/unwrapped/win64.o/xelab.exe --debug typical --relax --mt 2 -L xil_defaultlib -L xpm -L blk_mem_gen_v8_4_12 -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_top_behav xil_defaultlib.tb_top xil_defaultlib.glbl -log elaborate.log -generic_top PIPELINE_FORWARDING=1 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3532] module 'glbl' does not have a parameter named 'PIPELINE_FORWARDING' to override [C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/glbl.v:6]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.if_stage
+Compiling module xil_defaultlib.decoder_6_64
+Compiling module xil_defaultlib.decoder_5_32
+Compiling module xil_defaultlib.regfile
+Compiling module xil_defaultlib.id_stage(PIPELINE_FORWARDING=1)
+Compiling module xil_defaultlib.alu
+Compiling module xil_defaultlib.exe_stage
+Compiling module xil_defaultlib.mem_stage
+Compiling module xil_defaultlib.wb_stage
+Compiling module xil_defaultlib.mycpu_top(PIPELINE_FORWARDING=1)
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_output_stage...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_softecc_outp...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_mem_module(C...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12(C_FAMILY="ar...
+Compiling module xil_defaultlib.inst_ram
+Compiling module xil_defaultlib.bridge_1x2
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_output_stage...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_softecc_outp...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_mem_module(C...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12(C_FAMILY="ar...
+Compiling module xil_defaultlib.data_ram
+Compiling module xil_defaultlib.confreg(SIMULATION=1'b1)
+Compiling module xil_defaultlib.soc_lite_top(SIMULATION=1'b1,PIP...
+Compiling module xil_defaultlib.tb_top(PIPELINE_FORWARDING=1)
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot tb_top_behav
+
+#-----------------------------------------------------------
+# xsim v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Wed Oct 21 16:16:19 2026
+# Process ID         : 34072
+# Current directory  : C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim
+# Command line       : xsim.exe -log simulate.log -mode tcl -source {xsim.dir/tb_top_behav/xsim_script.tcl}
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/simulate.log
+# Journal file       : C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim\xsim.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 9281 MB
+# Total Virtual      : 32741 MB
+# Available Virtual  : 3610 MB
+#-----------------------------------------------------------
+source xsim.dir/tb_top_behav/xsim_script.tcl
+# xsim {tb_top_behav} -testplusarg TRACE_REF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/cpu132_gettrace/golden_trace.txt -autoloadwcfg -tclbatch {C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab3_lab4/lab3-20261021T081224Z/xsim-run.tcl} -key {Behavioral:sim_1:Functional:tb_top}
+Time resolution is 1 ps
+source C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab3_lab4/lab3-20261021T081224Z/xsim-run.tcl
+## file copy -force C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/soft/func_lab3/obj/inst_ram.mif C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.mif
+## puts STAGED_INSTRUCTION_MIF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.mif
+STAGED_INSTRUCTION_MIF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.mif
+## run 5000000 ns
+ Block Memory Generator module loading initial data...
+ Block Memory Generator data initialization complete.
+Block Memory Generator module tb_top(PIPELINE_FORWARDING=1).soc_lite.inst_ram.inst.native_mem_module.blk_mem_gen_v8_4_12_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
+Block Memory Generator module tb_top(PIPELINE_FORWARDING=1).soc_lite.data_ram.inst.native_mem_module.blk_mem_gen_v8_4_12_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
+TRACE_REF_OPEN_OK path=                                         C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/cpu132_gettrace/golden_trace.txt
+TRACE_REF_PLUSARG=1
+==============================================================
+Test begin!
+PIPELINE_FORWARDING=1
+        [  22000 ns] Test is running, debug_wb_pc = 0xbfc5c9bc
+----[  29845 ns] Number 8'd01 Functional Test Point PASS!!!
+        [  32000 ns] Test is running, debug_wb_pc = 0xbfc9fd10
+        [  42000 ns] Test is running, debug_wb_pc = 0xbfca0cb0
+        [  52000 ns] Test is running, debug_wb_pc = 0xbfca1c50
+        [  62000 ns] Test is running, debug_wb_pc = 0xbfca2bf0
+        [  72000 ns] Test is running, debug_wb_pc = 0xbfca3b90
+        [  82000 ns] Test is running, debug_wb_pc = 0xbfca4b30
+        [  92000 ns] Test is running, debug_wb_pc = 0xbfca5ad0
+        [ 102000 ns] Test is running, debug_wb_pc = 0xbfca6a70
+        [ 112000 ns] Test is running, debug_wb_pc = 0xbfca7a10
+----[ 117995 ns] Number 8'd02 Functional Test Point PASS!!!
+        [ 122000 ns] Test is running, debug_wb_pc = 0xbfc3e7e4
+        [ 132000 ns] Test is running, debug_wb_pc = 0xbfc3f784
+        [ 142000 ns] Test is running, debug_wb_pc = 0xbfc40724
+        [ 152000 ns] Test is running, debug_wb_pc = 0xbfc416c4
+        [ 162000 ns] Test is running, debug_wb_pc = 0xbfc42664
+        [ 172000 ns] Test is running, debug_wb_pc = 0xbfc43604
+        [ 182000 ns] Test is running, debug_wb_pc = 0xbfc445a4
+----[ 188085 ns] Number 8'd03 Functional Test Point PASS!!!
+        [ 192000 ns] Test is running, debug_wb_pc = 0xbfc8ee70
+        [ 202000 ns] Test is running, debug_wb_pc = 0xbfc8fe10
+        [ 212000 ns] Test is running, debug_wb_pc = 0xbfc90db0
+        [ 222000 ns] Test is running, debug_wb_pc = 0xbfc91d50
+        [ 232000 ns] Test is running, debug_wb_pc = 0xbfc92cf0
+        [ 242000 ns] Test is running, debug_wb_pc = 0xbfc93c90
+        [ 252000 ns] Test is running, debug_wb_pc = 0xbfc94c30
+        [ 262000 ns] Test is running, debug_wb_pc = 0xbfc95bd0
+        [ 272000 ns] Test is running, debug_wb_pc = 0xbfc96b70
+----[ 276235 ns] Number 8'd04 Functional Test Point PASS!!!
+        [ 282000 ns] Test is running, debug_wb_pc = 0xbfc71bf4
+        [ 292000 ns] Test is running, debug_wb_pc = 0xbfc72b94
+        [ 302000 ns] Test is running, debug_wb_pc = 0xbfc73b34
+        [ 312000 ns] Test is running, debug_wb_pc = 0xbfc74ad4
+        [ 322000 ns] Test is running, debug_wb_pc = 0xbfc75a74
+        [ 332000 ns] Test is running, debug_wb_pc = 0xbfc76a14
+        [ 342000 ns] Test is running, debug_wb_pc = 0xbfc779b4
+        [ 352000 ns] Test is running, debug_wb_pc = 0xbfc78954
+        [ 362000 ns] Test is running, debug_wb_pc = 0xbfc798f4
+----[ 364385 ns] Number 8'd05 Functional Test Point PASS!!!
+        [ 372000 ns] Test is running, debug_wb_pc = 0xbfc09b78
+        [ 382000 ns] Test is running, debug_wb_pc = 0xbfc0ab18
+        [ 392000 ns] Test is running, debug_wb_pc = 0xbfc0bab8
+        [ 402000 ns] Test is running, debug_wb_pc = 0xbfc0ca58
+        [ 412000 ns] Test is running, debug_wb_pc = 0xbfc0d9f8
+        [ 422000 ns] Test is running, debug_wb_pc = 0xbfc0e998
+        [ 432000 ns] Test is running, debug_wb_pc = 0xbfc0f938
+        [ 442000 ns] Test is running, debug_wb_pc = 0xbfc108d8
+        [ 452000 ns] Test is running, debug_wb_pc = 0xbfc11878
+----[ 452535 ns] Number 8'd06 Functional Test Point PASS!!!
+        [ 462000 ns] Test is running, debug_wb_pc = 0xbfca912c
+        [ 472000 ns] Test is running, debug_wb_pc = 0xbfcaa0cc
+        [ 482000 ns] Test is running, debug_wb_pc = 0xbfcab06c
+        [ 492000 ns] Test is running, debug_wb_pc = 0xbfcac00c
+        [ 502000 ns] Test is running, debug_wb_pc = 0xbfcacfac
+        [ 512000 ns] Test is running, debug_wb_pc = 0xbfcadf4c
+        [ 522000 ns] Test is running, debug_wb_pc = 0xbfcaeeec
+        [ 532000 ns] Test is running, debug_wb_pc = 0xbfcafe8c
+----[ 540685 ns] Number 8'd07 Functional Test Point PASS!!!
+        [ 542000 ns] Test is running, debug_wb_pc = 0xbfc008f0
+        [ 552000 ns] Test is running, debug_wb_pc = 0xbfc01890
+        [ 562000 ns] Test is running, debug_wb_pc = 0xbfc02830
+        [ 572000 ns] Test is running, debug_wb_pc = 0xbfc037d0
+        [ 582000 ns] Test is running, debug_wb_pc = 0xbfc04770
+        [ 592000 ns] Test is running, debug_wb_pc = 0xbfc05710
+        [ 602000 ns] Test is running, debug_wb_pc = 0xbfc066b0
+        [ 612000 ns] Test is running, debug_wb_pc = 0xbfc07650
+        [ 622000 ns] Test is running, debug_wb_pc = 0xbfc085f0
+----[ 628835 ns] Number 8'd08 Functional Test Point PASS!!!
+        [ 632000 ns] Test is running, debug_wb_pc = 0xbfc7a094
+        [ 642000 ns] Test is running, debug_wb_pc = 0xbfc7b034
+        [ 652000 ns] Test is running, debug_wb_pc = 0xbfc7bfd4
+        [ 662000 ns] Test is running, debug_wb_pc = 0xbfc7cf74
+        [ 672000 ns] Test is running, debug_wb_pc = 0xbfc7df14
+        [ 682000 ns] Test is running, debug_wb_pc = 0xbfc7eeb4
+        [ 692000 ns] Test is running, debug_wb_pc = 0xbfc7fe54
+        [ 702000 ns] Test is running, debug_wb_pc = 0xbfc80df4
+        [ 712000 ns] Test is running, debug_wb_pc = 0xbfc81d94
+----[ 716985 ns] Number 8'd09 Functional Test Point PASS!!!
+        [ 722000 ns] Test is running, debug_wb_pc = 0xbfc978d8
+        [ 732000 ns] Test is running, debug_wb_pc = 0xbfc98878
+        [ 742000 ns] Test is running, debug_wb_pc = 0xbfc99818
+        [ 752000 ns] Test is running, debug_wb_pc = 0xbfc9a7b8
+        [ 762000 ns] Test is running, debug_wb_pc = 0xbfc9b758
+        [ 772000 ns] Test is running, debug_wb_pc = 0xbfc9c6f8
+        [ 782000 ns] Test is running, debug_wb_pc = 0xbfc9d698
+        [ 792000 ns] Test is running, debug_wb_pc = 0xbfc9e638
+        [ 802000 ns] Test is running, debug_wb_pc = 0xbfc9f5d8
+----[ 805135 ns] Number 8'd10 Functional Test Point PASS!!!
+        [ 812000 ns] Test is running, debug_wb_pc = 0xbfc122fc
+        [ 822000 ns] Test is running, debug_wb_pc = 0xbfc1329c
+        [ 832000 ns] Test is running, debug_wb_pc = 0xbfc1423c
+        [ 842000 ns] Test is running, debug_wb_pc = 0xbfc151dc
+        [ 852000 ns] Test is running, debug_wb_pc = 0xbfc1617c
+        [ 862000 ns] Test is running, debug_wb_pc = 0xbfc1711c
+        [ 872000 ns] Test is running, debug_wb_pc = 0xbfc180bc
+----[ 875225 ns] Number 8'd11 Functional Test Point PASS!!!
+        [ 882000 ns] Test is running, debug_wb_pc = 0xbfc88258
+        [ 892000 ns] Test is running, debug_wb_pc = 0xbfc891f8
+        [ 902000 ns] Test is running, debug_wb_pc = 0xbfc8a198
+        [ 912000 ns] Test is running, debug_wb_pc = 0xbfc8b138
+        [ 922000 ns] Test is running, debug_wb_pc = 0xbfc8c0d8
+        [ 932000 ns] Test is running, debug_wb_pc = 0xbfc8d078
+        [ 942000 ns] Test is running, debug_wb_pc = 0xbfc8e018
+----[ 945315 ns] Number 8'd12 Functional Test Point PASS!!!
+        [ 952000 ns] Test is running, debug_wb_pc = 0xbfc5df64
+        [ 962000 ns] Test is running, debug_wb_pc = 0xbfc5ef04
+        [ 972000 ns] Test is running, debug_wb_pc = 0xbfc5fea4
+        [ 982000 ns] Test is running, debug_wb_pc = 0xbfc60e44
+        [ 992000 ns] Test is running, debug_wb_pc = 0xbfc61de4
+        [1002000 ns] Test is running, debug_wb_pc = 0xbfc62d84
+        [1012000 ns] Test is running, debug_wb_pc = 0xbfc63d24
+----[1015405 ns] Number 8'd13 Functional Test Point PASS!!!
+        [1022000 ns] Test is running, debug_wb_pc = 0xbfc856d0
+        [1032000 ns] Test is running, debug_wb_pc = 0xbfc86670
+----[1039945 ns] Number 8'd14 Functional Test Point PASS!!!
+        [1042000 ns] Test is running, debug_wb_pc = 0xbfc82788
+        [1052000 ns] Test is running, debug_wb_pc = 0xbfc83728
+        [1062000 ns] Test is running, debug_wb_pc = 0xbfc846c8
+----[1066335 ns] Number 8'd15 Functional Test Point PASS!!!
+        [1072000 ns] Test is running, debug_wb_pc = 0xbfc290b4
+        [1082000 ns] Test is running, debug_wb_pc = 0xbfc2a564
+        [1092000 ns] Test is running, debug_wb_pc = 0xbfc2b9f8
+        [1102000 ns] Test is running, debug_wb_pc = 0xbfc2cea8
+        [1112000 ns] Test is running, debug_wb_pc = 0xbfc2e32c
+        [1122000 ns] Test is running, debug_wb_pc = 0xbfc2f7dc
+        [1132000 ns] Test is running, debug_wb_pc = 0xbfc30944
+        [1142000 ns] Test is running, debug_wb_pc = 0xbfc31a4c
+        [1152000 ns] Test is running, debug_wb_pc = 0xbfc32af4
+        [1162000 ns] Test is running, debug_wb_pc = 0xbfc33c70
+        [1172000 ns] Test is running, debug_wb_pc = 0xbfc34d4c
+        [1182000 ns] Test is running, debug_wb_pc = 0xbfc35e54
+        [1192000 ns] Test is running, debug_wb_pc = 0xbfc36fbc
+        [1202000 ns] Test is running, debug_wb_pc = 0xbfc38450
+        [1212000 ns] Test is running, debug_wb_pc = 0xbfc39900
+        [1222000 ns] Test is running, debug_wb_pc = 0xbfc3ad84
+        [1232000 ns] Test is running, debug_wb_pc = 0xbfc3c234
+        [1242000 ns] Test is running, debug_wb_pc = 0xbfc3d6e4
+----[1247875 ns] Number 8'd16 Functional Test Point PASS!!!
+        [1252000 ns] Test is running, debug_wb_pc = 0xbfc4550c
+        [1262000 ns] Test is running, debug_wb_pc = 0xbfc46614
+        [1272000 ns] Test is running, debug_wb_pc = 0xbfc47730
+        [1282000 ns] Test is running, debug_wb_pc = 0xbfc4880c
+        [1292000 ns] Test is running, debug_wb_pc = 0xbfc49914
+        [1302000 ns] Test is running, debug_wb_pc = 0xbfc4a9bc
+        [1312000 ns] Test is running, debug_wb_pc = 0xbfc4bb0c
+        [1322000 ns] Test is running, debug_wb_pc = 0xbfc4ce08
+        [1332000 ns] Test is running, debug_wb_pc = 0xbfc4e2b8
+        [1342000 ns] Test is running, debug_wb_pc = 0xbfc4f768
+        [1352000 ns] Test is running, debug_wb_pc = 0xbfc50bec
+        [1362000 ns] Test is running, debug_wb_pc = 0xbfc5209c
+        [1372000 ns] Test is running, debug_wb_pc = 0xbfc5354c
+        [1382000 ns] Test is running, debug_wb_pc = 0xbfc54684
+        [1392000 ns] Test is running, debug_wb_pc = 0xbfc5572c
+        [1402000 ns] Test is running, debug_wb_pc = 0xbfc5687c
+        [1412000 ns] Test is running, debug_wb_pc = 0xbfc57984
+        [1422000 ns] Test is running, debug_wb_pc = 0xbfc58a8c
+        [1432000 ns] Test is running, debug_wb_pc = 0xbfc59ba8
+----[1441295 ns] Number 8'd17 Functional Test Point PASS!!!
+        [1442000 ns] Test is running, debug_wb_pc = 0xbfc00580
+        [1452000 ns] Test is running, debug_wb_pc = 0xbfc196b4
+        [1462000 ns] Test is running, debug_wb_pc = 0xbfc1a7cc
+        [1472000 ns] Test is running, debug_wb_pc = 0xbfc1b848
+        [1482000 ns] Test is running, debug_wb_pc = 0xbfc1c954
+        [1492000 ns] Test is running, debug_wb_pc = 0xbfc1da2c
+        [1502000 ns] Test is running, debug_wb_pc = 0xbfc1eb04
+        [1512000 ns] Test is running, debug_wb_pc = 0xbfc1fbdc
+        [1522000 ns] Test is running, debug_wb_pc = 0xbfc20cf4
+        [1532000 ns] Test is running, debug_wb_pc = 0xbfc21d70
+        [1542000 ns] Test is running, debug_wb_pc = 0xbfc22e7c
+        [1552000 ns] Test is running, debug_wb_pc = 0xbfc23f54
+        [1562000 ns] Test is running, debug_wb_pc = 0xbfc2502c
+        [1572000 ns] Test is running, debug_wb_pc = 0xbfc26104
+        [1582000 ns] Test is running, debug_wb_pc = 0xbfc271dc
+        [1592000 ns] Test is running, debug_wb_pc = 0xbfc28298
+----[1594155 ns] Number 8'd18 Functional Test Point PASS!!!
+        [1602000 ns] Test is running, debug_wb_pc = 0xbfc64ea4
+        [1612000 ns] Test is running, debug_wb_pc = 0xbfc65f90
+        [1622000 ns] Test is running, debug_wb_pc = 0xbfc670a0
+        [1632000 ns] Test is running, debug_wb_pc = 0xbfc68194
+        [1642000 ns] Test is running, debug_wb_pc = 0xbfc69288
+        [1652000 ns] Test is running, debug_wb_pc = 0xbfc6a374
+        [1662000 ns] Test is running, debug_wb_pc = 0xbfc6b484
+        [1672000 ns] Test is running, debug_wb_pc = 0xbfc6c578
+        [1682000 ns] Test is running, debug_wb_pc = 0xbfc6d66c
+        [1692000 ns] Test is running, debug_wb_pc = 0xbfc6e78c
+        [1702000 ns] Test is running, debug_wb_pc = 0xbfc6f868
+----[1711015 ns] Number 8'd19 Functional Test Point PASS!!!
+        [1712000 ns] Test is running, debug_wb_pc = 0xbfc70834
+----[1715175 ns] Number 8'd20 Functional Test Point PASS!!!
+----[1719335 ns] Number 8'd21 Functional Test Point PASS!!!
+        [1722000 ns] Test is running, debug_wb_pc = 0xbfc8e8dc
+----[1722295 ns] Number 8'd22 Functional Test Point PASS!!!
+----[1726905 ns] Number 8'd23 Functional Test Point PASS!!!
+==============================================================
+Test end!
+TRACE_RECORDS_READ=44071
+TRACE_MATCHED_WRITES=44071
+PIPELINE_CYCLES=172599
+PIPELINE_STALL_CYCLES=0
+FORWARD_EX_USES=1
+FORWARD_MEM_USES=0
+FORWARD_WB_USES=0
+HAZARD_LOAD_USE_STALLS=0
+HAZARD_STORE_BASE_FORWARDS=0
+HAZARD_STORE_DATA_FORWARDS=0
+HAZARD_BRANCH_FORWARDS=1
+HAZARD_JR_FORWARDS=0
+HAZARD_PRIORITY_EX_USES=0
+HAZARD_ZERO_DEST_WRITES=119254
+ZERO_REG_WRITEBACK_ATTEMPTS=0
+----PASS!!!
+$finish called at time : 1728025 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/testbench/mycpu_tb.v" Line 442
+run: Time (s): cpu = 00:00:01 ; elapsed = 00:00:15 . Memory (MB): peak = 228.520 ; gain = 0.000
+## quit
+INFO: xsimkernel Simulation Memory Usage: 18424 KB (Peak: 18424 KB), Simulation CPU Usage: 14983 ms
+INFO: [Common 17-206] Exiting xsim at Wed Oct 21 16:16:38 2026...
+

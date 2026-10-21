@@ -1,0 +1,5 @@
+EXACT_PATH=D:\Verilog\2025.2\Vivado\data\..\tps\mingw\6.2.0\win64.o\nt\bin\gcc.exe
+NORMALIZED_PATH=D:\Verilog\2025.2\Vivado\tps\mingw\6.2.0\win64.o\nt\bin\gcc.exe
+EXACT_EXISTS=True
+EXACT_RESOLVED=D:\Verilog\2025.2\Vivado\tps\mingw\6.2.0\win64.o\nt\bin\gcc.exe
+PATH=D:\Verilog\2025.2\Vivado\tps\mingw\6.2.0\win64.o\nt\bin;C:\WINDOWS\System32;C:\WINDOWS

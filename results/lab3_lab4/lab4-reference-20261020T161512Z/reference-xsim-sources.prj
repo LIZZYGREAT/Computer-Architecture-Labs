@@ -1,0 +1,29 @@
+# compile verilog/system verilog design source files
+sv xpm  --include "D:/Verilog/2025.2/Vivado/data/rsb/busdef" --include "../../../../../../rtl/CPU_gs132" \
+"D:/Verilog/2025.2/Vivado/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv" \
+"D:/Verilog/2025.2/Vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv" \
+
+verilog xil_defaultlib  --include "D:/Verilog/2025.2/Vivado/data/rsb/busdef" --include "../../../../../../rtl/CPU_gs132" \
+"D:/Verilog/2025.2/Vivado/data/ip/xilinx/blk_mem_gen_v8_4/simulation/blk_mem_gen_v8_4.v" \
+"../../../../../../rtl/BRIDGE/bridge_1x2.v" \
+"../../../../../../rtl/CONFREG/confreg.v" \
+"../../../../../../../../../../../lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/data_ram/sim/data_ram.v" \
+"../../../../../../../../../../../lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/inst_ram/sim/inst_ram.v" \
+"../../../../../../rtl/CPU_gs132/ls132r_decode_stage.v" \
+"../../../../../../rtl/CPU_gs132/ls132r_ejtag_dcr.v" \
+"../../../../../../rtl/CPU_gs132/ls132r_ejtag_hb.v" \
+"../../../../../../rtl/CPU_gs132/ls132r_ejtag_tap.v" \
+"../../../../../../rtl/CPU_gs132/ls132r_ejtag_tap_buffer.v" \
+"../../../../../../rtl/CPU_gs132/ls132r_execute_stage.v" \
+"../../../../../../rtl/CPU_gs132/ls132r_fetch_stage.v" \
+"../../../../../../rtl/CPU_gs132/ls132r_interface.v" \
+"../../../../../../rtl/CPU_gs132/ls132r_tools.v" \
+"../../../../../../rtl/CPU_gs132/ls132r_top.v" \
+"../../../../../../rtl/soc_lite_top.v" \
+"../../../../../../testbench/tb_top.v" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort
