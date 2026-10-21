@@ -1,0 +1,85 @@
+# Local/private notes
+/docs/private/
+
+# Vivado project and simulation build products
+**/.Xil/
+**/*.cache/
+**/*.gen/
+**/*.hw/
+**/*.ip_user_files/
+**/*.runs/
+**/*.sim/
+**/xsim.dir/
+*.jou
+*.pb
+
+# Generated logs are ignored except for the Lab3/Lab4 evidence indexed by the reports.
+*.log
+!results/lab3_lab4/**/*.log
+
+# Waveform and programming outputs. Keep the representative verified waveform.
+*.wdb
+!results/lab3_lab4/lab4-20261021T085125Z/hazard-directed-forwarding.wdb
+*.wcfg
+*.vcd
+*.vpd
+*.fst
+*.wlf
+*.saif
+*.str
+*.bit
+*.mcs
+*.ltx
+
+# Rebuildable IP output products; keep .xci, HDL wrappers, and memory images.
+**/rtl/xilinx_ip/**/*.dcp
+**/rtl/xilinx_ip/**/*_sim_netlist.v
+**/rtl/xilinx_ip/**/*_sim_netlist.vhdl
+**/rtl/xilinx_ip/**/*_stub.v
+**/rtl/xilinx_ip/**/*_stub.vhdl
+**/rtl/xilinx_ip/**/*.vho
+**/rtl/xilinx_ip/**/*.veo
+
+# Rebuildable MIPS toolchain outputs. MIF/COE ROM images remain trackable inputs.
+**/obj/*.elf
+**/obj/*.bin
+**/obj/*.data
+**/obj/*.o
+**/obj/*.s
+**/obj/*.map
+**/obj/*.d
+
+# Python and local environment artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+.coverage
+htmlcov/
+
+# LaTeX intermediates
+*.aux
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv
+
+# Editor and operating system artifacts
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
