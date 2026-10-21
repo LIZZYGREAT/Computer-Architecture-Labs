@@ -10,7 +10,7 @@ Lab3/Lab4 映像更新和 reference trace 流程见 [`Lab3_Lab4_流水线冲突�
 
 ## PowerShell 回归
 
-在 `C:\Users\lenovo\Desktop\Projects\FPGA` 打开 PowerShell：
+在 `C:\Users\lenovo\Desktop\Projects\FPGA` 打开 PowerShell。原有 Lab3/Lab4 回归：
 
 ```powershell
 powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\lab\scripts\verify.ps1 -Case lab3 -PipelineMode forwarding
@@ -19,6 +19,17 @@ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\lab\scripts\ve
 
 不要在 PowerShell 里直接执行 `vivado.bat`；回归脚本会通过 `cmd.exe` 启动 Vivado。
 
+Lab6/Lab7 先生成独立 reference trace，再运行累计回归：
+
+```powershell
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\lab\scripts\generate_reference_trace.ps1 -Case lab6
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\lab\scripts\verify.ps1 -Case lab6 -PipelineMode forwarding
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\lab\scripts\generate_reference_trace.ps1 -Case lab7
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\lab\scripts\verify.ps1 -Case lab7 -PipelineMode forwarding
+```
+
+Lab6/Lab7 的 reference trace 已生成；DUT 累计回归需待对应指令 RTL 完成后执行。手动 GUI 的 `Run All` 用于默认 Lab3 基线；Lab4/Lab6/Lab7 请通过脚本传入正确映像、trace 和功能点数。
+
 ## 当前复核结果
 
-2026-10-21 使用 Vivado 2025.2 运行 Lab3 forwarding：23/23 功能点通过、172599 周期、0 stall，独立 trace 匹配。日志：[`lab3-20261021T131349Z`](../../results/lab3_lab4/lab3-20261021T131349Z/)。
+2026-10-21 使用 Vivado 2025.2 运行 Lab3 forwarding：23/23 功能点通过、172599 周期、0 stall，独立 trace 匹配。日志：[`lab3-20261021T131349Z`](../../results/lab3_lab4/lab3-20261021T131349Z/)。S1 最新回归及 Lab6/Lab7 trace 记录见 [`verification.md`](verification.md)。

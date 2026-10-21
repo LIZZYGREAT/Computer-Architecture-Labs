@@ -1,0 +1,280 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Wed Oct 21 21:39:36 2026
+# Process ID         : 5520
+# Current directory  : D:/Verilog/2025.2/Vivado/bin
+# Command line       : vivado.exe -mode batch -source C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\generate_reference_trace.tcl -log C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab6_lab7\reference-lab6-20261021T133931Z\reference-vivado.log -journal C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab6_lab7\reference-lab6-20261021T133931Z\reference-vivado.jou -tclargs C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab6_lab7\reference-work\reference-lab6-20261021T133931Z\CPU_CDE\cpu132_gettrace\run_vivado\cpu132_gettrace\cpu132_gettrace.xpr C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab6\func_lab6\obj\inst_ram.coe C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab6\func_lab6\obj\inst_ram.mif C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab6_lab7\golden\lab6\golden_trace.txt C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab6_lab7\reference-lab6-20261021T133931Z C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab3\CPU_CDE\mycpu_verify\rtl\xilinx_ip\inst_ram\sim\inst_ram.v C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab3\CPU_CDE\mycpu_verify\rtl\xilinx_ip\data_ram\sim\data_ram.v D:\Verilog\2025.2\Vivado\data\ip\xilinx\blk_mem_gen_v8_4\simulation\blk_mem_gen_v8_4.v 42 50000000
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-lab6-20261021T133931Z/reference-vivado.log
+# Journal file       : C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab6_lab7\reference-lab6-20261021T133931Z\reference-vivado.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 11444 MB
+# Total Virtual      : 34904 MB
+# Available Virtual  : 1613 MB
+#-----------------------------------------------------------
+source {C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\generate_reference_trace.tcl}
+# proc fail {message} {
+#     puts stderr "ENVIRONMENT_ERROR: $message"
+#     catch {close_project}
+#     error $message
+# }
+# if {[llength $argv] < 8} {
+#     fail "usage: generate_reference_trace.tcl <reference.xpr> <instruction.coe> <instruction.mif> <trace-output> <result-dir> <inst_ram-sim.v> <data_ram-sim.v> <blk_mem_gen-sim.v> ?expected-functional-points? ?max-ns?"
+# }
+# set xpr [file normalize [lindex $argv 0]]
+# set coe [file normalize [lindex $argv 1]]
+# set mif [file normalize [lindex $argv 2]]
+# set trace_output [file normalize [lindex $argv 3]]
+# set result_dir [file normalize [lindex $argv 4]]
+# set inst_ram_sim [file normalize [lindex $argv 5]]
+# set data_ram_sim [file normalize [lindex $argv 6]]
+# set blk_mem_gen_sim [file normalize [lindex $argv 7]]
+# set expected_functional_points 23
+# if {[llength $argv] >= 9} {
+#     set expected_functional_points [lindex $argv 8]
+# }
+# set max_ns 5000000
+# if {[llength $argv] >= 10} {
+#     set max_ns [lindex $argv 9]
+# }
+# if {![string is integer -strict $expected_functional_points] || $expected_functional_points < 0} {
+#     fail "expected-functional-points must be a nonnegative integer"
+# }
+# if {![string is integer -strict $max_ns] || $max_ns <= 0} {
+#     fail "max-ns must be a positive integer"
+# }
+# foreach file [list $xpr $coe $mif $inst_ram_sim $data_ram_sim $blk_mem_gen_sim] {
+#     if {![file isfile $file] || [file size $file] == 0} {
+#         fail "required reference input is missing or empty: $file"
+#     }
+# }
+# if {![file isdirectory $result_dir]} {
+#     fail "result directory is missing: $result_dir"
+# }
+# if {[catch {open_project -quiet $xpr} message]} {
+#     fail "cannot open independent reference project: $message"
+# }
+# set inst_ip [get_ips -quiet inst_ram]
+# if {[llength $inst_ip] != 1} {
+#     fail "expected one inst_ram IP, found [llength $inst_ip]"
+# }
+# puts "REFERENCE_CPU_TOP=[get_property TOP [get_filesets sources_1]]"
+REFERENCE_CPU_TOP=soc_lite_top
+# puts "REFERENCE_SIM_TOP=[get_property TOP [get_filesets sim_1]]"
+REFERENCE_SIM_TOP=tb_top
+# set configured_coe [get_property CONFIG.Coe_File $inst_ip]
+# puts "REFERENCE_INST_RAM_COE=$configured_coe"
+REFERENCE_INST_RAM_COE=../../../../soft/func_lab3/obj/inst_ram.coe
+# set cpu_cde_root [file normalize [file join [file dirname $xpr] .. .. ..]]
+# set xci_file [file normalize [file join $cpu_cde_root cpu132_gettrace rtl xilinx_ip inst_ram inst_ram.xci]]
+# set configured_coe_file [file normalize [file join [file dirname $xci_file] $configured_coe]]
+# puts "REFERENCE_INST_RAM_COE_RESOLVED=$configured_coe_file"
+REFERENCE_INST_RAM_COE_RESOLVED=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/soft/func_lab3/obj/inst_ram.coe
+# if {![file isfile $configured_coe_file] || [file size $configured_coe_file] != [file size $coe]} {
+#     fail "isolated reference XCI COE does not match the requested COE: $configured_coe_file"
+# }
+# set configured_fh [open $configured_coe_file r]
+# set configured_content [read $configured_fh]
+# close $configured_fh
+# set requested_fh [open $coe r]
+# set requested_content [read $requested_fh]
+# close $requested_fh
+# if {$configured_content ne $requested_content} {
+#     fail "isolated reference XCI COE contents differ from the requested COE: $configured_coe_file"
+# }
+# set sim_set [get_filesets -quiet sim_1]
+# if {$sim_set eq ""} {
+#     fail "reference sim_1 fileset is missing"
+# }
+# set_property TOP tb_top $sim_set
+# set_property INCREMENTAL false $sim_set
+# set_property XSIM.SIMULATE.RUNTIME ${max_ns}ns $sim_set
+# set memory_sim_files [add_files -fileset sources_1 -norecurse [list $blk_mem_gen_sim $inst_ram_sim $data_ram_sim]]
+# foreach file_obj $memory_sim_files {
+#     set_property USED_IN_SYNTHESIS false $file_obj
+#     set_property USED_IN_IMPLEMENTATION false $file_obj
+#     set_property USED_IN_SIMULATION true $file_obj
+# }
+# update_compile_order -fileset sources_1
+# set project_name [file rootname [file tail $xpr]]
+# set sim_dir [file normalize [file join [file dirname $xpr] "$project_name.sim" sim_1 behav xsim]]
+# file mkdir $sim_dir
+# set trace_tcl [file join $result_dir reference-run.tcl]
+# set fh [open $trace_tcl w]
+# puts $fh "run $max_ns ns"
+# puts $fh "quit"
+# close $fh
+# set_property XSIM.SIMULATE.CUSTOM_TCL $trace_tcl $sim_set
+# if {[catch {launch_simulation -simset sim_1 -mode behavioral -scripts_only} message]} {
+#     fail "cannot generate reference XSim scripts: $message"
+# }
+Command: launch_simulation  -simset sim_1 -mode behavioral -scripts_only
+INFO: [Vivado 12-25912] Generating simulation scripts for 'XSim' simulator
+INFO: [Vivado 12-28535] Process started - Wed Oct 21 21:40:22 2026
+
+INFO: [Vivado 12-12493] Simulation top is 'tb_top'
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5680] Creating behavioral simulation scripts in 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/run_vivado/cpu132_gettrace/cpu132_gettrace.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-72] Using boost library from 'D:/Verilog/2025.2/Vivado/tps/boost_1_72_0'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_top' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/run_vivado/cpu132_gettrace/cpu132_gettrace.sim/sim_1/behav/xsim/inst_ram.coe'
+WARNING: [SIM-utils-65] Failed to find the IP component XML file for 'inst_ram' from IP_OUTPUT_DIR property! (file does not exist:'c:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/xilinx_ip/inst_ram/inst_ram.xml')
+WARNING: [SIM-utils-52] IP component XML file does not exist: 'c:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/xilinx_ip/inst_ram/inst_ram.xml'
+WARNING: [SIM-utils-65] Failed to find the IP component XML file for 'data_ram' from IP_OUTPUT_DIR property! (file does not exist:'c:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/xilinx_ip/data_ram/data_ram.xml')
+WARNING: [SIM-utils-52] IP component XML file does not exist: 'c:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/xilinx_ip/data_ram/data_ram.xml'
+WARNING: [SIM-utils-65] Failed to find the IP component XML file for 'clk_pll' from IP_OUTPUT_DIR property! (file does not exist:'c:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/xilinx_ip/clk_pll/clk_pll.xml')
+WARNING: [SIM-utils-52] IP component XML file does not exist: 'c:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/xilinx_ip/clk_pll/clk_pll.xml'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-60] Script generated:C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/run_vivado/cpu132_gettrace/cpu132_gettrace.sim/sim_1/behav/xsim/compile.bat
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-60] Script generated:C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/run_vivado/cpu132_gettrace/cpu132_gettrace.sim/sim_1/behav/xsim/elaborate.bat
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-60] Script generated:C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/run_vivado/cpu132_gettrace/cpu132_gettrace.sim/sim_1/behav/xsim/simulate.bat
+launch_simulation: Time (s): cpu = 00:00:02 ; elapsed = 00:00:09 . Memory (MB): peak = 565.164 ; gain = 14.824
+# set manifest [file join $sim_dir tb_top_vlog.prj]
+# if {![file isfile $manifest]} {
+#     fail "reference XSim source manifest was not generated: $manifest"
+# }
+# set manifest_fh [open $manifest r]
+# set manifest_text [read $manifest_fh]
+# close $manifest_fh
+# set model_entries {}
+# foreach model_file [list $blk_mem_gen_sim $inst_ram_sim $data_ram_sim] {
+#     set model_path [string map {\\ /} [file normalize $model_file]]
+#     if {[string first $model_path $manifest_text] < 0} {
+#         lappend model_entries "verilog xil_defaultlib \"$model_path\""
+#     }
+# }
+# if {[llength $model_entries] > 0} {
+#     set marker "\n\n# compile glbl module"
+#     set marker_index [string last $marker $manifest_text]
+#     if {$marker_index < 0} {
+#         fail "reference XSim manifest has no glbl section: $manifest"
+#     }
+#     set replacement "\n\n[join $model_entries \n]\n# compile glbl module"
+#     set replace_end [expr {$marker_index + [string length $marker] - 1}]
+#     set manifest_text [string replace $manifest_text $marker_index $replace_end $replacement]
+#     set manifest_fh [open $manifest w]
+#     puts -nonewline $manifest_fh $manifest_text
+#     close $manifest_fh
+# }
+# puts "REFERENCE_MEMORY_MODELS_MANIFESTED=[llength $model_entries]"
+REFERENCE_MEMORY_MODELS_MANIFESTED=3
+# set sim_mif [file join $sim_dir inst_ram.mif]
+# if {[catch {file copy -force $mif $sim_mif} message]} {
+#     fail "cannot stage Lab4 instruction MIF in reference simulation directory: $message"
+# }
+# puts "REFERENCE_SIM_WORKING_DIRECTORY=$sim_dir"
+REFERENCE_SIM_WORKING_DIRECTORY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/run_vivado/cpu132_gettrace/cpu132_gettrace.sim/sim_1/behav/xsim
+# puts "REFERENCE_SIM_MIF=$sim_mif"
+REFERENCE_SIM_MIF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/run_vivado/cpu132_gettrace/cpu132_gettrace.sim/sim_1/behav/xsim/inst_ram.mif
+# puts "REFERENCE_TRACE_OUTPUT=$trace_output"
+REFERENCE_TRACE_OUTPUT=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/golden/lab6/golden_trace.txt
+# puts "REFERENCE_MAX_SIMULATION_NS=$max_ns"
+REFERENCE_MAX_SIMULATION_NS=50000000
+# set stage_error ""
+# set stage_exit_codes {}
+# set original_cwd [pwd]
+# cd $sim_dir
+# foreach step {compile elaborate simulate} {
+#     set batch_file [file join $sim_dir "$step.bat"]
+#     if {![file isfile $batch_file]} {
+#         fail "Vivado did not generate the reference XSim $step script: $batch_file"
+#     }
+#     if {[catch {exec cmd.exe /d /c $batch_file} message]} {
+#         set stage_error "reference XSim $step step failed: $message"
+#         break
+#     }
+#     lappend stage_exit_codes "$step=0"
+# }
+# cd $original_cwd
+# if {$stage_error ne ""} {
+#     fail $stage_error
+# }
+# set trace_in_project [file normalize [file join [file dirname [file dirname [file dirname [file dirname [file dirname [file dirname $sim_dir]]]]]] golden_trace.txt]]
+# if {![file isfile $trace_in_project] || [file size $trace_in_project] == 0} {
+#     fail "reference testbench did not create a nonempty trace: $trace_in_project"
+# }
+# if {[catch {file copy -force $trace_in_project $trace_output} message]} {
+#     fail "cannot copy generated independent trace to requested output: $message"
+# }
+# set result_trace [file join $result_dir reference-golden_trace.txt]
+# if {[catch {file copy -force $trace_output $result_trace} message]} {
+#     fail "cannot preserve generated reference trace in the result directory: $message"
+# }
+# file copy -force $coe [file join $result_dir reference-inst_ram.coe]
+# file copy -force $mif [file join $result_dir reference-inst_ram.mif]
+# foreach {source_name result_name} {
+#     xvlog.log reference-xsim-xvlog.log
+#     xvhdl.log reference-xsim-xvhdl.log
+#     compile.log reference-xsim-compile.log
+#     elaborate.log reference-xsim-elaborate.log
+#     simulate.log reference-xsim-simulate.log
+#     tb_top_vlog.prj reference-xsim-sources.prj
+# } {
+#     set source_file [file join $sim_dir $source_name]
+#     if {[file isfile $source_file]} {
+#         file copy -force $source_file [file join $result_dir $result_name]
+#     }
+# }
+# puts "REFERENCE_TRACE_SIZE=[file size $trace_output]"
+REFERENCE_TRACE_SIZE=1598688
+# set trace_fh [open $trace_output r]
+# set trace_records 0
+# set malformed_records 0
+# while {[gets $trace_fh line] >= 0} {
+#     if {[string trim $line] eq ""} {
+#         continue
+#     }
+#     if {[llength $line] == 4} {
+#         incr trace_records
+#     } else {
+#         incr malformed_records
+#     }
+# }
+# close $trace_fh
+# set simulate_fh [open [file join $sim_dir simulate.log] r]
+# set simulate_text [read $simulate_fh]
+# close $simulate_fh
+# set functional_points [regexp -all {Functional Test Point PASS!!!} $simulate_text]
+# if {$trace_records == 0 || $malformed_records != 0 || $functional_points != $expected_functional_points ||
+#     [string first "Succeed in generating trace file" $simulate_text] < 0} {
+#     fail "reference result failed its acceptance checks: records=$trace_records malformed=$malformed_records points=$functional_points"
+# }
+# puts "REFERENCE_TRACE_RECORDS=$trace_records"
+REFERENCE_TRACE_RECORDS=66612
+# puts "REFERENCE_FUNCTIONAL_POINT_PASSES=$functional_points"
+REFERENCE_FUNCTIONAL_POINT_PASSES=42
+# puts "REFERENCE_EXPECTED_FUNCTIONAL_POINT_PASSES=$expected_functional_points"
+REFERENCE_EXPECTED_FUNCTIONAL_POINT_PASSES=42
+# puts "REFERENCE_SIM_STAGE_EXIT_CODES=[join $stage_exit_codes ,]"
+REFERENCE_SIM_STAGE_EXIT_CODES=compile=0,elaborate=0,simulate=0
+# set result_fh [open [file join $result_dir reference-result.txt] w]
+# puts $result_fh "STATUS=PASS"
+# puts $result_fh "SIM_STAGE_EXIT_CODES=[join $stage_exit_codes ,]"
+# puts $result_fh "REFERENCE_CPU_TOP=[get_property TOP [get_filesets sources_1]]"
+# puts $result_fh "REFERENCE_SIM_TOP=[get_property TOP [get_filesets sim_1]]"
+# puts $result_fh "REFERENCE_COE=$coe"
+# puts $result_fh "REFERENCE_MIF=$mif"
+# puts $result_fh "REFERENCE_TRACE=$trace_output"
+# puts $result_fh "REFERENCE_MAX_SIMULATION_NS=$max_ns"
+# puts $result_fh "REFERENCE_TRACE_RECORDS=$trace_records"
+# puts $result_fh "REFERENCE_TRACE_SIZE=[file size $trace_output]"
+# puts $result_fh "REFERENCE_FUNCTIONAL_POINT_PASSES=$functional_points"
+# puts $result_fh "REFERENCE_EXPECTED_FUNCTIONAL_POINT_PASSES=$expected_functional_points"
+# close $result_fh
+# close_project
+# exit 0
+INFO: [Common 17-206] Exiting Vivado at Wed Oct 21 21:41:47 2026...

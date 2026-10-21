@@ -1,0 +1,90 @@
+Vivado Simulator v2025.2
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Verilog/2025.2/Vivado/bin/unwrapped/win64.o/xelab.exe --debug typical --relax --mt 2 -L xil_defaultlib -L xpm -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_top_behav xil_defaultlib.tb_top xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/soc_lite_top.v" Line 65. Module soc_lite_top(SIMULATION=1'b1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_top.v" Line 36. Module ls132r_top doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_interface.v" Line 36. Module ls132r_interface doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_fetch_stage.v" Line 36. Module ls132r_fetch_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_decode_stage.v" Line 36. Module ls132r_decode_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_tools.v" Line 98. Module ls132r_decoder_6_64 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_tools.v" Line 34. Module ls132r_decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_tools.v" Line 34. Module ls132r_decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_tools.v" Line 34. Module ls132r_decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_tools.v" Line 34. Module ls132r_decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_tools.v" Line 98. Module ls132r_decoder_6_64 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_decode_stage.v" Line 1270. Module gr_heap_2r1w_32x32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_tools.v" Line 34. Module ls132r_decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_tools.v" Line 34. Module ls132r_decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_tools.v" Line 34. Module ls132r_decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_execute_stage.v" Line 36. Module ls132r_execute_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_tools.v" Line 193. Module ls132r_first_one_32_5 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_tools.v" Line 216. Module ls132r_first_one_8_3 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_tools.v" Line 216. Module ls132r_first_one_8_3 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_tools.v" Line 216. Module ls132r_first_one_8_3 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_tools.v" Line 216. Module ls132r_first_one_8_3 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_tools.v" Line 231. Module ls132r_first_one_4_2 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_tools.v" Line 241. Module ls132r_ejtag_rstgen doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_ejtag_tap.v" Line 77. Module ls132r_ejtag_tap doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_ejtag_tap.v" Line 702. Module ejtag_tap_fsm doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_ejtag_tap.v" Line 222. Module ejtag_tap_instreg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_ejtag_tap.v" Line 854. Module ejtag_tap_decode doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_ejtag_tap.v" Line 280. Module ejtag_tap_reg_group doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_ejtag_tap.v" Line 894. Module ejtag_tap_basicreg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_ejtag_tap.v" Line 894. Module ejtag_tap_basicreg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_ejtag_tap.v" Line 894. Module ejtag_tap_basicreg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_ejtag_tap.v" Line 894. Module ejtag_tap_basicreg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_ejtag_tap.v" Line 894. Module ejtag_tap_basicreg(WIDTH=12) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_ejtag_tap.v" Line 894. Module ejtag_tap_basicreg(WIDTH=12) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_ejtag_tap_buffer.v" Line 36. Module ls132r_ejtag_tap_buffer doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_ejtag_dcr.v" Line 36. Module ls132r_ejtag_dcr doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_ejtag_hb.v" Line 36. Module ls132r_ejtag_hb doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CPU_gs132/ls132r_ejtag_hb.v" Line 95. Module ls132r_ejtag_ib doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/BRIDGE/bridge_1x2.v" Line 50. Module bridge_1x2 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab6-20261021T133931Z/CPU_CDE/cpu132_gettrace/rtl/CONFREG/confreg.v" Line 73. Module confreg(SIMULATION=1'b1) doesn't have a timescale but at least one module in design has a timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.ls132r_interface
+Compiling module xil_defaultlib.ls132r_fetch_stage
+Compiling module xil_defaultlib.ls132r_decoder_6_64
+Compiling module xil_defaultlib.ls132r_decoder_5_32
+Compiling module xil_defaultlib.gr_heap_2r1w_32x32
+Compiling module xil_defaultlib.ls132r_decode_stage
+Compiling module xil_defaultlib.ls132r_first_one_8_3
+Compiling module xil_defaultlib.ls132r_first_one_4_2
+Compiling module xil_defaultlib.ls132r_first_one_32_5
+Compiling module xil_defaultlib.ls132r_execute_stage
+Compiling module xil_defaultlib.ls132r_ejtag_rstgen
+Compiling module xil_defaultlib.ejtag_tap_fsm
+Compiling module xil_defaultlib.ejtag_tap_instreg
+Compiling module xil_defaultlib.ejtag_tap_decode
+Compiling module xil_defaultlib.ejtag_tap_basicreg
+Compiling module xil_defaultlib.ejtag_tap_basicreg(WIDTH=12)
+Compiling module xil_defaultlib.ejtag_tap_reg_group
+Compiling module xil_defaultlib.ls132r_ejtag_tap
+Compiling module xil_defaultlib.ls132r_ejtag_tap_buffer
+Compiling module xil_defaultlib.ls132r_ejtag_dcr
+Compiling module xil_defaultlib.ls132r_ejtag_ib
+Compiling module xil_defaultlib.ls132r_ejtag_hb
+Compiling module xil_defaultlib.ls132r_top
+Compiling module xil_defaultlib.blk_mem_gen_v8_4_12_output_stage...
+Compiling module xil_defaultlib.blk_mem_gen_v8_4_12_softecc_outp...
+Compiling module xil_defaultlib.blk_mem_gen_v8_4_12_mem_module(C...
+Compiling module xil_defaultlib.blk_mem_gen_v8_4_12(C_FAMILY="ar...
+Compiling module xil_defaultlib.inst_ram
+Compiling module xil_defaultlib.bridge_1x2
+Compiling module xil_defaultlib.blk_mem_gen_v8_4_12_output_stage...
+Compiling module xil_defaultlib.blk_mem_gen_v8_4_12_softecc_outp...
+Compiling module xil_defaultlib.blk_mem_gen_v8_4_12_mem_module(C...
+Compiling module xil_defaultlib.blk_mem_gen_v8_4_12(C_FAMILY="ar...
+Compiling module xil_defaultlib.data_ram
+Compiling module xil_defaultlib.confreg(SIMULATION=1'b1)
+Compiling module xil_defaultlib.soc_lite_top(SIMULATION=1'b1)
+Compiling module xil_defaultlib.tb_top
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot tb_top_behav

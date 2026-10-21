@@ -53,6 +53,9 @@ results/**/reference/
 results/lab6_lab7/reference-work/
 results/lab6_lab7/reference-lab6-20261021T133257Z/
 results/lab6_lab7/reference-lab6-20261021T133621Z/
+results/lab6_lab7/reference-lab*-*/reference-golden_trace.txt
+results/lab6_lab7/reference-lab*-*/reference-inst_ram.coe
+results/lab6_lab7/reference-lab*-*/reference-inst_ram.mif
 
 # Temporary instruction-memory copies staged by the Lab3/Lab4 verification script.
 results/lab3_lab4/lab[34]-*/sim-inst_ram.mif

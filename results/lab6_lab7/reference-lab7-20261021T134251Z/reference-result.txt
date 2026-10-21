@@ -1,0 +1,12 @@
+STATUS=PASS
+SIM_STAGE_EXIT_CODES=compile=0,elaborate=0,simulate=0
+REFERENCE_CPU_TOP=soc_lite_top
+REFERENCE_SIM_TOP=tb_top
+REFERENCE_COE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab7/func_lab7/obj/inst_ram.coe
+REFERENCE_MIF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab7/func_lab7/obj/inst_ram.mif
+REFERENCE_TRACE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/golden/lab7/golden_trace.txt
+REFERENCE_MAX_SIMULATION_NS=50000000
+REFERENCE_TRACE_RECORDS=100732
+REFERENCE_TRACE_SIZE=2417568
+REFERENCE_FUNCTIONAL_POINT_PASSES=68
+REFERENCE_EXPECTED_FUNCTIONAL_POINT_PASSES=68
