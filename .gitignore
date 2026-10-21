@@ -45,6 +45,7 @@
 **/rtl/xilinx_ip/**/*_stub.vhdl
 **/rtl/xilinx_ip/**/*.vho
 **/rtl/xilinx_ip/**/*.veo
+**/rtl/xilinx_ip/**/inst_ram.mif
 
 # Per-run copies of the reference CPU are reproducible from lab3/CPU_CDE.
 results/**/reference/
