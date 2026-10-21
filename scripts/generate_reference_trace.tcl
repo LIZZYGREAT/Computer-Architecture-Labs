@@ -5,7 +5,7 @@ proc fail {message} {
 }
 
 if {[llength $argv] < 8} {
-    fail "usage: generate_reference_trace.tcl <reference.xpr> <instruction.coe> <instruction.mif> <trace-output> <result-dir> <inst_ram-sim.v> <data_ram-sim.v> <blk_mem_gen-sim.v> ?expected-functional-points?"
+    fail "usage: generate_reference_trace.tcl <reference.xpr> <instruction.coe> <instruction.mif> <trace-output> <result-dir> <inst_ram-sim.v> <data_ram-sim.v> <blk_mem_gen-sim.v> ?expected-functional-points? ?max-ns?"
 }
 
 set xpr [file normalize [lindex $argv 0]]
@@ -20,8 +20,15 @@ set expected_functional_points 23
 if {[llength $argv] >= 9} {
     set expected_functional_points [lindex $argv 8]
 }
+set max_ns 5000000
+if {[llength $argv] >= 10} {
+    set max_ns [lindex $argv 9]
+}
 if {![string is integer -strict $expected_functional_points] || $expected_functional_points < 0} {
     fail "expected-functional-points must be a nonnegative integer"
+}
+if {![string is integer -strict $max_ns] || $max_ns <= 0} {
+    fail "max-ns must be a positive integer"
 }
 foreach file [list $xpr $coe $mif $inst_ram_sim $data_ram_sim $blk_mem_gen_sim] {
     if {![file isfile $file] || [file size $file] == 0} {
@@ -65,7 +72,7 @@ if {$sim_set eq ""} {
 }
 set_property TOP tb_top $sim_set
 set_property INCREMENTAL false $sim_set
-set_property XSIM.SIMULATE.RUNTIME 5000000ns $sim_set
+set_property XSIM.SIMULATE.RUNTIME ${max_ns}ns $sim_set
 set memory_sim_files [add_files -fileset sources_1 -norecurse [list $blk_mem_gen_sim $inst_ram_sim $data_ram_sim]]
 foreach file_obj $memory_sim_files {
     set_property USED_IN_SYNTHESIS false $file_obj
@@ -79,7 +86,7 @@ set sim_dir [file normalize [file join [file dirname $xpr] "$project_name.sim" s
 file mkdir $sim_dir
 set trace_tcl [file join $result_dir reference-run.tcl]
 set fh [open $trace_tcl w]
-puts $fh "run 5000000 ns"
+puts $fh "run $max_ns ns"
 puts $fh "quit"
 close $fh
 set_property XSIM.SIMULATE.CUSTOM_TCL $trace_tcl $sim_set
@@ -122,6 +129,7 @@ if {[catch {file copy -force $mif $sim_mif} message]} {
 puts "REFERENCE_SIM_WORKING_DIRECTORY=$sim_dir"
 puts "REFERENCE_SIM_MIF=$sim_mif"
 puts "REFERENCE_TRACE_OUTPUT=$trace_output"
+puts "REFERENCE_MAX_SIMULATION_NS=$max_ns"
 
 set stage_error ""
 set stage_exit_codes {}
@@ -204,6 +212,7 @@ puts $result_fh "REFERENCE_SIM_TOP=[get_property TOP [get_filesets sim_1]]"
 puts $result_fh "REFERENCE_COE=$coe"
 puts $result_fh "REFERENCE_MIF=$mif"
 puts $result_fh "REFERENCE_TRACE=$trace_output"
+puts $result_fh "REFERENCE_MAX_SIMULATION_NS=$max_ns"
 puts $result_fh "REFERENCE_TRACE_RECORDS=$trace_records"
 puts $result_fh "REFERENCE_TRACE_SIZE=[file size $trace_output]"
 puts $result_fh "REFERENCE_FUNCTIONAL_POINT_PASSES=$functional_points"

@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('lab3', 'lab4')]
+    [ValidateSet('lab3', 'lab4', 'lab6', 'lab7')]
     [string]$Case,
     [ValidateSet('blocking', 'forwarding')]
     [string]$PipelineMode = 'forwarding',
@@ -9,8 +9,8 @@ param(
     [string]$InstMif,
     [string]$Xpr,
     [string]$VivadoBin = 'D:\Verilog\2025.2\Vivado\bin',
-    [long]$MaxSimulationNs = 5000000,
-    [int]$TimeoutSeconds = 600,
+    [long]$MaxSimulationNs = 0,
+    [int]$TimeoutSeconds = 1800,
     [switch]$HazardDirected,
     [switch]$CaptureWaveform,
     [switch]$PreflightOnly
@@ -18,6 +18,22 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $labRoot = Split-Path -Parent $PSScriptRoot
+$caseConfigPath = Join-Path $PSScriptRoot 'cases.json'
+if (-not (Test-Path -LiteralPath $caseConfigPath)) {
+    Write-Output "ENVIRONMENT_ERROR: case configuration is missing: $caseConfigPath"
+    exit 2
+}
+$allCaseSettings = Get-Content -LiteralPath $caseConfigPath -Raw | ConvertFrom-Json
+$caseSettings = $allCaseSettings.$Case
+if (-not $caseSettings) {
+    Write-Output "ENVIRONMENT_ERROR: case configuration is missing for $Case."
+    exit 2
+}
+if ($MaxSimulationNs -eq 0) { $MaxSimulationNs = [long]$caseSettings.DefaultMaxSimulationNs }
+if ($MaxSimulationNs -le 0 -or $TimeoutSeconds -le 0) {
+    Write-Output 'ENVIRONMENT_ERROR: simulation time and host timeout must be positive.'
+    exit 2
+}
 if (-not $Xpr) {
     $Xpr = Join-Path $labRoot 'lab3\CPU_CDE\mycpu_verify\run_vivado\mycpu_prj1\mycpu_prj1.xpr'
 }
@@ -33,21 +49,19 @@ if (-not (Test-Path -LiteralPath $Vivado)) {
 
 $stamp = [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ')
 $runId = "$Case-$stamp"
-$resultDir = Join-Path $labRoot "results\lab3_lab4\$runId"
+$resultRoot = Join-Path $labRoot $caseSettings.ResultRoot
+$resultDir = Join-Path $resultRoot $runId
 New-Item -ItemType Directory -Path $resultDir -Force | Out-Null
 $vivadoBinFull = (Resolve-Path -LiteralPath $VivadoBin).Path
 $projectDir = Split-Path -Parent $Xpr
 $projectName = [IO.Path]::GetFileNameWithoutExtension($Xpr)
 $xsimLog = Join-Path $projectDir "$projectName.sim\sim_1\behav\xsim\xsim.log"
-$caseRoot = if ($Case -eq 'lab3') {
-    Join-Path $labRoot 'lab3\CPU_CDE\soft\func_lab3\obj'
-} else {
-    Join-Path $labRoot 'lab4\func_lab4\obj'
-}
+$instCoe = Join-Path $labRoot $caseSettings.InstructionCoe
+$caseMif = Join-Path $labRoot $caseSettings.InstructionMif
 if ($InstMif) {
     $instMif = (Resolve-Path -LiteralPath $InstMif).Path
 } else {
-    $instMif = Join-Path $caseRoot 'inst_ram.mif'
+    $instMif = $caseMif
 }
 if ($ReferenceTrace) {
     if (Test-Path -LiteralPath $ReferenceTrace) {
@@ -55,11 +69,11 @@ if ($ReferenceTrace) {
     } else {
         $traceFile = $ReferenceTrace
     }
-} elseif ($Case -eq 'lab3') {
-    $traceFile = Join-Path $labRoot 'lab3\CPU_CDE\cpu132_gettrace\golden_trace.txt'
 } else {
-    $traceFile = $null
+    $traceFile = Join-Path $labRoot $caseSettings.ReferenceTrace
 }
+$expectedFunctionalPoints = [int]$caseSettings.ExpectedFunctionalPoints
+$instRamXci = Join-Path $labRoot 'lab3\CPU_CDE\mycpu_verify\rtl\xilinx_ip\inst_ram\inst_ram.xci'
 $preflightTcl = Join-Path $PSScriptRoot 'check_project.tcl'
 $simTcl = Join-Path $PSScriptRoot 'run_behavioral_sim.tcl'
 
@@ -101,6 +115,9 @@ Write-Output "CASE=$Case"
 Write-Output "PIPELINE_MODE=$PipelineMode"
 Write-Output "HAZARD_DIRECTED=$([bool]$HazardDirected)"
 Write-Output "CAPTURE_WAVEFORM=$([bool]$CaptureWaveform)"
+Write-Output "EXPECTED_FUNCTIONAL_POINTS=$expectedFunctionalPoints"
+Write-Output "MAX_SIMULATION_NS=$MaxSimulationNs"
+Write-Output "TIMEOUT_SECONDS=$TimeoutSeconds"
 Write-Output "VIVADO=$Vivado"
 $preflightCode = Invoke-VivadoBatch 'preflight' $preflightTcl @($Xpr, $resultDir)
 if ($preflightCode -ne 0) {
@@ -144,17 +161,38 @@ if (-not (Test-Path -LiteralPath $instMif)) {
     exit 2
 }
 $imageHash = (Get-FileHash -LiteralPath $instMif -Algorithm SHA256).Hash
+$coeHash = ''
+$imageCheckPassed = $false
+$imageCheckFile = Join-Path $resultDir 'instruction-image-check.txt'
+if ($InstMif) {
+    @("IMAGE_MATCH=OVERRIDE_NOT_CHECKED", "INST_MIF_SHA256=$imageHash") |
+        Set-Content -LiteralPath $imageCheckFile -Encoding UTF8
+} else {
+    if (-not (Test-Path -LiteralPath $instCoe)) {
+        Write-Output "ENVIRONMENT_ERROR: instruction COE file is missing: $instCoe"
+        exit 2
+    }
+    $coeHash = (Get-FileHash -LiteralPath $instCoe -Algorithm SHA256).Hash
+    $imageChecker = Join-Path $PSScriptRoot 'check_instruction_image.py'
+    $imageCheckOutput = & python $imageChecker --coe $instCoe --mif $instMif --xci $instRamXci 2>&1
+    $imageCheckCode = $LASTEXITCODE
+    $imageCheckOutput | Set-Content -LiteralPath $imageCheckFile -Encoding UTF8
+    $imageCheckPassed = ($imageCheckCode -eq 0) -and ($imageCheckOutput -match 'IMAGE_MATCH=PASS')
+    if (-not $imageCheckPassed) {
+        Write-Output "ENVIRONMENT_ERROR: instruction COE/MIF consistency check failed. See $imageCheckFile."
+        Write-Output "LOG=$resultDir"
+        exit 2
+    }
+}
 Write-Output "TRACE=$traceFile SHA256=$traceHash"
 Write-Output "INST_MIF=$instMif SHA256=$imageHash"
+if ($coeHash) { Write-Output "INST_COE=$instCoe SHA256=$coeHash" }
 
 $startedAt = [DateTime]::UtcNow
-$simArgs = @($Xpr, $Case, [string]$MaxSimulationNs, $PipelineMode, $traceFile, $instMif, $resultDir)
-if ($CaptureWaveform) {
-    # Keep the established seven-argument command line unchanged for normal
-    # regressions.  Vivado's Windows batch launcher has been observed to
-    # misparse the otherwise redundant trailing "0" before Tcl starts.
-    $simArgs += '1'
-}
+$simExpectedFunctionalPoints = if ($HazardDirected) { 0 } else { $expectedFunctionalPoints }
+$simCaptureWaveform = if ($CaptureWaveform) { '1' } else { '0' }
+$simArgs = @($Xpr, $Case, [string]$MaxSimulationNs, $PipelineMode, $traceFile, $instMif, $resultDir,
+    [string]$simExpectedFunctionalPoints, $simCaptureWaveform)
 $simCode = Invoke-VivadoBatch 'simulation' $simTcl $simArgs
 $simWorkingDir = Split-Path -Parent $xsimLog
 $waveformPath = ''
@@ -218,8 +256,9 @@ $endMarker = $logText -match 'Test end!'
 $passMarker = $logText -match '----PASS!!!'
 $traceOpened = $logText -match 'TRACE_REF_OPEN_OK'
 $traceOpenFailed = $logText -match 'TRACE_REF_OPEN_FAIL'
-$errors = $logText -match 'Error!!!|Error\s*\([^\r\n]*\)!!!|Fail!!!|TRACE_MISMATCH|TRACE_REMAINING_RECORDS'
+$errors = $logText -match 'Error!!!|Error\s*\([^\r\n]*\)!!!|Fail!!!|TRACE_MISMATCH|TRACE_REMAINING_RECORDS|TRACE_TAIL_READ_FAIL|FUNCTIONAL_POINT_COUNT_MISMATCH'
 $pointPasses = ([regex]::Matches($logText, 'Functional Test Point PASS!!!')).Count
+$functionalPointCountMatch = [regex]::Match($logText, 'FUNCTIONAL_POINT_PASSES=(\d+)')
 $finishAtEnd = $logText -match 'debug_wb_pc\s*=\s*0xbfc00100|Test end!'
 $cyclesMatch = [regex]::Match($logText, 'PIPELINE_CYCLES=(\d+)')
 $stallsMatch = [regex]::Match($logText, 'PIPELINE_STALL_CYCLES=(\d+)')
@@ -234,6 +273,7 @@ $forwardMem = if ($forwardMemMatch.Success) { [long]$forwardMemMatch.Groups[1].V
 $forwardWb = if ($forwardWbMatch.Success) { [long]$forwardWbMatch.Groups[1].Value } else { 0 }
 $forwardUses = $forwardEx + $forwardMem + $forwardWb
 $zeroRegWritebackAttempts = if ($zeroRegWritebackMatch.Success) { [long]$zeroRegWritebackMatch.Groups[1].Value } else { -1 }
+$reportedFunctionalPointPasses = if ($functionalPointCountMatch.Success) { [int]$functionalPointCountMatch.Groups[1].Value } else { -1 }
 $zeroRegWritebackPass = $zeroRegWritebackMatch.Success -and $zeroRegWritebackAttempts -eq 0
 $hazardMetrics = @{}
 foreach ($metric in @(
@@ -248,7 +288,7 @@ foreach ($metric in @(
     $match = [regex]::Match($logText, "$metric=(\d+)")
     $hazardMetrics[$metric] = if ($match.Success) { [long]$match.Groups[1].Value } else { 0 }
 }
-$expectedPointPasses = if ($HazardDirected) { 0 } else { 23 }
+$expectedPointPasses = if ($HazardDirected) { 0 } else { $expectedFunctionalPoints }
 $hazardCoveragePass = $true
 if ($HazardDirected) {
     $hazardCoveragePass = $hazardMetrics['HAZARD_LOAD_USE_STALLS'] -gt 0
@@ -281,7 +321,9 @@ if ($traceOpenFailed) {
 } elseif ($zeroRegWritebackMatch.Success -and $zeroRegWritebackAttempts -gt 0) {
     $status = 'FAIL'
 } elseif ($endMarker -and $passMarker -and $traceOpened -and $finishAtEnd -and
-    $pointPasses -eq $expectedPointPasses -and $hazardCoveragePass -and $zeroRegWritebackPass) {
+    $pointPasses -eq $expectedPointPasses -and
+    $reportedFunctionalPointPasses -eq $expectedPointPasses -and
+    $hazardCoveragePass -and $zeroRegWritebackPass) {
     if ($Case -eq 'lab4' -and $PipelineMode -eq 'forwarding' -and ($forwardUses -eq 0 -or $stallCycles -eq 0)) {
         $status = 'FAIL'
     } elseif ($Case -eq 'lab4' -and $PipelineMode -eq 'blocking' -and $stallCycles -eq 0) {
@@ -300,7 +342,9 @@ if ($traceOpenFailed) {
     "TRACE_OPENED=$traceOpened",
     "TEST_END=$endMarker",
     "PASS_MARKER=$passMarker",
+    "EXPECTED_FUNCTIONAL_POINTS=$expectedPointPasses",
     "FUNCTIONAL_POINT_PASSES=$pointPasses",
+    "FUNCTIONAL_POINT_COUNT_REPORTED=$reportedFunctionalPointPasses",
     "PIPELINE_CYCLES=$cycles",
     "PIPELINE_STALL_CYCLES=$stallCycles",
     "FORWARD_EX_USES=$forwardEx",
@@ -329,6 +373,7 @@ if ($traceOpenFailed) {
     "XSIM_SIMULATE_STAGE_LOG_FRESH=$($stageLogs['simulate.log'])",
     "SIM_IMAGE_MATCHES_SOURCE=$simImageMatches",
     "SIM_INST_MIF_SHA256=$simImageHash",
+    "INST_COE_SHA256=$coeHash",
     "TRACE_SHA256=$traceHash",
     "INST_MIF_SHA256=$imageHash",
     "STARTED_UTC=$($startedAt.ToString('o'))",
@@ -336,6 +381,7 @@ if ($traceOpenFailed) {
 ) | Set-Content -LiteralPath (Join-Path $resultDir 'result.txt') -Encoding UTF8
 
 Write-Output "FUNCTIONAL_POINT_PASSES=$pointPasses"
+Write-Output "FUNCTIONAL_POINT_COUNT_REPORTED=$reportedFunctionalPointPasses"
 Write-Output "PIPELINE_CYCLES=$cycles"
 Write-Output "PIPELINE_STALL_CYCLES=$stallCycles"
 Write-Output "FORWARD_EX_USES=$forwardEx"

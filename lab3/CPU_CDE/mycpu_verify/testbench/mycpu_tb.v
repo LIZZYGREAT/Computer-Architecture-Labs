@@ -123,6 +123,10 @@ integer hazard_jr_forwards;
 integer hazard_priority_ex_uses;
 integer hazard_zero_dest_writes;
 integer zero_reg_writeback_attempts;
+integer expected_functional_points;
+integer functional_point_passes;
+integer expected_points_plusarg;
+reg     functional_point_count_error;
 wire ds_instruction_issued = soc_lite.cpu.id_stage.ds_to_es_valid &&
                              soc_lite.cpu.id_stage.es_allowin;
 initial begin
@@ -143,6 +147,11 @@ initial begin
     hazard_priority_ex_uses = 0;
     hazard_zero_dest_writes = 0;
     zero_reg_writeback_attempts = 0;
+    functional_point_passes = 0;
+    functional_point_count_error = 1'b0;
+    expected_functional_points = 23;
+    expected_points_plusarg = $value$plusargs("EXPECTED_POINTS=%d", expected_functional_points);
+    $display("EXPECTED_FUNCTIONAL_POINTS=%0d", expected_functional_points);
     trace_ref_path = `TRACE_REF_FILE;
     trace_ref_plusarg = $value$plusargs("TRACE_REF=%s", trace_ref_path);
     trace_ref = $fopen(trace_ref_path, "r");
@@ -339,6 +348,7 @@ begin
         else
         begin
             $display("----[%t] Number 8'd%02d Functional Test Point PASS!!!", $time, confreg_num_reg[31:24]);
+            functional_point_passes <= functional_point_passes + 1;
         end
     end
 end
@@ -376,7 +386,7 @@ end
 
 //test end
 wire global_err = debug_wb_err || (err_count!=8'd0) || trace_error ||
-                  (zero_reg_writeback_attempts != 0);
+                  (zero_reg_writeback_attempts != 0) || functional_point_count_error;
 wire test_end = (debug_wb_pc==`END_PC) || (uart_display && uart_data==8'hff);
 always @(posedge soc_clk)
 begin
@@ -430,6 +440,13 @@ begin
         $display("HAZARD_PRIORITY_EX_USES=%0d", hazard_priority_ex_uses);
         $display("HAZARD_ZERO_DEST_WRITES=%0d", hazard_zero_dest_writes);
         $display("ZERO_REG_WRITEBACK_ATTEMPTS=%0d", zero_reg_writeback_attempts);
+        $display("FUNCTIONAL_POINT_PASSES=%0d", functional_point_passes);
+        if (functional_point_passes != expected_functional_points)
+        begin
+            functional_point_count_error = 1'b1;
+            $display("FUNCTIONAL_POINT_COUNT_MISMATCH expected=%0d actual=%0d",
+                     expected_functional_points, functional_point_passes);
+        end
         $fclose(trace_ref);
         if (global_err || trace_error)
         begin

@@ -1,0 +1,34 @@
+{
+  "lab3": {
+    "InstructionCoe": "lab3/CPU_CDE/soft/func_lab3/obj/inst_ram.coe",
+    "InstructionMif": "lab3/CPU_CDE/soft/func_lab3/obj/inst_ram.mif",
+    "ReferenceTrace": "lab3/CPU_CDE/cpu132_gettrace/golden_trace.txt",
+    "ExpectedFunctionalPoints": 23,
+    "DefaultMaxSimulationNs": 5000000,
+    "ResultRoot": "results/lab3_lab4"
+  },
+  "lab4": {
+    "InstructionCoe": "lab4/func_lab4/obj/inst_ram.coe",
+    "InstructionMif": "lab4/func_lab4/obj/inst_ram.mif",
+    "ReferenceTrace": "lab4/func_lab4/obj/golden_trace.txt",
+    "ExpectedFunctionalPoints": 23,
+    "DefaultMaxSimulationNs": 5000000,
+    "ResultRoot": "results/lab3_lab4"
+  },
+  "lab6": {
+    "InstructionCoe": "lab6/func_lab6/obj/inst_ram.coe",
+    "InstructionMif": "lab6/func_lab6/obj/inst_ram.mif",
+    "ReferenceTrace": "results/lab6_lab7/golden/lab6/golden_trace.txt",
+    "ExpectedFunctionalPoints": 42,
+    "DefaultMaxSimulationNs": 50000000,
+    "ResultRoot": "results/lab6_lab7"
+  },
+  "lab7": {
+    "InstructionCoe": "lab7/func_lab7/obj/inst_ram.coe",
+    "InstructionMif": "lab7/func_lab7/obj/inst_ram.mif",
+    "ReferenceTrace": "results/lab6_lab7/golden/lab7/golden_trace.txt",
+    "ExpectedFunctionalPoints": 68,
+    "DefaultMaxSimulationNs": 50000000,
+    "ResultRoot": "results/lab6_lab7"
+  }
+}

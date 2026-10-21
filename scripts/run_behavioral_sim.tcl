@@ -21,7 +21,7 @@ proc clear_runtime_sim_options {} {
 }
 
 if {[llength $argv] < 7} {
-    fail "usage: run_behavioral_sim.tcl <project.xpr> <case> <max-ns> <pipeline-mode> <trace-file> <inst-mif> <result-dir> ?capture-waveform?"
+    fail "usage: run_behavioral_sim.tcl <project.xpr> <case> <max-ns> <pipeline-mode> <trace-file> <inst-mif> <result-dir> ?expected-functional-points? ?capture-waveform?"
 }
 
 set xpr [file normalize [lindex $argv 0]]
@@ -31,14 +31,23 @@ set pipeline_mode [lindex $argv 3]
 set trace_file [file normalize [lindex $argv 4]]
 set inst_mif [file normalize [lindex $argv 5]]
 set result_dir [file normalize [lindex $argv 6]]
+set expected_functional_points 23
 set capture_waveform 0
-if {[llength $argv] >= 8} {
-    set capture_waveform [lindex $argv 7]
+if {[llength $argv] >= 9} {
+    set expected_functional_points [lindex $argv 7]
+    set capture_waveform [lindex $argv 8]
+} elseif {[llength $argv] == 8} {
+    set optional_arg [lindex $argv 7]
+    if {$optional_arg in {0 1}} {
+        set capture_waveform $optional_arg
+    } else {
+        set expected_functional_points $optional_arg
+    }
 }
 if {![file isfile $xpr]} {
     fail "Vivado project not found: $xpr"
 }
-if {$test_case ni {lab3 lab4}} {
+if {$test_case ni {lab3 lab4 lab6 lab7}} {
     fail "unsupported case: $test_case"
 }
 if {![string is integer -strict $max_ns] || $max_ns <= 0} {
@@ -46,6 +55,9 @@ if {![string is integer -strict $max_ns] || $max_ns <= 0} {
 }
 if {$pipeline_mode ni {blocking forwarding}} {
     fail "pipeline-mode must be blocking or forwarding"
+}
+if {![string is integer -strict $expected_functional_points] || $expected_functional_points < 0} {
+    fail "expected-functional-points must be a nonnegative integer"
 }
 if {$capture_waveform ni {0 1}} {
     fail "capture-waveform must be 0 or 1"
@@ -136,6 +148,7 @@ puts "SIM_MAX_NS=$max_ns"
 puts "PIPELINE_MODE=$pipeline_mode"
 puts "TRACE_FILE=$trace_file"
 puts "INSTRUCTION_MIF=$inst_mif"
+puts "EXPECTED_FUNCTIONAL_POINTS=$expected_functional_points"
 puts "SIM_TOP=[get_property TOP $sim_set]"
 puts "SIM_INCREMENTAL=[get_property INCREMENTAL $sim_set]"
 puts "SIM_SOURCE_SET=$source_set_name"
@@ -145,11 +158,12 @@ set_property -name XSIM.ELABORATE.XELAB.MORE_OPTIONS \
     -value [format {-generic_top "PIPELINE_FORWARDING=%d"} $pipeline_forwarding] \
     -objects $sim_set
 set_property -name XSIM.SIMULATE.XSIM.MORE_OPTIONS \
-    -value [format {--testplusarg "TRACE_REF=%s"} $trace_file] \
+    -value [format {--testplusarg "TRACE_REF=%s" --testplusarg "EXPECTED_POINTS=%d"} \
+        $trace_file $expected_functional_points] \
     -objects $sim_set
 set_property -name XSIM.SIMULATE.RUNTIME -value "${max_ns}ns" -objects $sim_set
 puts "XSIM_GENERIC_TOP=PIPELINE_FORWARDING=$pipeline_forwarding"
-puts "XSIM_TRACE_PLUSARG=TRACE_REF=$trace_file"
+puts "XSIM_TRACE_PLUSARG=TRACE_REF=$trace_file EXPECTED_POINTS=$expected_functional_points"
 puts "XSIM_RUNTIME=${max_ns}ns"
 set project_name [file rootname [file tail $xpr]]
 set sim_working_dir [file normalize [file join [file dirname $xpr] "$project_name.sim" sim_1 behav xsim]]

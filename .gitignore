@@ -16,6 +16,7 @@
 # Generated logs are ignored except for the Lab3/Lab4 evidence indexed by the reports.
 *.log
 !results/lab3_lab4/**/*.log
+!results/lab6_lab7/**/*.log
 
 # Waveform and programming outputs. Keep the representative verified waveform.
 *.wdb
@@ -49,6 +50,9 @@
 
 # Per-run copies of the reference CPU are reproducible from lab3/CPU_CDE.
 results/**/reference/
+results/lab6_lab7/reference-work/
+results/lab6_lab7/reference-lab6-20261021T133257Z/
+results/lab6_lab7/reference-lab6-20261021T133621Z/
 
 # Temporary instruction-memory copies staged by the Lab3/Lab4 verification script.
 results/lab3_lab4/lab[34]-*/sim-inst_ram.mif
