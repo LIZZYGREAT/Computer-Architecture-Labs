@@ -32,6 +32,12 @@
 *.ltx
 
 # Rebuildable IP output products; keep .xci, HDL wrappers, and memory images.
+**/rtl/xilinx_ip/**/doc/
+**/rtl/xilinx_ip/**/hdl/
+**/rtl/xilinx_ip/**/misc/
+**/rtl/xilinx_ip/**/sim/
+**/rtl/xilinx_ip/**/simulation/
+**/rtl/xilinx_ip/**/synth/
 **/rtl/xilinx_ip/**/*.dcp
 **/rtl/xilinx_ip/**/*_sim_netlist.v
 **/rtl/xilinx_ip/**/*_sim_netlist.vhdl
@@ -39,6 +45,9 @@
 **/rtl/xilinx_ip/**/*_stub.vhdl
 **/rtl/xilinx_ip/**/*.vho
 **/rtl/xilinx_ip/**/*.veo
+
+# Per-run copies of the reference CPU are reproducible from lab3/CPU_CDE.
+results/**/reference/
 
 # Rebuildable MIPS toolchain outputs. MIF/COE ROM images remain trackable inputs.
 **/obj/*.elf
