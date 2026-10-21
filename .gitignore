@@ -50,6 +50,9 @@
 # Per-run copies of the reference CPU are reproducible from lab3/CPU_CDE.
 results/**/reference/
 
+# Temporary instruction-memory copies staged by the Lab3/Lab4 verification script.
+results/lab3_lab4/lab[34]-*/sim-inst_ram.mif
+
 # Rebuildable MIPS toolchain outputs. MIF/COE ROM images remain trackable inputs.
 **/obj/*.elf
 **/obj/*.bin
