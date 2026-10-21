@@ -1,0 +1,40 @@
+#-----------------------------------------------------------
+# xsim v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Wed Oct 21 22:06:26 2026
+# Process ID         : 36420
+# Current directory  : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab3-20261021T140437Z/CPU_CDE/cpu132_gettrace/run_vivado/cpu132_gettrace/cpu132_gettrace.sim/sim_1/behav/xsim
+# Command line       : xsim.exe -log simulate.log -mode tcl -source {xsim.dir/tb_top_behav/xsim_script.tcl}
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab3-20261021T140437Z/CPU_CDE/cpu132_gettrace/run_vivado/cpu132_gettrace/cpu132_gettrace.sim/sim_1/behav/xsim/simulate.log
+# Journal file       : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab3-20261021T140437Z/CPU_CDE/cpu132_gettrace/run_vivado/cpu132_gettrace/cpu132_gettrace.sim/sim_1/behav/xsim\xsim.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 11444 MB
+# Total Virtual      : 34904 MB
+# Available Virtual  : 926 MB
+#-----------------------------------------------------------
+source xsim.dir/tb_top_behav/xsim_script.tcl
+# xsim {tb_top_behav} -autoloadwcfg -tclbatch {C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab3_lab4/reference-lab3-20261021T140437Z/reference-run.tcl} -key {Behavioral:sim_1:Functional:tb_top}
+Time resolution is 1 ps
+source C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab3_lab4/reference-lab3-20261021T140437Z/reference-run.tcl
+## run 5000000 ns
+ Block Memory Generator module loading initial data...
+ Block Memory Generator data initialization complete.
+Block Memory Generator module tb_top.soc_lite.inst_ram.inst.native_mem_module.blk_mem_gen_v8_4_12_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
+Block Memory Generator module tb_top.soc_lite.data_ram.inst.native_mem_module.blk_mem_gen_v8_4_12_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
+==============================================================
+Test begin!
+==============================================================
+gettrace end!
+----Succeed in generating trace file!
+$finish called at time : 2705 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/reference-work/reference-lab3-20261021T140437Z/CPU_CDE/cpu132_gettrace/testbench/tb_top.v" Line 221
+## quit
+INFO: [Common 17-206] Exiting xsim at Wed Oct 21 22:06:30 2026...

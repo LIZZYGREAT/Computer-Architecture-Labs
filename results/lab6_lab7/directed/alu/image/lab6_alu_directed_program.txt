@@ -1,0 +1,68 @@
+# Lab6 ALU, immediate extension, variable shifts and forwarding directed image.
+# CPU results are checked against the independent CPU132 reference trace.
+# Word index 64 is the testbench END_PC sentinel at 0xbfc00100.
+00  0xbfc00000  3c0a800d  lui r10, 0x800d ; data RAM base
+01  0xbfc00004  24018000  addiu r1, r0, 0x8000 ; expect ffff8000
+02  0xbfc00008  24027fff  addiu r2, r0, 0x7fff ; expect 00007fff
+03  0xbfc0000c  00221820  add r3, r1, r2 ; expect ffffffff
+04  0xbfc00010  20048000  addi r4, r0, 0x8000 ; sign extension: expect ffff8000
+05  0xbfc00014  2005ffff  addi r5, r0, 0xffff ; sign extension: expect ffffffff
+06  0xbfc00018  00823022  sub r6, r4, r2 ; expect ffff0001
+07  0xbfc0001c  28277fff  slti r7, r1, 0x7fff ; signed less-than: expect 1
+08  0xbfc00020  28288000  slti r8, r1, 0x8000 ; equal signed operands: expect 0
+09  0xbfc00024  2c298000  sltiu r9, r1, 0x8000 ; sign-extended unsigned compare: expect 0
+10  0xbfc00028  2c0b8000  sltiu r11, r0, 0x8000 ; sign-extended unsigned compare: expect 1
+11  0xbfc0002c  30ac8000  andi r12, r5, 0x8000 ; zero extension: expect 00008000
+12  0xbfc00030  340d8000  ori r13, r0, 0x8000 ; zero extension: expect 00008000
+13  0xbfc00034  38aeffff  xori r14, r5, 0xffff ; zero extension: expect ffff0000
+14  0xbfc00038  3c0f8000  lui r15, 0x8000 ; expect 80000000
+15  0xbfc0003c  3c108000  lui r16, 0x8000
+16  0xbfc00040  26100025  addiu r16, r16, 0x0025 ; shift amount 0x80000025, low five bits are 5
+17  0xbfc00044  02018804  sllv r17, r1, r16 ; expect fff00000
+18  0xbfc00048  020f9006  srlv r18, r15, r16 ; expect 04000000
+19  0xbfc0004c  020f9807  srav r19, r15, r16 ; expect fc000000
+20  0xbfc00050  24141234  addiu r20, r0, 0x1234
+21  0xbfc00054  0294a820  add r21, r20, r20 ; EX forwarding
+22  0xbfc00058  24160011  addiu r22, r0, 0x0011
+23  0xbfc0005c  00000000  nop
+24  0xbfc00060  02d6b820  add r23, r22, r22 ; MEM forwarding
+25  0xbfc00064  24180012  addiu r24, r0, 0x0012
+26  0xbfc00068  00000000  nop
+27  0xbfc0006c  00000000  nop
+28  0xbfc00070  0318c820  add r25, r24, r24 ; WB forwarding
+29  0xbfc00074  241a0001  addiu r26, r0, 0x0001
+30  0xbfc00078  235b7fff  addi r27, r26, 0x7fff ; expect 00008000
+31  0xbfc0007c  341cdead  ori r28, r0, 0xdead ; expect 0000dead
+32  0xbfc00080  339d8000  andi r29, r28, 0x8000 ; expect 00008000
+33  0xbfc00084  ad420000  sw r2, 0(r10)
+34  0xbfc00088  8d5e0000  lw r30, 0(r10)
+35  0xbfc0008c  23df0001  addi r31, r30, 0x0001 ; load-use stall; expect 00008000
+36  0xbfc00090  2410003f  addiu r16, r0, 0x003f ; shift amount 63, low five bits are 31
+37  0xbfc00094  02028804  sllv r17, r2, r16 ; expect 80000000
+38  0xbfc00098  020f9006  srlv r18, r15, r16 ; expect 00000001
+39  0xbfc0009c  020f9807  srav r19, r15, r16 ; expect ffffffff
+40  0xbfc000a0  00000000  nop
+41  0xbfc000a4  00000000  nop
+42  0xbfc000a8  00000000  nop
+43  0xbfc000ac  00000000  nop
+44  0xbfc000b0  00000000  nop
+45  0xbfc000b4  00000000  nop
+46  0xbfc000b8  00000000  nop
+47  0xbfc000bc  00000000  nop
+48  0xbfc000c0  00000000  nop
+49  0xbfc000c4  00000000  nop
+50  0xbfc000c8  00000000  nop
+51  0xbfc000cc  00000000  nop
+52  0xbfc000d0  00000000  nop
+53  0xbfc000d4  00000000  nop
+54  0xbfc000d8  00000000  nop
+55  0xbfc000dc  00000000  nop
+56  0xbfc000e0  00000000  nop
+57  0xbfc000e4  00000000  nop
+58  0xbfc000e8  00000000  nop
+59  0xbfc000ec  00000000  nop
+60  0xbfc000f0  00000000  nop
+61  0xbfc000f4  00000000  nop
+62  0xbfc000f8  00000000  nop
+63  0xbfc000fc  00000000  nop
+64  0xbfc00100  00000000  nop

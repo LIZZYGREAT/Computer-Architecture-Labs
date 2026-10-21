@@ -1,0 +1,427 @@
+﻿#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Wed Oct 21 22:47:44 2026
+# Process ID         : 36708
+# Current directory  : D:/Verilog/2025.2/Vivado/bin
+# Command line       : vivado.exe -mode batch -source C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\check_project.tcl -log C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab3_lab4\lab4-20261021T144741Z\preflight-vivado.log -journal C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab3_lab4\lab4-20261021T144741Z\preflight-vivado.jou -tclargs C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab3\CPU_CDE\mycpu_verify\run_vivado\mycpu_prj1\mycpu_prj1.xpr C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab3_lab4\lab4-20261021T144741Z
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab3_lab4/lab4-20261021T144741Z/preflight-vivado.log
+# Journal file       : C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab3_lab4\lab4-20261021T144741Z\preflight-vivado.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 9936 MB
+# Total Virtual      : 33396 MB
+# Available Virtual  : 3220 MB
+#-----------------------------------------------------------
+source {C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\check_project.tcl}
+# proc fail {message} {
+#     puts stderr "ENVIRONMENT_ERROR: $message"
+#     error $message
+# }
+# if {[llength $argv] < 2} {
+#     fail "usage: check_project.tcl <project.xpr> <report-dir>"
+# }
+# set xpr [file normalize [lindex $argv 0]]
+# set report_dir [file normalize [lindex $argv 1]]
+# if {![file isfile $xpr]} {
+#     fail "Vivado project not found: $xpr"
+# }
+# set xpr_file [open $xpr r]
+# set xpr_text [read $xpr_file]
+# close $xpr_file
+# set auto_disabled_count [regexp -all {<Attr Name="AutoDisabled" Val="1"/>} $xpr_text]
+# puts "AUTODISABLED_COUNT=$auto_disabled_count"
+AUTODISABLED_COUNT=0
+# if {$auto_disabled_count > 0} {
+#     fail "project contains automatically disabled sources; restore them before simulation"
+# }
+# file mkdir $report_dir
+# if {[catch {open_project -quiet $xpr} message]} {
+#     fail "cannot open existing project: $message"
+# }
+# set project [current_project]
+# set part [get_property PART $project]
+# set source_set [get_filesets -quiet sources_1]
+# set sim_set [get_filesets -quiet sim_1]
+# if {$source_set eq "" || $sim_set eq ""} {
+#     fail "project must contain sources_1 and sim_1 filesets"
+# }
+# set source_top [get_property TOP $source_set]
+# set sim_top [get_property TOP $sim_set]
+# set source_set_name [get_property NAME $source_set]
+# set sim_source_set "unknown"
+# catch {set sim_source_set [get_property SOURCE_SET $sim_set]}
+# puts "PROJECT=$xpr"
+PROJECT=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.xpr
+# puts "PART=$part"
+PART=xc7a200tfbg676-2
+# puts "DESIGN_TOP=$source_top"
+DESIGN_TOP=soc_lite_top
+# puts "SIM_TOP=$sim_top"
+SIM_TOP=tb_top
+# puts "SIM_SOURCE_SET=$sim_source_set"
+SIM_SOURCE_SET=sources_1
+# foreach project_property [list_property $project] {
+#     if {[string match -nocase *sim* $project_property] || [string match -nocase *source* $project_property] || [string match -nocase *include* $project_property]} {
+#         set value "unknown"
+#         catch {set value [get_property $project_property $project]}
+#         puts "PROJECT_PROPERTY=$project_property VALUE=$value"
+#     }
+# }
+PROJECT_PROPERTY=ALLOWED_SIM_MODELS VALUE=rtl
+PROJECT_PROPERTY=COMPXLIB.FUNCSIM VALUE=1
+PROJECT_PROPERTY=COMPXLIB.MODELSIM_COMPILED_LIBRARY_DIR VALUE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.cache/compile_simlib/modelsim
+PROJECT_PROPERTY=COMPXLIB.TIMESIM VALUE=1
+PROJECT_PROPERTY=COMPXLIB.XSIM_COMPILED_LIBRARY_DIR VALUE=
+PROJECT_PROPERTY=ENABLE_DPI_SIMULATION VALUE=0
+PROJECT_PROPERTY=ENABLE_RESOURCE_ESTIMATION VALUE=0
+PROJECT_PROPERTY=PREFERRED_SIM_MODEL VALUE=rtl
+PROJECT_PROPERTY=SIM.CENTRAL_DIR VALUE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.ip_user_files
+PROJECT_PROPERTY=SIM.IP.AUTO_EXPORT_SCRIPTS VALUE=1
+PROJECT_PROPERTY=SIM.IPSTATIC.SOURCE_DIR VALUE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.ip_user_files/ipstatic
+PROJECT_PROPERTY=SIM.IPSTATIC.USE_PRECOMPILED_LIBS VALUE=0
+PROJECT_PROPERTY=SIM.USE_IP_COMPILED_LIBS VALUE=0
+PROJECT_PROPERTY=SIMULATOR.ACTIVEHDL_GCC_INSTALL_DIR VALUE=
+PROJECT_PROPERTY=SIMULATOR.ACTIVEHDL_GCC_VERSION VALUE=9.3.0
+PROJECT_PROPERTY=SIMULATOR.ACTIVEHDL_INSTALL_DIR VALUE=
+PROJECT_PROPERTY=SIMULATOR.ACTIVEHDL_VERSION VALUE=15.0
+PROJECT_PROPERTY=SIMULATOR.IES_GCC_VERSION VALUE=6.2.0
+PROJECT_PROPERTY=SIMULATOR.IES_VERSION VALUE=15.20.083
+PROJECT_PROPERTY=SIMULATOR.MODELSIM_GCC_INSTALL_DIR VALUE=
+PROJECT_PROPERTY=SIMULATOR.MODELSIM_GCC_VERSION VALUE=7.4.0
+PROJECT_PROPERTY=SIMULATOR.MODELSIM_INSTALL_DIR VALUE=
+PROJECT_PROPERTY=SIMULATOR.MODELSIM_VERSION VALUE=2025.2
+PROJECT_PROPERTY=SIMULATOR.QUESTA_GCC_INSTALL_DIR VALUE=
+PROJECT_PROPERTY=SIMULATOR.QUESTA_GCC_VERSION VALUE=7.4.0
+PROJECT_PROPERTY=SIMULATOR.QUESTA_INSTALL_DIR VALUE=
+PROJECT_PROPERTY=SIMULATOR.QUESTA_VERSION VALUE=2025.2
+PROJECT_PROPERTY=SIMULATOR.RIVIERA_GCC_INSTALL_DIR VALUE=
+PROJECT_PROPERTY=SIMULATOR.RIVIERA_GCC_VERSION VALUE=9.3.0
+PROJECT_PROPERTY=SIMULATOR.RIVIERA_INSTALL_DIR VALUE=
+PROJECT_PROPERTY=SIMULATOR.RIVIERA_VERSION VALUE=2024.10
+PROJECT_PROPERTY=SIMULATOR.VCS_GCC_INSTALL_DIR VALUE=
+PROJECT_PROPERTY=SIMULATOR.VCS_GCC_VERSION VALUE=9.2.0
+PROJECT_PROPERTY=SIMULATOR.VCS_INSTALL_DIR VALUE=
+PROJECT_PROPERTY=SIMULATOR.VCS_VERSION VALUE=X-2025.06
+PROJECT_PROPERTY=SIMULATOR.XCELIUM_GCC_INSTALL_DIR VALUE=
+PROJECT_PROPERTY=SIMULATOR.XCELIUM_GCC_VERSION VALUE=9.3.0
+PROJECT_PROPERTY=SIMULATOR.XCELIUM_INSTALL_DIR VALUE=
+PROJECT_PROPERTY=SIMULATOR.XCELIUM_VERSION VALUE=25.03.002
+PROJECT_PROPERTY=SIMULATOR.XSIM_GCC_VERSION VALUE=9.3.0
+PROJECT_PROPERTY=SIMULATOR.XSIM_VERSION VALUE=2025.2
+PROJECT_PROPERTY=SIMULATOR_LANGUAGE VALUE=Mixed
+PROJECT_PROPERTY=SIM_COMPILE_STATE VALUE=1
+PROJECT_PROPERTY=SOURCE_MGMT_MODE VALUE=All
+PROJECT_PROPERTY=TARGET_SIMULATOR VALUE=XSim
+PROJECT_PROPERTY=WEBTALK.ACTIVEHDL_EXPORT_SIM VALUE=12
+PROJECT_PROPERTY=WEBTALK.IES_EXPORT_SIM VALUE=9
+PROJECT_PROPERTY=WEBTALK.MODELSIM_EXPORT_SIM VALUE=12
+PROJECT_PROPERTY=WEBTALK.QUESTA_EXPORT_SIM VALUE=12
+PROJECT_PROPERTY=WEBTALK.RIVIERA_EXPORT_SIM VALUE=12
+PROJECT_PROPERTY=WEBTALK.VCS_EXPORT_SIM VALUE=9
+PROJECT_PROPERTY=WEBTALK.XSIM_EXPORT_SIM VALUE=12
+PROJECT_PROPERTY=WEBTALK.XSIM_LAUNCH_SIM VALUE=52
+PROJECT_PROPERTY=XSIM.ARRAY_DISPLAY_LIMIT VALUE=1024
+PROJECT_PROPERTY=XSIM.RADIX VALUE=hex
+PROJECT_PROPERTY=XSIM.TIME_UNIT VALUE=ns
+PROJECT_PROPERTY=XSIM.TRACE_LIMIT VALUE=65536
+# if {$source_top ne "soc_lite_top"} {
+#     fail "unexpected design top: $source_top (expected soc_lite_top)"
+# }
+# if {$sim_top ne "tb_top"} {
+#     fail "unexpected simulation top: $sim_top (expected tb_top)"
+# }
+# set missing_files {}
+# foreach fileset [list $source_set $sim_set] {
+#     set files [get_files -quiet -of_objects $fileset]
+#     puts "FILESET=[get_property NAME $fileset] FILE_COUNT=[llength $files]"
+#     if {[llength $files] == 0} {
+#         fail "empty fileset: [get_property NAME $fileset]"
+#     }
+#     foreach f $files {
+#         set name [string trim $f "{}"]
+#         puts "FILE_ENTRY=$name"
+#         if {![file exists $name]} {
+#             lappend missing_files $name
+#         }
+#     }
+# }
+FILESET=sources_1 FILE_COUNT=14
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/soft/func_lab3/obj/inst_ram.coe
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu.h
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v
+FILESET=sim_1 FILE_COUNT=13
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v
+FILE_ENTRY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/testbench/mycpu_tb.v
+# foreach f [get_files -quiet -of_objects $source_set] {
+#     set path [string trim $f "{}"]
+#     set used "unknown"
+#     set enabled "unknown"
+#     set type "unknown"
+#     catch {set used [get_property USED_IN_SIMULATION $f]}
+#     catch {set enabled [get_property IS_ENABLED $f]}
+#     catch {set type [get_property FILE_TYPE $f]}
+#     puts "SOURCE_FILE=$path TYPE=$type USED_IN_SIMULATION=$used ENABLED=$enabled"
+# }
+SOURCE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/soft/func_lab3/obj/inst_ram.coe TYPE=Coefficient Files USED_IN_SIMULATION=1 ENABLED=1
+SOURCE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu.h TYPE=Verilog Header USED_IN_SIMULATION=1 ENABLED=1
+SOURCE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v TYPE=Verilog USED_IN_SIMULATION=1 ENABLED=1
+SOURCE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v TYPE=Verilog USED_IN_SIMULATION=1 ENABLED=1
+SOURCE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v TYPE=Verilog USED_IN_SIMULATION=1 ENABLED=1
+SOURCE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v TYPE=Verilog USED_IN_SIMULATION=1 ENABLED=1
+SOURCE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v TYPE=Verilog USED_IN_SIMULATION=1 ENABLED=1
+SOURCE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v TYPE=Verilog USED_IN_SIMULATION=1 ENABLED=1
+SOURCE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v TYPE=Verilog USED_IN_SIMULATION=1 ENABLED=1
+SOURCE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v TYPE=Verilog USED_IN_SIMULATION=1 ENABLED=1
+SOURCE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v TYPE=Verilog USED_IN_SIMULATION=1 ENABLED=1
+SOURCE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v TYPE=Verilog USED_IN_SIMULATION=1 ENABLED=1
+SOURCE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v TYPE=Verilog USED_IN_SIMULATION=1 ENABLED=1
+SOURCE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v TYPE=Verilog USED_IN_SIMULATION=1 ENABLED=1
+# set diagnostic_files [concat [get_files -quiet -of_objects $source_set] [get_files -quiet -of_objects $sim_set]]
+# foreach f $diagnostic_files {
+#     set path [string trim $f "{}"]
+#     if {[string match -nocase *mycpu_tb.v $path] || [string match -nocase *soc_lite_top.v $path] || [string match -nocase *EXE_stage.v $path]} {
+#         puts "DIAGNOSTIC_FILE=$path"
+#         foreach property [list_property $f] {
+#             if {[string match -nocase *used* $property] || [string match -nocase *enabled* $property] || [string match -nocase *scope* $property] || [string match -nocase *library* $property] || [string match -nocase *disable* $property] || [string match -nocase *sim* $property] || [string match -nocase *type* $property] || [string match -nocase *top* $property]} {
+#                 set value "unknown"
+#                 catch {set value [get_property $property $f]}
+#                 puts "FILE_PROPERTY=$property VALUE=$value"
+#             }
+#         }
+#     }
+# }
+DIAGNOSTIC_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v
+FILE_PROPERTY=FILE_TYPE VALUE=Verilog
+FILE_PROPERTY=IS_ENABLED VALUE=1
+FILE_PROPERTY=LIBRARY VALUE=xil_defaultlib
+FILE_PROPERTY=SCOPED_TO_CELLS VALUE=
+FILE_PROPERTY=USED_IN VALUE=synthesis implementation simulation
+FILE_PROPERTY=USED_IN_IMPLEMENTATION VALUE=1
+FILE_PROPERTY=USED_IN_SIMULATION VALUE=1
+FILE_PROPERTY=USED_IN_SYNTHESIS VALUE=1
+DIAGNOSTIC_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v
+FILE_PROPERTY=FILE_TYPE VALUE=Verilog
+FILE_PROPERTY=IS_ENABLED VALUE=1
+FILE_PROPERTY=LIBRARY VALUE=xil_defaultlib
+FILE_PROPERTY=SCOPED_TO_CELLS VALUE=
+FILE_PROPERTY=USED_IN VALUE=synthesis implementation simulation
+FILE_PROPERTY=USED_IN_IMPLEMENTATION VALUE=1
+FILE_PROPERTY=USED_IN_SIMULATION VALUE=1
+FILE_PROPERTY=USED_IN_SYNTHESIS VALUE=1
+DIAGNOSTIC_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v
+FILE_PROPERTY=FILE_TYPE VALUE=Verilog
+FILE_PROPERTY=IS_ENABLED VALUE=1
+FILE_PROPERTY=LIBRARY VALUE=xil_defaultlib
+FILE_PROPERTY=SCOPED_TO_CELLS VALUE=
+FILE_PROPERTY=USED_IN VALUE=synthesis implementation simulation
+FILE_PROPERTY=USED_IN_IMPLEMENTATION VALUE=1
+FILE_PROPERTY=USED_IN_SIMULATION VALUE=1
+FILE_PROPERTY=USED_IN_SYNTHESIS VALUE=1
+DIAGNOSTIC_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v
+FILE_PROPERTY=FILE_TYPE VALUE=Verilog
+FILE_PROPERTY=IS_ENABLED VALUE=1
+FILE_PROPERTY=LIBRARY VALUE=xil_defaultlib
+FILE_PROPERTY=SCOPED_TO_CELLS VALUE=
+FILE_PROPERTY=USED_IN VALUE=synthesis implementation simulation
+FILE_PROPERTY=USED_IN_IMPLEMENTATION VALUE=1
+FILE_PROPERTY=USED_IN_SIMULATION VALUE=1
+FILE_PROPERTY=USED_IN_SYNTHESIS VALUE=1
+DIAGNOSTIC_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/testbench/mycpu_tb.v
+FILE_PROPERTY=FILE_TYPE VALUE=Verilog
+FILE_PROPERTY=IS_ENABLED VALUE=1
+FILE_PROPERTY=LIBRARY VALUE=xil_defaultlib
+FILE_PROPERTY=SCOPED_TO_CELLS VALUE=
+FILE_PROPERTY=USED_IN VALUE=simulation
+FILE_PROPERTY=USED_IN_IMPLEMENTATION VALUE=0
+FILE_PROPERTY=USED_IN_SIMULATION VALUE=1
+FILE_PROPERTY=USED_IN_SYNTHESIS VALUE=0
+# foreach compile_set [list $source_set $sim_set] {
+#     set sim_compile_files {}
+#     catch {set sim_compile_files [get_files -quiet -compile_order sources -used_in simulation -of_objects $compile_set]}
+#     puts "SIM_COMPILE_ORDER_SET=[get_property NAME $compile_set] COUNT=[llength $sim_compile_files]"
+#     foreach f $sim_compile_files {
+#         puts "SIM_COMPILE_FILE=[string trim $f "{}"]"
+#     }
+# }
+SIM_COMPILE_ORDER_SET=sources_1 COUNT=25
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/mmcm_pll_drp_func_7s_mmcm.vh
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/mmcm_pll_drp_func_7s_pll.vh
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/mmcm_pll_drp_func_us_mmcm.vh
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/mmcm_pll_drp_func_us_pll.vh
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/mmcm_pll_drp_func_us_plus_pll.vh
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/mmcm_pll_drp_func_us_plus_mmcm.vh
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/clk_pll_clk_wiz.v
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/clk_pll.v
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/data_ram/simulation/blk_mem_gen_v8_4.v
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/data_ram/sim/data_ram.v
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/inst_ram/inst_ram.mif
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/inst_ram/sim/inst_ram.v
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/soft/func_lab3/obj/inst_ram.coe
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v
+SIM_COMPILE_ORDER_SET=sim_1 COUNT=26
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/mmcm_pll_drp_func_7s_mmcm.vh
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/mmcm_pll_drp_func_7s_pll.vh
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/mmcm_pll_drp_func_us_mmcm.vh
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/mmcm_pll_drp_func_us_pll.vh
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/mmcm_pll_drp_func_us_plus_pll.vh
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/mmcm_pll_drp_func_us_plus_mmcm.vh
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/clk_pll_clk_wiz.v
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/clk_pll.v
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/data_ram/simulation/blk_mem_gen_v8_4.v
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/data_ram/sim/data_ram.v
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/inst_ram/inst_ram.mif
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/inst_ram/sim/inst_ram.v
+SIM_COMPILE_FILE=c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/soft/func_lab3/obj/inst_ram.coe
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v
+SIM_COMPILE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/testbench/mycpu_tb.v
+# foreach property [list_property $sim_set] {
+#     if {[string match -nocase *xsim* $property] || [string match -nocase *increment* $property] || [string match -nocase *include*design* $property]} {
+#         set value "unknown"
+#         catch {set value [get_property $property $sim_set]}
+#         puts "SIM_PROPERTY=$property VALUE=$value"
+#     }
+# }
+SIM_PROPERTY=INCREMENTAL VALUE=0
+SIM_PROPERTY=XSIM.COMPILE.TCL.PRE VALUE=
+SIM_PROPERTY=XSIM.COMPILE.XSC.MORE_OPTIONS VALUE=
+SIM_PROPERTY=XSIM.COMPILE.XSC.MT_LEVEL VALUE=auto
+SIM_PROPERTY=XSIM.COMPILE.XVHDL.MORE_OPTIONS VALUE=
+SIM_PROPERTY=XSIM.COMPILE.XVHDL.NOSORT VALUE=1
+SIM_PROPERTY=XSIM.COMPILE.XVHDL.RELAX VALUE=1
+SIM_PROPERTY=XSIM.COMPILE.XVLOG.MORE_OPTIONS VALUE=
+SIM_PROPERTY=XSIM.COMPILE.XVLOG.NOSORT VALUE=1
+SIM_PROPERTY=XSIM.COMPILE.XVLOG.RELAX VALUE=1
+SIM_PROPERTY=XSIM.ELABORATE.COVERAGE.CELLDEFINE VALUE=0
+SIM_PROPERTY=XSIM.ELABORATE.COVERAGE.DIR VALUE=
+SIM_PROPERTY=XSIM.ELABORATE.COVERAGE.LIBRARY VALUE=0
+SIM_PROPERTY=XSIM.ELABORATE.COVERAGE.NAME VALUE=
+SIM_PROPERTY=XSIM.ELABORATE.COVERAGE.TYPE VALUE=
+SIM_PROPERTY=XSIM.ELABORATE.DEBUG_LEVEL VALUE=typical
+SIM_PROPERTY=XSIM.ELABORATE.LINK.C VALUE=
+SIM_PROPERTY=XSIM.ELABORATE.LINK.SYSC VALUE=
+SIM_PROPERTY=XSIM.ELABORATE.LOAD_GLBL VALUE=1
+SIM_PROPERTY=XSIM.ELABORATE.MT_LEVEL VALUE=auto
+SIM_PROPERTY=XSIM.ELABORATE.RANGECHECK VALUE=0
+SIM_PROPERTY=XSIM.ELABORATE.RELAX VALUE=1
+SIM_PROPERTY=XSIM.ELABORATE.SDF_DELAY VALUE=sdfmax
+SIM_PROPERTY=XSIM.ELABORATE.SNAPSHOT VALUE=
+SIM_PROPERTY=XSIM.ELABORATE.XELAB.MORE_OPTIONS VALUE=
+SIM_PROPERTY=XSIM.ELABORATE.XSC.MORE_OPTIONS VALUE=
+SIM_PROPERTY=XSIM.MORE_OPTIONS VALUE=
+SIM_PROPERTY=XSIM.SAIF VALUE=
+SIM_PROPERTY=XSIM.SIMULATE.ADD_POSITIONAL VALUE=0
+SIM_PROPERTY=XSIM.SIMULATE.CUSTOM_TCL VALUE=
+SIM_PROPERTY=XSIM.SIMULATE.LOG_ALL_SIGNALS VALUE=1
+SIM_PROPERTY=XSIM.SIMULATE.NO_QUIT VALUE=0
+SIM_PROPERTY=XSIM.SIMULATE.RUNTIME VALUE=
+SIM_PROPERTY=XSIM.SIMULATE.SAIF VALUE=
+SIM_PROPERTY=XSIM.SIMULATE.SAIF_ALL_SIGNALS VALUE=0
+SIM_PROPERTY=XSIM.SIMULATE.SAIF_SCOPE VALUE=
+SIM_PROPERTY=XSIM.SIMULATE.TCL.POST VALUE=
+SIM_PROPERTY=XSIM.SIMULATE.WDB VALUE=
+SIM_PROPERTY=XSIM.SIMULATE.XSIM.MORE_OPTIONS VALUE=
+SIM_PROPERTY=XSIM.VIEW VALUE=
+SIM_PROPERTY=XSIM.WDB VALUE=
+# if {[llength $missing_files] > 0} {
+#     puts stderr "MISSING_SOURCE_FILES=[join $missing_files {; }]"
+#     fail "project references missing source or simulation files"
+# }
+# set ip_report [file join $report_dir ip_status.rpt]
+# if {[catch {report_ip_status -file $ip_report} message]} {
+#     fail "cannot inspect IP status: $message"
+# }
+# set ip_status_file ""
+# set ip_status_text ""
+# set ip_status_open_error ""
+# for {set retry 0} {$retry < 20} {incr retry} {
+#     if {![catch {set ip_status_file [open $ip_report r]} ip_status_open_error]} {
+#         set ip_status_text [read $ip_status_file]
+#         close $ip_status_file
+#         break
+#     }
+#     after 250
+# }
+# if {$ip_status_file eq ""} {
+#     fail "cannot open IP status report after retries: $ip_report ($ip_status_open_error)"
+# }
+# set ips [get_ips -quiet]
+# puts "IP_COUNT=[llength $ips]"
+IP_COUNT=3
+# set expected_ips {clk_pll data_ram inst_ram}
+# foreach ip $ips {
+#     set locked 0
+#     catch {set locked [get_property IS_LOCKED $ip]}
+#     if {$locked} {
+#         fail "IP is locked: [get_property NAME $ip]"
+#     }
+# }
+# foreach name $expected_ips {
+#     if {![regexp -nocase "\\|\\s*$name\\s*\\|\\s*Up-to-date\\s*\\|" $ip_status_text]} {
+#         fail "IP $name is missing or not Up-to-date; see $ip_report"
+#     }
+#     puts "IP=$name STATUS=Up-to-date LOCKED=0"
+# }
+IP=clk_pll STATUS=Up-to-date LOCKED=0
+IP=data_ram STATUS=Up-to-date LOCKED=0
+IP=inst_ram STATUS=Up-to-date LOCKED=0
+# puts "IP_STATUS_REPORT=$ip_report"
+IP_STATUS_REPORT=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab3_lab4/lab4-20261021T144741Z/ip_status.rpt
+# puts "PREFLIGHT=PASS"
+PREFLIGHT=PASS
+# close_project
+# exit 0
+INFO: [Common 17-206] Exiting Vivado at Wed Oct 21 22:48:23 2026...
+

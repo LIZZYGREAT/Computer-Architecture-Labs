@@ -1,0 +1,4 @@
+@echo off
+cd /d "D:\Verilog\2025.2\Vivado\bin"
+call "D:\Verilog\2025.2\Vivado\bin\vivado.bat" "-mode" "batch" "-source" "C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\run_behavioral_sim.tcl" "-log" "C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab6_lab7\lab6-20261021T141122Z\simulation-vivado.log" "-journal" "C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab6_lab7\lab6-20261021T141122Z\simulation-vivado.jou" "-tclargs" "C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab3\CPU_CDE\mycpu_verify\run_vivado\mycpu_prj1\mycpu_prj1.xpr" "lab6" "50000000" "forwarding" "C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab6_lab7\golden\lab6\golden_trace.txt" "C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab6\func_lab6\obj\inst_ram.mif" "C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab6_lab7\lab6-20261021T141122Z" "42" "0"
+exit /b %ERRORLEVEL%
