@@ -55,6 +55,7 @@ assign {es_alu_op      ,  //135:124
 wire [31:0] es_alu_src1   ;
 wire [31:0] es_alu_src2   ;
 wire [31:0] es_alu_result ;
+wire        es_imm_zero_extend;
 
 wire        es_res_from_mem;
 
@@ -89,7 +90,12 @@ end
 assign es_alu_src1 = es_src1_is_sa  ? {27'b0, es_imm[10:6]} : 
                      es_src1_is_pc  ? es_pc[31:0] :
                                       es_rs_value;
-assign es_alu_src2 = es_src2_is_imm ? {{16{es_imm[15]}}, es_imm[15:0]} : 
+// ANDI/ORI/XORI share their ALU operation with the register forms. With an
+// immediate selected, those three operations require a zero-extended operand.
+assign es_imm_zero_extend = es_src2_is_imm &&
+                            (es_alu_op[4] || es_alu_op[6] || es_alu_op[7]);
+assign es_alu_src2 = es_src2_is_imm ? (es_imm_zero_extend ? {16'b0, es_imm} :
+                                                            {{16{es_imm[15]}}, es_imm}) :
                      es_src2_is_8   ? 32'd8 :
                                       es_rt_value;
 

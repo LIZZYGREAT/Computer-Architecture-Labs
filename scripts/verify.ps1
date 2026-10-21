@@ -7,6 +7,7 @@ param(
     [string]$PipelineMode = 'forwarding',
     [string]$ReferenceTrace,
     [string]$InstMif,
+    [int]$ExpectedPointOverride = -1,
     [string]$Xpr,
     [string]$VivadoBin = 'D:\Verilog\2025.2\Vivado\bin',
     [long]$MaxSimulationNs = 0,
@@ -30,7 +31,7 @@ if (-not $caseSettings) {
     exit 2
 }
 if ($MaxSimulationNs -eq 0) { $MaxSimulationNs = [long]$caseSettings.DefaultMaxSimulationNs }
-if ($MaxSimulationNs -le 0 -or $TimeoutSeconds -le 0) {
+if ($MaxSimulationNs -le 0 -or $TimeoutSeconds -le 0 -or $ExpectedPointOverride -lt -1) {
     Write-Output 'ENVIRONMENT_ERROR: simulation time and host timeout must be positive.'
     exit 2
 }
@@ -72,7 +73,11 @@ if ($ReferenceTrace) {
 } else {
     $traceFile = Join-Path $labRoot $caseSettings.ReferenceTrace
 }
-$expectedFunctionalPoints = [int]$caseSettings.ExpectedFunctionalPoints
+$expectedFunctionalPoints = if ($ExpectedPointOverride -ge 0) {
+    $ExpectedPointOverride
+} else {
+    [int]$caseSettings.ExpectedFunctionalPoints
+}
 $instRamXci = Join-Path $labRoot 'lab3\CPU_CDE\mycpu_verify\rtl\xilinx_ip\inst_ram\inst_ram.xci'
 $preflightTcl = Join-Path $PSScriptRoot 'check_project.tcl'
 $simTcl = Join-Path $PSScriptRoot 'run_behavioral_sim.tcl'

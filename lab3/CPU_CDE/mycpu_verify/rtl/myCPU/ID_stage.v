@@ -100,6 +100,8 @@ wire [63:0] func_d;
 
 wire        inst_addu;
 wire        inst_subu;
+wire        inst_add;
+wire        inst_sub;
 wire        inst_slt;
 wire        inst_sltu;
 wire        inst_and;
@@ -109,7 +111,16 @@ wire        inst_nor;
 wire        inst_sll;
 wire        inst_srl;
 wire        inst_sra;
+wire        inst_sllv;
+wire        inst_srlv;
+wire        inst_srav;
 wire        inst_addiu;
+wire        inst_addi;
+wire        inst_slti;
+wire        inst_sltiu;
+wire        inst_andi;
+wire        inst_ori;
+wire        inst_xori;
 wire        inst_lui;
 wire        inst_lw;
 wire        inst_sw;
@@ -117,6 +128,7 @@ wire        inst_beq;
 wire        inst_bne;
 wire        inst_jal;
 wire        inst_jr;
+wire        inst_gpr_write;
 
 wire        dst_is_r31;  
 wire        dst_is_rt;   
@@ -149,12 +161,17 @@ assign {es_hazard_valid, es_forward_valid, es_producer_dest, es_forward_value} =
 assign {ms_hazard_valid, ms_forward_valid, ms_producer_dest, ms_forward_value} = ms_producer_bus;
 assign {ws_forward_valid, ws_producer_dest, ws_forward_value} = ws_to_rf_bus;
 
-assign ds_rs_used = inst_addu | inst_subu | inst_slt | inst_sltu |
+assign ds_rs_used = inst_addu | inst_subu | inst_add | inst_sub |
+                    inst_slt | inst_sltu | inst_slti | inst_sltiu |
                     inst_and | inst_or | inst_xor | inst_nor |
-                    inst_addiu | inst_lw | inst_sw | inst_beq | inst_bne | inst_jr;
-assign ds_rt_used = inst_addu | inst_subu | inst_slt | inst_sltu |
+                    inst_addiu | inst_addi | inst_andi | inst_ori | inst_xori |
+                    inst_sllv | inst_srlv | inst_srav |
+                    inst_lw | inst_sw | inst_beq | inst_bne | inst_jr;
+assign ds_rt_used = inst_addu | inst_subu | inst_add | inst_sub |
+                    inst_slt | inst_sltu |
                     inst_and | inst_or | inst_xor | inst_nor |
-                    inst_sll | inst_srl | inst_sra | inst_sw | inst_beq | inst_bne;
+                    inst_sll | inst_srl | inst_sra | inst_sllv | inst_srlv | inst_srav |
+                    inst_sw | inst_beq | inst_bne;
 
 assign ds_rs_hazard = ds_valid && ds_rs_used && (rs != 5'd0) &&
                       ((es_hazard_valid && (es_producer_dest == rs)) ||
@@ -228,6 +245,8 @@ decoder_5_32 u_dec5(.in(sa  ), .out(sa_d  ));
 
 assign inst_addu   = op_d[6'h00] & func_d[6'h21] & sa_d[5'h00];
 assign inst_subu   = op_d[6'h00] & func_d[6'h23] & sa_d[5'h00];
+assign inst_add    = op_d[6'h00] & func_d[6'h20] & sa_d[5'h00];
+assign inst_sub    = op_d[6'h00] & func_d[6'h22] & sa_d[5'h00];
 assign inst_slt    = op_d[6'h00] & func_d[6'h2a] & sa_d[5'h00];
 assign inst_sltu   = op_d[6'h00] & func_d[6'h2b] & sa_d[5'h00];
 assign inst_and    = op_d[6'h00] & func_d[6'h24] & sa_d[5'h00];
@@ -237,7 +256,16 @@ assign inst_nor    = op_d[6'h00] & func_d[6'h27] & sa_d[5'h00];
 assign inst_sll    = op_d[6'h00] & func_d[6'h00] & rs_d[5'h00];
 assign inst_srl    = op_d[6'h00] & func_d[6'h02] & rs_d[5'h00];
 assign inst_sra    = op_d[6'h00] & func_d[6'h03] & rs_d[5'h00];
+assign inst_sllv   = op_d[6'h00] & func_d[6'h04] & sa_d[5'h00];
+assign inst_srlv   = op_d[6'h00] & func_d[6'h06] & sa_d[5'h00];
+assign inst_srav   = op_d[6'h00] & func_d[6'h07] & sa_d[5'h00];
 assign inst_addiu  = op_d[6'h09];
+assign inst_addi   = op_d[6'h08];
+assign inst_slti   = op_d[6'h0a];
+assign inst_sltiu  = op_d[6'h0b];
+assign inst_andi   = op_d[6'h0c];
+assign inst_ori    = op_d[6'h0d];
+assign inst_xori   = op_d[6'h0e];
 assign inst_lui    = op_d[6'h0f] & rs_d[5'h00];
 assign inst_lw     = op_d[6'h23];
 assign inst_sw     = op_d[6'h2b];
@@ -246,27 +274,36 @@ assign inst_bne    = op_d[6'h05];
 assign inst_jal    = op_d[6'h03];
 assign inst_jr     = op_d[6'h00] & func_d[6'h08] & rt_d[5'h00] & rd_d[5'h00] & sa_d[5'h00];
 
-assign alu_op[ 0] = inst_addu | inst_addiu | inst_lw | inst_sw | inst_jal;
-assign alu_op[ 1] = inst_subu;
-assign alu_op[ 2] = inst_slt;
-assign alu_op[ 3] = inst_sltu;
-assign alu_op[ 4] = inst_and;
+assign alu_op[ 0] = inst_addu | inst_add | inst_addiu | inst_addi |
+                    inst_lw | inst_sw | inst_jal;
+assign alu_op[ 1] = inst_subu | inst_sub;
+assign alu_op[ 2] = inst_slt | inst_slti;
+assign alu_op[ 3] = inst_sltu | inst_sltiu;
+assign alu_op[ 4] = inst_and | inst_andi;
 assign alu_op[ 5] = inst_nor;
-assign alu_op[ 6] = inst_or;
-assign alu_op[ 7] = inst_xor;
-assign alu_op[ 8] = inst_sll;
-assign alu_op[ 9] = inst_srl;
-assign alu_op[10] = inst_sra;
+assign alu_op[ 6] = inst_or | inst_ori;
+assign alu_op[ 7] = inst_xor | inst_xori;
+assign alu_op[ 8] = inst_sll | inst_sllv;
+assign alu_op[ 9] = inst_srl | inst_srlv;
+assign alu_op[10] = inst_sra | inst_srav;
 assign alu_op[11] = inst_lui;
 
 assign src1_is_sa   = inst_sll   | inst_srl | inst_sra;
 assign src1_is_pc   = inst_jal;
-assign src2_is_imm  = inst_addiu | inst_lui | inst_lw | inst_sw;
+assign src2_is_imm  = inst_addiu | inst_addi | inst_slti | inst_sltiu |
+                      inst_andi | inst_ori | inst_xori |
+                      inst_lui | inst_lw | inst_sw;
 assign src2_is_8    = inst_jal;
 assign load_op      = inst_lw;
 assign dst_is_r31   = inst_jal;
-assign dst_is_rt    = inst_addiu | inst_lui | inst_lw;
-assign gr_we        = ~inst_sw & ~inst_beq & ~inst_bne & ~inst_jr;
+assign dst_is_rt    = inst_addiu | inst_addi | inst_slti | inst_sltiu |
+                      inst_andi | inst_ori | inst_xori | inst_lui | inst_lw;
+assign inst_gpr_write = inst_addu | inst_subu | inst_add | inst_sub |
+                        inst_slt | inst_sltu | inst_and | inst_or | inst_xor | inst_nor |
+                        inst_sll | inst_srl | inst_sra | inst_sllv | inst_srlv | inst_srav |
+                        inst_addiu | inst_addi | inst_slti | inst_sltiu |
+                        inst_andi | inst_ori | inst_xori | inst_lui | inst_lw | inst_jal;
+assign gr_we        = inst_gpr_write;
 assign mem_we       = inst_sw;
 
 assign dest         = dst_is_r31 ? 5'd31 :

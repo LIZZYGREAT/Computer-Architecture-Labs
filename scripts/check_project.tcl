@@ -122,9 +122,20 @@ set ip_report [file join $report_dir ip_status.rpt]
 if {[catch {report_ip_status -file $ip_report} message]} {
     fail "cannot inspect IP status: $message"
 }
-set ip_status_file [open $ip_report r]
-set ip_status_text [read $ip_status_file]
-close $ip_status_file
+set ip_status_file ""
+set ip_status_text ""
+set ip_status_open_error ""
+for {set retry 0} {$retry < 20} {incr retry} {
+    if {![catch {set ip_status_file [open $ip_report r]} ip_status_open_error]} {
+        set ip_status_text [read $ip_status_file]
+        close $ip_status_file
+        break
+    }
+    after 250
+}
+if {$ip_status_file eq ""} {
+    fail "cannot open IP status report after retries: $ip_report ($ip_status_open_error)"
+}
 set ips [get_ips -quiet]
 puts "IP_COUNT=[llength $ips]"
 set expected_ips {clk_pll data_ram inst_ram}

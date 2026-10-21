@@ -4,6 +4,9 @@ param(
     [ValidateSet('lab3', 'lab4', 'lab6', 'lab7')]
     [string]$Case,
     [string]$TraceOutput,
+    [string]$InstructionCoe,
+    [string]$InstructionMif,
+    [int]$ExpectedFunctionalPointOverride = -1,
     [string]$VivadoBin = 'D:\Verilog\2025.2\Vivado\bin',
     [long]$MaxSimulationNs = 0,
     [int]$TimeoutSeconds = 1800
@@ -16,8 +19,13 @@ $allCaseSettings = Get-Content -LiteralPath $caseConfigPath -Raw | ConvertFrom-J
 $caseSettings = $allCaseSettings.$Case
 if (-not $caseSettings) { throw "Case configuration is missing for $Case." }
 if ($MaxSimulationNs -eq 0) { $MaxSimulationNs = [long]$caseSettings.DefaultMaxSimulationNs }
-if ($MaxSimulationNs -le 0 -or $TimeoutSeconds -le 0) {
-    throw 'Simulation time and host timeout must be positive.'
+if ($MaxSimulationNs -le 0 -or $TimeoutSeconds -le 0 -or $ExpectedFunctionalPointOverride -lt -1) {
+    throw 'Simulation time and host timeout must be positive; expected functional points must be nonnegative or omitted.'
+}
+$expectedFunctionalPoints = if ($ExpectedFunctionalPointOverride -ge 0) {
+    $ExpectedFunctionalPointOverride
+} else {
+    [int]$caseSettings.ExpectedFunctionalPoints
 }
 
 $stamp = [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ')
@@ -27,8 +35,19 @@ New-Item -ItemType Directory -Path $resultDir -Force | Out-Null
 $referenceSourceRoot = Join-Path $labRoot 'lab3\CPU_CDE\cpu132_gettrace'
 $workRoot = Join-Path $labRoot "results\lab6_lab7\reference-work\$runId\CPU_CDE\cpu132_gettrace"
 $xpr = Join-Path $workRoot 'run_vivado\cpu132_gettrace\cpu132_gettrace.xpr'
-$coe = Join-Path $labRoot $caseSettings.InstructionCoe
-$mif = Join-Path $labRoot $caseSettings.InstructionMif
+$coe = if ($InstructionCoe) {
+    if ([IO.Path]::IsPathRooted($InstructionCoe)) { $InstructionCoe } else { Join-Path $labRoot $InstructionCoe }
+} else {
+    Join-Path $labRoot $caseSettings.InstructionCoe
+}
+$mif = if ($InstructionMif) {
+    if ([IO.Path]::IsPathRooted($InstructionMif)) { $InstructionMif } else { Join-Path $labRoot $InstructionMif }
+} else {
+    Join-Path $labRoot $caseSettings.InstructionMif
+}
+foreach ($imagePath in @($coe, $mif)) {
+    if (-not (Test-Path -LiteralPath $imagePath)) { throw "Instruction image is missing: $imagePath" }
+}
 $instRamXci = Join-Path $labRoot 'lab3\CPU_CDE\mycpu_verify\rtl\xilinx_ip\inst_ram\inst_ram.xci'
 $imageChecker = Join-Path $PSScriptRoot 'check_instruction_image.py'
 $imageReport = Join-Path $resultDir 'instruction-image-check.txt'
@@ -86,7 +105,7 @@ $stdout = Join-Path $resultDir 'reference-console.log'
 $stderr = Join-Path $resultDir 'reference-console.err'
 $commandFile = Join-Path $resultDir 'reference-command.cmd'
 $tclArgs = @($xpr, $coe, $mif, $traceOutput, $resultDir, $instRamSim, $dataRamSim,
-    $blkMemGenSim, [string]$caseSettings.ExpectedFunctionalPoints, [string]$MaxSimulationNs)
+    $blkMemGenSim, [string]$expectedFunctionalPoints, [string]$MaxSimulationNs)
 $allArgs = @('-mode', 'batch', '-source', $tclFile, '-log', $vivadoLog,
     '-journal', $journal, '-tclargs') + $tclArgs
 $quotedArgs = ($allArgs | ForEach-Object { '"' + ([string]$_).Replace('"', '""') + '"' }) -join ' '
@@ -128,12 +147,13 @@ if ($resultText -notmatch '(?m)^STATUS=PASS\r?$') {
 $traceHash = (Get-FileHash -LiteralPath $traceOutput -Algorithm SHA256).Hash
 $commit = (git -C $labRoot rev-parse HEAD 2>$null | Select-Object -First 1)
 @("CASE=$Case", "SOURCE_COMMIT=$commit", "TRACE_OUTPUT=$traceOutput", "TRACE_SHA256=$traceHash",
-    "EXPECTED_FUNCTIONAL_POINTS=$($caseSettings.ExpectedFunctionalPoints)", "MAX_SIMULATION_NS=$MaxSimulationNs",
+    "EXPECTED_FUNCTIONAL_POINTS=$expectedFunctionalPoints", "MAX_SIMULATION_NS=$MaxSimulationNs",
     "TIMEOUT_SECONDS=$TimeoutSeconds", "HOST_PROCESS_EXIT_CODE=$hostProcessExitCode",
     "REFERENCE_WORK_TREE=$workRoot") |
     Set-Content -LiteralPath (Join-Path $resultDir 'reference-manifest.txt') -Encoding UTF8
 Write-Output "STATUS=PASS"
 Write-Output "CASE=$Case"
 Write-Output "TRACE=$traceOutput SHA256=$traceHash"
+Write-Output "EXPECTED_FUNCTIONAL_POINTS=$expectedFunctionalPoints"
 Write-Output "VIVADO_PROCESS_EXIT_CODE=$hostProcessExitCode (TCL_STATUS=$($resultText -match '(?m)^STATUS=PASS\r?$'))"
 Write-Output "LOG=$resultDir"

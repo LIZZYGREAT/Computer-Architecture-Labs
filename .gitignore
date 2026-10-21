@@ -59,6 +59,7 @@ results/lab6_lab7/reference-lab*-*/reference-inst_ram.mif
 
 # Temporary instruction-memory copies staged by the Lab3/Lab4 verification script.
 results/lab3_lab4/lab[34]-*/sim-inst_ram.mif
+results/**/sim-inst_ram.mif
 
 # Rebuildable MIPS toolchain outputs. MIF/COE ROM images remain trackable inputs.
 **/obj/*.elf
