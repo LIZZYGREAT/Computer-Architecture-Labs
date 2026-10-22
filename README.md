@@ -1,24 +1,22 @@
-# MIPS 五级流水线实验仓库（Lab3–Lab7）
+# 实验运行与结果管理
 
-## 唯一 CPU 工程
+## 如何运行
 
-`lab3/CPU_CDE/mycpu_verify/` 是从 Lab3 开始、逐阶段累积修改的唯一 CPU 与 Vivado 工程。目录名保留历史路径，不表示它只用于 Lab3。`lab3/CPU_CDE/cpu132_gettrace/` 是生成独立参考轨迹的参考 CPU。Lab6 和 Lab7 不复制 CPU 工程或 `.xpr`。
+从本目录（`lab` 仓库根目录）打开**普通 Windows PowerShell**。`-Case` 可选 `lab3`、`lab4`、`lab6`、`lab7`；`-PipelineMode` 可选 `blocking` 或 `forwarding`。按要验收的实验运行对应命令：
 
-## 实验材料
+```powershell
+.\scripts\verify.ps1 -Case lab3 -PipelineMode forwarding
+.\scripts\verify.ps1 -Case lab4 -PipelineMode forwarding -ReferenceTrace .\lab4\func_lab4\obj\golden_trace.txt
+.\scripts\verify.ps1 -Case lab6 -PipelineMode forwarding
+.\scripts\verify.ps1 -Case lab7 -PipelineMode forwarding
+```
 
-- Lab3 基础材料：`lab3/CPU_CDE/soft/func_lab3/`
-- Lab4 累积功能测试：`lab4/func_lab4/`
-- Lab5 沿用 Lab4 的 CPU 状态；验收节点由 Git 标签 `lab5-forwarding-verified` 记录，不另建一份 CPU 工程。
-- Lab6 累计功能测试：`lab6/func_lab6/`；乘除法模块级教学 testbench 参考位于 `lab6/乘法器模块级验证顶层/`。
-- Lab7 累计功能测试：`lab7/func_lab7/`
-- Lab6/Lab7 原始任务要求和实施方案：`docs/lab6_lab7/`
+Vivado 默认安装在 `D:\Verilog\2025.2\Vivado\bin`。安装位置不同时加 `-VivadoBin '实际的Vivado\bin路径'`。Lab4 首次运行或更新指令映像后，先运行 `.\scripts\generate_reference_trace.ps1 -Case lab4`；其他实验需要重新生成参考轨迹时，将 `-Case` 设为对应实验。定向测试可按需增加 `-HazardDirected`、`-InstMif`、`-ReferenceTrace`；需要波形时增加 `-CaptureWaveform`；只检查工程/IP 时增加 `-PreflightOnly`。
 
-Lab6/7 目录目前保存课程测试资源和 ROM 映像；CPU 指令扩展、对应验收脚本与波形报告尚未实施。`scripts/verify.ps1` 当前用于 Lab3/Lab4 验证。
+请使用普通 Windows PowerShell。若运行结果提示 `WINDOWS_APPCONTAINER=True` 或 `ENVIRONMENT_ERROR`，请在普通 Windows PowerShell 中重新运行。每轮结果目录中的 `result.txt` 必须显示 `STATUS=PASS` 才表示该轮验收通过。
 
-## 已记录的基线结果
+## 结果保留与清理
 
-Lab3/Lab4 的验收记录和复现材料见 `docs/lab3-lab4/verification-final.md`，原始结果见 `results/lab3_lab4/`。该记录报告 Lab3 与 Lab4 功能测试通过，Lab4 forwarding 也有定向冒险测试证据。本仓库初始化时没有重新运行这些测试。
+每轮运行会在 `results/<实验组>/<时间戳>/` 下生成结果。提交前只保留最终验收、报告引用、复查或复现所必需的文件：通过轮次的 `result.txt`、原始 Vivado/Xvlog/Xelab/XSim 阶段日志、source manifest、映像一致性报告、必要的 golden trace、定向输入映像，以及报告确实引用的波形文件。
 
-Lab6/Lab7 的 `obj/inst_ram.mif`、`inst_ram.coe`、`data_ram.mif` 和 `data_ram.coe` 是课程仿真映像，保留在仓库。`.elf`、`.bin`、`.data`、生成的 `test.s`、Vivado 缓存和未归档日志由 `.gitignore` 排除，可按课程 Makefile 或 Vivado 工程重新生成。
-
-`docs/lab6_lab7/requirements.txt` 是课程实验要求原文，不是软件包依赖清单。
+后续通过轮次已替代的失败重试、重复日志、`.jou`/`.cmd` 启动副本、拼接日志、空 console 文件、重复 ROM 暂存、Vivado 临时工程、probe 输出和其他无用文件应及时清理。只有用于说明根因的失败证据才保留一份，并在报告中注明。不要直接执行 `git add results/`；提交前逐项检查结果目录，只添加最终有用且会在报告中引用或能支持验收结论的文件。
