@@ -1,9 +1,0 @@
-DATE_UTC=2026-10-22
-VIVADO_GCC=D:\Verilog\2025.2\Vivado\tps\mingw\6.2.0\win64.o\nt\bin\gcc.exe
-VIVADO_GCC_START=FAIL: invalid system DLL relocation (Windows)
-TDM_GCC=D:\TDM-GCC\bin\gcc.exe
-TDM_GCC_VERSION=10.3.0
-XSIM_GENERATED_C=xsim.dir/tb_top_behav/obj/xsim_5.c
-TDM_SAME_FLAGS_COMPILE_EXIT=0
-TDM_OBJECT_CREATED=True
-NOTE=Standalone object compilation only; Xelab still invokes Vivado GCC 6.2 and no snapshot was linked or simulated.
