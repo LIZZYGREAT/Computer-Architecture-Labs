@@ -183,18 +183,12 @@ set sim_working_dir [file normalize [file join [file dirname $xpr] "$project_nam
 file mkdir $sim_working_dir
 cd $sim_working_dir
 puts "SIM_WORKING_DIRECTORY=[pwd]"
-set sim_custom_tcl [file join $result_dir xsim-run.tcl]
+set run_id [file tail $result_dir]
+# Keep the script XSim executes beside its generated sim files. A result-folder
+# cleanup must not remove the live command and leave xsim waiting at a prompt.
+set sim_custom_tcl [file join $sim_working_dir "${run_id}-run.tcl"]
+set result_custom_tcl [file join $result_dir xsim-run.tcl]
 set sim_inst_mif [file join $sim_working_dir inst_ram.mif]
-set sim_tcl_file [open $sim_custom_tcl w]
-puts $sim_tcl_file "file copy -force [list $inst_mif] [list $sim_inst_mif]"
-puts $sim_tcl_file "puts [list STAGED_INSTRUCTION_MIF=$sim_inst_mif]"
-if {$capture_waveform} {
-    puts $sim_tcl_file {log_wave -r /tb_top}
-    puts "XSIM_WAVE_LOGGING=log_wave -r /tb_top"
-}
-puts $sim_tcl_file "run $max_ns ns"
-puts $sim_tcl_file "quit"
-close $sim_tcl_file
 if {[catch {set_property -name XSIM.COMPILE.TCL.PRE -value "" -objects $sim_set} message]} {
     fail "cannot clear Vivado's compile hook: $message"
 }
@@ -238,8 +232,32 @@ if {[catch {file copy -force $inst_mif $sim_inst_mif} message]} {
     fail "cannot stage instruction memory image: $message"
 }
 puts "STAGED_INSTRUCTION_MIF=$sim_inst_mif"
+# Vivado's scripts_only pass resets generated sim products. Create the custom
+# run script after that reset, while keeping it in the sim directory so result
+# cleanup cannot remove the live command.
+set sim_tcl_file [open $sim_custom_tcl w]
+puts $sim_tcl_file "file copy -force [list $inst_mif] [list $sim_inst_mif]"
+puts $sim_tcl_file "puts [list STAGED_INSTRUCTION_MIF=$sim_inst_mif]"
+if {$capture_waveform} {
+    puts $sim_tcl_file {log_wave -r /tb_top}
+    puts "XSIM_WAVE_LOGGING=log_wave -r /tb_top"
+}
+puts $sim_tcl_file "run $max_ns ns"
+puts $sim_tcl_file "quit"
+close $sim_tcl_file
+if {![file isfile $sim_custom_tcl] || [file size $sim_custom_tcl] == 0} {
+    fail "XSim custom run script was not created: $sim_custom_tcl"
+}
+if {[catch {file copy -force $sim_custom_tcl $result_custom_tcl} message]} {
+    puts "XSim run script evidence copy failed: $message"
+} else {
+    puts "XSIM_RUN_TCL=$result_custom_tcl"
+}
 set sim_step_error ""
 foreach step {compile elaborate simulate} {
+    if {$step eq "simulate" && (![file isfile $sim_custom_tcl] || [file size $sim_custom_tcl] == 0)} {
+        fail "XSim custom run script disappeared before simulation: $sim_custom_tcl"
+    }
     set batch_file [file join $sim_working_dir "$step.bat"]
     if {![file isfile $batch_file]} {
         fail "Vivado did not generate the XSim $step script: $batch_file"

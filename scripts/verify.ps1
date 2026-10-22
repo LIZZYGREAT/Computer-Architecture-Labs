@@ -164,8 +164,20 @@ function Invoke-VivadoBatch([string]$Name, [string]$TclFile, [string[]]$TclArgs)
         -WorkingDirectory $vivadoBinFull -WindowStyle Hidden -PassThru `
         -RedirectStandardOutput $stdout -RedirectStandardError $stderr
     if (-not $process.WaitForExit($TimeoutSeconds * 1000)) {
-        try { $process.Kill($true) } catch { }
-        Write-Output "ENVIRONMENT_ERROR: $Name exceeded the $TimeoutSeconds second host timeout."
+        $taskkill = Join-Path $env:WINDIR 'System32\taskkill.exe'
+        try {
+            Start-Process -FilePath $taskkill `
+                -ArgumentList @('/PID', [string]$process.Id, '/T', '/F') `
+                -WindowStyle Hidden -Wait | Out-Null
+        } catch { }
+        try {
+            $process.Refresh()
+            if (-not $process.HasExited) { $process.Kill($true) }
+            $process.WaitForExit(5000) | Out-Null
+        } catch { }
+        # Keep the diagnostic out of the function's success-output pipeline so
+        # callers receive a numeric exit code instead of a string/int array.
+        Write-Host "ENVIRONMENT_ERROR: $Name exceeded the $TimeoutSeconds second host timeout."
         return 124
     }
     $process.WaitForExit()
