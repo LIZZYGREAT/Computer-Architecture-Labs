@@ -39,7 +39,8 @@ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify
 | 定向算术/逻辑 ROM | PASS，73 cycles，1 load-use stall，EX/MEM/WB forwards 7/6/3，trace 全匹配 |
 | Lab3 forwarding 回归 | PASS，23/23，172,599 cycles，0 stalls |
 | Lab4 forwarding 回归 | PASS，23/23，114,577 cycles，50 load-use stalls，EX/MEM/WB forwards 4,505/4,818/1,032 |
-| Lab6 累计 ROM | 34/42 点通过；首次失败在 n35 `div` 后的 `mflo` trace。该处需要尚未实现的 HI/LO 与乘除法路径，按 S2 范围记录为预期阶段边界，不宣称 Lab6 全量通过。 |
+| Lab6 S2 历史累计 ROM | 34/42 点通过；旧 RTL 首次失败在 n35 `div` 后的 `mflo` trace。该结果保留为 S2 阶段记录，不代表当前完整 RTL。 |
+| 当前 Lab6 累计 ROM | PASS，42/42，109,375 cycles，89 stalls；EX/MEM/WB forwards 35,013/8,320/12,007；trace 全匹配，见 [`lab6-20261022T051800Z`](../../results/lab6_lab7/lab6-20261022T051800Z/)。 |
 
 累计 Lab6 首次失败的 trace 对照为：reference 在 `0xbfc2c9ec` 写 `$21=0x00000002`（n35 的 `mflo`），DUT 未实现 HI/LO 读取，下一条可见写回为 `0xbfc2c9f4` 对 `$2`；此前 n24–n34 已通过。
 
@@ -49,18 +50,18 @@ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify
 
 - 新增 `hilo_unit.v`，使用 Vivado `mult_gen` 33×33 signed、1 级流水乘法 IP，以及 32-bit Radix-2 unsigned divider IP。wrapper 对 signed/unsigned 操数做扩展或幅值转换，并恢复商和余数符号；结果按 HI=高/余数、LO=低/商提交。
 - EX 以 `busy/done/consume_done` 保持 mult/div 指令，只在该指令能够离开 EX 时提交一次 HI/LO。`mthi/mtlo` 在离开 EX 的同一提交边界写入。`mfhi/mflo` 在 EX 读取特殊寄存器，避免 ID 提前取到旧值。
-- `DS_TO_ES_BUS_WD` 从 136 扩为 154 位；`ES_TO_MS_BUS_WD` 扩为 114 位，以随流水传递 HI/LO 类型和新增访存元数据。设计接口宽度已在 Xvlog 中解析，CPU 功能尚未验收。
-- 新增 `hilo_unit_tb.v` 覆盖 signed/unsigned 乘除、除零预期、复位取消及接受/提交计数。旧版 testbench 曾运行通过；当前加入累计提交断言后的版本尚未得到有效仿真结果，见 verification 记录。
+- `DS_TO_ES_BUS_WD` 从 136 扩为 154 位；`ES_TO_MS_BUS_WD` 扩为 114 位，以随流水传递 HI/LO 类型和新增访存元数据。累计 Lab7 DUT 已在最终 forwarding 验收中通过 68/68 个功能点；单独的 `hilo_unit_tb.v` 当前版本没有独立 PASS 结果。
+- 新增 `hilo_unit_tb.v` 覆盖 signed/unsigned 乘除、除零预期、复位取消及接受/提交计数。模块级 testbench 的历史探针日志已清理；CPU 累计验收结果见 [verification.md](verification.md)。
 
 ## S4：Lab7 转移指令
 
 - 新增 `j`、`jalr`、`bgez/bgtz/blez/bltz`、`bgezal/bltzal` 的译码与控制。条件按 signed `rs` 判断；`jalr` 使用 ID 前递后的 `rs` 作为目标并使用指令的 `rd` 作为链接寄存器。
 - 条件分支目标使用 `PC+4 + signext(imm<<2)`，`j` 使用 `(PC+4)[31:28]` 拼接索引；链接结果为 `PC+8`。`bltzal/bgezal` 的链接行为按课程 `TEST_BLTZAL/TEST_BGEZAL` 宏要求处理：不论分支是否成立均写链接值，只有重定向取决于条件。
-- 分支只在 ID 指令可被 EX 接收时发出，保留一条 delay-slot 指令，并避免多周期 EX 停顿时重复重定向。课程的累计分支测试尚未在 DUT 上运行成功。
+- 分支只在 ID 指令可被 EX 接收时发出，保留一条 delay-slot 指令，并避免多周期 EX 停顿时重复重定向。当前 Lab7 累计 DUT 仿真 68/68 功能点通过，详见 [verification.md](verification.md)。
 
 ## S5：Lab7 访存指令
 
 - 将单一 load/store 控制扩为 12-bit one-hot `mem_op`，覆盖 `lw/lb/lbu/lh/lhu/lwl/lwr/sw/sb/sh/swl/swr`。EX→MEM 增加原 `rt` 值及有效地址的携带字段。
 - `lb/lbu` 按低两位选择 byte lane 并分别符号扩展/零扩展；`lh/lhu` 按地址位 1 选择半字。`sb/sh` 通过 `data_sram_wen[3:0]` 选择小端字节 lane 并对写数据移位。
 - `lwl/lwr` 使用经过前递与 RAW 检测的旧 `rt` 合并，`swl/swr` 按四种低地址偏移产生掩码及对应移位数据。公式与独立 CPU132 reference 的执行级合并/字节使能表逐项核对。
-- SoC 仍使用 32-bit data RAM 与 `data_sram_addr[17:2]` 字索引；同步读在 EX→MEM 交接沿采样。课程 Lab7 的全部访存用例尚未在 DUT 仿真中验收，不能据此宣称 S5 完成。
+- SoC 仍使用 32-bit data RAM 与 `data_sram_addr[17:2]` 字索引；同步读在 EX→MEM 交接沿采样。Lab7 最终累计 forwarding 仿真覆盖 68 个课程功能点并与独立 trace 匹配；验收日志及哈希见 [verification.md](verification.md)。

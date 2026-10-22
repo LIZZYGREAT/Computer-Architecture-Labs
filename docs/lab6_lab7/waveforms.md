@@ -2,9 +2,9 @@
 
 ## 当前状态
 
-真实 DUT 波形尚未生成。Lab7 forwarding 仿真已通过源代码语法编译和静态展开，但 Xelab 在生成 C 编译阶段报 `XSIM 43-3409`，XSim 没有启动，故当前没有可分析的 CPU WDB 或截图。不得将静态时序说明当作实测波形。
+Lab7 forwarding 累计验收已通过 68/68 功能点，但该轮未启用 `-CaptureWaveform`，因此目前没有 Lab7 WDB 或截图。不要将 Lab3/Lab4 定向波形当作 Lab7 波形证据，也不要把静态时序说明当作实测波形。
 
-失败运行及日志：`results/lab6_lab7/lab7-20261022T014242Z/`。Vivado 环境和启动命令见 [environment.md](environment.md)。修复 Xelab 编译环境后，使用以下命令生成可供查看的波形数据库：
+通过轮次及日志：[`results/lab6_lab7/lab7-20261022T035619Z/`](../../results/lab6_lab7/lab7-20261022T035619Z/)。Vivado 环境和启动命令见 [environment.md](environment.md)。如需生成可供查看的波形数据库，需在普通 Windows PowerShell（非 AppContainer）中重新运行：
 
 ```powershell
 .\scripts\verify.ps1 -Case lab6 -PipelineMode forwarding -CaptureWaveform
@@ -33,4 +33,4 @@
 3. 打开该次结果目录中的 WDB，定位表中指定指令的 EX/WB 周期，信号数据改为十六进制显示并缩放至少量相关周期。
 4. 添加图表所列信号，保存对应 WCFG，再通过 Vivado Wave 窗口导出 PNG 到 `docs/lab6_lab7/figures/`。逐图注明 PC、周期、输入、预期/实际值和判定；不得仅截图整段仿真日志。
 
-目前没有任何一张图可以标为 PASS 或完成。
+Lab7 带标注图片仍待实际导出；目前没有任何一张 Lab7 图可以标为 PASS 或完成。

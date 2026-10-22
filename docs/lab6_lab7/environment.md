@@ -1,43 +1,29 @@
-# Lab6/Lab7 环境启动记录
+# Vivado 仿真环境与入口
 
-## Vivado GUI
+## 工程
 
-1. 启动 Vivado 2025.2，打开 `lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.xpr`。
-2. 选择 **Run Simulation → Run Behavioral Simulation**。
-3. 确认仿真顶层为 `tb_top`，然后点击 **Run All**，等待 testbench 自行结束。
-
-Lab3/Lab4 映像更新和 reference trace 流程见 [`Lab3_Lab4_流水线冲突实验指南.md`](../lab3-lab4/Lab3_Lab4_流水线冲突实验指南.md)。
+Lab3–Lab7 共用唯一 Vivado 工程：`lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.xpr`。目标器件为 `xc7a200tfbg676-2`，设计顶层 `soc_lite_top`，仿真顶层 `tb_top`。脚本入口为 `scripts/verify.ps1`；支持 Lab3、Lab4、Lab6、Lab7、blocking/forwarding、参考 trace、定向映像、preflight 与 WDB 捕获。
 
 ## PowerShell 回归
 
-在 `C:\Users\lenovo\Desktop\Projects\FPGA` 打开 PowerShell。原有 Lab3/Lab4 回归：
+从 `C:\Users\lenovo\Desktop\Projects\FPGA\lab`（本实验仓库根目录）打开**普通 Windows PowerShell**运行：
 
 ```powershell
-powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\lab\scripts\verify.ps1 -Case lab3 -PipelineMode forwarding
-powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\lab\scripts\verify.ps1 -Case lab4 -PipelineMode forwarding -ReferenceTrace .\lab\lab4\func_lab4\obj\golden_trace.txt
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify.ps1 -Case lab3 -PipelineMode forwarding
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify.ps1 -Case lab4 -PipelineMode forwarding -ReferenceTrace .\lab4\func_lab4\obj\golden_trace.txt
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify.ps1 -Case lab6 -PipelineMode forwarding
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify.ps1 -Case lab7 -PipelineMode forwarding
 ```
 
-不要在 PowerShell 里直接执行 `vivado.bat`；回归脚本会通过 `cmd.exe` 启动 Vivado。
+Lab4 必须传入与 Lab4 ROM 对应的独立 trace。Lab6/Lab7 默认使用已生成的 golden trace；首次运行或更新课程映像后，可用 `scripts/generate_reference_trace.ps1 -Case lab6|lab7` 重新生成。通用命令模板和 `-VivadoBin`、`-PreflightOnly`、`-CaptureWaveform` 等选项见 [`../../README.md`](../../README.md)。
 
-Lab6/Lab7 先生成独立 reference trace，再运行累计回归：
+不要从 Codex 的 AppContainer 受限 PowerShell 启动 Vivado。`verify.ps1` 会检测当前 token：`WINDOWS_APPCONTAINER=True` 时在启动 Vivado 前返回 `ENVIRONMENT_ERROR`；`False` 时正常进行 Vivado 预检和仿真。该检查避免 GCC 子进程限制被误报为 DUT 功能故障。事故复查见 [`../lab3-lab4/gcc-startup-incident.md`](../lab3-lab4/gcc-startup-incident.md)。
 
-```powershell
-powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\lab\scripts\generate_reference_trace.ps1 -Case lab6
-powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\lab\scripts\verify.ps1 -Case lab6 -PipelineMode forwarding
-powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\lab\scripts\generate_reference_trace.ps1 -Case lab7
-powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\lab\scripts\verify.ps1 -Case lab7 -PipelineMode forwarding
-```
+Vivado GUI 可打开上述工程用于查看设计和 WDB；默认 Run All 使用工程当前仿真属性，不替代针对 Lab4/Lab6/Lab7 指定镜像与 trace 的自动验收脚本。
 
-Lab6/Lab7 的 reference trace 已生成。手动 GUI 的 `Run All` 用于默认 Lab3 基线；Lab4/Lab6/Lab7 请通过脚本传入正确映像、trace 和功能点数。
+## 最新复核结果
 
-## 当前复核结果
-
-2026-10-21 使用 Vivado 2025.2 运行 Lab3 forwarding：23/23 功能点通过、172599 周期、0 stall，独立 trace 匹配。日志：[`lab3-20261021T131349Z`](../../results/lab3_lab4/lab3-20261021T131349Z/)。
-
-2026-10-22 复核确认工程可打开，五个 IP 均为 `Up-to-date`；脚本预检命令为：
-
-```powershell
-powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\lab\scripts\verify.ps1 -Case lab7 -PreflightOnly
-```
-
-当前 Lab7 回归在 Xelab 启动 Vivado 自带 GCC 6.2.0 时遇到 Windows“无效的系统 DLL 重定位”，XSim 未开始运行。不要用直接打开 `vivado.bat` 的方式启动回归；从 FPGA 根目录运行上面的 `verify.ps1` 命令。详细状态和日志索引见 [`verification.md`](verification.md)。
+- Lab3 forwarding：23/23，172,599 周期，0 stall；[`lab3-20261022T035035Z`](../../results/lab3_lab4/lab3-20261022T035035Z/)。
+- Lab6 forwarding：42/42，109,375 周期，89 stalls；[`lab6-20261022T051800Z`](../../results/lab6_lab7/lab6-20261022T051800Z/)。
+- Lab7 forwarding：68/68，166,226 周期，926 stalls；[`lab7-20261022T035619Z`](../../results/lab6_lab7/lab7-20261022T035619Z/)。
+- Lab3/Lab4 完整结果矩阵见 [`Lab3/Lab4 verification`](../lab3-lab4/verification-final.md)，Lab6/Lab7 状态见 [`Lab6/Lab7 verification`](verification.md)。
