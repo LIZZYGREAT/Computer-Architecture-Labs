@@ -40,7 +40,7 @@ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify
 | Lab3 forwarding 回归 | PASS，23/23，172,599 cycles，0 stalls |
 | Lab4 forwarding 回归 | PASS，23/23，114,577 cycles，50 load-use stalls，EX/MEM/WB forwards 4,505/4,818/1,032 |
 | Lab6 S2 历史累计 ROM | 34/42 点通过；旧 RTL 首次失败在 n35 `div` 后的 `mflo` trace。该结果保留为 S2 阶段记录，不代表当前完整 RTL。 |
-| 当前 Lab6 累计 ROM | PASS，42/42，109,375 cycles，89 stalls；EX/MEM/WB forwards 35,013/8,320/12,007；trace 全匹配，见 [`lab6-20261022T051800Z`](../../results/lab6_lab7/lab6-20261022T051800Z/)。 |
+| 当前 Lab6 累计 ROM | PASS，42/42，109,375 cycles，89 stalls；EX/MEM/WB forwards 35,013/8,320/12,007；trace 全匹配，见 [`lab6-20261022T062908Z`](../../results/lab6_lab7/lab6-20261022T062908Z/)。 |
 
 累计 Lab6 首次失败的 trace 对照为：reference 在 `0xbfc2c9ec` 写 `$21=0x00000002`（n35 的 `mflo`），DUT 未实现 HI/LO 读取，下一条可见写回为 `0xbfc2c9f4` 对 `$2`；此前 n24–n34 已通过。
 
@@ -50,8 +50,9 @@ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify
 
 - 新增 `hilo_unit.v`，使用 Vivado `mult_gen` 33×33 signed、1 级流水乘法 IP，以及 32-bit Radix-2 unsigned divider IP。wrapper 对 signed/unsigned 操数做扩展或幅值转换，并恢复商和余数符号；结果按 HI=高/余数、LO=低/商提交。
 - EX 以 `busy/done/consume_done` 保持 mult/div 指令，只在该指令能够离开 EX 时提交一次 HI/LO。`mthi/mtlo` 在离开 EX 的同一提交边界写入。`mfhi/mflo` 在 EX 读取特殊寄存器，避免 ID 提前取到旧值。
-- `DS_TO_ES_BUS_WD` 从 136 扩为 154 位；`ES_TO_MS_BUS_WD` 扩为 114 位，以随流水传递 HI/LO 类型和新增访存元数据。累计 Lab7 DUT 已在最终 forwarding 验收中通过 68/68 个功能点；单独的 `hilo_unit_tb.v` 当前版本没有独立 PASS 结果。
-- 新增 `hilo_unit_tb.v` 覆盖 signed/unsigned 乘除、除零预期、复位取消及接受/提交计数。模块级 testbench 的历史探针日志已清理；CPU 累计验收结果见 [verification.md](verification.md)。
+- `DS_TO_ES_BUS_WD` 从 136 扩为 154 位；`ES_TO_MS_BUS_WD` 扩为 114 位，以随流水传递 HI/LO 类型和新增访存元数据。累计 Lab7 DUT 在 forwarding 验收中通过 68/68 个功能点，详见 [verification.md](verification.md)。
+- `hilo_unit_tb.v` 独立仿真通过：signed/unsigned 乘除、完成保持/消费、MTHI/MTLO、复位取消，以及接受/提交计数检查均通过，结果见 [`hilo-unit-20261022T062119Z`](../../results/lab6_lab7/hilo-unit-20261022T062119Z/)。
+- 除法指令后紧跟分支的定向 CPU 测试通过：delay slot 生效、fall-through 未执行、LO/HI 和目标地址结果均与独立 CPU132 trace 相同，结果见 [定向验收记录](verification.md)。
 
 ## S4：Lab7 转移指令
 
