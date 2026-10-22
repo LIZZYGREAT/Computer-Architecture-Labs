@@ -51,6 +51,19 @@ S1 验收已完成。Lab6/Lab7 DUT 累计回归尚未执行；需要先完成对
 
 每个后续阶段在下方补充变更文件、接口影响、确切命令、PASS/FAIL、耗时、失败首因、日志目录及提交号。波形截图未实际导出前标记为待人工验收。
 
+## S3–S5 当前验证状态（2026-10-22）
+
+- Vivado 2025.2 工程预检：`.\scripts\verify.ps1 -Case lab7 -PreflightOnly`，PASS。设计顶层 `soc_lite_top`、仿真顶层 `tb_top`、五个 IP 均被识别为 Up-to-date；结果 `results/lab6_lab7/lab7-20261022T014113Z/`。
+- Lab7 DUT 命令：`.\scripts\verify.ps1 -Case lab7 -PipelineMode forwarding -TimeoutSeconds 1800`。运行 `lab7-20261022T014242Z`，2026-10-22 01:43:53–01:47:14 UTC，耗时约 201.5 s，结果 `STATUS=ENVIRONMENT_ERROR`。
+- 本次源代码 Xvlog 编译和 IP VHDL Xvhdl 分析完成；Xelab 完成静态 RTL 展开，随后在 `xsim.dir/tb_top_behav/obj/xsim_5.c` 生成的 C 文件编译时报 `XSIM 43-3409` 并退出。XSim 没有开始运行，因此 0 个功能点和 0 个周期是“未执行”，不是功能测试失败或通过；没有首个失败 opcode/PC。
+- 输入一致性检查通过：课程 Lab7 trace SHA-256 `23ADD75B2BADFDABF98B1863A89896DFC60B4B351CC49321B22BEB22035991C3`；课程 MIF 与仿真暂存 MIF SHA-256 均为 `4BCBB028ABAFC257BD1C3E670A2B5324298126F0B7500CD39FE6531EC223068C`。实际日志、manifest、命令及 `result.txt` 在 `results/lab6_lab7/lab7-20261022T014242Z/`。
+- HILO wrapper 的早期单元仿真曾通过基础乘除测试：`results/lab6_lab7/ip-probe/hilo-unit-vivado.log` 输出 `HILO_UNIT_TB_PASS mult_accepts=2 div_accepts=4`，覆盖当时测试台中的 signed/unsigned 乘除结果。该次运行早于当前 testbench（当前增加了请求/提交计数和除法中复位取消断言），所以只作为 wrapper 的历史基础证据，不代表当前完整单元验收通过。
+- 当前 `hilo_unit_tb.v` 版本的重跑记录在 `results/lab6_lab7/ip-probe/hilo-unit-s3d-vivado.log`：Xvlog/Xvhdl 和静态展开通过，Xelab 在编译生成的 `xsim_3.c` 阶段以 `XSIM 43-3409` 退出，XSim 未启动。CPU 的 Lab3/Lab7 跑法也在相同阶段失败。已知独立诊断 `results/lab3_lab4/gcc-investigation-20261020T150000Z/isolated.log` 记录 Vivado 随附 GCC 无法启动（Windows“无效的系统 DLL 重定位”）；本次没有改写 GCC 路径或环境变量来绕过它。
+- 本次 XPR 因 Vivado 启动仿真递增了 `WTXSimLaunchSim` 并移除了 `SimCompileState`；已恢复到此前值（49 / TRUE），并确认没有 `AutoDisabled` 项。新 IP 与 `hilo_unit.v` 的工程引用保留。
+- 为区分旧指令与新 Lab7 路径，复跑 Lab3：`./scripts/verify.ps1 -Case lab3 -PipelineMode forwarding -TimeoutSeconds 1800`，运行 `lab3-20261022T015107Z`，耗时约 206 s。preflight、trace/MIF 检查、Xvlog/Xvhdl 及静态展开通过，但在相同 `XSIM 43-3409`（`xsim_5.c`）处退出，XSim 未启动；结果 `results/lab3_lab4/lab3-20261022T015107Z/`。因此本次无法复现功能结果，不是新指令的运行期失败；历史 Lab3 PASS 仍是此前那次运行的证据。
+- 旧的独立诊断 `results/lab3_lab4/gcc-investigation-20261020T150000Z/` 记录 Vivado 随附 GCC 启动失败（Windows“无效的系统 DLL 重定位”）；这与本次 Xelab 生成 C 阶段故障相符。没有添加 GCC PATH 覆盖。
+- 目前 S3、S4、S5 的 DUT 功能结果均为未验证；Lab6/Lab7 的全量 trace、功能点、WDB 和截图门槛均未达成。保持最终 `lab6-lab7-verified` tag 未创建。
+
 ## S2 Lab6 算术与逻辑指令
 
 - 译码实现 `add/sub/addi/slti/sltiu/andi/ori/xori/sllv/srav/srlv`，补齐 `rs_used/rt_used`、目的寄存器和合法写回集合；逻辑立即数在 EX 零扩展、算术/比较立即数符号扩展。`DS_TO_ES_BUS_WD` 保持 136 位。

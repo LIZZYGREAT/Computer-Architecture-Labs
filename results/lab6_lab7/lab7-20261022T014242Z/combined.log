@@ -1,0 +1,1664 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Thu Oct 22 09:43:56 2026
+# Process ID         : 34088
+# Current directory  : D:/Verilog/2025.2/Vivado/bin
+# Command line       : vivado.exe -mode batch -source C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\run_behavioral_sim.tcl -log C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab6_lab7\lab7-20261022T014242Z\simulation-vivado.log -journal C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab6_lab7\lab7-20261022T014242Z\simulation-vivado.jou -tclargs C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab3\CPU_CDE\mycpu_verify\run_vivado\mycpu_prj1\mycpu_prj1.xpr lab7 50000000 forwarding C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab6_lab7\golden\lab7\golden_trace.txt C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab7\func_lab7\obj\inst_ram.mif C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab6_lab7\lab7-20261022T014242Z 68 0
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/lab7-20261022T014242Z/simulation-vivado.log
+# Journal file       : C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab6_lab7\lab7-20261022T014242Z\simulation-vivado.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : 
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 9936 MB
+# Total Virtual      : 33396 MB
+# Available Virtual  : 2949 MB
+#-----------------------------------------------------------
+ERROR: [Common 17-354] Could not open 'C' for writing.
+ERROR: [Common 17-354] Could not open 'C' for writing.
+ERROR: [Common 17-354] Could not open 'C' for writing.
+source {C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\run_behavioral_sim.tcl}
+# proc fail {message} {
+#     puts stderr "ENVIRONMENT_ERROR: $message"
+#     catch {clear_runtime_sim_options}
+#     catch {close_project}
+#     error $message
+# }
+# proc clear_runtime_sim_options {} {
+#     set sim_set [get_filesets -quiet sim_1]
+#     if {$sim_set eq ""} { return }
+#     foreach property {
+#         XSIM.COMPILE.TCL.PRE
+#         XSIM.ELABORATE.XELAB.MORE_OPTIONS
+#         XSIM.SIMULATE.XSIM.MORE_OPTIONS
+#         XSIM.SIMULATE.RUNTIME
+#         XSIM.SIMULATE.CUSTOM_TCL
+#     } {
+#         catch {set_property -name $property -value "" -objects $sim_set}
+#     }
+# }
+# if {[llength $argv] < 7} {
+#     fail "usage: run_behavioral_sim.tcl <project.xpr> <case> <max-ns> <pipeline-mode> <trace-file> <inst-mif> <result-dir> ?expected-functional-points? ?capture-waveform?"
+# }
+# set xpr [file normalize [lindex $argv 0]]
+# set test_case [lindex $argv 1]
+# set max_ns [lindex $argv 2]
+# set pipeline_mode [lindex $argv 3]
+# set trace_file [file normalize [lindex $argv 4]]
+# set inst_mif [file normalize [lindex $argv 5]]
+# set result_dir [file normalize [lindex $argv 6]]
+# set expected_functional_points 23
+# set capture_waveform 0
+# if {[llength $argv] >= 9} {
+#     set expected_functional_points [lindex $argv 7]
+#     set capture_waveform [lindex $argv 8]
+# } elseif {[llength $argv] == 8} {
+#     set optional_arg [lindex $argv 7]
+#     if {$optional_arg in {0 1}} {
+#         set capture_waveform $optional_arg
+#     } else {
+#         set expected_functional_points $optional_arg
+#     }
+# }
+# if {![file isfile $xpr]} {
+#     fail "Vivado project not found: $xpr"
+# }
+# if {$test_case ni {lab3 lab4 lab6 lab7}} {
+#     fail "unsupported case: $test_case"
+# }
+# if {![string is integer -strict $max_ns] || $max_ns <= 0} {
+#     fail "max-ns must be a positive integer"
+# }
+# if {$pipeline_mode ni {blocking forwarding}} {
+#     fail "pipeline-mode must be blocking or forwarding"
+# }
+# if {![string is integer -strict $expected_functional_points] || $expected_functional_points < 0} {
+#     fail "expected-functional-points must be a nonnegative integer"
+# }
+# if {$capture_waveform ni {0 1}} {
+#     fail "capture-waveform must be 0 or 1"
+# }
+# if {![file isfile $trace_file] || [file size $trace_file] == 0} {
+#     fail "reference trace is missing or empty: $trace_file"
+# }
+# if {![file isfile $inst_mif] || [file size $inst_mif] == 0} {
+#     fail "instruction image is missing or empty: $inst_mif"
+# }
+# if {![file isdirectory $result_dir]} {
+#     fail "result directory is missing: $result_dir"
+# }
+# if {[catch {open_project -quiet $xpr} message]} {
+#     fail "cannot open existing project: $message"
+# }
+# if {[catch {reset_simulation -simset sim_1} message]} {
+#     fail "cannot reset stale sim_1 output products: $message"
+# }
+INFO: [Vivado 12-2266] Removing simulation data...
+INFO: [Vivado 12-2267] Reset complete
+# puts "SIM_OUTPUT_PRODUCTS_RESET=1"
+SIM_OUTPUT_PRODUCTS_RESET=1
+# set sim_set [get_filesets -quiet sim_1]
+# if {$sim_set eq ""} {
+#     fail "sim_1 fileset is missing"
+# }
+# set_property TOP tb_top $sim_set
+# set_property INCREMENTAL false $sim_set
+# set source_set_name [get_property SOURCE_SET $sim_set]
+# set source_set [get_filesets -quiet $source_set_name]
+# if {$source_set eq ""} {
+#     fail "simulation source set is missing: $source_set_name"
+# }
+# set project_source_root [file normalize [file join [file dirname $xpr] .. ..]]
+# set ip_source_root [string tolower [file normalize [file join $project_source_root rtl xilinx_ip]]]
+# set hdl_sources {}
+# set skipped_ip_hdl_count 0
+# foreach f [get_files -quiet -of_objects $source_set] {
+#     set ext [string tolower [file extension [string trim $f "{}"]]]
+#     if {$ext in {.v .sv .vhd .vhdl}} {
+#         set normalized_file [string tolower [file normalize [string trim $f "{}"]]]
+#         if {[string first "$ip_source_root/" $normalized_file] == 0} {
+#             incr skipped_ip_hdl_count
+#         } else {
+#             lappend hdl_sources $f
+#         }
+#     }
+# }
+# if {[llength $hdl_sources] == 0} {
+#     fail "no HDL sources found in $source_set_name"
+# }
+# puts "SIM_EXPLICIT_DESIGN_SOURCE_COUNT=[llength $hdl_sources]"
+SIM_EXPLICIT_DESIGN_SOURCE_COUNT=13
+# puts "SIM_EXPLICIT_IP_SOURCE_SKIP_COUNT=$skipped_ip_hdl_count"
+SIM_EXPLICIT_IP_SOURCE_SKIP_COUNT=5
+# foreach f $hdl_sources {
+#     puts "SIM_EXPLICIT_DESIGN_SOURCE=[string trim $f "{}"]"
+# }
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/hilo_unit.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v
+# if {[catch {add_files -fileset $sim_set -norecurse $hdl_sources} message]} {
+#     fail "cannot add design HDL to simulation set: $message"
+# }
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/hilo_unit.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v' cannot be added to the project because it already exists in the project, skipping this file
+# set sim_file_names {}
+# foreach f [get_files -quiet -of_objects $sim_set] {
+#     lappend sim_file_names [string tolower [file normalize [string trim $f "{}"]]]
+# }
+# set top_source [file normalize [file join $project_source_root testbench mycpu_tb.v]]
+# set design_top_source [file normalize [file join $project_source_root rtl soc_lite_top.v]]
+# set old_tb [get_files -quiet -of_objects $sim_set $top_source]
+# if {[llength $old_tb] > 0} {
+#     remove_files -fileset $sim_set $old_tb
+# }
+# if {[catch {add_files -fileset $sim_set -norecurse $top_source} message]} {
+#     fail "cannot re-add simulation testbench: $message"
+# }
+# set tb_file [get_files -quiet -of_objects $sim_set $top_source]
+# if {[llength $tb_file] != 1} {
+#     fail "expected one testbench file in simulation set, got [llength $tb_file]"
+# }
+# set_property FILE_TYPE Verilog $tb_file
+# set_property USED_IN {simulation} $tb_file
+# set_property IS_ENABLED true $tb_file
+# set_property USED_IN_SIMULATION true $tb_file
+# set_property USED_IN_SYNTHESIS false $tb_file
+# set_property USED_IN_IMPLEMENTATION false $tb_file
+# set sim_file_names {}
+# foreach f [get_files -quiet -of_objects $sim_set] {
+#     lappend sim_file_names [string tolower [file normalize [string trim $f "{}"]]]
+# }
+# if {[lsearch -exact $sim_file_names [string tolower $top_source]] < 0} {
+#     fail "testbench file is missing from simulation set: $top_source"
+# }
+# if {[lsearch -exact $sim_file_names [string tolower $design_top_source]] < 0} {
+#     fail "design top file is missing from simulation set: $design_top_source"
+# }
+# if {[get_property TOP $sim_set] ne "tb_top"} {
+#     fail "sim_1 must use tb_top"
+# }
+# puts "SIM_CASE=$test_case"
+SIM_CASE=lab7
+# puts "SIM_MAX_NS=$max_ns"
+SIM_MAX_NS=50000000
+# puts "PIPELINE_MODE=$pipeline_mode"
+PIPELINE_MODE=forwarding
+# puts "TRACE_FILE=$trace_file"
+TRACE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/golden/lab7/golden_trace.txt
+# puts "INSTRUCTION_MIF=$inst_mif"
+INSTRUCTION_MIF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab7/func_lab7/obj/inst_ram.mif
+# puts "EXPECTED_FUNCTIONAL_POINTS=$expected_functional_points"
+EXPECTED_FUNCTIONAL_POINTS=68
+# puts "SIM_TOP=[get_property TOP $sim_set]"
+SIM_TOP=tb_top
+# puts "SIM_INCREMENTAL=[get_property INCREMENTAL $sim_set]"
+SIM_INCREMENTAL=0
+# puts "SIM_SOURCE_SET=$source_set_name"
+SIM_SOURCE_SET=sources_1
+# puts "SIM_FILES_IN_SET=[llength [get_files -quiet -of_objects $sim_set]]"
+SIM_FILES_IN_SET=19
+# set pipeline_forwarding [expr {$pipeline_mode eq "forwarding" ? 1 : 0}]
+# set_property -name XSIM.ELABORATE.XELAB.MORE_OPTIONS \
+#     -value [format {-generic_top "PIPELINE_FORWARDING=%d"} $pipeline_forwarding] \
+#     -objects $sim_set
+# set_property -name XSIM.SIMULATE.XSIM.MORE_OPTIONS \
+#     -value [format {--testplusarg "TRACE_REF=%s" --testplusarg "EXPECTED_POINTS=%d"} \
+#         $trace_file $expected_functional_points] \
+#     -objects $sim_set
+# set_property -name XSIM.SIMULATE.RUNTIME -value "${max_ns}ns" -objects $sim_set
+# puts "XSIM_GENERIC_TOP=PIPELINE_FORWARDING=$pipeline_forwarding"
+XSIM_GENERIC_TOP=PIPELINE_FORWARDING=1
+# puts "XSIM_TRACE_PLUSARG=TRACE_REF=$trace_file EXPECTED_POINTS=$expected_functional_points"
+XSIM_TRACE_PLUSARG=TRACE_REF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/golden/lab7/golden_trace.txt EXPECTED_POINTS=68
+# puts "XSIM_RUNTIME=${max_ns}ns"
+XSIM_RUNTIME=50000000ns
+# set project_name [file rootname [file tail $xpr]]
+# set sim_working_dir [file normalize [file join [file dirname $xpr] "$project_name.sim" sim_1 behav xsim]]
+# file mkdir $sim_working_dir
+# cd $sim_working_dir
+# puts "SIM_WORKING_DIRECTORY=[pwd]"
+SIM_WORKING_DIRECTORY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim
+# set sim_custom_tcl [file join $result_dir xsim-run.tcl]
+# set sim_inst_mif [file join $sim_working_dir inst_ram.mif]
+# set sim_tcl_file [open $sim_custom_tcl w]
+# puts $sim_tcl_file "file copy -force [list $inst_mif] [list $sim_inst_mif]"
+# puts $sim_tcl_file "puts [list STAGED_INSTRUCTION_MIF=$sim_inst_mif]"
+# if {$capture_waveform} {
+#     puts $sim_tcl_file {log_wave -r /tb_top}
+#     puts "XSIM_WAVE_LOGGING=log_wave -r /tb_top"
+# }
+# puts $sim_tcl_file "run $max_ns ns"
+# puts $sim_tcl_file "quit"
+# close $sim_tcl_file
+# if {[catch {set_property -name XSIM.COMPILE.TCL.PRE -value "" -objects $sim_set} message]} {
+#     fail "cannot clear Vivado's compile hook: $message"
+# }
+# puts "XSIM_COMPILE_PRE_HOOK=[get_property XSIM.COMPILE.TCL.PRE $sim_set]"
+XSIM_COMPILE_PRE_HOOK=
+# set_property -name XSIM.SIMULATE.CUSTOM_TCL -value $sim_custom_tcl -objects $sim_set
+# puts "XSIM_CUSTOM_TCL=$sim_custom_tcl"
+XSIM_CUSTOM_TCL=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/lab7-20261022T014242Z/xsim-run.tcl
+# puts "XSIM_STAGED_INSTRUCTION_MIF=$sim_inst_mif"
+XSIM_STAGED_INSTRUCTION_MIF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.mif
+# if {[catch {launch_simulation -simset sim_1 -mode behavioral -scripts_only} message]} {
+#     fail "cannot generate behavioral simulation scripts: $message"
+# }
+Command: launch_simulation  -simset sim_1 -mode behavioral -scripts_only
+INFO: [Vivado 12-25912] Generating simulation scripts for 'XSim' simulator
+INFO: [Vivado 12-28535] Process started - Thu Oct 22 09:45:04 2026
+
+INFO: [Vivado 12-12493] Simulation top is 'tb_top'
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5680] Creating behavioral simulation scripts in 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-13659] Precompiled IP simulation library mode is disabled. IP library sources will be compiled locally.
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-72] Using boost library from 'D:/Verilog/2025.2/Vivado/tps/boost_1_72_0'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_top' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.mif'
+INFO: [SIM-utils-43] Exported 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.coe'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-60] Script generated:C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/compile.bat
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-60] Script generated:C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/elaborate.bat
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-60] Script generated:C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/simulate.bat
+launch_simulation: Time (s): cpu = 00:00:05 ; elapsed = 00:00:22 . Memory (MB): peak = 561.746 ; gain = 14.801
+# clear_runtime_sim_options
+# set manifest_file [file join $sim_working_dir tb_top_vlog.prj]
+# if {![file isfile $manifest_file]} {
+#     fail "XSim source manifest was not generated: $manifest_file"
+# }
+# set manifest_handle [open $manifest_file r]
+# set manifest_text [read $manifest_handle]
+# close $manifest_handle
+# set relative_tb "../../../../../../testbench/mycpu_tb.v"
+# if {[string first $relative_tb $manifest_text] < 0} {
+#     set marker "\n\n# compile glbl module"
+#     set marker_index [string last $marker $manifest_text]
+#     if {$marker_index < 0} {
+#         fail "XSim manifest does not contain the expected glbl section: $manifest_file"
+#     }
+#     set entry [format "\n\"%s\" \\\n\n# compile glbl module" $relative_tb]
+#     set replace_end [expr {$marker_index + [string length $marker] - 1}]
+#     set manifest_text [string replace $manifest_text $marker_index $replace_end $entry]
+#     set manifest_handle [open $manifest_file w]
+#     puts -nonewline $manifest_handle $manifest_text
+#     close $manifest_handle
+#     puts "TB_MANIFEST_INSERTED=$relative_tb"
+# } else {
+#     puts "TB_MANIFEST_ALREADY_PRESENT=$relative_tb"
+# }
+TB_MANIFEST_INSERTED=../../../../../../testbench/mycpu_tb.v
+# if {[catch {file copy -force $inst_mif $sim_inst_mif} message]} {
+#     fail "cannot stage instruction memory image: $message"
+# }
+# puts "STAGED_INSTRUCTION_MIF=$sim_inst_mif"
+STAGED_INSTRUCTION_MIF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.mif
+# set sim_step_error ""
+# foreach step {compile elaborate simulate} {
+#     set batch_file [file join $sim_working_dir "$step.bat"]
+#     if {![file isfile $batch_file]} {
+#         fail "Vivado did not generate the XSim $step script: $batch_file"
+#     }
+#     if {[catch {exec cmd.exe /d /c $batch_file} message]} {
+#         set sim_step_error "XSim $step step failed: $message"
+#         break
+#     }
+# }
+# if {$sim_step_error ne ""} {
+#     fail $sim_step_error
+# }
+ENVIRONMENT_ERROR: XSim elaborate step failed: "xelab --debug typical --relax --mt 2 -L xil_defaultlib -L xpm -L xbip_utils_v3_0_15 -L mult_gen_v12_0_24 -L axi_utils_v2_0_11 -L xbip_pipe_v3_0_11 -L xbip_dsp48_wrapper_v3_0_7 -L floating_point_v7_0_26 -L div_gen_v5_1_25 -L blk_mem_gen_v8_4_12 -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_top_behav xil_defaultlib.tb_top xil_defaultlib.glbl -log elaborate.log -generic_top "PIPELINE_FORWARDING=1""
+Vivado Simulator v2025.2
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Verilog/2025.2/Vivado/bin/unwrapped/win64.o/xelab.exe --debug typical --relax --mt 2 -L xil_defaultlib -L xpm -L xbip_utils_v3_0_15 -L mult_gen_v12_0_24 -L axi_utils_v2_0_11 -L xbip_pipe_v3_0_11 -L xbip_dsp48_wrapper_v3_0_7 -L floating_point_v7_0_26 -L div_gen_v5_1_25 -L blk_mem_gen_v8_4_12 -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_top_behav xil_defaultlib.tb_top xil_defaultlib.glbl -log elaborate.log -generic_top PIPELINE_FORWARDING=1 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3532] module 'glbl' does not have a parameter named 'PIPELINE_FORWARDING' to override [C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/glbl.v:6]
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v" Line 65. Module soc_lite_top(SIMULATION=1'b1,PIPELINE_FORWARDING=1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v" Line 1. Module mycpu_top(PIPELINE_FORWARDING=1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v" Line 3. Module if_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v" Line 3. Module id_stage(PIPELINE_FORWARDING=1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 14. Module decoder_6_64 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 14. Module decoder_6_64 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v" Line 1. Module regfile doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v" Line 3. Module exe_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/hilo_unit.v" Line 3. Module hilo_unit doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v" Line 1. Module alu doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v" Line 3. Module mem_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v" Line 3. Module wb_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v" Line 50. Module bridge_1x2 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v" Line 73. Module confreg(SIMULATION=1'b1) doesn't have a timescale but at least one module in design has a timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.numeric_std
+Compiling package xbip_utils_v3_0_15.xbip_utils_v3_0_15_pkg
+Compiling package mult_gen_v12_0_24.mult_gen_v12_0_24_viv_comp
+Compiling package mult_gen_v12_0_24.mult_gen_v12_0_24_pkg
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_signed
+Compiling package unisim.vcomponents
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.vital_timing
+Compiling package ieee.vital_primitives
+Compiling package unisim.vpkg
+Compiling package div_gen_v5_1_25.div_gen_v5_1_25_viv_comp
+Compiling package xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv_comp
+Compiling package axi_utils_v2_0_11.axi_utils_v2_0_11_pkg
+Compiling package ieee.math_real
+Compiling package axi_utils_v2_0_11.global_util_pkg
+Compiling package axi_utils_v2_0_11.axi_utils_comps
+Compiling package div_gen_v5_1_25.div_gen_pkg
+Compiling package div_gen_v5_1_25.pkg_addsub
+Compiling module xil_defaultlib.if_stage
+Compiling module xil_defaultlib.decoder_6_64
+Compiling module xil_defaultlib.decoder_5_32
+Compiling module xil_defaultlib.regfile
+Compiling module xil_defaultlib.id_stage(PIPELINE_FORWARDING=1)
+Compiling architecture lut2_v of entity unisim.LUT2 [\LUT2(init="1000")(0,3)\]
+Compiling architecture mult_and_v of entity unisim.MULT_AND [mult_and_default]
+Compiling architecture muxcy_v of entity unisim.MUXCY [muxcy_default]
+Compiling architecture xorcy_v of entity unisim.XORCY [xorcy_default]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.op_resize [\op_resize(ai_width=33,bi_width=...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.luts [\luts(c_xdevicefamily="artix7",c...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.mult_gen_v12_0_24_viv [\mult_gen_v12_0_24_viv(c_verbosi...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.mult_gen_v12_0_24 [\mult_gen_v12_0_24(c_xdevicefami...]
+Compiling architecture lab6_mult33_arch of entity xil_defaultlib.lab6_mult33 [lab6_mult33_default]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture rtl of entity div_gen_v5_1_25.c_addsub_lut6 [\c_addsub_lut6(c_width=33,c_add_...]
+Compiling architecture synth of entity div_gen_v5_1_25.c_addsub_viv [\c_addsub_viv(c_a_width=33,c_b_w...]
+Compiling architecture virtex of entity div_gen_v5_1_25.addsubreg_v [\addsubreg_v(c_bus_width=33,c_ha...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture rtl of entity div_gen_v5_1_25.c_addsub_lut6 [\c_addsub_lut6(c_width=33,c_add_...]
+Compiling architecture synth of entity div_gen_v5_1_25.c_addsub_viv [\c_addsub_viv(c_a_width=33,c_b_w...]
+Compiling architecture virtex of entity div_gen_v5_1_25.addsubreg_v [\addsubreg_v(c_bus_width=33,c_ha...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture virtex of entity div_gen_v5_1_25.dividervdc_v [\dividervdc_v(bus_num=32,bus_div...]
+Compiling architecture synth of entity div_gen_v5_1_25.bip_sdivider_synth [\bip_sdivider_synth(c_xdevicefam...]
+Compiling architecture synth of entity div_gen_v5_1_25.div_gen_synth [\div_gen_synth(c_xdevicefamily="...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity div_gen_v5_1_25.div_gen_v5_1_25_viv [\div_gen_v5_1_25_viv(c_xdevicefa...]
+Compiling architecture xilinx of entity div_gen_v5_1_25.div_gen_v5_1_25 [\div_gen_v5_1_25(c_xdevicefamily...]
+Compiling architecture lab6_div32_arch of entity xil_defaultlib.lab6_div32 [lab6_div32_default]
+Compiling module xil_defaultlib.hilo_unit
+Compiling module xil_defaultlib.alu
+Compiling module xil_defaultlib.exe_stage
+Compiling module xil_defaultlib.mem_stage
+Compiling module xil_defaultlib.wb_stage
+Compiling module xil_defaultlib.mycpu_top(PIPELINE_FORWARDING=1)
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_output_stage...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_softecc_outp...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_mem_module(C...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12(C_FAMILY="ar...
+Compiling module xil_defaultlib.inst_ram
+Compiling module xil_defaultlib.bridge_1x2
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_output_stage...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_softecc_outp...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_mem_module(C...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12(C_FAMILY="ar...
+Compiling module xil_defaultlib.data_ram
+Compiling module xil_defaultlib.confreg(SIMULATION=1'b1)
+Compiling module xil_defaultlib.soc_lite_top(SIMULATION=1'b1,PIP...
+Compiling module xil_defaultlib.tb_top(PIPELINE_FORWARDING=1)
+Compiling module xil_defaultlib.glbl
+ERROR: [XSIM 43-3409] Failed to compile generated C file xsim.dir/tb_top_behav/obj/xsim_5.c.
+ERROR: [XSIM 43-3915] Encountered a fatal error. Cannot continue. Exiting... 
+child process exited abnormally
+XSim elaborate step failed: "xelab --debug typical --relax --mt 2 -L xil_defaultlib -L xpm -L xbip_utils_v3_0_15 -L mult_gen_v12_0_24 -L axi_utils_v2_0_11 -L xbip_pipe_v3_0_11 -L xbip_dsp48_wrapper_v3_0_7 -L floating_point_v7_0_26 -L div_gen_v5_1_25 -L blk_mem_gen_v8_4_12 -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_top_behav xil_defaultlib.tb_top xil_defaultlib.glbl -log elaborate.log -generic_top "PIPELINE_FORWARDING=1""
+Vivado Simulator v2025.2
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Verilog/2025.2/Vivado/bin/unwrapped/win64.o/xelab.exe --debug typical --relax --mt 2 -L xil_defaultlib -L xpm -L xbip_utils_v3_0_15 -L mult_gen_v12_0_24 -L axi_utils_v2_0_11 -L xbip_pipe_v3_0_11 -L xbip_dsp48_wrapper_v3_0_7 -L floating_point_v7_0_26 -L div_gen_v5_1_25 -L blk_mem_gen_v8_4_12 -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_top_behav xil_defaultlib.tb_top xil_defaultlib.glbl -log elaborate.log -generic_top PIPELINE_FORWARDING=1 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3532] module 'glbl' does not have a parameter named 'PIPELINE_FORWARDING' to override [C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/glbl.v:6]
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v" Line 65. Module soc_lite_top(SIMULATION=1'b1,PIPELINE_FORWARDING=1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v" Line 1. Module mycpu_top(PIPELINE_FORWARDING=1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v" Line 3. Module if_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v" Line 3. Module id_stage(PIPELINE_FORWARDING=1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 14. Module decoder_6_64 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 14. Module decoder_6_64 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v" Line 1. Module regfile doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v" Line 3. Module exe_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/hilo_unit.v" Line 3. Module hilo_unit doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v" Line 1. Module alu doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v" Line 3. Module mem_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v" Line 3. Module wb_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v" Line 50. Module bridge_1x2 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v" Line 73. Module confreg(SIMULATION=1'b1) doesn't have a timescale but at least one module in design has a timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.numeric_std
+Compiling package xbip_utils_v3_0_15.xbip_utils_v3_0_15_pkg
+Compiling package mult_gen_v12_0_24.mult_gen_v12_0_24_viv_comp
+Compiling package mult_gen_v12_0_24.mult_gen_v12_0_24_pkg
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_signed
+Compiling package unisim.vcomponents
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.vital_timing
+Compiling package ieee.vital_primitives
+Compiling package unisim.vpkg
+Compiling package div_gen_v5_1_25.div_gen_v5_1_25_viv_comp
+Compiling package xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv_comp
+Compiling package axi_utils_v2_0_11.axi_utils_v2_0_11_pkg
+Compiling package ieee.math_real
+Compiling package axi_utils_v2_0_11.global_util_pkg
+Compiling package axi_utils_v2_0_11.axi_utils_comps
+Compiling package div_gen_v5_1_25.div_gen_pkg
+Compiling package div_gen_v5_1_25.pkg_addsub
+Compiling module xil_defaultlib.if_stage
+Compiling module xil_defaultlib.decoder_6_64
+Compiling module xil_defaultlib.decoder_5_32
+Compiling module xil_defaultlib.regfile
+Compiling module xil_defaultlib.id_stage(PIPELINE_FORWARDING=1)
+Compiling architecture lut2_v of entity unisim.LUT2 [\LUT2(init="1000")(0,3)\]
+Compiling architecture mult_and_v of entity unisim.MULT_AND [mult_and_default]
+Compiling architecture muxcy_v of entity unisim.MUXCY [muxcy_default]
+Compiling architecture xorcy_v of entity unisim.XORCY [xorcy_default]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.op_resize [\op_resize(ai_width=33,bi_width=...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.luts [\luts(c_xdevicefamily="artix7",c...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.mult_gen_v12_0_24_viv [\mult_gen_v12_0_24_viv(c_verbosi...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.mult_gen_v12_0_24 [\mult_gen_v12_0_24(c_xdevicefami...]
+Compiling architecture lab6_mult33_arch of entity xil_defaultlib.lab6_mult33 [lab6_mult33_default]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture rtl of entity div_gen_v5_1_25.c_addsub_lut6 [\c_addsub_lut6(c_width=33,c_add_...]
+Compiling architecture synth of entity div_gen_v5_1_25.c_addsub_viv [\c_addsub_viv(c_a_width=33,c_b_w...]
+Compiling architecture virtex of entity div_gen_v5_1_25.addsubreg_v [\addsubreg_v(c_bus_width=33,c_ha...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture rtl of entity div_gen_v5_1_25.c_addsub_lut6 [\c_addsub_lut6(c_width=33,c_add_...]
+Compiling architecture synth of entity div_gen_v5_1_25.c_addsub_viv [\c_addsub_viv(c_a_width=33,c_b_w...]
+Compiling architecture virtex of entity div_gen_v5_1_25.addsubreg_v [\addsubreg_v(c_bus_width=33,c_ha...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture virtex of entity div_gen_v5_1_25.dividervdc_v [\dividervdc_v(bus_num=32,bus_div...]
+Compiling architecture synth of entity div_gen_v5_1_25.bip_sdivider_synth [\bip_sdivider_synth(c_xdevicefam...]
+Compiling architecture synth of entity div_gen_v5_1_25.div_gen_synth [\div_gen_synth(c_xdevicefamily="...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity div_gen_v5_1_25.div_gen_v5_1_25_viv [\div_gen_v5_1_25_viv(c_xdevicefa...]
+Compiling architecture xilinx of entity div_gen_v5_1_25.div_gen_v5_1_25 [\div_gen_v5_1_25(c_xdevicefamily...]
+Compiling architecture lab6_div32_arch of entity xil_defaultlib.lab6_div32 [lab6_div32_default]
+Compiling module xil_defaultlib.hilo_unit
+Compiling module xil_defaultlib.alu
+Compiling module xil_defaultlib.exe_stage
+Compiling module xil_defaultlib.mem_stage
+Compiling module xil_defaultlib.wb_stage
+Compiling module xil_defaultlib.mycpu_top(PIPELINE_FORWARDING=1)
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_output_stage...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_softecc_outp...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_mem_module(C...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12(C_FAMILY="ar...
+Compiling module xil_defaultlib.inst_ram
+Compiling module xil_defaultlib.bridge_1x2
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_output_stage...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_softecc_outp...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_mem_module(C...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12(C_FAMILY="ar...
+Compiling module xil_defaultlib.data_ram
+Compiling module xil_defaultlib.confreg(SIMULATION=1'b1)
+Compiling module xil_defaultlib.soc_lite_top(SIMULATION=1'b1,PIP...
+Compiling module xil_defaultlib.tb_top(PIPELINE_FORWARDING=1)
+Compiling module xil_defaultlib.glbl
+ERROR: [XSIM 43-3409] Failed to compile generated C file xsim.dir/tb_top_behav/obj/xsim_5.c.
+ERROR: [XSIM 43-3915] Encountered a fatal error. Cannot continue. Exiting... 
+child process exited abnormally
+    while executing
+"error $message"
+    (procedure "fail" line 5)
+    invoked from within
+"fail $sim_step_error"
+    invoked from within
+"if {$sim_step_error ne ""} {
+    fail $sim_step_error
+}"
+    (file "C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\run_behavioral_sim.tcl" line 252)
+INFO: [Common 17-206] Exiting Vivado at Thu Oct 22 09:47:13 2026...
+
+
+****** Vivado v2025.2 (64-bit)
+  **** SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+  **** IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+  **** SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+  **** Start of session at: Thu Oct 22 09:43:56 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source {C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\run_behavioral_sim.tcl}
+# proc fail {message} {
+#     puts stderr "ENVIRONMENT_ERROR: $message"
+#     catch {clear_runtime_sim_options}
+#     catch {close_project}
+#     error $message
+# }
+# proc clear_runtime_sim_options {} {
+#     set sim_set [get_filesets -quiet sim_1]
+#     if {$sim_set eq ""} { return }
+#     foreach property {
+#         XSIM.COMPILE.TCL.PRE
+#         XSIM.ELABORATE.XELAB.MORE_OPTIONS
+#         XSIM.SIMULATE.XSIM.MORE_OPTIONS
+#         XSIM.SIMULATE.RUNTIME
+#         XSIM.SIMULATE.CUSTOM_TCL
+#     } {
+#         catch {set_property -name $property -value "" -objects $sim_set}
+#     }
+# }
+# if {[llength $argv] < 7} {
+#     fail "usage: run_behavioral_sim.tcl <project.xpr> <case> <max-ns> <pipeline-mode> <trace-file> <inst-mif> <result-dir> ?expected-functional-points? ?capture-waveform?"
+# }
+# set xpr [file normalize [lindex $argv 0]]
+# set test_case [lindex $argv 1]
+# set max_ns [lindex $argv 2]
+# set pipeline_mode [lindex $argv 3]
+# set trace_file [file normalize [lindex $argv 4]]
+# set inst_mif [file normalize [lindex $argv 5]]
+# set result_dir [file normalize [lindex $argv 6]]
+# set expected_functional_points 23
+# set capture_waveform 0
+# if {[llength $argv] >= 9} {
+#     set expected_functional_points [lindex $argv 7]
+#     set capture_waveform [lindex $argv 8]
+# } elseif {[llength $argv] == 8} {
+#     set optional_arg [lindex $argv 7]
+#     if {$optional_arg in {0 1}} {
+#         set capture_waveform $optional_arg
+#     } else {
+#         set expected_functional_points $optional_arg
+#     }
+# }
+# if {![file isfile $xpr]} {
+#     fail "Vivado project not found: $xpr"
+# }
+# if {$test_case ni {lab3 lab4 lab6 lab7}} {
+#     fail "unsupported case: $test_case"
+# }
+# if {![string is integer -strict $max_ns] || $max_ns <= 0} {
+#     fail "max-ns must be a positive integer"
+# }
+# if {$pipeline_mode ni {blocking forwarding}} {
+#     fail "pipeline-mode must be blocking or forwarding"
+# }
+# if {![string is integer -strict $expected_functional_points] || $expected_functional_points < 0} {
+#     fail "expected-functional-points must be a nonnegative integer"
+# }
+# if {$capture_waveform ni {0 1}} {
+#     fail "capture-waveform must be 0 or 1"
+# }
+# if {![file isfile $trace_file] || [file size $trace_file] == 0} {
+#     fail "reference trace is missing or empty: $trace_file"
+# }
+# if {![file isfile $inst_mif] || [file size $inst_mif] == 0} {
+#     fail "instruction image is missing or empty: $inst_mif"
+# }
+# if {![file isdirectory $result_dir]} {
+#     fail "result directory is missing: $result_dir"
+# }
+# if {[catch {open_project -quiet $xpr} message]} {
+#     fail "cannot open existing project: $message"
+# }
+# if {[catch {reset_simulation -simset sim_1} message]} {
+#     fail "cannot reset stale sim_1 output products: $message"
+# }
+INFO: [Vivado 12-2266] Removing simulation data...
+INFO: [Vivado 12-2267] Reset complete
+# puts "SIM_OUTPUT_PRODUCTS_RESET=1"
+SIM_OUTPUT_PRODUCTS_RESET=1
+# set sim_set [get_filesets -quiet sim_1]
+# if {$sim_set eq ""} {
+#     fail "sim_1 fileset is missing"
+# }
+# set_property TOP tb_top $sim_set
+# set_property INCREMENTAL false $sim_set
+# set source_set_name [get_property SOURCE_SET $sim_set]
+# set source_set [get_filesets -quiet $source_set_name]
+# if {$source_set eq ""} {
+#     fail "simulation source set is missing: $source_set_name"
+# }
+# set project_source_root [file normalize [file join [file dirname $xpr] .. ..]]
+# set ip_source_root [string tolower [file normalize [file join $project_source_root rtl xilinx_ip]]]
+# set hdl_sources {}
+# set skipped_ip_hdl_count 0
+# foreach f [get_files -quiet -of_objects $source_set] {
+#     set ext [string tolower [file extension [string trim $f "{}"]]]
+#     if {$ext in {.v .sv .vhd .vhdl}} {
+#         set normalized_file [string tolower [file normalize [string trim $f "{}"]]]
+#         if {[string first "$ip_source_root/" $normalized_file] == 0} {
+#             incr skipped_ip_hdl_count
+#         } else {
+#             lappend hdl_sources $f
+#         }
+#     }
+# }
+# if {[llength $hdl_sources] == 0} {
+#     fail "no HDL sources found in $source_set_name"
+# }
+# puts "SIM_EXPLICIT_DESIGN_SOURCE_COUNT=[llength $hdl_sources]"
+SIM_EXPLICIT_DESIGN_SOURCE_COUNT=13
+# puts "SIM_EXPLICIT_IP_SOURCE_SKIP_COUNT=$skipped_ip_hdl_count"
+SIM_EXPLICIT_IP_SOURCE_SKIP_COUNT=5
+# foreach f $hdl_sources {
+#     puts "SIM_EXPLICIT_DESIGN_SOURCE=[string trim $f "{}"]"
+# }
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/hilo_unit.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v
+SIM_EXPLICIT_DESIGN_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v
+# if {[catch {add_files -fileset $sim_set -norecurse $hdl_sources} message]} {
+#     fail "cannot add design HDL to simulation set: $message"
+# }
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/hilo_unit.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v' cannot be added to the project because it already exists in the project, skipping this file
+# set sim_file_names {}
+# foreach f [get_files -quiet -of_objects $sim_set] {
+#     lappend sim_file_names [string tolower [file normalize [string trim $f "{}"]]]
+# }
+# set top_source [file normalize [file join $project_source_root testbench mycpu_tb.v]]
+# set design_top_source [file normalize [file join $project_source_root rtl soc_lite_top.v]]
+# set old_tb [get_files -quiet -of_objects $sim_set $top_source]
+# if {[llength $old_tb] > 0} {
+#     remove_files -fileset $sim_set $old_tb
+# }
+# if {[catch {add_files -fileset $sim_set -norecurse $top_source} message]} {
+#     fail "cannot re-add simulation testbench: $message"
+# }
+# set tb_file [get_files -quiet -of_objects $sim_set $top_source]
+# if {[llength $tb_file] != 1} {
+#     fail "expected one testbench file in simulation set, got [llength $tb_file]"
+# }
+# set_property FILE_TYPE Verilog $tb_file
+# set_property USED_IN {simulation} $tb_file
+# set_property IS_ENABLED true $tb_file
+# set_property USED_IN_SIMULATION true $tb_file
+# set_property USED_IN_SYNTHESIS false $tb_file
+# set_property USED_IN_IMPLEMENTATION false $tb_file
+# set sim_file_names {}
+# foreach f [get_files -quiet -of_objects $sim_set] {
+#     lappend sim_file_names [string tolower [file normalize [string trim $f "{}"]]]
+# }
+# if {[lsearch -exact $sim_file_names [string tolower $top_source]] < 0} {
+#     fail "testbench file is missing from simulation set: $top_source"
+# }
+# if {[lsearch -exact $sim_file_names [string tolower $design_top_source]] < 0} {
+#     fail "design top file is missing from simulation set: $design_top_source"
+# }
+# if {[get_property TOP $sim_set] ne "tb_top"} {
+#     fail "sim_1 must use tb_top"
+# }
+# puts "SIM_CASE=$test_case"
+SIM_CASE=lab7
+# puts "SIM_MAX_NS=$max_ns"
+SIM_MAX_NS=50000000
+# puts "PIPELINE_MODE=$pipeline_mode"
+PIPELINE_MODE=forwarding
+# puts "TRACE_FILE=$trace_file"
+TRACE_FILE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/golden/lab7/golden_trace.txt
+# puts "INSTRUCTION_MIF=$inst_mif"
+INSTRUCTION_MIF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab7/func_lab7/obj/inst_ram.mif
+# puts "EXPECTED_FUNCTIONAL_POINTS=$expected_functional_points"
+EXPECTED_FUNCTIONAL_POINTS=68
+# puts "SIM_TOP=[get_property TOP $sim_set]"
+SIM_TOP=tb_top
+# puts "SIM_INCREMENTAL=[get_property INCREMENTAL $sim_set]"
+SIM_INCREMENTAL=0
+# puts "SIM_SOURCE_SET=$source_set_name"
+SIM_SOURCE_SET=sources_1
+# puts "SIM_FILES_IN_SET=[llength [get_files -quiet -of_objects $sim_set]]"
+SIM_FILES_IN_SET=19
+# set pipeline_forwarding [expr {$pipeline_mode eq "forwarding" ? 1 : 0}]
+# set_property -name XSIM.ELABORATE.XELAB.MORE_OPTIONS \
+#     -value [format {-generic_top "PIPELINE_FORWARDING=%d"} $pipeline_forwarding] \
+#     -objects $sim_set
+# set_property -name XSIM.SIMULATE.XSIM.MORE_OPTIONS \
+#     -value [format {--testplusarg "TRACE_REF=%s" --testplusarg "EXPECTED_POINTS=%d"} \
+#         $trace_file $expected_functional_points] \
+#     -objects $sim_set
+# set_property -name XSIM.SIMULATE.RUNTIME -value "${max_ns}ns" -objects $sim_set
+# puts "XSIM_GENERIC_TOP=PIPELINE_FORWARDING=$pipeline_forwarding"
+XSIM_GENERIC_TOP=PIPELINE_FORWARDING=1
+# puts "XSIM_TRACE_PLUSARG=TRACE_REF=$trace_file EXPECTED_POINTS=$expected_functional_points"
+XSIM_TRACE_PLUSARG=TRACE_REF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/golden/lab7/golden_trace.txt EXPECTED_POINTS=68
+# puts "XSIM_RUNTIME=${max_ns}ns"
+XSIM_RUNTIME=50000000ns
+# set project_name [file rootname [file tail $xpr]]
+# set sim_working_dir [file normalize [file join [file dirname $xpr] "$project_name.sim" sim_1 behav xsim]]
+# file mkdir $sim_working_dir
+# cd $sim_working_dir
+# puts "SIM_WORKING_DIRECTORY=[pwd]"
+SIM_WORKING_DIRECTORY=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim
+# set sim_custom_tcl [file join $result_dir xsim-run.tcl]
+# set sim_inst_mif [file join $sim_working_dir inst_ram.mif]
+# set sim_tcl_file [open $sim_custom_tcl w]
+# puts $sim_tcl_file "file copy -force [list $inst_mif] [list $sim_inst_mif]"
+# puts $sim_tcl_file "puts [list STAGED_INSTRUCTION_MIF=$sim_inst_mif]"
+# if {$capture_waveform} {
+#     puts $sim_tcl_file {log_wave -r /tb_top}
+#     puts "XSIM_WAVE_LOGGING=log_wave -r /tb_top"
+# }
+# puts $sim_tcl_file "run $max_ns ns"
+# puts $sim_tcl_file "quit"
+# close $sim_tcl_file
+# if {[catch {set_property -name XSIM.COMPILE.TCL.PRE -value "" -objects $sim_set} message]} {
+#     fail "cannot clear Vivado's compile hook: $message"
+# }
+# puts "XSIM_COMPILE_PRE_HOOK=[get_property XSIM.COMPILE.TCL.PRE $sim_set]"
+XSIM_COMPILE_PRE_HOOK=
+# set_property -name XSIM.SIMULATE.CUSTOM_TCL -value $sim_custom_tcl -objects $sim_set
+# puts "XSIM_CUSTOM_TCL=$sim_custom_tcl"
+XSIM_CUSTOM_TCL=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/lab7-20261022T014242Z/xsim-run.tcl
+# puts "XSIM_STAGED_INSTRUCTION_MIF=$sim_inst_mif"
+XSIM_STAGED_INSTRUCTION_MIF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.mif
+# if {[catch {launch_simulation -simset sim_1 -mode behavioral -scripts_only} message]} {
+#     fail "cannot generate behavioral simulation scripts: $message"
+# }
+Command: launch_simulation  -simset sim_1 -mode behavioral -scripts_only
+INFO: [Vivado 12-25912] Generating simulation scripts for 'XSim' simulator
+INFO: [Vivado 12-28535] Process started - Thu Oct 22 09:45:04 2026
+
+INFO: [Vivado 12-12493] Simulation top is 'tb_top'
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5680] Creating behavioral simulation scripts in 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-13659] Precompiled IP simulation library mode is disabled. IP library sources will be compiled locally.
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-72] Using boost library from 'D:/Verilog/2025.2/Vivado/tps/boost_1_72_0'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_top' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.mif'
+INFO: [SIM-utils-43] Exported 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.coe'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-60] Script generated:C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/compile.bat
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-60] Script generated:C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/elaborate.bat
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-60] Script generated:C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/simulate.bat
+launch_simulation: Time (s): cpu = 00:00:05 ; elapsed = 00:00:22 . Memory (MB): peak = 561.746 ; gain = 14.801
+# clear_runtime_sim_options
+# set manifest_file [file join $sim_working_dir tb_top_vlog.prj]
+# if {![file isfile $manifest_file]} {
+#     fail "XSim source manifest was not generated: $manifest_file"
+# }
+# set manifest_handle [open $manifest_file r]
+# set manifest_text [read $manifest_handle]
+# close $manifest_handle
+# set relative_tb "../../../../../../testbench/mycpu_tb.v"
+# if {[string first $relative_tb $manifest_text] < 0} {
+#     set marker "\n\n# compile glbl module"
+#     set marker_index [string last $marker $manifest_text]
+#     if {$marker_index < 0} {
+#         fail "XSim manifest does not contain the expected glbl section: $manifest_file"
+#     }
+#     set entry [format "\n\"%s\" \\\n\n# compile glbl module" $relative_tb]
+#     set replace_end [expr {$marker_index + [string length $marker] - 1}]
+#     set manifest_text [string replace $manifest_text $marker_index $replace_end $entry]
+#     set manifest_handle [open $manifest_file w]
+#     puts -nonewline $manifest_handle $manifest_text
+#     close $manifest_handle
+#     puts "TB_MANIFEST_INSERTED=$relative_tb"
+# } else {
+#     puts "TB_MANIFEST_ALREADY_PRESENT=$relative_tb"
+# }
+TB_MANIFEST_INSERTED=../../../../../../testbench/mycpu_tb.v
+# if {[catch {file copy -force $inst_mif $sim_inst_mif} message]} {
+#     fail "cannot stage instruction memory image: $message"
+# }
+# puts "STAGED_INSTRUCTION_MIF=$sim_inst_mif"
+STAGED_INSTRUCTION_MIF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/inst_ram.mif
+# set sim_step_error ""
+# foreach step {compile elaborate simulate} {
+#     set batch_file [file join $sim_working_dir "$step.bat"]
+#     if {![file isfile $batch_file]} {
+#         fail "Vivado did not generate the XSim $step script: $batch_file"
+#     }
+#     if {[catch {exec cmd.exe /d /c $batch_file} message]} {
+#         set sim_step_error "XSim $step step failed: $message"
+#         break
+#     }
+# }
+# if {$sim_step_error ne ""} {
+#     fail $sim_step_error
+# }
+ENVIRONMENT_ERROR: XSim elaborate step failed: "xelab --debug typical --relax --mt 2 -L xil_defaultlib -L xpm -L xbip_utils_v3_0_15 -L mult_gen_v12_0_24 -L axi_utils_v2_0_11 -L xbip_pipe_v3_0_11 -L xbip_dsp48_wrapper_v3_0_7 -L floating_point_v7_0_26 -L div_gen_v5_1_25 -L blk_mem_gen_v8_4_12 -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_top_behav xil_defaultlib.tb_top xil_defaultlib.glbl -log elaborate.log -generic_top "PIPELINE_FORWARDING=1""
+Vivado Simulator v2025.2
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Verilog/2025.2/Vivado/bin/unwrapped/win64.o/xelab.exe --debug typical --relax --mt 2 -L xil_defaultlib -L xpm -L xbip_utils_v3_0_15 -L mult_gen_v12_0_24 -L axi_utils_v2_0_11 -L xbip_pipe_v3_0_11 -L xbip_dsp48_wrapper_v3_0_7 -L floating_point_v7_0_26 -L div_gen_v5_1_25 -L blk_mem_gen_v8_4_12 -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_top_behav xil_defaultlib.tb_top xil_defaultlib.glbl -log elaborate.log -generic_top PIPELINE_FORWARDING=1 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3532] module 'glbl' does not have a parameter named 'PIPELINE_FORWARDING' to override [C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/glbl.v:6]
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v" Line 65. Module soc_lite_top(SIMULATION=1'b1,PIPELINE_FORWARDING=1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v" Line 1. Module mycpu_top(PIPELINE_FORWARDING=1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v" Line 3. Module if_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v" Line 3. Module id_stage(PIPELINE_FORWARDING=1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 14. Module decoder_6_64 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 14. Module decoder_6_64 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v" Line 1. Module regfile doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v" Line 3. Module exe_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/hilo_unit.v" Line 3. Module hilo_unit doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v" Line 1. Module alu doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v" Line 3. Module mem_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v" Line 3. Module wb_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v" Line 50. Module bridge_1x2 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v" Line 73. Module confreg(SIMULATION=1'b1) doesn't have a timescale but at least one module in design has a timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.numeric_std
+Compiling package xbip_utils_v3_0_15.xbip_utils_v3_0_15_pkg
+Compiling package mult_gen_v12_0_24.mult_gen_v12_0_24_viv_comp
+Compiling package mult_gen_v12_0_24.mult_gen_v12_0_24_pkg
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_signed
+Compiling package unisim.vcomponents
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.vital_timing
+Compiling package ieee.vital_primitives
+Compiling package unisim.vpkg
+Compiling package div_gen_v5_1_25.div_gen_v5_1_25_viv_comp
+Compiling package xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv_comp
+Compiling package axi_utils_v2_0_11.axi_utils_v2_0_11_pkg
+Compiling package ieee.math_real
+Compiling package axi_utils_v2_0_11.global_util_pkg
+Compiling package axi_utils_v2_0_11.axi_utils_comps
+Compiling package div_gen_v5_1_25.div_gen_pkg
+Compiling package div_gen_v5_1_25.pkg_addsub
+Compiling module xil_defaultlib.if_stage
+Compiling module xil_defaultlib.decoder_6_64
+Compiling module xil_defaultlib.decoder_5_32
+Compiling module xil_defaultlib.regfile
+Compiling module xil_defaultlib.id_stage(PIPELINE_FORWARDING=1)
+Compiling architecture lut2_v of entity unisim.LUT2 [\LUT2(init="1000")(0,3)\]
+Compiling architecture mult_and_v of entity unisim.MULT_AND [mult_and_default]
+Compiling architecture muxcy_v of entity unisim.MUXCY [muxcy_default]
+Compiling architecture xorcy_v of entity unisim.XORCY [xorcy_default]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.op_resize [\op_resize(ai_width=33,bi_width=...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.luts [\luts(c_xdevicefamily="artix7",c...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.mult_gen_v12_0_24_viv [\mult_gen_v12_0_24_viv(c_verbosi...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.mult_gen_v12_0_24 [\mult_gen_v12_0_24(c_xdevicefami...]
+Compiling architecture lab6_mult33_arch of entity xil_defaultlib.lab6_mult33 [lab6_mult33_default]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture rtl of entity div_gen_v5_1_25.c_addsub_lut6 [\c_addsub_lut6(c_width=33,c_add_...]
+Compiling architecture synth of entity div_gen_v5_1_25.c_addsub_viv [\c_addsub_viv(c_a_width=33,c_b_w...]
+Compiling architecture virtex of entity div_gen_v5_1_25.addsubreg_v [\addsubreg_v(c_bus_width=33,c_ha...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture rtl of entity div_gen_v5_1_25.c_addsub_lut6 [\c_addsub_lut6(c_width=33,c_add_...]
+Compiling architecture synth of entity div_gen_v5_1_25.c_addsub_viv [\c_addsub_viv(c_a_width=33,c_b_w...]
+Compiling architecture virtex of entity div_gen_v5_1_25.addsubreg_v [\addsubreg_v(c_bus_width=33,c_ha...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture virtex of entity div_gen_v5_1_25.dividervdc_v [\dividervdc_v(bus_num=32,bus_div...]
+Compiling architecture synth of entity div_gen_v5_1_25.bip_sdivider_synth [\bip_sdivider_synth(c_xdevicefam...]
+Compiling architecture synth of entity div_gen_v5_1_25.div_gen_synth [\div_gen_synth(c_xdevicefamily="...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity div_gen_v5_1_25.div_gen_v5_1_25_viv [\div_gen_v5_1_25_viv(c_xdevicefa...]
+Compiling architecture xilinx of entity div_gen_v5_1_25.div_gen_v5_1_25 [\div_gen_v5_1_25(c_xdevicefamily...]
+Compiling architecture lab6_div32_arch of entity xil_defaultlib.lab6_div32 [lab6_div32_default]
+Compiling module xil_defaultlib.hilo_unit
+Compiling module xil_defaultlib.alu
+Compiling module xil_defaultlib.exe_stage
+Compiling module xil_defaultlib.mem_stage
+Compiling module xil_defaultlib.wb_stage
+Compiling module xil_defaultlib.mycpu_top(PIPELINE_FORWARDING=1)
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_output_stage...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_softecc_outp...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_mem_module(C...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12(C_FAMILY="ar...
+Compiling module xil_defaultlib.inst_ram
+Compiling module xil_defaultlib.bridge_1x2
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_output_stage...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_softecc_outp...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_mem_module(C...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12(C_FAMILY="ar...
+Compiling module xil_defaultlib.data_ram
+Compiling module xil_defaultlib.confreg(SIMULATION=1'b1)
+Compiling module xil_defaultlib.soc_lite_top(SIMULATION=1'b1,PIP...
+Compiling module xil_defaultlib.tb_top(PIPELINE_FORWARDING=1)
+Compiling module xil_defaultlib.glbl
+ERROR: [XSIM 43-3409] Failed to compile generated C file xsim.dir/tb_top_behav/obj/xsim_5.c.
+ERROR: [XSIM 43-3915] Encountered a fatal error. Cannot continue. Exiting... 
+child process exited abnormally
+XSim elaborate step failed: "xelab --debug typical --relax --mt 2 -L xil_defaultlib -L xpm -L xbip_utils_v3_0_15 -L mult_gen_v12_0_24 -L axi_utils_v2_0_11 -L xbip_pipe_v3_0_11 -L xbip_dsp48_wrapper_v3_0_7 -L floating_point_v7_0_26 -L div_gen_v5_1_25 -L blk_mem_gen_v8_4_12 -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_top_behav xil_defaultlib.tb_top xil_defaultlib.glbl -log elaborate.log -generic_top "PIPELINE_FORWARDING=1""
+Vivado Simulator v2025.2
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Verilog/2025.2/Vivado/bin/unwrapped/win64.o/xelab.exe --debug typical --relax --mt 2 -L xil_defaultlib -L xpm -L xbip_utils_v3_0_15 -L mult_gen_v12_0_24 -L axi_utils_v2_0_11 -L xbip_pipe_v3_0_11 -L xbip_dsp48_wrapper_v3_0_7 -L floating_point_v7_0_26 -L div_gen_v5_1_25 -L blk_mem_gen_v8_4_12 -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_top_behav xil_defaultlib.tb_top xil_defaultlib.glbl -log elaborate.log -generic_top PIPELINE_FORWARDING=1 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3532] module 'glbl' does not have a parameter named 'PIPELINE_FORWARDING' to override [C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/glbl.v:6]
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v" Line 65. Module soc_lite_top(SIMULATION=1'b1,PIPELINE_FORWARDING=1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v" Line 1. Module mycpu_top(PIPELINE_FORWARDING=1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v" Line 3. Module if_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v" Line 3. Module id_stage(PIPELINE_FORWARDING=1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 14. Module decoder_6_64 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 14. Module decoder_6_64 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v" Line 1. Module regfile doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v" Line 3. Module exe_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/hilo_unit.v" Line 3. Module hilo_unit doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v" Line 1. Module alu doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v" Line 3. Module mem_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v" Line 3. Module wb_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v" Line 50. Module bridge_1x2 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v" Line 73. Module confreg(SIMULATION=1'b1) doesn't have a timescale but at least one module in design has a timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.numeric_std
+Compiling package xbip_utils_v3_0_15.xbip_utils_v3_0_15_pkg
+Compiling package mult_gen_v12_0_24.mult_gen_v12_0_24_viv_comp
+Compiling package mult_gen_v12_0_24.mult_gen_v12_0_24_pkg
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_signed
+Compiling package unisim.vcomponents
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.vital_timing
+Compiling package ieee.vital_primitives
+Compiling package unisim.vpkg
+Compiling package div_gen_v5_1_25.div_gen_v5_1_25_viv_comp
+Compiling package xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv_comp
+Compiling package axi_utils_v2_0_11.axi_utils_v2_0_11_pkg
+Compiling package ieee.math_real
+Compiling package axi_utils_v2_0_11.global_util_pkg
+Compiling package axi_utils_v2_0_11.axi_utils_comps
+Compiling package div_gen_v5_1_25.div_gen_pkg
+Compiling package div_gen_v5_1_25.pkg_addsub
+Compiling module xil_defaultlib.if_stage
+Compiling module xil_defaultlib.decoder_6_64
+Compiling module xil_defaultlib.decoder_5_32
+Compiling module xil_defaultlib.regfile
+Compiling module xil_defaultlib.id_stage(PIPELINE_FORWARDING=1)
+Compiling architecture lut2_v of entity unisim.LUT2 [\LUT2(init="1000")(0,3)\]
+Compiling architecture mult_and_v of entity unisim.MULT_AND [mult_and_default]
+Compiling architecture muxcy_v of entity unisim.MUXCY [muxcy_default]
+Compiling architecture xorcy_v of entity unisim.XORCY [xorcy_default]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.op_resize [\op_resize(ai_width=33,bi_width=...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.luts [\luts(c_xdevicefamily="artix7",c...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.mult_gen_v12_0_24_viv [\mult_gen_v12_0_24_viv(c_verbosi...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.mult_gen_v12_0_24 [\mult_gen_v12_0_24(c_xdevicefami...]
+Compiling architecture lab6_mult33_arch of entity xil_defaultlib.lab6_mult33 [lab6_mult33_default]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture rtl of entity div_gen_v5_1_25.c_addsub_lut6 [\c_addsub_lut6(c_width=33,c_add_...]
+Compiling architecture synth of entity div_gen_v5_1_25.c_addsub_viv [\c_addsub_viv(c_a_width=33,c_b_w...]
+Compiling architecture virtex of entity div_gen_v5_1_25.addsubreg_v [\addsubreg_v(c_bus_width=33,c_ha...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture rtl of entity div_gen_v5_1_25.c_addsub_lut6 [\c_addsub_lut6(c_width=33,c_add_...]
+Compiling architecture synth of entity div_gen_v5_1_25.c_addsub_viv [\c_addsub_viv(c_a_width=33,c_b_w...]
+Compiling architecture virtex of entity div_gen_v5_1_25.addsubreg_v [\addsubreg_v(c_bus_width=33,c_ha...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture virtex of entity div_gen_v5_1_25.dividervdc_v [\dividervdc_v(bus_num=32,bus_div...]
+Compiling architecture synth of entity div_gen_v5_1_25.bip_sdivider_synth [\bip_sdivider_synth(c_xdevicefam...]
+Compiling architecture synth of entity div_gen_v5_1_25.div_gen_synth [\div_gen_synth(c_xdevicefamily="...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity div_gen_v5_1_25.div_gen_v5_1_25_viv [\div_gen_v5_1_25_viv(c_xdevicefa...]
+Compiling architecture xilinx of entity div_gen_v5_1_25.div_gen_v5_1_25 [\div_gen_v5_1_25(c_xdevicefamily...]
+Compiling architecture lab6_div32_arch of entity xil_defaultlib.lab6_div32 [lab6_div32_default]
+Compiling module xil_defaultlib.hilo_unit
+Compiling module xil_defaultlib.alu
+Compiling module xil_defaultlib.exe_stage
+Compiling module xil_defaultlib.mem_stage
+Compiling module xil_defaultlib.wb_stage
+Compiling module xil_defaultlib.mycpu_top(PIPELINE_FORWARDING=1)
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_output_stage...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_softecc_outp...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_mem_module(C...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12(C_FAMILY="ar...
+Compiling module xil_defaultlib.inst_ram
+Compiling module xil_defaultlib.bridge_1x2
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_output_stage...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_softecc_outp...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_mem_module(C...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12(C_FAMILY="ar...
+Compiling module xil_defaultlib.data_ram
+Compiling module xil_defaultlib.confreg(SIMULATION=1'b1)
+Compiling module xil_defaultlib.soc_lite_top(SIMULATION=1'b1,PIP...
+Compiling module xil_defaultlib.tb_top(PIPELINE_FORWARDING=1)
+Compiling module xil_defaultlib.glbl
+ERROR: [XSIM 43-3409] Failed to compile generated C file xsim.dir/tb_top_behav/obj/xsim_5.c.
+ERROR: [XSIM 43-3915] Encountered a fatal error. Cannot continue. Exiting... 
+child process exited abnormally
+    while executing
+"error $message"
+    (procedure "fail" line 5)
+    invoked from within
+"fail $sim_step_error"
+    invoked from within
+"if {$sim_step_error ne ""} {
+    fail $sim_step_error
+}"
+    (file "C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\run_behavioral_sim.tcl" line 252)
+INFO: [Common 17-206] Exiting Vivado at Thu Oct 22 09:47:13 2026...
+
+ERROR: [Common 17-354] Could not open 'C' for writing.
+ERROR: [Common 17-354] Could not open 'C' for writing.
+ERROR: [Common 17-354] Could not open 'C' for writing.
+
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Verilog/2025.2/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv" into library xpm
+INFO: [VRFC 10-311] analyzing module xpm_cdc_single
+INFO: [VRFC 10-311] analyzing module xpm_cdc_gray
+INFO: [VRFC 10-311] analyzing module xpm_cdc_handshake
+INFO: [VRFC 10-311] analyzing module xpm_cdc_pulse
+INFO: [VRFC 10-311] analyzing module xpm_cdc_array_single
+INFO: [VRFC 10-311] analyzing module xpm_cdc_sync_rst
+INFO: [VRFC 10-311] analyzing module xpm_cdc_async_rst
+INFO: [VRFC 10-311] analyzing module xpm_cdc_low_latency_handshake
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Verilog/2025.2/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv" into library xpm
+INFO: [VRFC 10-311] analyzing module xpm_memory_base
+INFO: [VRFC 10-311] analyzing module asym_bwe_bb
+INFO: [VRFC 10-311] analyzing module xpm_memory_dpdistram
+INFO: [VRFC 10-311] analyzing module xpm_memory_dprom
+INFO: [VRFC 10-311] analyzing module xpm_memory_sdpram
+INFO: [VRFC 10-311] analyzing module xpm_memory_spram
+INFO: [VRFC 10-311] analyzing module xpm_memory_sprom
+INFO: [VRFC 10-311] analyzing module xpm_memory_tdpram
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module wb_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module soc_lite_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module regfile
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mycpu_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module if_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module id_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/hilo_unit.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module hilo_unit
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module exe_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module decoder_5_32
+INFO: [VRFC 10-311] analyzing module decoder_6_64
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module confreg
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module bridge_1x2
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module alu
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.ip_user_files/ipstatic/simulation/blk_mem_gen_v8_4.v" into library blk_mem_gen_v8_4_12
+INFO: [VRFC 10-311] analyzing module STATE_LOGIC_v8_4
+INFO: [VRFC 10-311] analyzing module beh_vlog_muxf7_v8_4
+INFO: [VRFC 10-311] analyzing module beh_vlog_ff_clr_v8_4
+INFO: [VRFC 10-311] analyzing module beh_vlog_ff_pre_v8_4
+INFO: [VRFC 10-311] analyzing module beh_vlog_ff_ce_clr_v8_4
+INFO: [VRFC 10-311] analyzing module write_netlist_v8_4
+INFO: [VRFC 10-311] analyzing module read_netlist_v8_4
+INFO: [VRFC 10-311] analyzing module blk_mem_axi_write_wrapper_beh_v8_4
+INFO: [VRFC 10-311] analyzing module blk_mem_axi_read_wrapper_beh_v8_4
+INFO: [VRFC 10-311] analyzing module blk_mem_axi_regs_fwd_v8_4
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_v8_4_12_output_stage
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_v8_4_12_softecc_output_reg_stage
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_v8_4_12_mem_module
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_v8_4_12
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/inst_ram/sim/inst_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module inst_ram
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/data_ram/sim/data_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module data_ram
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/clk_pll_clk_wiz.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module clk_pll_clk_wiz
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/clk_pll.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module clk_pll
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/testbench/mycpu_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [VRFC 10-163] Analyzing VHDL file "D:/Verilog/2025.2/data/ip/xpm/xpm_VCOMP.vhd" into library xpm
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.ip_user_files/ipstatic/hdl/xbip_utils_v3_0_vh_rfs.vhd" into library xbip_utils_v3_0_15
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.ip_user_files/ipstatic/hdl/mult_gen_v12_0_vh_rfs.vhd" into library mult_gen_v12_0_24
+INFO: [VRFC 10-3107] analyzing entity 'op_resize'
+INFO: [VRFC 10-3107] analyzing entity 'delay_line'
+INFO: [VRFC 10-3107] analyzing entity 'cc_compare'
+INFO: [VRFC 10-3107] analyzing entity 'luts'
+INFO: [VRFC 10-3107] analyzing entity 'mult18'
+INFO: [VRFC 10-3107] analyzing entity 'dsp'
+INFO: [VRFC 10-3107] analyzing entity 'hybrid'
+INFO: [VRFC 10-3107] analyzing entity 'ccm_dist_mem'
+INFO: [VRFC 10-3107] analyzing entity 'ccm_sp_block_mem'
+INFO: [VRFC 10-3107] analyzing entity 'ccm_dp_block_mem'
+INFO: [VRFC 10-3107] analyzing entity 'ccm_syncmem'
+INFO: [VRFC 10-3107] analyzing entity 'ccm_scaled_adder'
+INFO: [VRFC 10-3107] analyzing entity 'ccm_operation'
+INFO: [VRFC 10-3107] analyzing entity 'ccm'
+INFO: [VRFC 10-3107] analyzing entity 'three_input_adder'
+INFO: [VRFC 10-3107] analyzing entity 'multmxn_lut6'
+INFO: [VRFC 10-3107] analyzing entity 'mult_gen_v12_0_24_viv'
+INFO: [VRFC 10-3107] analyzing entity 'mult_gen_v12_0_24'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/lab6_mult33/sim/lab6_mult33.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'lab6_mult33'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.ip_user_files/ipstatic/hdl/axi_utils_v2_0_vh_rfs.vhd" into library axi_utils_v2_0_11
+INFO: [VRFC 10-3107] analyzing entity 'glb_srl_fifo'
+INFO: [VRFC 10-3107] analyzing entity 'glb_ifx_slave'
+INFO: [VRFC 10-3107] analyzing entity 'glb_ifx_master'
+INFO: [VRFC 10-3107] analyzing entity 'axi_slave_2to1'
+INFO: [VRFC 10-3107] analyzing entity 'axi_slave_3to1'
+INFO: [VRFC 10-3107] analyzing entity 'axi_slave_4to1'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.ip_user_files/ipstatic/hdl/xbip_pipe_v3_0_vh_rfs.vhd" into library xbip_pipe_v3_0_11
+INFO: [VRFC 10-3107] analyzing entity 'xbip_pipe_v3_0_11_viv'
+INFO: [VRFC 10-3107] analyzing entity 'xbip_pipe_v3_0_11'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.ip_user_files/ipstatic/hdl/xbip_dsp48_wrapper_v3_0_vh_rfs.vhd" into library xbip_dsp48_wrapper_v3_0_7
+INFO: [VRFC 10-3107] analyzing entity 'xbip_dsp48a_wrapper_v3_0'
+INFO: [VRFC 10-3107] analyzing entity 'xbip_dsp48a1_wrapper_v3_0'
+INFO: [VRFC 10-3107] analyzing entity 'xbip_dsp48e_wrapper_v3_0'
+INFO: [VRFC 10-3107] analyzing entity 'xbip_dsp48e1_wrapper_v3_0'
+INFO: [VRFC 10-3107] analyzing entity 'xbip_dsp48e2_wrapper_v3_0'
+INFO: [VRFC 10-3107] analyzing entity 'xbip_dsp58e5_wrapper_v3_0'
+INFO: [VRFC 10-3107] analyzing entity 'xbip_dsp48_wrapper_v3_0_7'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.ip_user_files/ipstatic/hdl/floating_point_v7_0_vh_rfs.vhd" into library floating_point_v7_0_26
+INFO: [VRFC 10-3107] analyzing entity 'fdgS'
+INFO: [VRFC 10-3107] analyzing entity 'fdgW'
+INFO: [VRFC 10-3107] analyzing entity 'lutV'
+INFO: [VRFC 10-3107] analyzing entity 'lutS'
+INFO: [VRFC 10-3107] analyzing entity 'lutN'
+INFO: [VRFC 10-3107] analyzing entity 'lutNMuxS'
+INFO: [VRFC 10-3107] analyzing entity 'srl16eS'
+INFO: [VRFC 10-3107] analyzing entity 'delayS'
+INFO: [VRFC 10-3107] analyzing entity 'andW'
+INFO: [VRFC 10-3107] analyzing entity 'orW'
+INFO: [VRFC 10-3107] analyzing entity 'srl16ew'
+INFO: [VRFC 10-3107] analyzing entity 'delayW'
+INFO: [VRFC 10-3107] analyzing entity 'compW'
+INFO: [VRFC 10-3107] analyzing entity 'addSubW'
+INFO: [VRFC 10-3107] analyzing entity 'equalW'
+INFO: [VRFC 10-3107] analyzing entity 'addW'
+INFO: [VRFC 10-3107] analyzing entity 'mult18'
+INFO: [VRFC 10-3107] analyzing entity 'cntrlgen'
+INFO: [VRFC 10-3107] analyzing entity 'cntrlgen2'
+INFO: [VRFC 10-3107] analyzing entity 'ppGenR8'
+INFO: [VRFC 10-3107] analyzing entity 'ppGenR8Msb2'
+INFO: [VRFC 10-3107] analyzing entity 'addSubShGW'
+INFO: [VRFC 10-3107] analyzing entity 'addSubShFW'
+INFO: [VRFC 10-3107] analyzing entity 'vmRoundW'
+INFO: [VRFC 10-3107] analyzing entity 'vmsMultCore'
+INFO: [VRFC 10-3107] analyzing entity 'wideEmbedMult4'
+INFO: [VRFC 10-3107] analyzing entity 'wideEmbedMult16'
+INFO: [VRFC 10-3107] analyzing entity 'wideEmbedMult'
+INFO: [VRFC 10-3107] analyzing entity 'dsp48MultALine'
+INFO: [VRFC 10-3107] analyzing entity 'dsp48Mult'
+INFO: [VRFC 10-3107] analyzing entity 'xMult'
+INFO: [VRFC 10-3107] analyzing entity 'delay'
+INFO: [VRFC 10-3107] analyzing entity 'delay_s'
+INFO: [VRFC 10-3107] analyzing entity 'mux_bus2'
+INFO: [VRFC 10-3107] analyzing entity 'twos_comp'
+INFO: [VRFC 10-3107] analyzing entity 'carry_chain'
+INFO: [VRFC 10-3107] analyzing entity 'mux4'
+INFO: [VRFC 10-3107] analyzing entity 'compare_gt'
+INFO: [VRFC 10-3107] analyzing entity 'compare_eq_im'
+INFO: [VRFC 10-3107] analyzing entity 'compare_ne_im'
+INFO: [VRFC 10-3107] analyzing entity 'compare_eq'
+INFO: [VRFC 10-3107] analyzing entity 'compare'
+INFO: [VRFC 10-3107] analyzing entity 'special_detect'
+INFO: [VRFC 10-3107] analyzing entity 'norm_zero_det'
+INFO: [VRFC 10-3107] analyzing entity 'zero_det_sel'
+INFO: [VRFC 10-3107] analyzing entity 'shift_msb_first'
+INFO: [VRFC 10-3107] analyzing entity 'flt_dec_op'
+INFO: [VRFC 10-3107] analyzing entity 'flt_dec_op_lat'
+INFO: [VRFC 10-3107] analyzing entity 'lead_zero_encode'
+INFO: [VRFC 10-3107] analyzing entity 'lead_zero_encode_shift'
+INFO: [VRFC 10-3107] analyzing entity 'dsp48e1_wrapper'
+INFO: [VRFC 10-3107] analyzing entity 'dsp48e2_wrapper'
+INFO: [VRFC 10-3107] analyzing entity 'addsub_logic'
+INFO: [VRFC 10-3107] analyzing entity 'addsub_dsp'
+INFO: [VRFC 10-3107] analyzing entity 'addsub'
+INFO: [VRFC 10-3107] analyzing entity 'dsp48_add_carry'
+INFO: [VRFC 10-3107] analyzing entity 'flt_round_bit'
+INFO: [VRFC 10-3107] analyzing entity 'renorm_and_round_logic'
+INFO: [VRFC 10-3107] analyzing entity 'norm_and_round_dsp48e1_sgl'
+INFO: [VRFC 10-3107] analyzing entity 'norm_and_round_logic'
+INFO: [VRFC 10-3107] analyzing entity 'alignment'
+INFO: [VRFC 10-3107] analyzing entity 'normalize'
+INFO: [VRFC 10-3107] analyzing entity 'align_add_dsp48e1_sgl'
+INFO: [VRFC 10-3107] analyzing entity 'align_add'
+INFO: [VRFC 10-3107] analyzing entity 'multadd'
+INFO: [VRFC 10-3107] analyzing entity 'compare_ge'
+INFO: [VRFC 10-3107] analyzing entity 'fix_to_flt_conv_exp'
+INFO: [VRFC 10-3107] analyzing entity 'fix_to_flt_conv'
+INFO: [VRFC 10-3107] analyzing entity 'flt_to_fix_conv'
+INFO: [VRFC 10-3107] analyzing entity 'flt_to_flt_conv_exp'
+INFO: [VRFC 10-3107] analyzing entity 'flt_to_flt_conv'
+INFO: [VRFC 10-3107] analyzing entity 'fp_cmp'
+INFO: [VRFC 10-3107] analyzing entity 'flt_sqrt_mant_addsub'
+INFO: [VRFC 10-3107] analyzing entity 'flt_sqrt_mant'
+INFO: [VRFC 10-3107] analyzing entity 'flt_sqrt_exp'
+INFO: [VRFC 10-3107] analyzing entity 'flt_sqrt'
+INFO: [VRFC 10-3107] analyzing entity 'flt_div_mant_addsub'
+INFO: [VRFC 10-3107] analyzing entity 'flt_div_mant'
+INFO: [VRFC 10-3107] analyzing entity 'flt_div_exp'
+INFO: [VRFC 10-3107] analyzing entity 'flt_div'
+INFO: [VRFC 10-3107] analyzing entity 'fix_mult_dsp48e1_lat_dbl'
+INFO: [VRFC 10-3107] analyzing entity 'fix_mult_dsp48e1_sgl'
+INFO: [VRFC 10-3107] analyzing entity 'fix_mult_dsp48e1_dbl'
+INFO: [VRFC 10-3107] analyzing entity 'fix_mult_dsp48e2_dbl'
+INFO: [VRFC 10-3107] analyzing entity 'fix_mult_qq'
+INFO: [VRFC 10-3107] analyzing entity 'fix_mult_xx'
+INFO: [VRFC 10-3107] analyzing entity 'fix_mult'
+INFO: [VRFC 10-3107] analyzing entity 'flt_round_dsp_opt_full'
+INFO: [VRFC 10-3107] analyzing entity 'flt_round_dsp_opt_part'
+INFO: [VRFC 10-3107] analyzing entity 'flt_mult_round'
+INFO: [VRFC 10-3107] analyzing entity 'flt_mult_exp'
+INFO: [VRFC 10-3107] analyzing entity 'flt_mult'
+INFO: [VRFC 10-3107] analyzing entity 'flt_add_exp'
+INFO: [VRFC 10-3107] analyzing entity 'flt_add_logic'
+INFO: [VRFC 10-3107] analyzing entity 'flt_add_dsp'
+INFO: [VRFC 10-3107] analyzing entity 'flt_add_lat_align_add'
+INFO: [VRFC 10-3107] analyzing entity 'flt_add_lat_norm'
+INFO: [VRFC 10-3107] analyzing entity 'flt_add_lat_exp'
+INFO: [VRFC 10-3107] analyzing entity 'flt_add_lat'
+INFO: [VRFC 10-3107] analyzing entity 'flt_add'
+INFO: [VRFC 10-3107] analyzing entity 'flt_recip_approx'
+INFO: [VRFC 10-3107] analyzing entity 'flt_recip_nr'
+INFO: [VRFC 10-3107] analyzing entity 'flt_recip_reduction_calc'
+INFO: [VRFC 10-3107] analyzing entity 'flt_recip_eval'
+INFO: [VRFC 10-3107] analyzing entity 'flt_recip_postprocess'
+INFO: [VRFC 10-3107] analyzing entity 'flt_recip_specialcase'
+INFO: [VRFC 10-3107] analyzing entity 'flt_recip_recomb'
+INFO: [VRFC 10-3107] analyzing entity 'flt_recipsqrt_dp_m_calc'
+INFO: [VRFC 10-3107] analyzing entity 'flt_recip'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_addsub'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_addsub_taylor_fabric'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_addsub_taylor_combiner_fabric'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_single_one_detect'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_inproc'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_exp'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_L_block_memory'
+INFO: [VRFC 10-3107] analyzing entity 'flt_pt_log_L_block'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_rr_mul_iter'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_rr_mul'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_rr'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_taylor'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_shift_msb_first'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_lead_zero_encode'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_normalize'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_norm'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_rnd'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_specialcase'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log_recomb'
+INFO: [VRFC 10-3107] analyzing entity 'flt_log'
+INFO: [VRFC 10-3107] analyzing entity 'flt_exp_specialcase'
+INFO: [VRFC 10-3107] analyzing entity 'flt_exp_recomb'
+INFO: [VRFC 10-3107] analyzing entity 'flt_exp_ccm'
+INFO: [VRFC 10-3107] analyzing entity 'flt_exp_e2A'
+INFO: [VRFC 10-3107] analyzing entity 'flt_exp_dp_poly'
+INFO: [VRFC 10-3107] analyzing entity 'flt_exp_e2zmzm1'
+INFO: [VRFC 10-3107] analyzing entity 'flt_exp'
+INFO: [VRFC 10-3107] analyzing entity 'flt_fma_specialcase'
+INFO: [VRFC 10-3107] analyzing entity 'flt_fma_round_bit'
+INFO: [VRFC 10-3107] analyzing entity 'flt_fma_renorm_and_round_logic'
+INFO: [VRFC 10-3107] analyzing entity 'flt_fma_special_detect'
+INFO: [VRFC 10-3107] analyzing entity 'flt_fma_add_exp'
+INFO: [VRFC 10-3107] analyzing entity 'flt_fma_alignment'
+INFO: [VRFC 10-3107] analyzing entity 'flt_fma_addsub_dsp1'
+INFO: [VRFC 10-3107] analyzing entity 'flt_fma_addsub_dsp2'
+INFO: [VRFC 10-3107] analyzing entity 'flt_fma_addsub'
+INFO: [VRFC 10-3107] analyzing entity 'flt_fma_align_add'
+INFO: [VRFC 10-3107] analyzing entity 'flt_fma_norm_logic'
+INFO: [VRFC 10-3107] analyzing entity 'flt_fma_add_logic'
+INFO: [VRFC 10-3107] analyzing entity 'flt_fma_add'
+INFO: [VRFC 10-3107] analyzing entity 'flt_fma_mul'
+INFO: [VRFC 10-3107] analyzing entity 'flt_fma'
+INFO: [VRFC 10-3107] analyzing entity 'flt_accum_flt_to_fix'
+INFO: [VRFC 10-3107] analyzing entity 'flt_accum_bit_encode'
+INFO: [VRFC 10-3107] analyzing entity 'flt_accum'
+INFO: [VRFC 10-3107] analyzing entity 'floating_point_v7_0_26_viv'
+INFO: [VRFC 10-3107] analyzing entity 'floating_point_v7_0_26'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.ip_user_files/ipstatic/hdl/div_gen_v5_1_vh_rfs.vhd" into library div_gen_v5_1_25
+INFO: [VRFC 10-3107] analyzing entity 'c_addsub_lut6'
+INFO: [VRFC 10-3107] analyzing entity 'c_addsub_viv'
+INFO: [VRFC 10-3107] analyzing entity 'c_twos_comp_viv'
+INFO: [VRFC 10-3107] analyzing entity 'cmp2s_v'
+INFO: [VRFC 10-3107] analyzing entity 'addsubreg_v'
+INFO: [VRFC 10-3107] analyzing entity 'dividervdc_v'
+INFO: [VRFC 10-3107] analyzing entity 'div_lutmult'
+INFO: [VRFC 10-3107] analyzing entity 'bip_sdivider_synth'
+INFO: [VRFC 10-3107] analyzing entity 'fixed_to_float'
+INFO: [VRFC 10-3107] analyzing entity 'flow_ctrl'
+INFO: [VRFC 10-3107] analyzing entity 'add_mult_add'
+INFO: [VRFC 10-3107] analyzing entity 'estimator'
+INFO: [VRFC 10-3107] analyzing entity 'prenormalizer'
+INFO: [VRFC 10-3107] analyzing entity 'iterative_unit'
+INFO: [VRFC 10-3107] analyzing entity 'quot_addsub'
+INFO: [VRFC 10-3107] analyzing entity 'quotient_collector'
+INFO: [VRFC 10-3107] analyzing entity 'hrdiv_viv'
+INFO: [VRFC 10-3107] analyzing entity 'div_gen_synth'
+INFO: [VRFC 10-3107] analyzing entity 'div_gen_v5_1_25_viv'
+INFO: [VRFC 10-3107] analyzing entity 'div_gen_v5_1_25'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/lab6_div32/sim/lab6_div32.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'lab6_div32'
+
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Verilog/2025.2/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv" into library xpm
+INFO: [VRFC 10-311] analyzing module xpm_cdc_single
+INFO: [VRFC 10-311] analyzing module xpm_cdc_gray
+INFO: [VRFC 10-311] analyzing module xpm_cdc_handshake
+INFO: [VRFC 10-311] analyzing module xpm_cdc_pulse
+INFO: [VRFC 10-311] analyzing module xpm_cdc_array_single
+INFO: [VRFC 10-311] analyzing module xpm_cdc_sync_rst
+INFO: [VRFC 10-311] analyzing module xpm_cdc_async_rst
+INFO: [VRFC 10-311] analyzing module xpm_cdc_low_latency_handshake
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Verilog/2025.2/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv" into library xpm
+INFO: [VRFC 10-311] analyzing module xpm_memory_base
+INFO: [VRFC 10-311] analyzing module asym_bwe_bb
+INFO: [VRFC 10-311] analyzing module xpm_memory_dpdistram
+INFO: [VRFC 10-311] analyzing module xpm_memory_dprom
+INFO: [VRFC 10-311] analyzing module xpm_memory_sdpram
+INFO: [VRFC 10-311] analyzing module xpm_memory_spram
+INFO: [VRFC 10-311] analyzing module xpm_memory_sprom
+INFO: [VRFC 10-311] analyzing module xpm_memory_tdpram
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module wb_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module soc_lite_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module regfile
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mycpu_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module if_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module id_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/hilo_unit.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module hilo_unit
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module exe_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module decoder_5_32
+INFO: [VRFC 10-311] analyzing module decoder_6_64
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module confreg
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module bridge_1x2
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module alu
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.ip_user_files/ipstatic/simulation/blk_mem_gen_v8_4.v" into library blk_mem_gen_v8_4_12
+INFO: [VRFC 10-311] analyzing module STATE_LOGIC_v8_4
+INFO: [VRFC 10-311] analyzing module beh_vlog_muxf7_v8_4
+INFO: [VRFC 10-311] analyzing module beh_vlog_ff_clr_v8_4
+INFO: [VRFC 10-311] analyzing module beh_vlog_ff_pre_v8_4
+INFO: [VRFC 10-311] analyzing module beh_vlog_ff_ce_clr_v8_4
+INFO: [VRFC 10-311] analyzing module write_netlist_v8_4
+INFO: [VRFC 10-311] analyzing module read_netlist_v8_4
+INFO: [VRFC 10-311] analyzing module blk_mem_axi_write_wrapper_beh_v8_4
+INFO: [VRFC 10-311] analyzing module blk_mem_axi_read_wrapper_beh_v8_4
+INFO: [VRFC 10-311] analyzing module blk_mem_axi_regs_fwd_v8_4
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_v8_4_12_output_stage
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_v8_4_12_softecc_output_reg_stage
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_v8_4_12_mem_module
+INFO: [VRFC 10-311] analyzing module blk_mem_gen_v8_4_12
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/inst_ram/sim/inst_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module inst_ram
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/data_ram/sim/data_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module data_ram
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/clk_pll_clk_wiz.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module clk_pll_clk_wiz
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/clk_pll/clk_pll.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module clk_pll
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/testbench/mycpu_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+
+Vivado Simulator v2025.2
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Verilog/2025.2/Vivado/bin/unwrapped/win64.o/xelab.exe --debug typical --relax --mt 2 -L xil_defaultlib -L xpm -L xbip_utils_v3_0_15 -L mult_gen_v12_0_24 -L axi_utils_v2_0_11 -L xbip_pipe_v3_0_11 -L xbip_dsp48_wrapper_v3_0_7 -L floating_point_v7_0_26 -L div_gen_v5_1_25 -L blk_mem_gen_v8_4_12 -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_top_behav xil_defaultlib.tb_top xil_defaultlib.glbl -log elaborate.log -generic_top PIPELINE_FORWARDING=1 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3532] module 'glbl' does not have a parameter named 'PIPELINE_FORWARDING' to override [C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1/mycpu_prj1.sim/sim_1/behav/xsim/glbl.v:6]
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/soc_lite_top.v" Line 65. Module soc_lite_top(SIMULATION=1'b1,PIPELINE_FORWARDING=1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v" Line 1. Module mycpu_top(PIPELINE_FORWARDING=1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v" Line 3. Module if_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v" Line 3. Module id_stage(PIPELINE_FORWARDING=1) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 14. Module decoder_6_64 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 14. Module decoder_6_64 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v" Line 1. Module regfile doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v" Line 3. Module exe_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/hilo_unit.v" Line 3. Module hilo_unit doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v" Line 1. Module alu doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v" Line 3. Module mem_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v" Line 3. Module wb_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/BRIDGE/bridge_1x2.v" Line 50. Module bridge_1x2 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/CONFREG/confreg.v" Line 73. Module confreg(SIMULATION=1'b1) doesn't have a timescale but at least one module in design has a timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.numeric_std
+Compiling package xbip_utils_v3_0_15.xbip_utils_v3_0_15_pkg
+Compiling package mult_gen_v12_0_24.mult_gen_v12_0_24_viv_comp
+Compiling package mult_gen_v12_0_24.mult_gen_v12_0_24_pkg
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_signed
+Compiling package unisim.vcomponents
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.vital_timing
+Compiling package ieee.vital_primitives
+Compiling package unisim.vpkg
+Compiling package div_gen_v5_1_25.div_gen_v5_1_25_viv_comp
+Compiling package xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv_comp
+Compiling package axi_utils_v2_0_11.axi_utils_v2_0_11_pkg
+Compiling package ieee.math_real
+Compiling package axi_utils_v2_0_11.global_util_pkg
+Compiling package axi_utils_v2_0_11.axi_utils_comps
+Compiling package div_gen_v5_1_25.div_gen_pkg
+Compiling package div_gen_v5_1_25.pkg_addsub
+Compiling module xil_defaultlib.if_stage
+Compiling module xil_defaultlib.decoder_6_64
+Compiling module xil_defaultlib.decoder_5_32
+Compiling module xil_defaultlib.regfile
+Compiling module xil_defaultlib.id_stage(PIPELINE_FORWARDING=1)
+Compiling architecture lut2_v of entity unisim.LUT2 [\LUT2(init="1000")(0,3)\]
+Compiling architecture mult_and_v of entity unisim.MULT_AND [mult_and_default]
+Compiling architecture muxcy_v of entity unisim.MUXCY [muxcy_default]
+Compiling architecture xorcy_v of entity unisim.XORCY [xorcy_default]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.op_resize [\op_resize(ai_width=33,bi_width=...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.luts [\luts(c_xdevicefamily="artix7",c...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.mult_gen_v12_0_24_viv [\mult_gen_v12_0_24_viv(c_verbosi...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.mult_gen_v12_0_24 [\mult_gen_v12_0_24(c_xdevicefami...]
+Compiling architecture lab6_mult33_arch of entity xil_defaultlib.lab6_mult33 [lab6_mult33_default]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture rtl of entity div_gen_v5_1_25.c_addsub_lut6 [\c_addsub_lut6(c_width=33,c_add_...]
+Compiling architecture synth of entity div_gen_v5_1_25.c_addsub_viv [\c_addsub_viv(c_a_width=33,c_b_w...]
+Compiling architecture virtex of entity div_gen_v5_1_25.addsubreg_v [\addsubreg_v(c_bus_width=33,c_ha...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture rtl of entity div_gen_v5_1_25.c_addsub_lut6 [\c_addsub_lut6(c_width=33,c_add_...]
+Compiling architecture synth of entity div_gen_v5_1_25.c_addsub_viv [\c_addsub_viv(c_a_width=33,c_b_w...]
+Compiling architecture virtex of entity div_gen_v5_1_25.addsubreg_v [\addsubreg_v(c_bus_width=33,c_ha...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture virtex of entity div_gen_v5_1_25.dividervdc_v [\dividervdc_v(bus_num=32,bus_div...]
+Compiling architecture synth of entity div_gen_v5_1_25.bip_sdivider_synth [\bip_sdivider_synth(c_xdevicefam...]
+Compiling architecture synth of entity div_gen_v5_1_25.div_gen_synth [\div_gen_synth(c_xdevicefamily="...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity div_gen_v5_1_25.div_gen_v5_1_25_viv [\div_gen_v5_1_25_viv(c_xdevicefa...]
+Compiling architecture xilinx of entity div_gen_v5_1_25.div_gen_v5_1_25 [\div_gen_v5_1_25(c_xdevicefamily...]
+Compiling architecture lab6_div32_arch of entity xil_defaultlib.lab6_div32 [lab6_div32_default]
+Compiling module xil_defaultlib.hilo_unit
+Compiling module xil_defaultlib.alu
+Compiling module xil_defaultlib.exe_stage
+Compiling module xil_defaultlib.mem_stage
+Compiling module xil_defaultlib.wb_stage
+Compiling module xil_defaultlib.mycpu_top(PIPELINE_FORWARDING=1)
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_output_stage...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_softecc_outp...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_mem_module(C...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12(C_FAMILY="ar...
+Compiling module xil_defaultlib.inst_ram
+Compiling module xil_defaultlib.bridge_1x2
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_output_stage...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_softecc_outp...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_mem_module(C...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12(C_FAMILY="ar...
+Compiling module xil_defaultlib.data_ram
+Compiling module xil_defaultlib.confreg(SIMULATION=1'b1)
+Compiling module xil_defaultlib.soc_lite_top(SIMULATION=1'b1,PIP...
+Compiling module xil_defaultlib.tb_top(PIPELINE_FORWARDING=1)
+Compiling module xil_defaultlib.glbl
+ERROR: [XSIM 43-3409] Failed to compile generated C file xsim.dir/tb_top_behav/obj/xsim_5.c.
+ERROR: [XSIM 43-3915] Encountered a fatal error. Cannot continue. Exiting... 
+
+INFO: Scripts generated successfully. Please see the 'Tcl Console' window for details.
+

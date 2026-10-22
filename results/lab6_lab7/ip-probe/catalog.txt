@@ -1,0 +1,4 @@
+VIVADO_VERSION=2025.2
+PART=xc7a200tfbg676-2
+IPDEF=xilinx.com:ip:div_gen:5.1
+IPDEF=xilinx.com:ip:mult_gen:12.0

@@ -125,3 +125,17 @@ Desktop.ini
 *.tmp
 *.bak
 *.orig
+
+# Keep selected Lab6/Lab7 run summaries and stage logs; ignore duplicate captures.
+results/lab3_lab4/lab3-20261022T015107Z/*-console.log
+results/lab3_lab4/lab3-20261022T015107Z/*-vivado*.log
+results/lab3_lab4/lab3-20261022T015107Z/xsim-simulate-stage.log
+results/lab6_lab7/lab7-20261022T014242Z/*-console.log
+results/lab6_lab7/lab7-20261022T014242Z/*-vivado*.log
+results/lab6_lab7/lab7-20261022T014242Z/xsim-simulate-stage.log
+results/lab6_lab7/ip-probe/*-vivado*.log
+results/lab6_lab7/ip-probe/hilo-unit-s3*-console.log
+results/lab6_lab7/ip-probe/configured/
+results/lab6_lab7/ip-probe/vivado.log
+!results/lab6_lab7/ip-probe/hilo-unit-vivado.log
+!results/lab6_lab7/ip-probe/hilo-unit-s3d-vivado.log
