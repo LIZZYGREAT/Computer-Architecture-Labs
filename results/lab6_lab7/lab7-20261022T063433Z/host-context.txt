@@ -1,0 +1,2 @@
+WINDOWS_APPCONTAINER=False
+POWERSHELL=C:\Users\lenovo\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.exe

@@ -1,0 +1,9 @@
+STATUS=PASS
+TESTBENCH=hilo_unit_tb
+PASS_MARKER=HILO_UNIT_TB_PASS
+MULT_ACCEPTS=3
+DIV_ACCEPTS=4
+COMPLETION_COMMITS=6
+CHECKS=signed/unsigned multiply and divide; completion held until consume; single acceptance/commit; MTHI/MTLO; reset cancels in-flight divide
+WAVEFORM_CAPTURED=False
+VIVADO_RUN_COMPLETE=True

@@ -1,0 +1,48 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date         : Thu Oct 22 14:35:27 2026
+| Host         : LAPTOP-VTCMVS9N running 64-bit major release  (build 9200)
+| Command      : report_ip_status
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+IP Status Summary
+
+1. Project IP Status
+--------------------
+Your project uses 5 IP. Some of these IP may have undergone changes in this release of the software. Please review the recommended actions.
+
+More information on the Xilinx versioning policy is available at www.xilinx.com.
+
+Project IP Instances
++---------------+------------+---------------------+-----------+--------------------+---------+----------------+------------+----------------------+
+| Instance Name | Status     | Recommendation      | Change    | IP Name            | IP      | New Version    | New        | Original Part        |
+|               |            |                     | Log       |                    | Version |                | License    |                      |
++---------------+------------+---------------------+-----------+--------------------+---------+----------------+------------+----------------------+
+| clk_pll       | Up-to-date | No changes required |  *(1)     | Clocking Wizard    | 6.0     | 6.0 (Rev. 17)  | Included   | xc7a200tfbg676-2     |
+|               |            |                     |           |                    | (Rev.   |                |            |                      |
+|               |            |                     |           |                    | 17)     |                |            |                      |
++---------------+------------+---------------------+-----------+--------------------+---------+----------------+------------+----------------------+
+| data_ram      | Up-to-date | No changes required |  *(2)     | Block Memory       | 8.4     | 8.4 (Rev. 12)  | Included   | xc7a200tfbg676-2     |
+|               |            |                     |           | Generator          | (Rev.   |                |            |                      |
+|               |            |                     |           |                    | 12)     |                |            |                      |
++---------------+------------+---------------------+-----------+--------------------+---------+----------------+------------+----------------------+
+| inst_ram      | Up-to-date | No changes required |  *(3)     | Block Memory       | 8.4     | 8.4 (Rev. 12)  | Included   | xc7a200tfbg676-2     |
+|               |            |                     |           | Generator          | (Rev.   |                |            |                      |
+|               |            |                     |           |                    | 12)     |                |            |                      |
++---------------+------------+---------------------+-----------+--------------------+---------+----------------+------------+----------------------+
+| lab6_div32    | Up-to-date | No changes required |  *(4)     | Divider Generator  | 5.1     | 5.1 (Rev. 25)  | Included   | xc7a200tfbg676-2     |
+|               |            |                     |           |                    | (Rev.   |                |            |                      |
+|               |            |                     |           |                    | 25)     |                |            |                      |
++---------------+------------+---------------------+-----------+--------------------+---------+----------------+------------+----------------------+
+| lab6_mult33   | Up-to-date | No changes required |  *(5)     | Multiplier         | 12.0    | 12.0 (Rev. 24) | Included   | xc7a200tfbg676-2     |
+|               |            |                     |           |                    | (Rev.   |                |            |                      |
+|               |            |                     |           |                    | 24)     |                |            |                      |
++---------------+------------+---------------------+-----------+--------------------+---------+----------------+------------+----------------------+
+*(1) d:/Verilog/2025.2/Vivado/data/ip/xilinx/clk_wiz_v6_0/doc/clk_wiz_v6_0_changelog.txt
+*(2) d:/Verilog/2025.2/Vivado/data/ip/xilinx/blk_mem_gen_v8_4/doc/blk_mem_gen_v8_4_changelog.txt
+*(3) d:/Verilog/2025.2/Vivado/data/ip/xilinx/blk_mem_gen_v8_4/doc/blk_mem_gen_v8_4_changelog.txt
+*(4) d:/Verilog/2025.2/Vivado/data/ip/xilinx/div_gen_v5_1/doc/div_gen_v5_1_changelog.txt
+*(5) d:/Verilog/2025.2/Vivado/data/ip/xilinx/mult_gen_v12_0/doc/mult_gen_v12_0_changelog.txt
+
+

@@ -139,3 +139,17 @@ results/lab6_lab7/ip-probe/configured/
 results/lab6_lab7/ip-probe/vivado.log
 !results/lab6_lab7/ip-probe/hilo-unit-vivado.log
 !results/lab6_lab7/ip-probe/hilo-unit-s3d-vivado.log
+
+# Keep the primary Vivado and per-stage XSim logs for the 2026-10-22 final
+# Lab6/Lab7 runs; omit console/copy/combined duplicates.
+results/lab3_lab4/lab3-20261022T065139Z/combined.log
+results/lab3_lab4/lab3-20261022T065139Z/*-console.log
+results/lab3_lab4/lab3-20261022T065139Z/*-vivado-copy.log
+results/lab3_lab4/reference-lab3-20261022T064612Z/reference-console.log
+results/lab3_lab4/reference-lab3-20261022T064612Z/reference-vivado-copy.log
+results/lab6_lab7/lab6-20261022T062908Z/combined.log
+results/lab6_lab7/lab6-20261022T062908Z/*-console.log
+results/lab6_lab7/lab6-20261022T062908Z/*-vivado-copy.log
+results/lab6_lab7/lab7-20261022T063433Z/combined.log
+results/lab6_lab7/lab7-20261022T063433Z/*-console.log
+results/lab6_lab7/lab7-20261022T063433Z/*-vivado-copy.log
