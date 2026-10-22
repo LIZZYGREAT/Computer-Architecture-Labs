@@ -22,7 +22,7 @@ Lab3 的参考轨迹来自 `lab/lab3/CPU_CDE/cpu132_gettrace/golden_trace.txt`�
 ## 已执行步骤与真实结果
 
 1. Vivado 项目预检通过，`clk_pll`、`inst_ram`、`data_ram` 均为 `Up-to-date`。
-2. 复核 GCC 诊断后，确认 Xelab 实际执行 Vivado 内置 GCC 6.2.0；该可执行文件在 PowerShell（含隔离 PATH）可启动，对 XSim 的 `xsim_2.c` 原命令编译退出 0。移除脚本中无效的 GCC 9.5.0 路径和环境变量覆盖，恢复 Vivado 默认配置。
+2. 复核 GCC 诊断后，确认 Xelab 默认实际调用 Vivado 内置 GCC 6.2.0。Codex 受限 PowerShell 的 Windows token 是 AppContainer，在该上下文启动 GCC 会返回 Win32 623，即使隔离 PATH 也无法启动；普通 PowerShell（非 AppContainer）中 GCC 可运行 `--version`，并能以相同参数编译 XSim 生成的 C 文件。仿真脚本保留 Vivado 默认编译器环境；目前没有锁定具体冲突 DLL。`verify.ps1` 已加入 AppContainer 预检，避免产生无效的 XSim 失败记录。
 3. Lab3 forwarding 完整验收通过 23 个功能点：172,599 周期、0 stall。
 4. Lab4 CPU132 参考运行生成 44,071 条、1,057,704 字节独立 trace；阻塞和前递各 23 个功能点通过。同一映像下阻塞为 130,891 周期 / 16,364 stall，前递为 114,577 周期 / 50 stall，周期下降 12.46%。
 5. 独立手工编码短程序并由 CPU132 生成预期 trace；blocking 和 forwarding 均通过，分别为 98/29 和 72/3 周期/stall。用例包括 ALU 相关、最近生产者优先、load-use、load/ALU→store、branch delay slot、JR、`$zero` 和气泡。
@@ -47,7 +47,7 @@ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\lab\scripts\ve
 
 ## 波形证据与待取得证据
 
-- 已保存 65-word 定向 forwarding 实测 WDB：[`lab4-20261021T085125Z/hazard-directed-forwarding.wdb`](../../results/lab3_lab4/lab4-20261021T085125Z/hazard-directed-forwarding.wdb)，大小 297,380 字节，SHA-256 `7C6B5DFBEB1649F823B436E2924D060DD7A3BECDC7BC65122C14AA07C20938F4`。该轮 `STATUS=PASS`，72 周期、3 stall，且记录 `/tb_top` 全层次信号。
+- 已保存 65-word 定向 forwarding 实测 WDB：[`lab4-20261022T041931Z/hazard-directed-forwarding.wdb`](../../results/lab3_lab4/lab4-20261022T041931Z/hazard-directed-forwarding.wdb)，大小 336,746 字节，SHA-256 `5447B32478FE7896D9399AB5AD7042EE21C437068B209BF218CA01616263DB81`。该轮 `STATUS=PASS`，72 周期、3 stall，记录 `/tb_top` 全层次波形。
 - 实验功能验收和可复查波形数据库已完成。带标注的 XSim GUI 截图仍需人工从该 WDB 导出；FPGA 上板验证也未执行。截图步骤和 PC 窗口见 [`figures/README.md`](figures/README.md)。
 
 ## 结论写作边界
