@@ -1,0 +1,68 @@
+# Lab6 directed image for long DIV backpressure and held ID branch testing.
+# The branch's delay slot must retire, while its fall-through instruction must not.
+# Word index 64 is the testbench END_PC sentinel at 0xbfc00100.
+00  0xbfc00000  2401ffe9  addiu r1, r0, -23
+01  0xbfc00004  24020005  addiu r2, r0, 5
+02  0xbfc00008  0022001a  div r1, r2 ; quotient=-4, remainder=-3
+03  0xbfc0000c  10000002  beq r0, r0, target ; held behind DIV in EX
+04  0xbfc00010  24030055  addiu r3, r0, 0x55 ; branch delay slot
+05  0xbfc00014  24041234  addiu r4, r0, 0x1234 ; must be skipped
+06  0xbfc00018  00002812  mflo r5 ; expect fffffffc
+07  0xbfc0001c  00003010  mfhi r6 ; expect fffffffd
+08  0xbfc00020  24070066  addiu r7, r0, 0x66 ; branch target marker
+09  0xbfc00024  00000000  nop
+10  0xbfc00028  00000000  nop
+11  0xbfc0002c  00000000  nop
+12  0xbfc00030  00000000  nop
+13  0xbfc00034  00000000  nop
+14  0xbfc00038  00000000  nop
+15  0xbfc0003c  00000000  nop
+16  0xbfc00040  00000000  nop
+17  0xbfc00044  00000000  nop
+18  0xbfc00048  00000000  nop
+19  0xbfc0004c  00000000  nop
+20  0xbfc00050  00000000  nop
+21  0xbfc00054  00000000  nop
+22  0xbfc00058  00000000  nop
+23  0xbfc0005c  00000000  nop
+24  0xbfc00060  00000000  nop
+25  0xbfc00064  00000000  nop
+26  0xbfc00068  00000000  nop
+27  0xbfc0006c  00000000  nop
+28  0xbfc00070  00000000  nop
+29  0xbfc00074  00000000  nop
+30  0xbfc00078  00000000  nop
+31  0xbfc0007c  00000000  nop
+32  0xbfc00080  00000000  nop
+33  0xbfc00084  00000000  nop
+34  0xbfc00088  00000000  nop
+35  0xbfc0008c  00000000  nop
+36  0xbfc00090  00000000  nop
+37  0xbfc00094  00000000  nop
+38  0xbfc00098  00000000  nop
+39  0xbfc0009c  00000000  nop
+40  0xbfc000a0  00000000  nop
+41  0xbfc000a4  00000000  nop
+42  0xbfc000a8  00000000  nop
+43  0xbfc000ac  00000000  nop
+44  0xbfc000b0  00000000  nop
+45  0xbfc000b4  00000000  nop
+46  0xbfc000b8  00000000  nop
+47  0xbfc000bc  00000000  nop
+48  0xbfc000c0  00000000  nop
+49  0xbfc000c4  00000000  nop
+50  0xbfc000c8  00000000  nop
+51  0xbfc000cc  00000000  nop
+52  0xbfc000d0  00000000  nop
+53  0xbfc000d4  00000000  nop
+54  0xbfc000d8  00000000  nop
+55  0xbfc000dc  00000000  nop
+56  0xbfc000e0  00000000  nop
+57  0xbfc000e4  00000000  nop
+58  0xbfc000e8  00000000  nop
+59  0xbfc000ec  00000000  nop
+60  0xbfc000f0  00000000  nop
+61  0xbfc000f4  00000000  nop
+62  0xbfc000f8  00000000  nop
+63  0xbfc000fc  00000000  nop
+64  0xbfc00100  00000000  nop

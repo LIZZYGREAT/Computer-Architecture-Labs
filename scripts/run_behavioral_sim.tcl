@@ -74,6 +74,10 @@ if {![file isdirectory $result_dir]} {
 if {[catch {open_project -quiet $xpr} message]} {
     fail "cannot open existing project: $message"
 }
+if {[catch {reset_simulation -simset sim_1} message]} {
+    fail "cannot reset stale sim_1 output products: $message"
+}
+puts "SIM_OUTPUT_PRODUCTS_RESET=1"
 set sim_set [get_filesets -quiet sim_1]
 if {$sim_set eq ""} {
     fail "sim_1 fileset is missing"
@@ -85,20 +89,30 @@ set source_set [get_filesets -quiet $source_set_name]
 if {$source_set eq ""} {
     fail "simulation source set is missing: $source_set_name"
 }
+set project_source_root [file normalize [file join [file dirname $xpr] .. ..]]
+set ip_source_root [string tolower [file normalize [file join $project_source_root rtl xilinx_ip]]]
 # The checked-in project lists the RTL in sources_1 but XSim omits it from
 # tb_top_vlog.prj. Add those same HDL files explicitly to sim_1 so Vivado
-# compiles the testbench hierarchy. The files remain shared project sources.
+# compiles the testbench hierarchy. IP HDL is omitted here because Vivado
+# already adds its generated simulation models from the XCI dependencies.
 set hdl_sources {}
+set skipped_ip_hdl_count 0
 foreach f [get_files -quiet -of_objects $source_set] {
     set ext [string tolower [file extension [string trim $f "{}"]]]
     if {$ext in {.v .sv .vhd .vhdl}} {
-        lappend hdl_sources $f
+        set normalized_file [string tolower [file normalize [string trim $f "{}"]]]
+        if {[string first "$ip_source_root/" $normalized_file] == 0} {
+            incr skipped_ip_hdl_count
+        } else {
+            lappend hdl_sources $f
+        }
     }
 }
 if {[llength $hdl_sources] == 0} {
     fail "no HDL sources found in $source_set_name"
 }
 puts "SIM_EXPLICIT_DESIGN_SOURCE_COUNT=[llength $hdl_sources]"
+puts "SIM_EXPLICIT_IP_SOURCE_SKIP_COUNT=$skipped_ip_hdl_count"
 foreach f $hdl_sources {
     puts "SIM_EXPLICIT_DESIGN_SOURCE=[string trim $f "{}"]"
 }
@@ -109,7 +123,6 @@ set sim_file_names {}
 foreach f [get_files -quiet -of_objects $sim_set] {
     lappend sim_file_names [string tolower [file normalize [string trim $f "{}"]]]
 }
-set project_source_root [file normalize [file join [file dirname $xpr] .. ..]]
 set top_source [file normalize [file join $project_source_root testbench mycpu_tb.v]]
 set design_top_source [file normalize [file join $project_source_root rtl soc_lite_top.v]]
 set old_tb [get_files -quiet -of_objects $sim_set $top_source]

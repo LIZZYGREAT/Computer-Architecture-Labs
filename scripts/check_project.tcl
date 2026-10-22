@@ -138,7 +138,7 @@ if {$ip_status_file eq ""} {
 }
 set ips [get_ips -quiet]
 puts "IP_COUNT=[llength $ips]"
-set expected_ips {clk_pll data_ram inst_ram}
+set expected_ips {clk_pll data_ram inst_ram lab6_mult33 lab6_div32}
 foreach ip $ips {
     set locked 0
     catch {set locked [get_property IS_LOCKED $ip]}

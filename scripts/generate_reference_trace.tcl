@@ -73,13 +73,49 @@ if {$sim_set eq ""} {
 set_property TOP tb_top $sim_set
 set_property INCREMENTAL false $sim_set
 set_property XSIM.SIMULATE.RUNTIME ${max_ns}ns $sim_set
-set memory_sim_files [add_files -fileset sources_1 -norecurse [list $blk_mem_gen_sim $inst_ram_sim $data_ram_sim]]
+set reference_project_root [file normalize [file join $cpu_cde_root cpu132_gettrace]]
+set source_set [get_filesets -quiet sources_1]
+set design_hdl_files {}
+foreach file_obj [get_files -quiet -of_objects $source_set] {
+    set file_path [string trim $file_obj "{}"]
+    if {[string tolower [file extension $file_path]] in {.v .sv .vhd .vhdl}} {
+        lappend design_hdl_files $file_path
+    }
+}
+if {[llength $design_hdl_files] == 0} {
+    fail "independent reference project contains no design HDL sources"
+}
+if {[catch {add_files -fileset $sim_set -norecurse $design_hdl_files} message]} {
+    fail "cannot attach independent CPU HDL sources to sim_1: $message"
+}
+set tb_file [file normalize [file join $reference_project_root testbench tb_top.v]]
+if {![file isfile $tb_file]} {
+    fail "independent reference testbench is missing: $tb_file"
+}
+if {[catch {add_files -fileset $sim_set -norecurse $tb_file} message]} {
+    fail "cannot attach independent reference testbench to sim_1: $message"
+}
+set tb_file_obj [get_files -quiet -of_objects $sim_set $tb_file]
+if {[llength $tb_file_obj] != 1} {
+    fail "expected one independent reference testbench in sim_1, found [llength $tb_file_obj]"
+}
+set_property FILE_TYPE Verilog $tb_file_obj
+set_property USED_IN {simulation} $tb_file_obj
+set_property IS_ENABLED true $tb_file_obj
+set_property USED_IN_SIMULATION true $tb_file_obj
+set_property USED_IN_SYNTHESIS false $tb_file_obj
+set_property USED_IN_IMPLEMENTATION false $tb_file_obj
+set memory_sim_files [add_files -fileset $sim_set -norecurse [list $blk_mem_gen_sim $inst_ram_sim $data_ram_sim]]
 foreach file_obj $memory_sim_files {
     set_property USED_IN_SYNTHESIS false $file_obj
     set_property USED_IN_IMPLEMENTATION false $file_obj
     set_property USED_IN_SIMULATION true $file_obj
 }
-update_compile_order -fileset sources_1
+# Keep the copied reference project's existing design source set intact. Vivado
+# 2025.2 may mark all sources AutoDisabled here when the external memory models
+# are added to sources_1, leaving the simulation manifest without tb_top or CPU
+# RTL. XSim can resolve the simulation dependencies from the source sets without
+# forcing a synthesis compile-order refresh.
 
 set project_name [file rootname [file tail $xpr]]
 set sim_dir [file normalize [file join [file dirname $xpr] "$project_name.sim" sim_1 behav xsim]]
@@ -102,6 +138,10 @@ set manifest_fh [open $manifest r]
 set manifest_text [read $manifest_fh]
 close $manifest_fh
 set model_entries {}
+set tb_manifest_path [string map {\\ /} $tb_file]
+if {[string first $tb_manifest_path $manifest_text] < 0} {
+    lappend model_entries "verilog xil_defaultlib \"$tb_manifest_path\""
+}
 foreach model_file [list $blk_mem_gen_sim $inst_ram_sim $data_ram_sim] {
     set model_path [string map {\\ /} [file normalize $model_file]]
     if {[string first $model_path $manifest_text] < 0} {
@@ -133,7 +173,6 @@ puts "REFERENCE_MAX_SIMULATION_NS=$max_ns"
 
 set stage_error ""
 set stage_exit_codes {}
-set original_cwd [pwd]
 cd $sim_dir
 foreach step {compile elaborate simulate} {
     set batch_file [file join $sim_dir "$step.bat"]
@@ -146,7 +185,6 @@ foreach step {compile elaborate simulate} {
     }
     lappend stage_exit_codes "$step=0"
 }
-cd $original_cwd
 if {$stage_error ne ""} {
     fail $stage_error
 }

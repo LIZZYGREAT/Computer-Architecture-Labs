@@ -12,6 +12,26 @@
 **/xsim.dir/
 *.jou
 *.pb
+dfx_runtime.txt
+results/**/ip-probe/**/generated/
+results/lab6_lab7/vivado-temp/
+results/lab6_lab7/lab7-20261022T014113Z/
+results/lab3_lab4/lab3-20261021T151543Z/
+results/lab3_lab4/lab3-20261021T153843Z/
+results/lab3_lab4/lab3-20261021T155214Z/
+results/lab3_lab4/lab3-20261021T160327Z/
+results/lab3_lab4/lab3-20261021T160949Z/
+results/lab3_lab4/lab3-20261021T161412Z/
+results/lab3_lab4/lab3-20261021T161705Z/
+results/lab3_lab4/lab3-20261021T161929Z/
+results/lab3_lab4/lab3-cwd-root-test/
+results/lab6_lab7/reference-lab6-20261021T164013Z/
+results/lab6_lab7/reference-lab6-20261021T164208Z/
+results/lab6_lab7/reference-lab6-20261021T164525Z/
+results/lab6_lab7/reference-lab6-20261021T164714Z/
+results/lab6_lab7/reference-lab6-20261021T164914Z/
+results/**/*.cmd
+results/**/*.err
 
 # Generated logs are ignored except for the Lab3/Lab4 evidence indexed by the reports.
 *.log
@@ -33,6 +53,7 @@
 *.ltx
 
 # Rebuildable IP output products; keep .xci, HDL wrappers, and memory images.
+**/rtl/xilinx_ip/**/cmodel/
 **/rtl/xilinx_ip/**/doc/
 **/rtl/xilinx_ip/**/hdl/
 **/rtl/xilinx_ip/**/misc/
