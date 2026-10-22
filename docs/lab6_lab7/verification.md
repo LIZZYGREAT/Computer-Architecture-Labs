@@ -64,6 +64,13 @@ S1 验收已完成。Lab6/Lab7 DUT 累计回归尚未执行；需要先完成对
 - 旧的独立诊断 `results/lab3_lab4/gcc-investigation-20261020T150000Z/` 记录 Vivado 随附 GCC 启动失败（Windows“无效的系统 DLL 重定位”）；这与本次 Xelab 生成 C 阶段故障相符。没有添加 GCC PATH 覆盖。
 - 目前 S3、S4、S5 的 DUT 功能结果均为未验证；Lab6/Lab7 的全量 trace、功能点、WDB 和截图门槛均未达成。保持最终 `lab6-lab7-verified` tag 未创建。
 
+### IP 输出重建后的复核（2026-10-22）
+
+- 重新生成工程现有五个 Xilinx IP 输出后，执行 `./scripts/verify.ps1 -Case lab7 -PreflightOnly -TimeoutSeconds 600`，PASS。设计顶层 `soc_lite_top`、仿真顶层 `tb_top`、五个 IP 均为 `Up-to-date`，源文件检查通过；结果目录 `results/lab6_lab7/lab7-20261022T022440Z/`，详见 `ip_status.rpt` 与 `preflight-console.log`。
+- 随后重跑 `./scripts/verify.ps1 -Case lab7 -PipelineMode forwarding -TimeoutSeconds 1800`，运行 ID `lab7-20261022T022751Z`，2026-10-22 02:29:02–02:32:07 UTC，耗时约 185 秒。Lab7 trace 和仿真暂存 MIF 哈希匹配，Xvlog/Xvhdl 及静态展开通过；Xelab 编译 `xsim_5.c` 时仍报 `XSIM 43-3409`，XSim 未启动，0 个功能点、0 个周期。结果为 `ENVIRONMENT_ERROR`，不是 DUT 功能判定；`result.txt`、`simulation-vivado.log` 和 `xsim-elaborate.log` 保留证据。
+- 本机直接启动 Vivado 自带 GCC 6.2.0 仍返回 Windows“无效的系统 DLL 重定位”；现有 TDM-GCC 10.3.0 可独立编译生成的 `xsim_5.c`，但 Xelab 仍调用 Vivado 自带 GCC。没有替换 Vivado 安装文件或改写工具链覆盖。探测记录见 `results/lab6_lab7/lab7-20261022T022751Z/gcc-toolchain-probe.txt`；回归结束后工程 `.xpr` 已恢复到仿真前状态。
+- 预检通过只确认工程与 IP 可加载，不改变 S3–S5 的功能验收状态。需先恢复 Vivado 自带 GCC 的可启动环境，再继续 Lab6/Lab7 DUT、HILO 单元、全量 trace 和 WDB 验收；完成前不创建最终验证 tag。
+
 ## S2 Lab6 算术与逻辑指令
 
 - 译码实现 `add/sub/addi/slti/sltiu/andi/ori/xori/sllv/srav/srlv`，补齐 `rs_used/rt_used`、目的寄存器和合法写回集合；逻辑立即数在 EX 零扩展、算术/比较立即数符号扩展。`DS_TO_ES_BUS_WD` 保持 136 位。

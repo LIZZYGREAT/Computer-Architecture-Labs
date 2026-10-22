@@ -28,8 +28,16 @@ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\lab\scripts\ge
 powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\lab\scripts\verify.ps1 -Case lab7 -PipelineMode forwarding
 ```
 
-Lab6/Lab7 的 reference trace 已生成；DUT 累计回归需待对应指令 RTL 完成后执行。手动 GUI 的 `Run All` 用于默认 Lab3 基线；Lab4/Lab6/Lab7 请通过脚本传入正确映像、trace 和功能点数。
+Lab6/Lab7 的 reference trace 已生成。手动 GUI 的 `Run All` 用于默认 Lab3 基线；Lab4/Lab6/Lab7 请通过脚本传入正确映像、trace 和功能点数。
 
 ## 当前复核结果
 
-2026-10-21 使用 Vivado 2025.2 运行 Lab3 forwarding：23/23 功能点通过、172599 周期、0 stall，独立 trace 匹配。日志：[`lab3-20261021T131349Z`](../../results/lab3_lab4/lab3-20261021T131349Z/)。S1 最新回归及 Lab6/Lab7 trace 记录见 [`verification.md`](verification.md)。
+2026-10-21 使用 Vivado 2025.2 运行 Lab3 forwarding：23/23 功能点通过、172599 周期、0 stall，独立 trace 匹配。日志：[`lab3-20261021T131349Z`](../../results/lab3_lab4/lab3-20261021T131349Z/)。
+
+2026-10-22 复核确认工程可打开，五个 IP 均为 `Up-to-date`；脚本预检命令为：
+
+```powershell
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\lab\scripts\verify.ps1 -Case lab7 -PreflightOnly
+```
+
+当前 Lab7 回归在 Xelab 启动 Vivado 自带 GCC 6.2.0 时遇到 Windows“无效的系统 DLL 重定位”，XSim 未开始运行。不要用直接打开 `vivado.bat` 的方式启动回归；从 FPGA 根目录运行上面的 `verify.ps1` 命令。详细状态和日志索引见 [`verification.md`](verification.md)。
