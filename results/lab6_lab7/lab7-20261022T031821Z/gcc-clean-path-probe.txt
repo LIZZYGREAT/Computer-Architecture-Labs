@@ -1,0 +1,8 @@
+DATE_UTC=2026-10-22
+TEST=Vivado GCC 6.2 --version under isolated PATH
+PATH=C:\WINDOWS\System32;C:\WINDOWS;D:\Verilog\2025.2\Vivado\tps\mingw\6.2.0\win64.o\nt\bin
+RESULT=FAILED_TO_START
+ERROR=Windows invalid system DLL relocation (Win32Exception 623)
+GCC_SIM_EXE_PATH=unset
+RDI_MINGW_LIB=unset
+NOTE=PowerShell process PATH was restored immediately after the check.

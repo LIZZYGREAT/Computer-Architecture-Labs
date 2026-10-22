@@ -71,6 +71,12 @@ S1 验收已完成。Lab6/Lab7 DUT 累计回归尚未执行；需要先完成对
 - 本机直接启动 Vivado 自带 GCC 6.2.0 仍返回 Windows“无效的系统 DLL 重定位”；现有 TDM-GCC 10.3.0 可独立编译生成的 `xsim_5.c`，但 Xelab 仍调用 Vivado 自带 GCC。没有替换 Vivado 安装文件或改写工具链覆盖。探测记录见 `results/lab6_lab7/lab7-20261022T022751Z/gcc-toolchain-probe.txt`；回归结束后工程 `.xpr` 已恢复到仿真前状态。
 - 预检通过只确认工程与 IP 可加载，不改变 S3–S5 的功能验收状态。需先恢复 Vivado 自带 GCC 的可启动环境，再继续 Lab6/Lab7 DUT、HILO 单元、全量 trace 和 WDB 验收；完成前不创建最终验证 tag。
 
+### 按 Lab3/Lab4 GCC 启动排障建议复测（2026-10-22）
+
+- 复查 `docs/lab3-lab4/gcc-startup-incident.md` 后，在进程级 `PATH` 中移除 TDM-GCC 与其他 GCC 9.5/10.3 路径运行 Lab7：`.\scripts\verify.ps1 -Case lab7 -PipelineMode forwarding -TimeoutSeconds 1800`。运行 `lab7-20261022T031821Z`，仍在 Xelab 编译 `xsim_5.c` 时出现 `XSIM 43-3409`，XSim 未启动，0 个功能点、0 个周期。
+- 同样的临时 `PATH` 下又运行 Lab3 forwarding 对照：`.\scripts\verify.ps1 -Case lab3 -PipelineMode forwarding -TimeoutSeconds 1800`。运行 `lab3-20261022T032433Z`，在同一个 `xsim_5.c` / `XSIM 43-3409` 阶段退出，XSim 未启动。两次输入镜像和 golden trace 哈希均匹配；结果目录分别为 `results/lab6_lab7/lab7-20261022T031821Z/` 与 `results/lab3_lab4/lab3-20261022T032433Z/`。
+- Vivado GCC 6.2 在隔离 `PATH` 下执行 `--version` 仍报 Windows“无效的系统 DLL 重定位”；探测记录在 Lab7 结果目录的 `gcc-clean-path-probe.txt`。因此 Lab3/Lab4 文档中的默认环境方案虽已应用于仿真脚本，但当前 Codex 执行会话仍无法复现其先前记录的 GCC 启动与 XSim 通过。两轮结束后 XPR 已恢复；本次不算功能失败，也不算通过。
+
 ## S2 Lab6 算术与逻辑指令
 
 - 译码实现 `add/sub/addi/slti/sltiu/andi/ori/xori/sllv/srav/srlv`，补齐 `rs_used/rt_used`、目的寄存器和合法写回集合；逻辑立即数在 EX 零扩展、算术/比较立即数符号扩展。`DS_TO_ES_BUS_WD` 保持 136 位。
