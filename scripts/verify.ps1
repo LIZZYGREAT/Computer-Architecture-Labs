@@ -86,6 +86,68 @@ function Quote-CmdArg([string]$Value) {
     '"' + $Value.Replace('"', '""') + '"'
 }
 
+if (-not ('VivadoHostContextProbe' -as [type])) {
+    Add-Type -TypeDefinition @'
+using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+
+public static class VivadoHostContextProbe
+{
+    [DllImport("kernel32.dll")]
+    private static extern IntPtr GetCurrentProcess();
+
+    [DllImport("advapi32.dll", SetLastError = true)]
+    private static extern bool OpenProcessToken(IntPtr processHandle, uint desiredAccess, out IntPtr tokenHandle);
+
+    [DllImport("advapi32.dll", SetLastError = true)]
+    private static extern bool GetTokenInformation(IntPtr tokenHandle, int tokenInformationClass,
+        out int tokenInformation, int tokenInformationLength, out int returnLength);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool CloseHandle(IntPtr handle);
+
+    public static bool IsCurrentProcessAppContainer()
+    {
+        IntPtr tokenHandle;
+        if (!OpenProcessToken(GetCurrentProcess(), 0x0008, out tokenHandle))
+            throw new Win32Exception(Marshal.GetLastWin32Error());
+
+        try
+        {
+            int isAppContainer;
+            int returnLength;
+            if (!GetTokenInformation(tokenHandle, 29, out isAppContainer,
+                sizeof(int), out returnLength))
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+            return isAppContainer != 0;
+        }
+        finally
+        {
+            CloseHandle(tokenHandle);
+        }
+    }
+}
+'@
+}
+
+try {
+    $isAppContainer = [VivadoHostContextProbe]::IsCurrentProcessAppContainer()
+} catch {
+    Write-Output "ENVIRONMENT_ERROR: unable to inspect the PowerShell token security context: $($_.Exception.Message)"
+    exit 2
+}
+@("WINDOWS_APPCONTAINER=$isAppContainer", "POWERSHELL=$((Get-Process -Id $PID).Path)") |
+    Set-Content -LiteralPath (Join-Path $resultDir 'host-context.txt') -Encoding UTF8
+if ($isAppContainer) {
+    $reason = 'PowerShell is running in a Windows AppContainer. Xelab cannot start Vivado GCC in this context; run verify.ps1 from regular Windows PowerShell outside AppContainer.'
+    @('STATUS=ENVIRONMENT_ERROR', "REASON=$reason", 'FUNCTIONAL_POINTS=NOT_RUN', 'CYCLES=NOT_RUN') |
+        Set-Content -LiteralPath (Join-Path $resultDir 'result.txt') -Encoding UTF8
+    Write-Output "ENVIRONMENT_ERROR: $reason"
+    Write-Output "LOG=$resultDir"
+    exit 2
+}
+
 function Invoke-VivadoBatch([string]$Name, [string]$TclFile, [string[]]$TclArgs) {
     $vivadoLog = Join-Path $resultDir "$Name-vivado.log"
     $journal = Join-Path $resultDir "$Name-vivado.jou"

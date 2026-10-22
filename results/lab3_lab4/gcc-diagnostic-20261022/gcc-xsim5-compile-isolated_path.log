@@ -1,0 +1,13 @@
+CASE=isolated_path
+CWD=C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab3\CPU_CDE\mycpu_verify\run_vivado\mycpu_prj1\mycpu_prj1.sim\sim_1\behav\xsim
+EXE=D:\Verilog\2025.2\Vivado\tps\mingw\6.2.0\win64.o\nt\bin\gcc.exe
+ARGS=-fPIC -c -Wa,-W -ID:\Verilog\2025.2\Vivado\data/xsim/include "xsim.dir\tb_top_behav\obj\xsim_5.c" -O1 -o "xsim.dir\tb_top_behav\obj\xsim_5.win64.obj" -DXILINX_SIMULATOR
+PATH=C:\WINDOWS\System32;C:\WINDOWS
+EXIT=0
+START_EXCEPTION=
+STDOUT_BEGIN
+
+STDOUT_END
+STDERR_BEGIN
+
+STDERR_END

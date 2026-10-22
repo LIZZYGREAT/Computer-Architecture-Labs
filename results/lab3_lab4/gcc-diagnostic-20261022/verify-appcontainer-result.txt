@@ -1,0 +1,4 @@
+STATUS=ENVIRONMENT_ERROR
+REASON=PowerShell is running in a Windows AppContainer. Xelab cannot start Vivado GCC in this context; run verify.ps1 from regular Windows PowerShell outside AppContainer.
+FUNCTIONAL_POINTS=NOT_RUN
+CYCLES=NOT_RUN

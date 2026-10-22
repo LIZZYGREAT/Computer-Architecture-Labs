@@ -1,0 +1,4 @@
+"D:\Verilog\2025.2\Vivado\tps\mingw\6.2.0\win64.o\nt\bin\gcc.exe" --version
+"D:\Verilog\2025.2\Vivado\tps\mingw\6.2.0\win64.o\nt\bin\gcc.exe" -fPIC -c -Wa,-W -I"D:\Verilog\2025.2\Vivado\data/xsim/include" "xsim.dir/tb_top_verbose/obj/xsim_2.c" -O1 -o "xsim.dir/tb_top_verbose/obj/xsim_2.win64.obj" -DXILINX_SIMULATOR
+CWD=C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab3\CPU_CDE\mycpu_verify\run_vivado\mycpu_prj1\mycpu_prj1.sim\sim_1\behav\xsim
+PATH=D:\Verilog\2025.2\Vivado\tps\mingw\6.2.0\win64.o\nt\bin;C:\WINDOWS\System32;C:\WINDOWS

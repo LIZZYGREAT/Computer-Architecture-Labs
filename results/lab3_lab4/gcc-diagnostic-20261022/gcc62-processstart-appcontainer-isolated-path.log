@@ -1,0 +1,23 @@
+MODE=isolated
+EXE=D:\Verilog\2025.2\Vivado\tps\mingw\6.2.0\win64.o\nt\bin\gcc.exe
+ARGS=--version
+CWD=C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab3\CPU_CDE\mycpu_verify\run_vivado\mycpu_prj1\mycpu_prj1.sim\sim_1\behav\xsim
+PATH=C:\Windows\System32;C:\Windows
+EXIT_CODE=not-started
+START_EXCEPTION=System.Management.Automation.MethodInvocationException: Exception calling "Start" with "0" argument(s): "An error occurred trying to start process 'D:\Verilog\2025.2\Vivado\tps\mingw\6.2.0\win64.o\nt\bin\gcc.exe' with working directory 'C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab3\CPU_CDE\mycpu_verify\run_vivado\mycpu_prj1\mycpu_prj1.sim\sim_1\behav\xsim'. {无效的系统 DLL 重定位}
+系统 DLL %hs 在内存中重定位。应用程序将不能正常运行。
+由于 DLL %hs 占用了为 Windows 系统 DLL 保存的地址范围而产生了错误。应当与提供该 DLL 的供应商联系以得到新的 DLL。"
+ ---> System.ComponentModel.Win32Exception (623): An error occurred trying to start process 'D:\Verilog\2025.2\Vivado\tps\mingw\6.2.0\win64.o\nt\bin\gcc.exe' with working directory 'C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab3\CPU_CDE\mycpu_verify\run_vivado\mycpu_prj1\mycpu_prj1.sim\sim_1\behav\xsim'. {无效的系统 DLL 重定位}
+系统 DLL %hs 在内存中重定位。应用程序将不能正常运行。
+由于 DLL %hs 占用了为 Windows 系统 DLL 保存的地址范围而产生了错误。应当与提供该 DLL 的供应商联系以得到新的 DLL。
+   at System.Diagnostics.Process.StartWithCreateProcess(ProcessStartInfo startInfo)
+   at CallSite.Target(Closure, CallSite, Object)
+   --- End of inner exception stack trace ---
+   at System.Management.Automation.ExceptionHandlingOps.CheckActionPreference(FunctionContext funcContext, Exception exception)
+   at System.Management.Automation.Interpreter.ActionCallInstruction`2.Run(InterpretedFrame frame)
+   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+STDOUT:
+
+STDERR:
+
