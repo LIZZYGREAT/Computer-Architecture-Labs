@@ -120,6 +120,10 @@ integer hazard_store_base_forwards;
 integer hazard_store_data_forwards;
 integer hazard_branch_forwards;
 integer hazard_jr_forwards;
+integer hazard_new_store_base_forwards;
+integer hazard_new_store_data_forwards;
+integer hazard_new_branch_forwards;
+integer hazard_jalr_forwards;
 integer hazard_priority_ex_uses;
 integer hazard_zero_dest_writes;
 integer zero_reg_writeback_attempts;
@@ -129,6 +133,22 @@ integer expected_points_plusarg;
 reg     functional_point_count_error;
 wire ds_instruction_issued = soc_lite.cpu.id_stage.ds_to_es_valid &&
                              soc_lite.cpu.id_stage.es_allowin;
+wire ds_new_store = soc_lite.cpu.id_stage.inst_sb ||
+                    soc_lite.cpu.id_stage.inst_sh ||
+                    soc_lite.cpu.id_stage.inst_swl ||
+                    soc_lite.cpu.id_stage.inst_swr;
+wire ds_new_branch = soc_lite.cpu.id_stage.inst_bgez ||
+                     soc_lite.cpu.id_stage.inst_bgtz ||
+                     soc_lite.cpu.id_stage.inst_blez ||
+                     soc_lite.cpu.id_stage.inst_bltz ||
+                     soc_lite.cpu.id_stage.inst_bgezal ||
+                     soc_lite.cpu.id_stage.inst_bltzal;
+wire ds_rs_forwarded = soc_lite.cpu.id_stage.ds_forward_rs_ex ||
+                       soc_lite.cpu.id_stage.ds_forward_rs_ms ||
+                       soc_lite.cpu.id_stage.ds_forward_rs_ws;
+wire ds_rt_forwarded = soc_lite.cpu.id_stage.ds_forward_rt_ex ||
+                       soc_lite.cpu.id_stage.ds_forward_rt_ms ||
+                       soc_lite.cpu.id_stage.ds_forward_rt_ws;
 initial begin
     trace_records_read = 0;
     trace_matched_writes = 0;
@@ -144,6 +164,10 @@ initial begin
     hazard_store_data_forwards = 0;
     hazard_branch_forwards = 0;
     hazard_jr_forwards = 0;
+    hazard_new_store_base_forwards = 0;
+    hazard_new_store_data_forwards = 0;
+    hazard_new_branch_forwards = 0;
+    hazard_jalr_forwards = 0;
     hazard_priority_ex_uses = 0;
     hazard_zero_dest_writes = 0;
     zero_reg_writeback_attempts = 0;
@@ -181,6 +205,10 @@ begin
         hazard_store_data_forwards <= 0;
         hazard_branch_forwards <= 0;
         hazard_jr_forwards <= 0;
+        hazard_new_store_base_forwards <= 0;
+        hazard_new_store_data_forwards <= 0;
+        hazard_new_branch_forwards <= 0;
+        hazard_jalr_forwards <= 0;
         hazard_priority_ex_uses <= 0;
         hazard_zero_dest_writes <= 0;
         zero_reg_writeback_attempts <= 0;
@@ -212,6 +240,17 @@ begin
             (soc_lite.cpu.id_stage.ds_forward_rt_ex || soc_lite.cpu.id_stage.ds_forward_rt_ms ||
              soc_lite.cpu.id_stage.ds_forward_rt_ws))
             hazard_store_data_forwards <= hazard_store_data_forwards + 1;
+        // These Lab7 counters cover only the added instruction families.
+        // Counts are issued instruction cycles (one per base/data/branch/jalr
+        // use), not cycles spent stalled in ID and not individual bit lanes.
+        if (ds_instruction_issued && ds_new_store && ds_rs_forwarded)
+            hazard_new_store_base_forwards <= hazard_new_store_base_forwards + 1;
+        if (ds_instruction_issued && ds_new_store && ds_rt_forwarded)
+            hazard_new_store_data_forwards <= hazard_new_store_data_forwards + 1;
+        if (ds_instruction_issued && ds_new_branch && ds_rs_forwarded)
+            hazard_new_branch_forwards <= hazard_new_branch_forwards + 1;
+        if (ds_instruction_issued && soc_lite.cpu.id_stage.inst_jalr && ds_rs_forwarded)
+            hazard_jalr_forwards <= hazard_jalr_forwards + 1;
         if (ds_instruction_issued &&
             (soc_lite.cpu.id_stage.inst_beq || soc_lite.cpu.id_stage.inst_bne) &&
             (soc_lite.cpu.id_stage.ds_forward_rs_ex || soc_lite.cpu.id_stage.ds_forward_rt_ex ||
@@ -437,6 +476,10 @@ begin
         $display("HAZARD_STORE_DATA_FORWARDS=%0d", hazard_store_data_forwards);
         $display("HAZARD_BRANCH_FORWARDS=%0d", hazard_branch_forwards);
         $display("HAZARD_JR_FORWARDS=%0d", hazard_jr_forwards);
+        $display("HAZARD_NEW_STORE_BASE_FORWARDS=%0d", hazard_new_store_base_forwards);
+        $display("HAZARD_NEW_STORE_DATA_FORWARDS=%0d", hazard_new_store_data_forwards);
+        $display("HAZARD_NEW_BRANCH_FORWARDS=%0d", hazard_new_branch_forwards);
+        $display("HAZARD_JALR_FORWARDS=%0d", hazard_jalr_forwards);
         $display("HAZARD_PRIORITY_EX_USES=%0d", hazard_priority_ex_uses);
         $display("HAZARD_ZERO_DEST_WRITES=%0d", hazard_zero_dest_writes);
         $display("ZERO_REG_WRITEBACK_ATTEMPTS=%0d", zero_reg_writeback_attempts);

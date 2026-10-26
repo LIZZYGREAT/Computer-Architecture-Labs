@@ -1,0 +1,69 @@
+# Lab7 forwarding directed image, checked against the independent CPU132 trace.
+# Includes sb/sh/swl/swr, bgez/bgtz/blez/bltz/bgezal/bltzal and jalr.
+# Each added store/branch/jalr family includes at least one forwarded source.
+# Word index 64 is the testbench END_PC sentinel at 0xbfc00100.
+00  0xbfc00000  24050001  addiu r5, r0, 1
+01  0xbfc00004  24a60001  addiu r6, r5, 1 ; EX forwarding
+02  0xbfc00008  24070002  addiu r7, r0, 2
+03  0xbfc0000c  00000000  nop
+04  0xbfc00010  24e80001  addiu r8, r7, 1 ; MEM forwarding
+05  0xbfc00014  24090003  addiu r9, r0, 3
+06  0xbfc00018  00000000  nop
+07  0xbfc0001c  00000000  nop
+08  0xbfc00020  252b0001  addiu r11, r9, 1 ; WB forwarding
+09  0xbfc00024  240c0001  addiu r12, r0, 1
+10  0xbfc00028  240c0002  addiu r12, r0, 2
+11  0xbfc0002c  01806821  addu r13, r12, r0 ; youngest writer wins
+12  0xbfc00030  3c0e800d  lui r14, 0x800d ; load-use test data base
+13  0xbfc00034  8dcf0000  lw r15, 0(r14)
+14  0xbfc00038  01e08021  addu r16, r15, r0 ; one load-use wait
+15  0xbfc0003c  3c0a800d  lui r10, 0x800d ; data RAM base
+16  0xbfc00040  254a0004  addiu r10, r10, 4
+17  0xbfc00044  a146fffc  sb r6, -4(r10)
+18  0xbfc00048  254a0004  addiu r10, r10, 4
+19  0xbfc0004c  a546fffc  sh r6, -4(r10)
+20  0xbfc00050  24011234  addiu r1, r0, 4660
+21  0xbfc00054  a9410000  swl r1, 0(r10)
+22  0xbfc00058  24015678  addiu r1, r0, 22136
+23  0xbfc0005c  b9410004  swr r1, 4(r10)
+24  0xbfc00060  254a0004  addiu r10, r10, 4
+25  0xbfc00064  ad4afffc  sw r10, -4(r10)
+26  0xbfc00068  24020001  addiu r2, r0, 1 ; bgez rs producer
+27  0xbfc0006c  04410002  bgez r2, after_bgez (offset 2)
+28  0xbfc00070  24030040  addiu r3, r0, 64 ; architectural delay slot
+29  0xbfc00074  24030099  addiu r3, r0, 153 ; skipped when branch is taken
+30  0xbfc00078  24020001  addiu r2, r0, 1 ; bgtz rs producer
+31  0xbfc0007c  1c420002  bgtz r2, r2, after_bgtz (offset 2)
+32  0xbfc00080  24030041  addiu r3, r0, 65 ; architectural delay slot
+33  0xbfc00084  24030099  addiu r3, r0, 153 ; skipped when branch is taken
+34  0xbfc00088  24020000  addiu r2, r0, 0 ; blez rs producer
+35  0xbfc0008c  18420002  blez r2, r2, after_blez (offset 2)
+36  0xbfc00090  24030042  addiu r3, r0, 66 ; architectural delay slot
+37  0xbfc00094  24030099  addiu r3, r0, 153 ; skipped when branch is taken
+38  0xbfc00098  2402ffff  addiu r2, r0, -1 ; bltz rs producer
+39  0xbfc0009c  04400002  bltz r2, after_bltz (offset 2)
+40  0xbfc000a0  24030043  addiu r3, r0, 67 ; architectural delay slot
+41  0xbfc000a4  24030099  addiu r3, r0, 153 ; skipped when branch is taken
+42  0xbfc000a8  24020001  addiu r2, r0, 1 ; bgezal rs producer
+43  0xbfc000ac  04510002  bgezal r2, after_bgezal (offset 2)
+44  0xbfc000b0  24030044  addiu r3, r0, 68 ; architectural delay slot
+45  0xbfc000b4  24030099  addiu r3, r0, 153 ; skipped when branch is taken
+46  0xbfc000b8  2402ffff  addiu r2, r0, -1 ; bltzal rs producer
+47  0xbfc000bc  04500002  bltzal r2, after_bltzal (offset 2)
+48  0xbfc000c0  24030045  addiu r3, r0, 69 ; architectural delay slot
+49  0xbfc000c4  24030099  addiu r3, r0, 153 ; skipped when branch is taken
+50  0xbfc000c8  3c14bfc0  lui r20, 0xbfc0
+51  0xbfc000cc  369400dc  ori r20, r20, 0x00dc (target 0xbfc000dc)
+52  0xbfc000d0  02800008  jr r20
+53  0xbfc000d4  24040051  addiu r4, r0, 81 ; JR delay slot
+54  0xbfc000d8  24040099  addiu r4, r0, 153 ; skipped by JR
+55  0xbfc000dc  3c19bfc0  lui r25, 0xbfc0
+56  0xbfc000e0  373900f0  ori r25, r25, 0x00f0 (target 0xbfc000f0)
+57  0xbfc000e4  0320d009  jalr r26, r25
+58  0xbfc000e8  24040061  addiu r4, r0, 97 ; JALR delay slot
+59  0xbfc000ec  24040099  addiu r4, r0, 153 ; skipped by JALR
+60  0xbfc000f0  24020001  addiu r2, r0, 1 ; legacy BEQ rs producer
+61  0xbfc000f4  10420002  beq r2, r2, end (offset 2)
+62  0xbfc000f8  24040071  addiu r4, r0, 113 ; BEQ delay slot
+63  0xbfc000fc  24040099  addiu r4, r0, 153 ; skipped by BEQ
+64  0xbfc00100  00000000  nop ; END_PC sentinel at word 64

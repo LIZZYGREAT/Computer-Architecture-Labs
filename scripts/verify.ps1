@@ -50,6 +50,7 @@ if (-not (Test-Path -LiteralPath $Vivado)) {
 
 $stamp = [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ')
 $runId = "$Case-$stamp"
+$sourceCommit = (git -C $labRoot rev-parse HEAD 2>$null | Select-Object -First 1)
 $resultRoot = Join-Path $labRoot $caseSettings.ResultRoot
 $resultDir = Join-Path $resultRoot $runId
 New-Item -ItemType Directory -Path $resultDir -Force | Out-Null
@@ -281,7 +282,7 @@ if ($CaptureWaveform) {
     $sourceWdb = Join-Path $simWorkingDir 'tb_top_behav.wdb'
     if ((Test-Path -LiteralPath $sourceWdb) -and
         (Get-Item -LiteralPath $sourceWdb).LastWriteTimeUtc -ge $startedAt.AddSeconds(-2)) {
-        $waveformPath = Join-Path $resultDir 'hazard-directed-forwarding.wdb'
+        $waveformPath = Join-Path $resultDir "$runId-$PipelineMode.wdb"
         Copy-Item -LiteralPath $sourceWdb -Destination $waveformPath -Force
         $waveformHash = (Get-FileHash -LiteralPath $waveformPath -Algorithm SHA256).Hash
         $waveformCaptured = $true
@@ -361,6 +362,10 @@ foreach ($metric in @(
     'HAZARD_STORE_DATA_FORWARDS',
     'HAZARD_BRANCH_FORWARDS',
     'HAZARD_JR_FORWARDS',
+    'HAZARD_NEW_STORE_BASE_FORWARDS',
+    'HAZARD_NEW_STORE_DATA_FORWARDS',
+    'HAZARD_NEW_BRANCH_FORWARDS',
+    'HAZARD_JALR_FORWARDS',
     'HAZARD_PRIORITY_EX_USES',
     'HAZARD_ZERO_DEST_WRITES'
 )) {
@@ -379,6 +384,18 @@ if ($HazardDirected) {
             $hazardMetrics['HAZARD_BRANCH_FORWARDS'] -gt 0 -and
             $hazardMetrics['HAZARD_JR_FORWARDS'] -gt 0 -and
             $hazardMetrics['HAZARD_PRIORITY_EX_USES'] -gt 0
+        if ($Case -eq 'lab7') {
+            # The Lab7 directed image contains four new store operations, six
+            # new conditional branches, and one JALR. Exact branch/jalr counts
+            # detect repeated counting while an ID instruction is held.
+            $hazardCoveragePass = $hazardCoveragePass -and
+                $hazardMetrics['HAZARD_NEW_STORE_BASE_FORWARDS'] -gt 0 -and
+                $hazardMetrics['HAZARD_NEW_STORE_BASE_FORWARDS'] -le 4 -and
+                $hazardMetrics['HAZARD_NEW_STORE_DATA_FORWARDS'] -gt 0 -and
+                $hazardMetrics['HAZARD_NEW_STORE_DATA_FORWARDS'] -le 4 -and
+                $hazardMetrics['HAZARD_NEW_BRANCH_FORWARDS'] -eq 6 -and
+                $hazardMetrics['HAZARD_JALR_FORWARDS'] -eq 1
+        }
     } else {
         $hazardCoveragePass = $hazardCoveragePass -and $forwardUses -eq 0
     }
@@ -414,6 +431,9 @@ if ($traceOpenFailed) {
 
 @(
     "STATUS=$status",
+    "RUN_ID=$runId",
+    "SOURCE_COMMIT=$sourceCommit",
+    "CASE=$Case",
     "SIM_EXIT_CODE=$simCode",
     "PIPELINE_MODE=$PipelineMode",
     "TRACE_FILE=$traceFile",
@@ -437,6 +457,10 @@ if ($traceOpenFailed) {
     "HAZARD_STORE_DATA_FORWARDS=$($hazardMetrics['HAZARD_STORE_DATA_FORWARDS'])",
     "HAZARD_BRANCH_FORWARDS=$($hazardMetrics['HAZARD_BRANCH_FORWARDS'])",
     "HAZARD_JR_FORWARDS=$($hazardMetrics['HAZARD_JR_FORWARDS'])",
+    "HAZARD_NEW_STORE_BASE_FORWARDS=$($hazardMetrics['HAZARD_NEW_STORE_BASE_FORWARDS'])",
+    "HAZARD_NEW_STORE_DATA_FORWARDS=$($hazardMetrics['HAZARD_NEW_STORE_DATA_FORWARDS'])",
+    "HAZARD_NEW_BRANCH_FORWARDS=$($hazardMetrics['HAZARD_NEW_BRANCH_FORWARDS'])",
+    "HAZARD_JALR_FORWARDS=$($hazardMetrics['HAZARD_JALR_FORWARDS'])",
     "HAZARD_PRIORITY_EX_USES=$($hazardMetrics['HAZARD_PRIORITY_EX_USES'])",
     "HAZARD_ZERO_DEST_WRITES=$($hazardMetrics['HAZARD_ZERO_DEST_WRITES'])",
     "ZERO_REG_WRITEBACK_ATTEMPTS=$zeroRegWritebackAttempts",
@@ -471,6 +495,10 @@ Write-Output "HAZARD_STORE_BASE_FORWARDS=$($hazardMetrics['HAZARD_STORE_BASE_FOR
 Write-Output "HAZARD_STORE_DATA_FORWARDS=$($hazardMetrics['HAZARD_STORE_DATA_FORWARDS'])"
 Write-Output "HAZARD_BRANCH_FORWARDS=$($hazardMetrics['HAZARD_BRANCH_FORWARDS'])"
 Write-Output "HAZARD_JR_FORWARDS=$($hazardMetrics['HAZARD_JR_FORWARDS'])"
+Write-Output "HAZARD_NEW_STORE_BASE_FORWARDS=$($hazardMetrics['HAZARD_NEW_STORE_BASE_FORWARDS'])"
+Write-Output "HAZARD_NEW_STORE_DATA_FORWARDS=$($hazardMetrics['HAZARD_NEW_STORE_DATA_FORWARDS'])"
+Write-Output "HAZARD_NEW_BRANCH_FORWARDS=$($hazardMetrics['HAZARD_NEW_BRANCH_FORWARDS'])"
+Write-Output "HAZARD_JALR_FORWARDS=$($hazardMetrics['HAZARD_JALR_FORWARDS'])"
 Write-Output "HAZARD_PRIORITY_EX_USES=$($hazardMetrics['HAZARD_PRIORITY_EX_USES'])"
 Write-Output "HAZARD_ZERO_DEST_WRITES=$($hazardMetrics['HAZARD_ZERO_DEST_WRITES'])"
 Write-Output "ZERO_REG_WRITEBACK_ATTEMPTS=$zeroRegWritebackAttempts"
