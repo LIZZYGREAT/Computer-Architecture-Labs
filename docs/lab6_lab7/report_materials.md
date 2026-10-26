@@ -1,18 +1,17 @@
 # Lab6–Lab7 实验报告材料（当前已验证证据）
 
-## 已有可引用结果
+## 当前验收状态
 
-- Lab3 forwarding 基线：23/23，172,599 cycles，0 stalls，独立 trace 匹配。
-- Lab4 forwarding 基线：23/23，114,577 cycles，50 stalls，EX/MEM/WB 前递均有覆盖，独立 trace 匹配。
-- Lab6 ALU 定向用例：算术/立即数/可变移位边界通过；73 cycles、1 次 load-use stall，EX/MEM/WB forwarding 使用次数为 7/6/3，独立 trace 匹配。
-- 累计 Lab6 在 S2 节点到达 n35 `div`，此前 n24–n34 的 34 个功能点通过；该节点之后没有完成 HI/LO 功能。
+本轮完整回归已通过：Lab3 23/23、Lab4 23/23、Lab6 42/42、Lab7 68/68。Lab6 与 Lab7 分别与独立 CPU132 trace 的 66,612/66,612 和 100,732/100,732 条写回记录匹配；HI/LO 单元 testbench、除法后分支等待定向用例和新增指令前递定向用例也通过。结果目录、哈希及运行日志索引见 [verification.md](verification.md)。
 
-## 当前 Lab6–Lab7 状态
+旧记录 `lab6-20261021T141122Z` 的 34/42 是 HI/LO 完成前 S2 阶段的历史失败，不能描述当前累计结果。2026-10-22 的 GCC/Xelab 失败也是早期环境诊断；后续普通 Windows PowerShell 下的完整 XSim 回归已通过。
 
-Lab6 乘除法/HI-LO 与 Lab7 转移/访存 RTL 已加入唯一累计 CPU 工程，但完整 DUT 验证未完成。2026-10-22 Lab7 forwarding 运行在 Xelab 生成 C 编译阶段失败，XSim 未开始执行；因此没有 Lab6/7 的累计功能点、DUT trace 匹配结果或 CPU 波形。详细状态见 [verification.md](verification.md)。
+## 新增指令前递统计
 
-## 波形材料
+Lab7 新增计数在 `ds_instruction_issued` 时采样，避免 EX 背压期间重复计数。累计回归的新增 store 基址/数据、条件分支、`jalr` 前递计数分别为 112/0/1,229/28；独立短定向程序相应得到 3/2/6/1，覆盖 `sb/sh/swl/swr`、六种新增条件分支与 `jalr`。这是发射指令周期或操作数使用次数，不是 stall 数或每条指令动态执行数；两操作数均前递时 store 基址与数据项可同时增加。具体语义和 ROM/trace 哈希见 [verification.md](verification.md)。
 
-老师要求的真实波形分析和截图尚未完成。需要先使 Xelab/XSim 正常运行，再按 [waveforms.md](waveforms.md) 导出 8 类代表性 PNG，登记 WDB/WCFG、测试映像哈希和运行结果。当前不可把设计说明或 IP 配置截图作为功能波形证据。
+## Vivado 波形人工材料
 
-本文件只总结当前实际通过的基线和 S2 结果，不构成 Lab6/Lab7 最终实验结论。
+按用户本轮要求，本次没有运行 `-CaptureWaveform`，没有生成 WDB、WCFG 或 PNG。报告中的结构示意图、流程图和功能点汇总图均非仿真波形；不得将它们作为真实波形分析证据。剩余人工事项是根据 [waveforms.md](waveforms.md) 的步骤，从新鲜且 PASS 的 XSim 运行捕获 WDB，定位代表性指令并导出真实信号图，再把实测时间窗、PC/指令、信号值、预期/实际结果和运行 ID 写入证据表。
+
+本材料当前准确反映了完整数字回归状态；真实波形图与逐图分析仍待用户按课程提交要求人工完成。

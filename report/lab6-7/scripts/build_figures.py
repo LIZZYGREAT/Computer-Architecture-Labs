@@ -206,8 +206,8 @@ def draw_branch_case() -> None:
 
 
 def draw_verification_summary() -> None:
-    lab6 = parse_result(RESULTS / "lab6-20261022T062908Z" / "result.txt")
-    lab7 = parse_result(RESULTS / "lab7-20261022T063433Z" / "result.txt")
+    lab6 = parse_result(RESULTS / "lab6-20261026T163659Z" / "result.txt")
+    lab7 = parse_result(RESULTS / "lab7-20261026T164130Z" / "result.txt")
     rows = [
         ("Lab6", int(lab6["FUNCTIONAL_POINT_PASSES"]),
          int(lab6["EXPECTED_FUNCTIONAL_POINTS"]), BLUE),

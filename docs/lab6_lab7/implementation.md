@@ -40,18 +40,18 @@ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify
 | Lab3 forwarding 回归 | PASS，23/23，172,599 cycles，0 stalls |
 | Lab4 forwarding 回归 | PASS，23/23，114,577 cycles，50 load-use stalls，EX/MEM/WB forwards 4,505/4,818/1,032 |
 | Lab6 S2 历史累计 ROM | 34/42 点通过；旧 RTL 首次失败在 n35 `div` 后的 `mflo` trace。该结果保留为 S2 阶段记录，不代表当前完整 RTL。 |
-| 当前 Lab6 累计 ROM | PASS，42/42，109,375 cycles，89 stalls；EX/MEM/WB forwards 35,013/8,320/12,007；trace 全匹配，见 [`lab6-20261022T062908Z`](../../results/lab6_lab7/lab6-20261022T062908Z/)。 |
+| 当前 Lab6 累计 ROM | PASS，42/42，109,375 cycles，89 stalls；EX/MEM/WB forwards 35,013/8,320/12,007；trace 66,612/66,612 匹配，见 [`lab6-20261026T163659Z`](../../results/lab6_lab7/lab6-20261026T163659Z/)。 |
 
 累计 Lab6 首次失败的 trace 对照为：reference 在 `0xbfc2c9ec` 写 `$21=0x00000002`（n35 的 `mflo`），DUT 未实现 HI/LO 读取，下一条可见写回为 `0xbfc2c9f4` 对 `$2`；此前 n24–n34 已通过。
 
-详细命令输出和 Vivado/XSim 日志见 `results/lab6_lab7/directed/alu/`、`results/lab6_lab7/lab6-20261021T141122Z/` 及对应 Lab3/Lab4 结果目录。S2 RTL 与定向用例提交为 `c3c6ba4`；验证证据和本记录另行提交。
+详细命令输出和 Vivado/XSim 日志见 `results/lab6_lab7/directed/alu/`、`results/lab6_lab7/lab6-20261021T141122Z/` 及对应 Lab3/Lab4 结果目录。`lab6-20261021T141122Z` 的 34/42 是阶段历史；当前完整回归记录见 `lab6-20261026T163659Z`。
 
 ## S3：Lab6 乘除法 IP 与 HI/LO
 
 - 新增 `hilo_unit.v`，使用 Vivado `mult_gen` 33×33 signed、1 级流水乘法 IP，以及 32-bit Radix-2 unsigned divider IP。wrapper 对 signed/unsigned 操数做扩展或幅值转换，并恢复商和余数符号；结果按 HI=高/余数、LO=低/商提交。
 - EX 以 `busy/done/consume_done` 保持 mult/div 指令，只在该指令能够离开 EX 时提交一次 HI/LO。`mthi/mtlo` 在离开 EX 的同一提交边界写入。`mfhi/mflo` 在 EX 读取特殊寄存器，避免 ID 提前取到旧值。
 - `DS_TO_ES_BUS_WD` 从 136 扩为 154 位；`ES_TO_MS_BUS_WD` 扩为 114 位，以随流水传递 HI/LO 类型和新增访存元数据。累计 Lab7 DUT 在 forwarding 验收中通过 68/68 个功能点，详见 [verification.md](verification.md)。
-- `hilo_unit_tb.v` 独立仿真通过：signed/unsigned 乘除、完成保持/消费、MTHI/MTLO、复位取消，以及接受/提交计数检查均通过，结果见 [`hilo-unit-20261022T062119Z`](../../results/lab6_lab7/hilo-unit-20261022T062119Z/)。
+- `hilo_unit_tb.v` 独立仿真通过：signed/unsigned 乘除、完成保持/消费、MTHI/MTLO、复位取消，以及接受/提交计数检查均通过，结果见 [`hilo-unit-20261026T164656Z`](../../results/lab6_lab7/hilo-unit-20261026T164656Z/)。
 - 除法指令后紧跟分支的定向 CPU 测试通过：delay slot 生效、fall-through 未执行、LO/HI 和目标地址结果均与独立 CPU132 trace 相同，结果见 [定向验收记录](verification.md)。
 
 ## S4：Lab7 转移指令
@@ -59,6 +59,12 @@ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify
 - 新增 `j`、`jalr`、`bgez/bgtz/blez/bltz`、`bgezal/bltzal` 的译码与控制。条件按 signed `rs` 判断；`jalr` 使用 ID 前递后的 `rs` 作为目标并使用指令的 `rd` 作为链接寄存器。
 - 条件分支目标使用 `PC+4 + signext(imm<<2)`，`j` 使用 `(PC+4)[31:28]` 拼接索引；链接结果为 `PC+8`。`bltzal/bgezal` 的链接行为按课程 `TEST_BLTZAL/TEST_BGEZAL` 宏要求处理：不论分支是否成立均写链接值，只有重定向取决于条件。
 - 分支只在 ID 指令可被 EX 接收时发出，保留一条 delay-slot 指令，并避免多周期 EX 停顿时重复重定向。当前 Lab7 累计 DUT 仿真 68/68 功能点通过，详见 [verification.md](verification.md)。
+
+### 新增指令前递统计与定向覆盖
+
+- `mycpu_tb.v` 新增 store-base、store-data、六种新增条件分支 `rs`、`jalr` 目标前递计数；仅在 `ds_instruction_issued` 时加一，避免 EX 背压时对同一条 ID 指令重复采样。计数语义是发射指令周期/操作数被前递的使用次数，不是停顿数。
+- `scripts/build_lab7_forwarding_directed_image.py` 构建短 ROM，安排新增 store、条件分支和 `jalr` 依赖前序写者；参考 CPU132 trace 与 DUT 比对通过，41/41 trace 记录匹配、64 cycles、1 stall，新增 store base/data/branch/jalr 计数为 3/2/6/1，见 [`lab7-20261026T170957Z`](../../results/lab6_lab7/lab7-20261026T170957Z/) 和 [`directed/extended-forwarding`](../../results/lab6_lab7/directed/extended-forwarding/)。
+- 完整 Lab7 累计程序的对应计数为 112/0/1,229/28。累计程序没有触发新增 store-data 前递；定向用例的非零数据前递计数补充覆盖该路径。完整累计回归 68/68，100,732/100,732 trace 写回匹配，见 [`lab7-20261026T164130Z`](../../results/lab6_lab7/lab7-20261026T164130Z/)。
 
 ## S5：Lab7 访存指令
 

@@ -142,7 +142,7 @@ Lab6/Lab7 在原 forwarding 流水线接口上继续传递新增控制和数据�
 
 仿真周期数和停顿数直接引用该轮 \code{result.txt}。Lab6 与 Lab7 使用不同累计课程程序，因此二者周期数不能用来直接比较处理器性能。HI/LO testbench 和除法后分支程序作为补充覆盖；定向分支测试的课程功能点数为 0 是预期配置，它按自定义 trace 比较判定，不代表没有执行指令。
 
-本报告未启用 Vivado 波形捕获。图 1—3 是结构/程序流程说明图，图 4 是由验收结果绘制的功能点汇总图，均不是仿真波形。运行脚本、trace、日志及哈希用于复核可重复性。
+本轮按用户要求未启用 Vivado 波形捕获。图 1—3 是结构/程序流程说明图，图 4 是由验收结果绘制的功能点汇总图，均不是仿真波形。新增指令的真实信号级波形与逐图分析仍待人工采集；采集步骤和信号清单见 \code{docs/lab6\_lab7/waveforms.md}。运行脚本、trace、日志及哈希用于复核可重复性。
 
 \reportsection{实验结果}
 图 4 汇总 Lab6、Lab7 的累计课程功能点结果。详细数字和辅助检查见表 2。
@@ -164,6 +164,7 @@ Lab6/Lab7 在原 forwarding 流水线接口上继续传递新增控制和数据�
 流水线周期 & 109,375 & 166,226 \\
 流水线停顿周期 & 89 & 926 \\
 EX/MEM/WB 前递使用 & 35,013 / 8,320 / 12,007 & 49,970 / 12,229 / 15,454 \\
+新增指令前递 & 0 / 0 / 0 / 0 & 112 / 0 / 1,229 / 28 \\
 零号寄存器写回尝试 & 0（检查通过） & 0（检查通过） \\
 trace 与 ROM 映像 & 哈希匹配 & 哈希匹配 \\
 波形捕获 & 未启用 & 未启用 \\
@@ -171,19 +172,20 @@ trace 与 ROM 映像 & 哈希匹配 & 哈希匹配 \\
 \end{tabularx}
 \end{center}
 
-Lab6 累计 trace 共 66,612 条记录，SHA-256 为 \code{FB92799C...6986850CA1}；使用的 MIF SHA-256 为 \code{E446C87C...D438AF46}。Lab7 累计 trace 共 100,732 条记录，SHA-256 为 \code{23ADD75B...B22035991C3}；MIF SHA-256 为 \code{4BCBB028...C223068C}。完整哈希、原始绝对路径和运行起止时间保存在对应 \code{result.txt}。
+Lab6 累计 trace 共 66,612 条记录，SHA-256 为 \code{FB92799C...6986850CA1}；本轮课程 MIF SHA-256 为 \code{845D9793...C28E8F28}。Lab7 累计 trace 共 100,732 条记录，SHA-256 为 \code{23ADD75B...B22035991C3}；本轮课程 MIF SHA-256 为 \code{8EBF3140...B9B75BE}。完整哈希、原始绝对路径和运行起止时间保存在对应 \code{result.txt}。
 
-两轮累计 DUT 均在预期功能点数上全部通过，参考 trace 与仿真镜像匹配；zero-register 检查均报告 0 次实际写回尝试。HI/LO 单元 testbench 和除法期间分支等待定向用例也通过。旧的 S2 阶段 Lab6 结果曾在当时尚未实现 HI/LO 的 \code{mflo} 处通过 34/42；它是中间阶段记录，不能代替当前完整 RTL 的 42/42 结果。
+EX/MEM/WB 前递计数仅在 ID 指令被 EX 接收时采样；每一级只要 \code{rs} 或 \code{rt} 任一源操作数使用该级就记一次，因此计数不是源操作数总数或停顿周期。新增指令计数也在发射时采样；store 基址与数据可能对同一条指令分别计数。完整 Lab7 累计程序的新增 store-base/store-data/conditional-branch/\code{jalr} 计数为 112/0/1,229/28。累计 ROM 没有触发新增 store-data 前递；独立短定向程序覆盖该依赖，trace 41/41 匹配，计数为 3/2/6/1。
+
+两轮累计 DUT 均在预期功能点数上全部通过，参考 trace 与仿真镜像匹配；zero-register 检查均报告 0 次实际写回尝试。HI/LO 单元 testbench 和除法期间分支等待定向用例也通过。S2 历史结果曾在当时尚未实现 HI/LO 的 \code{mflo} 处通过 34/42；该历史状态不能代替当前完整 RTL 的 42/42 结果。
 
 \reportsection{结果分析与局限}
 Lab6 与 Lab7 的累计功能点均达到本轮设定的完整通过条件。不同数据路径都获得独立证据：算术逻辑定向程序检查立即数、比较和可变移位；HI/LO testbench 检查多周期单元握手；自定义分支测试检查除法背压期间的延迟槽和重定向；累计课程 ROM 检查完整功能点并与独立参考退休 trace 逐项匹配。
 
-当前验收证明的是指定课程映像和已记录定向场景下的仿真行为，不等同于形式化证明，也不包含板上实测、综合后时序收敛或所有非法输入组合。特别是除数为零没有列入 HI/LO testbench 覆盖；本报告不对该情况作正确性结论。由于本轮未捕获波形，报告不提供 Vivado GUI 截图；用户若以后需要波形，可用已记录工程和脚本重新运行并启用 \code{-CaptureWaveform}。
+当前验收证明的是指定课程映像和已记录定向场景下的仿真行为，不等同于形式化证明，也不包含板上实测、综合后时序收敛或所有非法输入组合。特别是除数为零没有列入 HI/LO testbench 覆盖；本报告不对该情况作正确性结论。本轮没有真实 Vivado 波形截图，新增指令波形及逐图分析属于尚待人工完成的报告事项；操作步骤和建议展示内容见 \code{docs/lab6\_lab7/waveforms.md}。
 
 \reportsection{总结}
 本次完成了 Lab6 算术逻辑与 HI/LO 乘除法扩展、Lab7 控制转移与延迟槽扩展，以及 12 类整字、字节、半字和非对齐访存操作。多周期单元通过 EX 级背压和完成消费握手避免重复执行；控制转移在 EX 停顿时等待，并保留一条延迟槽；访存操作按地址低位处理 lane、符号扩展和合并。
 
-最终 Lab6 forwarding 累计仿真通过 42/42 功能点，Lab7 通过 68/68；两轮 trace 与映像哈希匹配，HI/LO 单元测试与除法后分支定向 trace 也通过。以上结果支持本报告所述实现与验收范围内的功能正确性结论。
 
 \clearpage
 \reportsection{附录 A：复现命令与证据索引}
@@ -213,13 +215,15 @@ python .\report\lab6-7\scripts\build_figures.py
 报告内容 & 仓库内证据（续） \\
 \midrule
 \endhead
-Lab6 累计 DUT & \url{results/lab6_lab7/lab6-20261022T062908Z/result.txt}；同目录 Xvlog/Xelab/XSim 阶段日志。 \\
-Lab7 累计 DUT & \url{results/lab6_lab7/lab7-20261022T063433Z/result.txt}；同目录 Xvlog/Xelab/XSim 阶段日志。 \\
-HI/LO 单元 testbench & \url{results/lab6_lab7/hilo-unit-20261022T062119Z/result.txt} 与同目录日志。 \\
+Lab3/Lab4 forwarding 回归 & \url{results/lab3_lab4/lab3-20261026T162836Z/result.txt}；\url{results/lab3_lab4/lab4-20261026T163305Z/result.txt}。 \\
+Lab6 累计 DUT & \url{results/lab6_lab7/lab6-20261026T163659Z/result.txt}；同目录 Xvlog/Xelab/XSim 阶段日志。 \\
+Lab7 累计 DUT & \url{results/lab6_lab7/lab7-20261026T164130Z/result.txt}；同目录 Xvlog/Xelab/XSim 阶段日志。 \\
+新增指令前递定向用例 & \url{results/lab6_lab7/lab7-20261026T170957Z/result.txt}；输入映像及 trace 位于 \url{results/lab6_lab7/directed/extended-forwarding/}。 \\
+HI/LO 单元 testbench & \url{results/lab6_lab7/hilo-unit-20261026T164656Z/result.txt} 与同目录 \url{console.log}。 \\
 除法期间分支定向用例 & \url{results/lab6_lab7/directed/hilo-stall-branch/} 下程序映像及 golden trace；DUT 结果为 \url{results/lab3_lab4/lab3-20261022T065139Z/result.txt}。 \\
 算术逻辑定向用例 & \url{results/lab6_lab7/directed/alu/} 和 \url{results/lab3_lab4/lab3-20261021T140840Z/}。 \\
 实现记录 & \url{docs/lab6_lab7/implementation.md}。 \\
-完整验收与哈希 & \url{docs/lab6_lab7/verification.md}。 \\
+完整验收与哈希 & \url{docs/lab6_lab7/verification.md}。真实波形人工采集指南：\url{docs/lab6_lab7/waveforms.md}。 \\
 环境和运行入口 & \url{docs/lab6_lab7/environment.md}。 \\
 \bottomrule
 \end{longtable}

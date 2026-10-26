@@ -23,7 +23,11 @@ Vivado GUI 可打开上述工程用于查看设计和 WDB；默认 Run All 使�
 
 ## 最新复核结果
 
-- Lab3 forwarding：23/23，172,599 周期，0 stall；[`lab3-20261022T035035Z`](../../results/lab3_lab4/lab3-20261022T035035Z/)。
-- Lab6 forwarding：42/42，109,375 周期，89 stalls；[`lab6-20261022T051800Z`](../../results/lab6_lab7/lab6-20261022T051800Z/)。
-- Lab7 forwarding：68/68，166,226 周期，926 stalls；[`lab7-20261022T035619Z`](../../results/lab6_lab7/lab7-20261022T035619Z/)。
-- Lab3/Lab4 完整结果矩阵见 [`Lab3/Lab4 verification`](../lab3-lab4/verification-final.md)，Lab6/Lab7 状态见 [`Lab6/Lab7 verification`](verification.md)。
+- Lab3 forwarding：23/23，172,599 周期，0 stall；trace 44,071/44,071；[`lab3-20261026T162836Z`](../../results/lab3_lab4/lab3-20261026T162836Z/)。
+- Lab4 forwarding：23/23，114,577 周期，50 stalls；trace 44,071/44,071；[`lab4-20261026T163305Z`](../../results/lab3_lab4/lab4-20261026T163305Z/)。
+- Lab6 forwarding：42/42，109,375 周期，89 stalls；trace 66,612/66,612；[`lab6-20261026T163659Z`](../../results/lab6_lab7/lab6-20261026T163659Z/)。
+- Lab7 forwarding：68/68，166,226 周期，926 stalls；trace 100,732/100,732；[`lab7-20261026T164130Z`](../../results/lab6_lab7/lab7-20261026T164130Z/)。
+- 新指令前递定向：trace 41/41，新增前递计数 store base/data/branch/jalr = 3/2/6/1；[`lab7-20261026T170957Z`](../../results/lab6_lab7/lab7-20261026T170957Z/)。
+- HI/LO 单元 testbench：PASS，接受/提交计数 3/4/6；[`hilo-unit-20261026T164656Z`](../../results/lab6_lab7/hilo-unit-20261026T164656Z/)。
+
+上述仿真均未捕获波形。真实 Vivado WDB/PNG 的人工取证步骤见 [`waveforms.md`](waveforms.md)；Lab3/Lab4 完整结果矩阵见 [`Lab3/Lab4 verification`](../lab3-lab4/verification-final.md)，Lab6/Lab7 哈希和细项见 [`Lab6/Lab7 verification`](verification.md)。
