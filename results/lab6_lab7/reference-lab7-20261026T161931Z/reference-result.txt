@@ -1,0 +1,12 @@
+STATUS=PASS
+SIM_STAGE_EXIT_CODES=compile=0,elaborate=0,simulate=0
+REFERENCE_CPU_TOP=soc_lite_top
+REFERENCE_SIM_TOP=tb_top
+REFERENCE_COE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/directed/extended-forwarding/image/lab7_extended_forwarding.coe
+REFERENCE_MIF=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/directed/extended-forwarding/image/lab7_extended_forwarding.mif
+REFERENCE_TRACE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/directed/extended-forwarding/golden_trace.txt
+REFERENCE_MAX_SIMULATION_NS=100000
+REFERENCE_TRACE_RECORDS=41
+REFERENCE_TRACE_SIZE=984
+REFERENCE_FUNCTIONAL_POINT_PASSES=0
+REFERENCE_EXPECTED_FUNCTIONAL_POINT_PASSES=0
