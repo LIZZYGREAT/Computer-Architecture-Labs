@@ -33,11 +33,11 @@
 28  0xbfc00070  24030040  addiu r3, r0, 64 ; architectural delay slot
 29  0xbfc00074  24030099  addiu r3, r0, 153 ; skipped when branch is taken
 30  0xbfc00078  24020001  addiu r2, r0, 1 ; bgtz rs producer
-31  0xbfc0007c  1c420002  bgtz r2, r2, after_bgtz (offset 2)
+31  0xbfc0007c  1c400002  bgtz r2, r0, after_bgtz (offset 2)
 32  0xbfc00080  24030041  addiu r3, r0, 65 ; architectural delay slot
 33  0xbfc00084  24030099  addiu r3, r0, 153 ; skipped when branch is taken
 34  0xbfc00088  24020000  addiu r2, r0, 0 ; blez rs producer
-35  0xbfc0008c  18420002  blez r2, r2, after_blez (offset 2)
+35  0xbfc0008c  18400002  blez r2, r0, after_blez (offset 2)
 36  0xbfc00090  24030042  addiu r3, r0, 66 ; architectural delay slot
 37  0xbfc00094  24030099  addiu r3, r0, 153 ; skipped when branch is taken
 38  0xbfc00098  2402ffff  addiu r2, r0, -1 ; bltz rs producer

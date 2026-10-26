@@ -118,8 +118,8 @@ def main() -> int:
     # All six added conditional branches consume a just-produced rs value.
     branch_cases = [
         ("bgez", 0x01, 1, 1),
-        ("bgtz", 0x07, 2, 1),
-        ("blez", 0x06, 2, 0),
+        ("bgtz", 0x07, 0, 1),
+        ("blez", 0x06, 0, 0),
         ("bltz", 0x01, 0, -1),
         ("bgezal", 0x01, 0x11, 1),
         ("bltzal", 0x01, 0x10, -1),
