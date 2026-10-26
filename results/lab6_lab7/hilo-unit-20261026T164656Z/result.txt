@@ -1,0 +1,15 @@
+STATUS=PASS
+STATUS=PASS
+TESTBENCH=hilo_unit_tb
+RUN_ID=hilo-unit-20261026T164656Z
+SOURCE_COMMIT=7d8a3b567e7596dcbacf7e96b3d9e9a275a83371
+SIMULATION_TIME_NS=1835
+MULT_ACCEPTS=3
+DIV_ACCEPTS=4
+COMPLETION_COMMITS=6
+CHECKS=signed/unsigned multiply and divide; completion held until consume; single acceptance and commit; MTHI/MTLO; reset cancels in-flight divide
+PASS_MARKER=HILO_UNIT_TB_PASS mult_accepts=3 div_accepts=4 commits=6
+RUN_COMPLETE_MARKER=HILO_UNIT_TB_RUN_COMPLETE=1
+WAVEFORM_CAPTURED=False
+VIVADO_EXIT_CODE=0
+LOG=console.log
