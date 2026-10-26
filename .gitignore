@@ -1,0 +1,155 @@
+# Local/private notes
+/docs/private/
+
+# Vivado project and simulation build products
+**/.Xil/
+**/*.cache/
+**/*.gen/
+**/*.hw/
+**/*.ip_user_files/
+**/*.runs/
+**/*.sim/
+**/xsim.dir/
+*.jou
+*.pb
+dfx_runtime.txt
+results/**/ip-probe/**/generated/
+results/lab6_lab7/vivado-temp/
+results/lab6_lab7/lab7-20261022T014113Z/
+results/lab3_lab4/lab3-20261021T151543Z/
+results/lab3_lab4/lab3-20261021T153843Z/
+results/lab3_lab4/lab3-20261021T155214Z/
+results/lab3_lab4/lab3-20261021T160327Z/
+results/lab3_lab4/lab3-20261021T160949Z/
+results/lab3_lab4/lab3-20261021T161412Z/
+results/lab3_lab4/lab3-20261021T161705Z/
+results/lab3_lab4/lab3-20261021T161929Z/
+results/lab3_lab4/lab3-cwd-root-test/
+results/lab6_lab7/reference-lab6-20261021T164013Z/
+results/lab6_lab7/reference-lab6-20261021T164208Z/
+results/lab6_lab7/reference-lab6-20261021T164525Z/
+results/lab6_lab7/reference-lab6-20261021T164714Z/
+results/lab6_lab7/reference-lab6-20261021T164914Z/
+results/**/*.cmd
+results/**/*.err
+
+# Generated logs are ignored except for the Lab3/Lab4 evidence indexed by the reports.
+*.log
+!results/lab3_lab4/**/*.log
+!results/lab6_lab7/**/*.log
+
+# Waveform and programming outputs. Keep the representative verified waveform.
+*.wdb
+!results/lab3_lab4/lab4-20261021T085125Z/hazard-directed-forwarding.wdb
+*.wcfg
+*.vcd
+*.vpd
+*.fst
+*.wlf
+*.saif
+*.str
+*.bit
+*.mcs
+*.ltx
+
+# Rebuildable IP output products; keep .xci, HDL wrappers, and memory images.
+**/rtl/xilinx_ip/**/cmodel/
+**/rtl/xilinx_ip/**/doc/
+**/rtl/xilinx_ip/**/hdl/
+**/rtl/xilinx_ip/**/misc/
+**/rtl/xilinx_ip/**/sim/
+**/rtl/xilinx_ip/**/simulation/
+**/rtl/xilinx_ip/**/synth/
+**/rtl/xilinx_ip/**/*.dcp
+**/rtl/xilinx_ip/**/*_sim_netlist.v
+**/rtl/xilinx_ip/**/*_sim_netlist.vhdl
+**/rtl/xilinx_ip/**/*_stub.v
+**/rtl/xilinx_ip/**/*_stub.vhdl
+**/rtl/xilinx_ip/**/*.vho
+**/rtl/xilinx_ip/**/*.veo
+**/rtl/xilinx_ip/**/inst_ram.mif
+
+# Per-run copies of the reference CPU are reproducible from lab3/CPU_CDE.
+results/**/reference/
+results/lab6_lab7/reference-work/
+results/lab6_lab7/reference-lab6-20261021T133257Z/
+results/lab6_lab7/reference-lab6-20261021T133621Z/
+results/lab6_lab7/reference-lab*-*/reference-golden_trace.txt
+results/lab6_lab7/reference-lab*-*/reference-inst_ram.coe
+results/lab6_lab7/reference-lab*-*/reference-inst_ram.mif
+
+# Temporary instruction-memory copies staged by the Lab3/Lab4 verification script.
+results/lab3_lab4/lab[34]-*/sim-inst_ram.mif
+results/**/sim-inst_ram.mif
+
+# Rebuildable MIPS toolchain outputs. MIF/COE ROM images remain trackable inputs.
+**/obj/*.elf
+**/obj/*.bin
+**/obj/*.data
+**/obj/*.o
+**/obj/*.s
+**/obj/*.map
+**/obj/*.d
+
+# Python and local environment artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+.coverage
+htmlcov/
+
+# LaTeX intermediates
+*.aux
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv
+
+# Editor and operating system artifacts
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
+
+# Keep selected Lab6/Lab7 run summaries and stage logs; ignore duplicate captures.
+results/lab3_lab4/lab3-20261022T015107Z/*-console.log
+results/lab3_lab4/lab3-20261022T015107Z/*-vivado*.log
+results/lab3_lab4/lab3-20261022T015107Z/xsim-simulate-stage.log
+results/lab6_lab7/lab7-20261022T014242Z/*-console.log
+results/lab6_lab7/lab7-20261022T014242Z/*-vivado*.log
+results/lab6_lab7/lab7-20261022T014242Z/xsim-simulate-stage.log
+results/lab6_lab7/ip-probe/*-vivado*.log
+results/lab6_lab7/ip-probe/hilo-unit-s3*-console.log
+results/lab6_lab7/ip-probe/configured/
+results/lab6_lab7/ip-probe/vivado.log
+!results/lab6_lab7/ip-probe/hilo-unit-vivado.log
+!results/lab6_lab7/ip-probe/hilo-unit-s3d-vivado.log
+
+# Keep the primary Vivado and per-stage XSim logs for the 2026-10-22 final
+# Lab6/Lab7 runs; omit console/copy/combined duplicates.
+results/lab3_lab4/lab3-20261022T065139Z/combined.log
+results/lab3_lab4/lab3-20261022T065139Z/*-console.log
+results/lab3_lab4/lab3-20261022T065139Z/*-vivado-copy.log
+results/lab3_lab4/reference-lab3-20261022T064612Z/reference-console.log
+results/lab3_lab4/reference-lab3-20261022T064612Z/reference-vivado-copy.log
+results/lab6_lab7/lab6-20261022T062908Z/combined.log
+results/lab6_lab7/lab6-20261022T062908Z/*-console.log
+results/lab6_lab7/lab6-20261022T062908Z/*-vivado-copy.log
+results/lab6_lab7/lab7-20261022T063433Z/combined.log
+results/lab6_lab7/lab7-20261022T063433Z/*-console.log
+results/lab6_lab7/lab7-20261022T063433Z/*-vivado-copy.log
