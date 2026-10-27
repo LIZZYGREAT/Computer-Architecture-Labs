@@ -8,10 +8,10 @@
 
 | 用例 | 结果目录 | 结果 |
 |---|---|---|
-| Lab3 forwarding 回归 | [`lab3-20261026T162836Z`](../../results/lab3_lab4/lab3-20261026T162836Z/) | PASS，23/23，172,599 cycles，0 stalls；44,071/44,071 trace 写回匹配 |
-| Lab4 forwarding 回归 | [`lab4-20261026T163305Z`](../../results/lab3_lab4/lab4-20261026T163305Z/) | PASS，23/23，114,577 cycles，50 stalls；EX/MEM/WB 前递 4,505/4,818/1,032；44,071/44,071 trace 写回匹配 |
-| Lab6 forwarding | [`lab6-20261026T163659Z`](../../results/lab6_lab7/lab6-20261026T163659Z/) | PASS，42/42，109,375 cycles，89 stalls；EX/MEM/WB 前递 35,013/8,320/12,007；66,612/66,612 trace 写回匹配；零寄存器写回尝试 0 |
-| Lab7 forwarding | [`lab7-20261026T164130Z`](../../results/lab6_lab7/lab7-20261026T164130Z/) | PASS，68/68，166,226 cycles，926 stalls；EX/MEM/WB 前递 49,970/12,229/15,454；100,732/100,732 trace 写回匹配；零寄存器写回尝试 0 |
+| Lab3 forwarding 回归 | [`lab3-20261026T162836Z`](../../results/lab3_lab4/lab3-20261026T162836Z/) | PASS，23/23，172,599 cycles，`ds_stall` 计数 0；44,071/44,071 trace 写回匹配 |
+| Lab4 forwarding 回归 | [`lab4-20261026T163305Z`](../../results/lab3_lab4/lab4-20261026T163305Z/) | PASS，23/23，114,577 cycles，`ds_stall` 计数 50；EX/MEM/WB 前递 4,505/4,818/1,032；44,071/44,071 trace 写回匹配 |
+| Lab6 forwarding | [`lab6-20261026T163659Z`](../../results/lab6_lab7/lab6-20261026T163659Z/) | PASS，42/42，109,375 cycles，`ds_stall` 计数 89；EX/MEM/WB 前递 35,013/8,320/12,007；66,612/66,612 trace 写回匹配；零寄存器写回尝试 0 |
+| Lab7 forwarding | [`lab7-20261026T164130Z`](../../results/lab6_lab7/lab7-20261026T164130Z/) | PASS，68/68，166,226 cycles，`ds_stall` 计数 926；EX/MEM/WB 前递 49,970/12,229/15,454；100,732/100,732 trace 写回匹配；零寄存器写回尝试 0 |
 | Lab7 新指令前递定向用例 | [`lab7-20261026T170957Z`](../../results/lab6_lab7/lab7-20261026T170957Z/) | PASS，64 cycles，1 stall；trace 41/41；新增 store base/data/branch/jalr 计数 3/2/6/1；运行源提交为当前 `7d8a3b5` |
 | HI/LO 单元 testbench | [`hilo-unit-20261026T164656Z`](../../results/lab6_lab7/hilo-unit-20261026T164656Z/) | PASS；乘法/除法接受及完成提交计数 3/4/6，覆盖 signed/unsigned 运算、完成保持/消费、MTHI/MTLO、复位取消 |
 | 除法期间分支等待定向用例 | [`directed/hilo-stall-branch`](../../results/lab6_lab7/directed/hilo-stall-branch/)；[CPU 仿真结果](../../results/lab3_lab4/lab3-20261022T065139Z/) | PASS；参考 trace 与 DUT 全匹配：delay slot `$3=0x55`，fall-through `$4` 未写回，`mflo/mfhi` 得到 `-4/-3`，分支目标 `$7=0x66` |
@@ -23,7 +23,9 @@ Lab6/Lab7 golden trace 分别保存在 [`golden/lab6`](../../results/lab6_lab7/g
 
 在上表对应的运行中，Lab6 累计 forwarding 通过 42 个功能点，Lab7 累计 forwarding 通过 68 个功能点，均与独立 CPU132 trace 全匹配；Lab3/Lab4 23/23 基线、HI/LO 模块级 testbench、除法期间分支等待及新增指令前递定向用例也通过。`lab6-20261021T141122Z` 的 34/42 是 S2 阶段旧 RTL 的历史结果，不代表完整 Lab6 状态。以上结果均未启用波形捕获；原波形分析和截图仍由用户完成。
 
-旧 `FORWARD_EX/MEM/WB_USES` 与新增专项计数均只在 `ds_instruction_issued`（ID 指令被 EX 接收）时采样；常规前递每级只要 `rs` 或 `rt` 任一操作数使用该级就记一次，因此它是发射指令周期/前递级别使用次数，不是源操作数总数或 stall 周期。新增 `HAZARD_NEW_STORE_BASE_FORWARDS`、`HAZARD_NEW_STORE_DATA_FORWARDS` 分别统计 `sb/sh/swl/swr` 的基址和写数据前递；同一条指令若两操作数均前递，可同时增加两个值。`HAZARD_NEW_BRANCH_FORWARDS` 覆盖六种新增条件分支的 `rs` 前递；`HAZARD_JALR_FORWARDS` 覆盖 `jalr` 跳转目标 `rs` 前递。累计 Lab7 值为 112/0/1,229/28；定向映像值为 3/2/6/1。当前累计程序没有触发新增 store-data 前递，故其值为 0；定向程序已对该路径给出非零覆盖。
+旧 `FORWARD_EX/MEM/WB_USES` 与新增专项计数均只在 `ds_instruction_issued`（ID 指令被 EX 接收）时采样；常规前递每级只要 `rs` 或 `rt` 任一操作数使用该级就记一次，因此它是发射指令周期/前递级别使用次数，不是源操作数总数或 stall 周期。旧 `HAZARD_STORE_BASE_FORWARDS`/`HAZARD_STORE_DATA_FORWARDS` 只统计 `sw`，`HAZARD_BRANCH_FORWARDS` 只统计 `beq/bne`，`HAZARD_JR_FORWARDS` 只统计 `jr`。新增 `HAZARD_NEW_STORE_BASE_FORWARDS`、`HAZARD_NEW_STORE_DATA_FORWARDS` 分别统计 `sb/sh/swl/swr` 的基址和写数据前递；同一条指令若两操作数均前递，可同时增加两个值。`HAZARD_NEW_BRANCH_FORWARDS` 覆盖六种新增条件分支的 `rs` 前递；`HAZARD_JALR_FORWARDS` 覆盖 `jalr` 跳转目标 `rs` 前递。累计 Lab7 值为 112/0/1,229/28；定向映像值为 3/2/6/1。当前累计程序没有触发新增 store-data 前递，故其值为 0；定向程序已对该路径给出非零覆盖。
+
+`PIPELINE_STALL_CYCLES` 逐周期统计 `ID_stage.ds_stall`，即 ID 源操作数因数据相关而不能前进的周期数；它不是全流水线停顿总周期，也不代表 EX 等待乘除 IP 的完整时长。独立的 `HAZARD_LOAD_USE_STALLS` 按 testbench 中 `ds_stall && es_hazard_valid && !es_forward_valid` 的条件计数。若要报告乘除 IP 的等待周期，应另统计 `es_valid && !es_ready_go`，不要从 `PIPELINE_STALL_CYCLES` 推断。
 
 本轮累计回归命令：
 

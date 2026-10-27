@@ -12,7 +12,11 @@
 
 ## 新增指令前递统计
 
-Lab7 新增计数在 `ds_instruction_issued` 时采样，避免 EX 背压期间重复计数。累计回归的新增 store 基址/数据、条件分支、`jalr` 前递计数分别为 112/0/1,229/28；独立短定向程序相应得到 3/2/6/1，覆盖 `sb/sh/swl/swr`、六种新增条件分支与 `jalr`。这是发射指令周期或操作数使用次数，不是 stall 数或每条指令动态执行数；两操作数均前递时 store 基址与数据项可同时增加。具体语义和 ROM/trace 哈希见 [verification.md](verification.md)。
+Lab7 新增计数在 `ds_instruction_issued` 时采样，避免 EX 背压期间重复计数。累计回归的新增 store 基址/数据、条件分支、`jalr` 前递计数分别为 112/0/1,229/28；独立短定向程序相应得到 3/2/6/1，覆盖 `sb/sh/swl/swr`、六种新增条件分支与 `jalr`。这是发射指令周期或操作数使用次数，不是 stall 数或每条指令动态执行数；两操作数均前递时 store 基址与数据项可同时增加。旧 `HAZARD_STORE_*`、`HAZARD_BRANCH_FORWARDS`、`HAZARD_JR_FORWARDS` 只覆盖 `sw`、`beq/bne`、`jr`。累计 Lab7 的 `PIPELINE_STALL_CYCLES=926` 仅表示 ID `ds_stall` 周期，不覆盖完整的 EX 乘除等待时长。具体定义和 ROM/trace 哈希见 [verification.md](verification.md)。
+
+## 连续依赖定向用例（P2-A）
+
+新增 Lab7 短映像覆盖 load 到 `sb/sh/swl/swr` 的写数据依赖、部分存储后紧跟 byte/halfword 读回、连续 `lwl/lwr` 合并及 load 到 `bltz` 的分支依赖。镜像生成及 COE/MIF 一致性检查为 `PASS`；当前 AppContainer 无法启动 Vivado，因此这份镜像的 CPU132 reference 和 DUT 行为仿真仍为 `NOT_RUN`。回归命令、预期状态与哈希见 [verification.md](verification.md)。
 
 ## Vivado 波形人工材料
 
