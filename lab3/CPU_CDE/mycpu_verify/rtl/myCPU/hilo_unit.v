@@ -20,17 +20,20 @@ module hilo_unit(
     output [31:0] lo_value
 );
 
-localparam HILO_IDLE      = 2'd0;
-localparam HILO_MULT_WAIT = 2'd1;
-localparam HILO_DIV_WAIT  = 2'd2;
-localparam HILO_DONE      = 2'd3;
+localparam HILO_IDLE      = 3'd0;
+localparam HILO_MULT_WAIT = 3'd1;
+localparam HILO_DIV_SEND  = 3'd2;
+localparam HILO_DIV_WAIT  = 3'd3;
+localparam HILO_DONE      = 3'd4;
 
-reg [1:0] state;
+reg [2:0] state;
 reg [31:0] hi_reg;
 reg [31:0] lo_reg;
 reg        div_signed;
 reg        dividend_negative;
 reg        divisor_negative;
+reg [31:0] div_dividend_data;
+reg [31:0] div_divisor_data;
 
 wire        mult_request;
 wire        div_request;
@@ -43,6 +46,8 @@ wire [31:0] dividend_magnitude;
 wire [31:0] divisor_magnitude;
 wire        divisor_ready;
 wire        dividend_ready;
+wire        div_input_valid;
+wire        div_pair_accept;
 wire        div_result_valid;
 wire [63:0] div_result;
 wire [31:0] quotient_magnitude;
@@ -53,9 +58,11 @@ wire [31:0] remainder_result;
 assign mult_request = is_mult | is_multu;
 assign div_request  = is_div | is_divu;
 assign accept_mult  = resetn && (state == HILO_IDLE) && start && mult_request;
-assign accept_div   = resetn && (state == HILO_IDLE) && start && div_request &&
-                      dividend_ready && divisor_ready;
-assign busy         = (state == HILO_MULT_WAIT) || (state == HILO_DIV_WAIT);
+assign accept_div   = resetn && (state == HILO_IDLE) && start && div_request;
+assign div_input_valid = resetn && (state == HILO_DIV_SEND);
+assign div_pair_accept = div_input_valid && dividend_ready && divisor_ready;
+assign busy         = (state == HILO_MULT_WAIT) || (state == HILO_DIV_SEND) ||
+                      (state == HILO_DIV_WAIT);
 assign done         = (state == HILO_DONE);
 assign hi_value     = hi_reg;
 assign lo_value     = lo_reg;
@@ -87,12 +94,12 @@ lab6_mult33 u_mult(
 lab6_div32 u_div(
     .aclk                    (clk),
     .aresetn                 (resetn),
-    .s_axis_divisor_tvalid   (accept_div),
+    .s_axis_divisor_tvalid   (div_input_valid),
     .s_axis_divisor_tready   (divisor_ready),
-    .s_axis_divisor_tdata    (divisor_magnitude),
-    .s_axis_dividend_tvalid  (accept_div),
+    .s_axis_divisor_tdata    (div_divisor_data),
+    .s_axis_dividend_tvalid  (div_input_valid),
     .s_axis_dividend_tready  (dividend_ready),
-    .s_axis_dividend_tdata   (dividend_magnitude),
+    .s_axis_dividend_tdata   (div_dividend_data),
     .m_axis_dout_tvalid      (div_result_valid),
     .m_axis_dout_tdata       (div_result)
 );
@@ -105,6 +112,8 @@ always @(posedge clk) begin
         div_signed          <= 1'b0;
         dividend_negative   <= 1'b0;
         divisor_negative    <= 1'b0;
+        div_dividend_data   <= 32'b0;
+        div_divisor_data    <= 32'b0;
     end
     else begin
         if (write_hi_en) begin
@@ -123,7 +132,18 @@ always @(posedge clk) begin
                     div_signed        <= is_div;
                     dividend_negative <= operand_a[31];
                     divisor_negative  <= operand_b[31];
-                    state             <= HILO_DIV_WAIT;
+                    div_dividend_data <= dividend_magnitude;
+                    div_divisor_data  <= divisor_magnitude;
+                    state             <= HILO_DIV_SEND;
+                end
+            end
+            HILO_DIV_SEND: begin
+                // Divider Generator NonBlocking mode consumes its two input
+                // channels as one paired operation. Keep both TVALIDs and
+                // their registered payloads stable until the pair is ready.
+                // TVALID is deliberately independent of TREADY.
+                if (div_pair_accept) begin
+                    state <= HILO_DIV_WAIT;
                 end
             end
             HILO_MULT_WAIT: begin

@@ -2,7 +2,9 @@
 
 当前结果只按 `result.txt` 中的 `STATUS` 判定。以下 10/26 UTC 运行 ID 对应本次完整复核；Lab3/Lab4 最终验收和 GCC 执行上下文说明见 [`../lab3-lab4/verification-final.md`](../lab3-lab4/verification-final.md) 与 [`../lab3-lab4/gcc-startup-incident.md`](../lab3-lab4/gcc-startup-incident.md)。
 
-## 当前可报告结果
+## 最近完整回归（2026-10-26，握手修订前基线）
+
+下表的 PASS 均来自 10/26 或更早的运行。它们证明当时的已保存映像和 RTL；不表示 10/27 的 Divider 输入握手修订已通过回归。修订后状态见本文末尾。
 
 | 用例 | 结果目录 | 结果 |
 |---|---|---|
@@ -19,7 +21,7 @@
 
 Lab6/Lab7 golden trace 分别保存在 [`golden/lab6`](../../results/lab6_lab7/golden/lab6/golden_trace.txt) 和 [`golden/lab7`](../../results/lab6_lab7/golden/lab7/golden_trace.txt)。Lab6 算术逻辑定向 DUT 结果及映像位于 [`lab3-20261021T140840Z`](../../results/lab3_lab4/lab3-20261021T140840Z/) 与 [`directed/alu`](../../results/lab6_lab7/directed/alu/)；该定向 DUT 通过，73 周期、1 次 load-use 停顿、EX/MEM/WB 前递 7/6/3。Lab7 新指令前递映像与 listing 位于 [`directed/extended-forwarding`](../../results/lab6_lab7/directed/extended-forwarding/)。
 
-当前 RTL 的 Lab6 累计 forwarding 运行通过 42 个功能点，Lab7 累计 forwarding 运行通过 68 个功能点，均与独立 CPU132 trace 全匹配；Lab3/Lab4 23/23 基线、HI/LO 模块级 testbench、除法期间分支等待及新增指令前递定向用例也通过。`lab6-20261021T141122Z` 的 34/42 是 S2 阶段旧 RTL 的历史结果，不代表当前 Lab6 状态。以上结果均未启用波形捕获；本轮按用户要求只修订波形取证指南，不生成 WDB 或截图。
+在上表对应的运行中，Lab6 累计 forwarding 通过 42 个功能点，Lab7 累计 forwarding 通过 68 个功能点，均与独立 CPU132 trace 全匹配；Lab3/Lab4 23/23 基线、HI/LO 模块级 testbench、除法期间分支等待及新增指令前递定向用例也通过。`lab6-20261021T141122Z` 的 34/42 是 S2 阶段旧 RTL 的历史结果，不代表完整 Lab6 状态。以上结果均未启用波形捕获；原波形分析和截图仍由用户完成。
 
 旧 `FORWARD_EX/MEM/WB_USES` 与新增专项计数均只在 `ds_instruction_issued`（ID 指令被 EX 接收）时采样；常规前递每级只要 `rs` 或 `rt` 任一操作数使用该级就记一次，因此它是发射指令周期/前递级别使用次数，不是源操作数总数或 stall 周期。新增 `HAZARD_NEW_STORE_BASE_FORWARDS`、`HAZARD_NEW_STORE_DATA_FORWARDS` 分别统计 `sb/sh/swl/swr` 的基址和写数据前递；同一条指令若两操作数均前递，可同时增加两个值。`HAZARD_NEW_BRANCH_FORWARDS` 覆盖六种新增条件分支的 `rs` 前递；`HAZARD_JALR_FORWARDS` 覆盖 `jalr` 跳转目标 `rs` 前递。累计 Lab7 值为 112/0/1,229/28；定向映像值为 3/2/6/1。当前累计程序没有触发新增 store-data 前递，故其值为 0；定向程序已对该路径给出非零覆盖。
 
@@ -62,7 +64,7 @@ Lab6/Lab7 golden trace 分别保存在 [`golden/lab6`](../../results/lab6_lab7/g
 
 已从 Lab6 和 Lab7 各删除一个重复的 `inst/n32_xori.S`。删除前四份 `n31_xori.S`/`n32_xori.S` 的 SHA-256 均为 `77559A51A58867B24663D7B0B92CDA2DBB1FBE7E784F3BFA5E97EDCCAB0732C3`；两个 `start.S` 都只调用 `n31_xori_test` 和 `n32_sllv_test`，而对应的 `n32_sllv.S` 保留。未改测试宏、功能点编号或已有 `obj/` 映像。
 
-本次检查结果：`SOURCE_REBUILD=NOT_RUN`。当前 Windows 执行环境没有可调用的 `mipsel-linux-gcc` 或 `mipsel-linux-gnu-gcc`，因此没有从汇编源码生成新 ROM，也没有生成与新 ROM 配套的 CPU132 trace 或 DUT 结果。已有 `.coe/.mif`、golden trace、Lab6 `42/42` 和 Lab7 `68/68` 记录保持原样，仍是历史已验收映像的结果，不作为源码重建通过的证据。
+本次检查结果：`SOURCE_REBUILD=NOT_RUN`。当前 Windows 执行环境没有可调用的 `mipsel-linux-gcc`、`mipsel-linux-gnu-gcc` 或 GNU Make，因此没有从汇编源码生成新 ROM，也没有生成与新 ROM 配套的 CPU132 trace 或 DUT 结果。已有 `.coe/.mif`、golden trace、Lab6 `42/42` 和 Lab7 `68/68` 记录保持原样，仍是历史已验收映像的结果，不作为源码重建通过的证据。
 
 在 Debian/Ubuntu Linux 上安装交叉工具链后，可在临时目录构建，避免覆盖仓库内的旧映像：
 
@@ -78,3 +80,16 @@ make -C "$tmp/lab7" CROSS_COMPILE=mipsel-linux-gnu-
 ```
 
 先记录两个 `inst/` 的 `*.S` 清单、编译退出码、`obj/inst_ram.coe`/`obj/inst_ram.mif` 的格式、深度和 SHA-256，再和仓库原映像比较。若新旧指令映像不同，使用新 COE/MIF 分别调用 `scripts/generate_reference_trace.ps1 -Case lab6`、`-Case lab7` 生成独立 trace；随后以各自的新 trace 和 MIF 调用 `scripts/verify.ps1 -Case lab6 -PipelineMode forwarding`、`-Case lab7 -PipelineMode forwarding`。不要把现存 golden trace 用于内容已改变的 ROM。Vivado reference/DUT 验收只从普通 Windows PowerShell 运行。
+
+## 修订后 RTL 验收状态（2026-10-27）
+
+`hilo_unit.v` 的除法输入握手及 `hilo_unit_tb.v` 的传输检查已修订；上文历史结果是在该修订前取得，不代表修订后回归通过。本次运行环境检测为 `WINDOWS_APPCONTAINER=True`，而 `scripts/verify.ps1` 明确禁止在此上下文启动 Vivado；因此没有尝试用受限环境伪造验收结果。
+
+| 验收项 | 修订后状态 |
+|---|---|
+| HI/LO 单元 Vivado/XSim testbench（含新两路握手断言） | `NOT_RUN` |
+| 除法期间分支等待定向用例 | `NOT_RUN` |
+| Lab3、Lab4、Lab6、Lab7 累计 forwarding 回归 | `NOT_RUN` |
+| 汇编源码重建、重建 ROM 的 CPU132 reference 与 DUT | `NOT_RUN`；当前环境无 MIPS 交叉编译器 |
+
+完成以上回归需要在普通 Windows PowerShell 运行 `scripts/run_hilo_unit_tb.tcl` 对应的 Vivado 命令、`scripts/verify.ps1` 中文档列出的四条累计命令，以及除法分支定向用例的 reference/DUT 命令。所有 10/26 PASS 及之前定向 PASS 仍作为修改前基线保留。

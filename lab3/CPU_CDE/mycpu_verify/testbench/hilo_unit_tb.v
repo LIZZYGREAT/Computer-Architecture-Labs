@@ -21,9 +21,15 @@ wire [31:0] lo_value;
 
 integer mult_accept_count;
 integer div_accept_count;
+integer div_pair_accept_count;
+integer div_dividend_accept_count;
+integer div_divisor_accept_count;
 integer done_commit_count;
 integer commits_before_cancel;
 reg done_seen;
+reg div_input_was_stalled;
+reg [31:0] stalled_dividend_data;
+reg [31:0] stalled_divisor_data;
 
 always #5 clk = ~clk;
 
@@ -46,6 +52,40 @@ hilo_unit uut(
     .hi_value(hi_value),
     .lo_value(lo_value)
 );
+
+always @(posedge clk) begin
+    if (!resetn) begin
+        div_input_was_stalled = 1'b0;
+        stalled_dividend_data = 32'b0;
+        stalled_divisor_data = 32'b0;
+    end
+    else begin
+        if (uut.dividend_ready !== uut.divisor_ready) begin
+            $fatal(1, "HILO_TB_FAIL configured NonBlocking divider input ready signals diverged");
+        end
+        if (div_input_was_stalled &&
+            (!uut.div_input_valid ||
+             uut.div_dividend_data !== stalled_dividend_data ||
+             uut.div_divisor_data !== stalled_divisor_data)) begin
+            $fatal(1, "HILO_TB_FAIL divider dropped TVALID or changed data before the paired handshake");
+        end
+        div_input_was_stalled = uut.div_input_valid &&
+                                !(uut.dividend_ready && uut.divisor_ready);
+        if (div_input_was_stalled) begin
+            stalled_dividend_data = uut.div_dividend_data;
+            stalled_divisor_data = uut.div_divisor_data;
+        end
+        if (uut.div_input_valid && uut.dividend_ready) begin
+            div_dividend_accept_count = div_dividend_accept_count + 1;
+        end
+        if (uut.div_input_valid && uut.divisor_ready) begin
+            div_divisor_accept_count = div_divisor_accept_count + 1;
+        end
+        if (uut.div_pair_accept) begin
+            div_pair_accept_count = div_pair_accept_count + 1;
+        end
+    end
+end
 
 always @(posedge clk) begin
     if (uut.accept_mult) begin
@@ -87,9 +127,13 @@ task check_result;
                 $fatal(1, "HILO_TB_FAIL completion was not held until consume");
             end
         end
-        if (mult_accept_count != expected_mult_accepts || div_accept_count != expected_div_accepts) begin
-            $fatal(1, "HILO_TB_FAIL duplicate request mult=%0d div=%0d",
-                   mult_accept_count, div_accept_count);
+        if (mult_accept_count != expected_mult_accepts || div_accept_count != expected_div_accepts ||
+            div_pair_accept_count != expected_div_accepts ||
+            div_dividend_accept_count != expected_div_accepts ||
+            div_divisor_accept_count != expected_div_accepts) begin
+            $fatal(1, "HILO_TB_FAIL request/paired-input count mult=%0d div=%0d dividend=%0d divisor=%0d pairs=%0d",
+                   mult_accept_count, div_accept_count, div_dividend_accept_count,
+                   div_divisor_accept_count, div_pair_accept_count);
         end
         if (done_commit_count != expected_mult_accepts + expected_div_accepts) begin
             $fatal(1, "HILO_TB_FAIL completion count expected=%0d got=%0d",
@@ -149,9 +193,15 @@ initial begin
     write_data = 32'b0;
     mult_accept_count = 0;
     div_accept_count = 0;
+    div_pair_accept_count = 0;
+    div_dividend_accept_count = 0;
+    div_divisor_accept_count = 0;
     done_commit_count = 0;
     commits_before_cancel = 0;
     done_seen = 1'b0;
+    div_input_was_stalled = 1'b0;
+    stalled_dividend_data = 32'b0;
+    stalled_divisor_data = 32'b0;
 
     repeat (5) @(posedge clk);
     @(negedge clk);
@@ -211,8 +261,8 @@ initial begin
     if (done_commit_count != mult_accept_count + div_accept_count - 1) begin
         $fatal(1, "HILO_TB_FAIL cancelled request changed accept/commit accounting");
     end
-    $display("HILO_UNIT_TB_PASS mult_accepts=%0d div_accepts=%0d commits=%0d",
-             mult_accept_count, div_accept_count, done_commit_count);
+    $display("HILO_UNIT_TB_PASS mult_accepts=%0d div_accepts=%0d input_pairs=%0d commits=%0d",
+             mult_accept_count, div_accept_count, div_pair_accept_count, done_commit_count);
     $finish;
 end
 

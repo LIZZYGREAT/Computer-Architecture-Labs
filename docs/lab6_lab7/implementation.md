@@ -54,6 +54,12 @@ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify
 - `hilo_unit_tb.v` 独立仿真通过：signed/unsigned 乘除、完成保持/消费、MTHI/MTLO、复位取消，以及接受/提交计数检查均通过，结果见 [`hilo-unit-20261026T164656Z`](../../results/lab6_lab7/hilo-unit-20261026T164656Z/)。
 - 除法指令后紧跟分支的定向 CPU 测试通过：delay slot 生效、fall-through 未执行、LO/HI 和目标地址结果均与独立 CPU132 trace 相同，结果见 [定向验收记录](verification.md)。
 
+### Divider 输入握手审查修订
+
+- `lab6_div32.xci` 使用 `FlowControl=NonBlocking`。PG151 说明此模式只有在所有输入通道同时提供有效数据、且就绪时才形成一次除法操作，并指出 dividend/divisor 的 `TREADY` 最终为同一就绪信号。因此 wrapper 在 `IDLE` 锁存除法请求和两个幅值，转入 `HILO_DIV_SEND` 后同时保持两路 `TVALID` 与 payload，直到同周期两路 `TREADY` 均为高，再进入 `HILO_DIV_WAIT`。`TVALID` 不再由 `TREADY` 组合生成，且不会重复提交。
+- `hilo_unit_tb.v` 增加两路 ready 同步、输入数据在等待期间保持、每个已完成除法恰好一次成对输入传输的检查。AXI4-Stream 规则要求 master 的 `TVALID` 不依赖 `TREADY`；配置和握手依据见 [Divider Generator v5.1 Product Guide (PG151)](https://docs.amd.com/api/khub/documents/c_0ZEADkbrJCz1MvCirYoQ/content) 与 [AXI4-Stream Support in Model Composer (UG1483)](https://docs.amd.com/r/2021.2-English/ug1483-model-composer-sys-gen-user-guide/AXI4-Stream-Support-in-Model-Composer?contentId=PntDYKafpnqKPcdAO0EBag)。
+- 本次 RTL/testbench 改动后的 Vivado IP 级运行尚未执行；状态见 [verification.md](verification.md) 的修订后验收状态。原有 HI/LO 与累计 PASS 记录保留为本修订前的历史基线。
+
 ## S4：Lab7 转移指令
 
 - 新增 `j`、`jalr`、`bgez/bgtz/blez/bltz`、`bgezal/bltzal` 的译码与控制。条件按 signed `rs` 判断；`jalr` 使用 ID 前递后的 `rs` 作为目标并使用指令的 `rd` 作为链接寄存器。

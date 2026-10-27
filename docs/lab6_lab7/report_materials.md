@@ -1,10 +1,14 @@
-# Lab6–Lab7 实验报告材料（当前已验证证据）
+# Lab6–Lab7 实验报告材料（2026-10-26 验收基线）
 
-## 当前验收状态
+## 最近完整回归
 
 本轮完整回归已通过：Lab3 23/23、Lab4 23/23、Lab6 42/42、Lab7 68/68。Lab6 与 Lab7 分别与独立 CPU132 trace 的 66,612/66,612 和 100,732/100,732 条写回记录匹配；HI/LO 单元 testbench、除法后分支等待定向用例和新增指令前递定向用例也通过。结果目录、哈希及运行日志索引见 [verification.md](verification.md)。
 
-旧记录 `lab6-20261021T141122Z` 的 34/42 是 HI/LO 完成前 S2 阶段的历史失败，不能描述当前累计结果。2026-10-22 的 GCC/Xelab 失败也是早期环境诊断；后续普通 Windows PowerShell 下的完整 XSim 回归已通过。
+旧记录 `lab6-20261021T141122Z` 的 34/42 是 HI/LO 完成前 S2 阶段的历史失败，不能描述完整累计结果。2026-10-22 的 GCC/Xelab 失败也是早期环境诊断；后续普通 Windows PowerShell 下的完整 XSim 回归通过。上述 PASS 是 10/27 Divider 握手修订前的基线。
+
+## 2026-10-27 修订后状态
+
+`hilo_unit.v` 已改为锁存除法输入并保持两路 `TVALID` 直到 NonBlocking Divider 的成对 ready；HI/LO testbench 已增加 ready 同步、payload 保持及唯一配对输入检查。当前会话运行在 AppContainer，项目脚本按要求拒绝启动 Vivado，因此修订后的 HI/LO、Lab3/Lab4/Lab6/Lab7 和除法分支定向验收均为 `NOT_RUN`。请以 [verification.md](verification.md) 的修订后验收表为准，不要把下面的历史 PASS 当成本次修订后的结果。
 
 ## 新增指令前递统计
 
