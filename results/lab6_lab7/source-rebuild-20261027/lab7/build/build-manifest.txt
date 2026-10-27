@@ -1,0 +1,9 @@
+CASE=lab7
+BUILD_TMP=/tmp/lab6-lab7-rebuild.LeNcqK/lab7
+ASSEMBLY_SOURCE_COUNT=68
+MIPS_GCC_VERSION=10.3.0
+MIPS_BINUTILS_VERSION=GNU ld (GNU Binutils for Ubuntu) 2.38
+FLAGS=-mips1 -mfp32 -EL -fno-pic -mno-abicalls
+TEMP_LINKER_COMPAT=/DISCARD/ .MIPS.abiflags metadata only
+ROM_COE_SHA256=e08d053bf3cd9e7f0bfe5b1d813053fd0c63bb0ffe7ffd622a761547e669ec91
+ROM_MIF_SHA256=d7d9a71898bfa0b59e12e44ba884609bd3c55e9ce89092304b12b9acfa059bcf

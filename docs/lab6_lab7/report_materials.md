@@ -8,7 +8,7 @@
 
 ## 2026-10-27 修订后状态
 
-`hilo_unit.v` 已改为锁存除法输入并保持两路 `TVALID` 直到 NonBlocking Divider 的成对 ready；HI/LO testbench 已增加 ready 同步、payload 保持及唯一配对输入检查。当前会话运行在 AppContainer，项目脚本按要求拒绝启动 Vivado，因此修订后的 HI/LO、Lab3/Lab4/Lab6/Lab7 和除法分支定向验收均为 `NOT_RUN`。请以 [verification.md](verification.md) 的修订后验收表为准，不要把下面的历史 PASS 当成本次修订后的结果。
+`hilo_unit.v` 已改为锁存除法输入并保持两路 `TVALID` 直到 NonBlocking Divider 的成对 ready；HI/LO testbench 已增加 ready 同步、payload 保持及唯一配对输入检查。2026-10-27 在普通 Windows PowerShell 下重跑后，HI/LO 单元、除法期间分支定向用例、Lab3/Lab4/Lab6/Lab7 累计回归、新汇编源码重建及其配套 CPU132 reference/DUT、P2-A 定向 reference/DUT 均为 `PASS`。每轮 ID、trace 和映像哈希见 [verification.md](verification.md)。本轮没有捕获波形；波形分析和截图仍由用户完成。
 
 ## 新增指令前递统计
 
@@ -16,7 +16,7 @@ Lab7 新增计数在 `ds_instruction_issued` 时采样，避免 EX 背压期间�
 
 ## 连续依赖定向用例（P2-A）
 
-新增 Lab7 短映像覆盖 load 到 `sb/sh/swl/swr` 的写数据依赖、部分存储后紧跟 byte/halfword 读回、连续 `lwl/lwr` 合并及 load 到 `bltz` 的分支依赖。镜像生成及 COE/MIF 一致性检查为 `PASS`；当前 AppContainer 无法启动 Vivado，因此这份镜像的 CPU132 reference 和 DUT 行为仿真仍为 `NOT_RUN`。回归命令、预期状态与哈希见 [verification.md](verification.md)。
+新增 Lab7 短映像覆盖 load 到 `sb/sh/swl/swr` 的写数据依赖、部分存储后紧跟 byte/halfword 读回、连续 `lwl/lwr` 合并及 load 到 `bltz` 的分支依赖。镜像、CPU132 reference 和 DUT 行为仿真均为 `PASS`；25 条 trace 全匹配，9 笔 store 的逐项副作用检查及唯一一次 taken branch redirect 断言通过。回归命令、运行 ID 与哈希见 [verification.md](verification.md)。
 
 ## Vivado 波形人工材料
 

@@ -83,4 +83,4 @@ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify
 
 - `scripts/build_lab7_dependency_directed_image.py` 生成 65-word COE/MIF 和程序清单，覆盖 `lw→sb/sh/swl/swr` 写数据依赖、写后紧跟 `lb/lbu/lh/lhu` 读回、同一目标寄存器连续 `lwl/lwr` 拼接，以及 `lw→bltz` 的 load-use 与延迟槽。
 - 清单给出预期 GPR 值和最终 RAM 字；`mycpu_tb.v` 在 `DEPENDENCY_DIRECTED=1` 时逐笔检查 9 次实际 store 的有效地址、byte-enable 和写数据，并断言恰好一次 taken branch redirect。CPU132 trace 对照检查寄存器写回顺序，包括 delay slot、跳过的 fall-through 和分支目标；`verify.ps1` 必须同时看到副作用检查标记与完整 trace 匹配，不能只凭功能点计数判定。
-- 镜像生成及 COE/MIF 一致性检查为 `PASS`；由于当前会话运行于 AppContainer，CPU132 reference 和 DUT 行为仿真保持 `NOT_RUN`。可复现命令及哈希见 [verification.md](verification.md)。既有 ALU→`jalr` 与 DIV 等待期间分支用例继续分别补充覆盖。
+- 镜像生成及 COE/MIF 一致性检查为 `PASS`；CPU132 reference 与 DUT 行为仿真也已通过，25 条 trace 全匹配，9 笔 store 的地址/byte-enable/写数据及唯一一次 branch redirect 检查通过。结果与哈希见 [verification.md](verification.md)。既有 ALU→`jalr` 与 DIV 等待期间分支用例继续分别补充覆盖。

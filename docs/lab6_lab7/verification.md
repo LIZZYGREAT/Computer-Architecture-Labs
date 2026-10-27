@@ -66,35 +66,40 @@ Lab6/Lab7 golden trace 分别保存在 [`golden/lab6`](../../results/lab6_lab7/g
 
 已从 Lab6 和 Lab7 各删除一个重复的 `inst/n32_xori.S`。删除前四份 `n31_xori.S`/`n32_xori.S` 的 SHA-256 均为 `77559A51A58867B24663D7B0B92CDA2DBB1FBE7E784F3BFA5E97EDCCAB0732C3`；两个 `start.S` 都只调用 `n31_xori_test` 和 `n32_sllv_test`，而对应的 `n32_sllv.S` 保留。未改测试宏、功能点编号或已有 `obj/` 映像。
 
-本次检查结果：`SOURCE_REBUILD=NOT_RUN`。当前 Windows 执行环境没有可调用的 `mipsel-linux-gcc`、`mipsel-linux-gnu-gcc` 或 GNU Make，因此没有从汇编源码生成新 ROM，也没有生成与新 ROM 配套的 CPU132 trace 或 DUT 结果。已有 `.coe/.mif`、golden trace、Lab6 `42/42` 和 Lab7 `68/68` 记录保持原样，仍是历史已验收映像的结果，不作为源码重建通过的证据。
+`SOURCE_REBUILD=PASS`。在隔离的 WSL Ubuntu 22.04 临时副本中，用 GCC 10.3.0、GNU Binutils 2.38 分别构建了 42 个 Lab6 与 68 个 Lab7 汇编单元；清单、完整构建日志、manifest 和重建映像位于 [`source-rebuild-20261027`](../../results/lab6_lab7/source-rebuild-20261027/)。原仓库 `obj/` 映像没有覆盖。
 
-在 Debian/Ubuntu Linux 上安装交叉工具链后，可在临时目录构建，避免覆盖仓库内的旧映像：
+GCC 10 需要显式传入 `-mfp32`。GNU ld 2.38 对旧链接脚本生成的 `.MIPS.abiflags` 元数据与 `.data` LMA 报重叠；只在临时副本的 `bin.lds.S` 加入 `/DISCARD/ : { *(.MIPS.abiflags) }` 后完成链接，丢弃的是 ABI 元数据，不是指令或数据。实际构建参数为 `-mips1 -mfp32 -EL -fno-pic -mno-abicalls`，详见各 case 的 `build-manifest.txt` 和 `build.log`。
 
-```sh
-sudo apt install build-essential gcc-mipsel-linux-gnu binutils-mipsel-linux-gnu
-tmp=$(mktemp -d)
-cp -a lab6/func_lab6 "$tmp/lab6"
-cp -a lab7/func_lab7 "$tmp/lab7"
-make -C "$tmp/lab6" reset
-make -C "$tmp/lab6" CROSS_COMPILE=mipsel-linux-gnu-
-make -C "$tmp/lab7" reset
-make -C "$tmp/lab7" CROSS_COMPILE=mipsel-linux-gnu-
-```
+重建映像与原始映像的词数及 RAM 深度一致，规范化指令内容则不同：
 
-先记录两个 `inst/` 的 `*.S` 清单、编译退出码、`obj/inst_ram.coe`/`obj/inst_ram.mif` 的格式、深度和 SHA-256，再和仓库原映像比较。若新旧指令映像不同，使用新 COE/MIF 分别调用 `scripts/generate_reference_trace.ps1 -Case lab6`、`-Case lab7` 生成独立 trace；随后以各自的新 trace 和 MIF 调用 `scripts/verify.ps1 -Case lab6 -PipelineMode forwarding`、`-Case lab7 -PipelineMode forwarding`。不要把现存 golden trace 用于内容已改变的 ROM。Vivado reference/DUT 验收只从普通 Windows PowerShell 运行。
+| Case | 源文件数 | 指令词数 / 深度 | 原映像规范化 SHA-256 | 重建映像规范化 SHA-256 | 不同词数 |
+|---|---:|---:|---|---|---:|
+| Lab6 | 42 | 102,959 / 262,144 | `88FDCD95DE9C0B0877115805A529F4F25C343FADC69CB026180A7F3661DAD74A` | `777BE20AA83FA99E61B87AAF55FC33E9C083E7A3CDF1BFF8B685D539524EE7D3` | 95,204 |
+| Lab7 | 68 | 166,859 / 262,144 | `0B0C31343767D5CEC74E925BF7E153C5F70AD3CE66884D2E6CDCCB9632551899` | `889A8D604809B54F3667362213BDE88D95566CBB4812F9A08E3A3733CBEF1170` | 158,638 |
+
+首次差异在 word 247（PC `0xbfc003dc`），该处是 `jal` 的目标字段；重建版的链接地址布局不同，后续大量指令词随之不同。重建使用的工具链版本与原始映像的构建工具链未能确认相同，因此不把全部差异单独归因于删除重复源文件。通过以下配对 reference/DUT 回归验收了重建产物；新旧 trace 均未混用：
+
+| Case | 重建 COE / MIF SHA-256 | 新 CPU132 trace | Reference | DUT |
+|---|---|---|---|---|
+| Lab6 | `3d9c478bdf985c7f6d106ad2ac953cb9800b069027c40720bbd7bedd2bb6ea12` / `3336713500a6a7c41c52b6904430a61e3998680ee2bd7f7285a1eb42c95e8569` | 66,612 条，`1C45DC3B5322536878CC6CCBAC88D0C669DF7FD341BFD63694F2CDCEAF34A716` | PASS，42/42，[`reference-lab6-20261027T032906Z`](../../results/lab6_lab7/reference-lab6-20261027T032906Z/) | PASS，42/42，[`lab6-20261027T033402Z`](../../results/lab6_lab7/lab6-20261027T033402Z/)；109,439 cycles，89 `ds_stall`，66,612/66,612 trace |
+| Lab7 | `e08d053bf3cd9e7f0bfe5b1d813053fd0c63bb0ffe7ffd622a761547e669ec91` / `d7d9a71898bfa0b59e12e44ba884609bd3c55e9ce89092304b12b9acfa059bcf` | 100,732 条，`FF70411F105009F10FEBFEB38251696DCEDFF76E68FB091B4AA124A75EF53DEB` | PASS，68/68，[`reference-lab7-20261027T033134Z`](../../results/lab6_lab7/reference-lab7-20261027T033134Z/) | PASS，68/68，[`lab7-20261027T033802Z`](../../results/lab6_lab7/lab7-20261027T033802Z/)；166,330 cycles，926 `ds_stall`，100,732/100,732 trace |
 
 ## 修订后 RTL 验收状态（2026-10-27）
 
-`hilo_unit.v` 的除法输入握手及 `hilo_unit_tb.v` 的传输检查已修订；上文历史结果是在该修订前取得，不代表修订后回归通过。本次运行环境检测为 `WINDOWS_APPCONTAINER=True`，而 `scripts/verify.ps1` 明确禁止在此上下文启动 Vivado；因此没有尝试用受限环境伪造验收结果。
+修订后的验收均在普通 Windows PowerShell 调用 Vivado/XSim；各结果记录 `WINDOWS_APPCONTAINER=False`。一次在 AppContainer 中启动 CPU132 reference 的尝试以 `XSIM 43-3409` 失败（[`reference-lab7-20261027T024701Z`](../../results/lab6_lab7/reference-lab7-20261027T024701Z/)），未作为验收依据；随后普通 PowerShell 下的 reference 与 DUT 运行通过。所有仿真均未启用波形捕获。
 
-| 验收项 | 修订后状态 |
+| 验收项 | 修订后结果 |
 |---|---|
-| HI/LO 单元 Vivado/XSim testbench（含新两路握手断言） | `NOT_RUN` |
-| 除法期间分支等待定向用例 | `NOT_RUN` |
-| Lab3、Lab4、Lab6、Lab7 累计 forwarding 回归 | `NOT_RUN` |
-| 汇编源码重建、重建 ROM 的 CPU132 reference 与 DUT | `NOT_RUN`；当前环境无 MIPS 交叉编译器 |
+| HI/LO 单元 Vivado/XSim testbench（新两路握手断言） | PASS；`hilo-unit-20261027T032000Z`，`HILO_UNIT_TB_PASS mult_accepts=3 div_accepts=4 input_pairs=3 commits=6` |
+| 除法期间分支等待定向用例 | PASS；[`lab6-20261027T031906Z`](../../results/lab6_lab7/lab6-20261027T031906Z/)，111 cycles，trace 全匹配 |
+| Lab3 forwarding 累计回归 | PASS；[`lab3-20261027T025645Z`](../../results/lab3_lab4/lab3-20261027T025645Z/)，23/23，172,599 cycles |
+| Lab4 forwarding 累计回归 | PASS；[`lab4-20261027T030155Z`](../../results/lab3_lab4/lab4-20261027T030155Z/)，23/23，114,577 cycles |
+| Lab6 forwarding 累计回归 | PASS；[`lab6-20261027T030621Z`](../../results/lab6_lab7/lab6-20261027T030621Z/)，42/42，109,439 cycles，66,612/66,612 trace |
+| Lab7 forwarding 累计回归 | PASS；[`lab7-20261027T031040Z`](../../results/lab6_lab7/lab7-20261027T031040Z/)，68/68，166,330 cycles，100,732/100,732 trace |
+| 新汇编源码重建、重建 ROM 的 CPU132 reference 与 DUT | PASS；细节及新旧映像差异见上一节 |
+| P2-A 连续依赖定向 reference 与 DUT | PASS；25/25 trace，79 cycles，9 笔 store 与唯一一次 branch redirect 的副作用检查通过；结果见 [`reference-lab7-20261027T025022Z`](../../results/lab6_lab7/reference-lab7-20261027T025022Z/) 和 [`lab7-20261027T025231Z`](../../results/lab6_lab7/lab7-20261027T025231Z/) |
 
-完成以上回归需要在普通 Windows PowerShell 运行 `scripts/run_hilo_unit_tb.tcl` 对应的 Vivado 命令、`scripts/verify.ps1` 中文档列出的四条累计命令，以及除法分支定向用例的 reference/DUT 命令。所有 10/26 PASS 及之前定向 PASS 仍作为修改前基线保留。
+本轮 reference、DUT、HI/LO 和定向回归的具体结果目录均已归档；10/26 表格保留为握手修订前基线。用户自行完成 Vivado 波形捕获与报告分析。
 
 ## P2-A：Lab7 连续依赖与非对齐访存定向用例
 
@@ -113,4 +118,4 @@ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\genera
 powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify.ps1 -Case lab7 -PipelineMode forwarding -ReferenceTrace .\results\lab6_lab7\directed\dependency-boundaries\golden_trace.txt -InstMif .\results\lab6_lab7\directed\dependency-boundaries\image\lab7_dependency_boundaries.mif -ExpectedPointOverride 0 -DependencyDirected
 ```
 
-程序清单记录预期 GPR 与最终 RAM 内容。testbench 对照 9 笔实际写事务的地址、byte-enable 和写数据，并要求唯一一次 taken branch redirect；trace 检查 delay slot 写回、fall-through 未写回和目标指令写回。`verify.ps1` 只有同时识别 `DEPENDENCY_SIDE_EFFECTS_PASS`、全 trace 匹配及标准结束标记才会判 PASS。当前 AppContainer 会阻止 Vivado 仿真，故本次 reference trace 与 DUT 状态为 `NOT_RUN`；不能把镜像一致性检查当成 CPU 行为验收。
+程序清单记录预期 GPR 与最终 RAM 内容。testbench 对照 9 笔实际写事务的地址、byte-enable 和写数据，并要求唯一一次 taken branch redirect；trace 检查 delay slot 写回、fall-through 未写回和目标指令写回。`verify.ps1` 只有同时识别 `DEPENDENCY_SIDE_EFFECTS_PASS`、全 trace 匹配及标准结束标记才会判 PASS。本次 CPU132 reference（25 条记录）与 DUT 均为 `PASS`，完整 trace 和副作用检查均通过，结果分别见 `reference-lab7-20261027T025022Z` 与 `lab7-20261027T025231Z`。
