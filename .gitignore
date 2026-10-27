@@ -115,6 +115,7 @@ htmlcov/
 *.synctex.gz
 *.toc
 *.xdv
+*.pdf
 
 # Editor and operating system artifacts
 .DS_Store
