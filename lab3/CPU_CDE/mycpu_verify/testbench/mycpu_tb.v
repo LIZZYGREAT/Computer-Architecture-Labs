@@ -130,6 +130,11 @@ integer zero_reg_writeback_attempts;
 integer expected_functional_points;
 integer functional_point_passes;
 integer expected_points_plusarg;
+integer dependency_directed_enabled;
+integer dependency_store_count;
+integer dependency_branch_redirect_count;
+reg     dependency_side_effect_error;
+reg [67:0] dependency_expected_stores [0:8];
 reg     functional_point_count_error;
 wire ds_instruction_issued = soc_lite.cpu.id_stage.ds_to_es_valid &&
                              soc_lite.cpu.id_stage.es_allowin;
@@ -154,6 +159,22 @@ initial begin
     trace_matched_writes = 0;
     trace_remaining_writes = 0;
     trace_error = 1'b0;
+    dependency_directed_enabled = 0;
+    if (!$value$plusargs("DEPENDENCY_DIRECTED=%d", dependency_directed_enabled)) begin
+        dependency_directed_enabled = 0;
+    end
+    dependency_store_count = 0;
+    dependency_branch_redirect_count = 0;
+    dependency_side_effect_error = 1'b0;
+    dependency_expected_stores[0] = {32'h800d0000, 4'hf, 32'h89abcdef};
+    dependency_expected_stores[1] = {32'h800d0004, 4'h1, 32'h89abcdef};
+    dependency_expected_stores[2] = {32'h800d0006, 4'hc, 32'hcdef0000};
+    dependency_expected_stores[3] = {32'h800d0008, 4'h1, 32'h00000089};
+    dependency_expected_stores[4] = {32'h800d000b, 4'h8, 32'hef000000};
+    dependency_expected_stores[5] = {32'h800d0010, 4'hf, 32'h44332211};
+    dependency_expected_stores[6] = {32'h800d0014, 4'hf, 32'h88776655};
+    dependency_expected_stores[7] = {32'h800d0018, 4'hf, 32'h55443322};
+    dependency_expected_stores[8] = {32'h800d001c, 4'hf, 32'hffffffff};
     pipeline_cycles = 0;
     pipeline_stall_cycles = 0;
     forward_ex_uses = 0;
@@ -273,6 +294,42 @@ begin
         begin
             zero_reg_writeback_attempts <= zero_reg_writeback_attempts + 1;
             $display("ZERO_REG_WRITEBACK_ASSERT_FAIL pc=%08h", debug_wb_pc);
+        end
+    end
+end
+
+always @(posedge soc_clk) begin
+    if (!resetn) begin
+        dependency_store_count <= 0;
+        dependency_branch_redirect_count <= 0;
+        dependency_side_effect_error <= 1'b0;
+    end
+    else if (!debug_end && dependency_directed_enabled) begin
+        if (ds_instruction_issued && soc_lite.cpu.id_stage.br_taken) begin
+            dependency_branch_redirect_count <= dependency_branch_redirect_count + 1;
+        end
+        if (soc_lite.cpu.exe_stage.data_sram_en &&
+            (|soc_lite.cpu.exe_stage.data_sram_wen)) begin
+            if (dependency_store_count >= 9) begin
+                dependency_side_effect_error <= 1'b1;
+                $display("DEPENDENCY_STORE_MISMATCH unexpected_extra_store index=%0d addr=%08h wen=%h wdata=%08h",
+                         dependency_store_count,
+                         soc_lite.cpu.exe_stage.data_sram_addr,
+                         soc_lite.cpu.exe_stage.data_sram_wen,
+                         soc_lite.cpu.exe_stage.data_sram_wdata);
+            end
+            else if ({soc_lite.cpu.exe_stage.data_sram_addr,
+                      soc_lite.cpu.exe_stage.data_sram_wen,
+                      soc_lite.cpu.exe_stage.data_sram_wdata} !==
+                     dependency_expected_stores[dependency_store_count]) begin
+                dependency_side_effect_error <= 1'b1;
+                $display("DEPENDENCY_STORE_MISMATCH index=%0d addr=%08h wen=%h wdata=%08h",
+                         dependency_store_count,
+                         soc_lite.cpu.exe_stage.data_sram_addr,
+                         soc_lite.cpu.exe_stage.data_sram_wen,
+                         soc_lite.cpu.exe_stage.data_sram_wdata);
+            end
+            dependency_store_count <= dependency_store_count + 1;
         end
     end
 end
@@ -425,7 +482,8 @@ end
 
 //test end
 wire global_err = debug_wb_err || (err_count!=8'd0) || trace_error ||
-                  (zero_reg_writeback_attempts != 0) || functional_point_count_error;
+                  (zero_reg_writeback_attempts != 0) || functional_point_count_error ||
+                  dependency_side_effect_error;
 wire test_end = (debug_wb_pc==`END_PC) || (uart_display && uart_data==8'hff);
 always @(posedge soc_clk)
 begin
@@ -489,6 +547,19 @@ begin
             functional_point_count_error = 1'b1;
             $display("FUNCTIONAL_POINT_COUNT_MISMATCH expected=%0d actual=%0d",
                      expected_functional_points, functional_point_passes);
+        end
+        if (dependency_directed_enabled) begin
+            $display("DEPENDENCY_STORE_ACCESSES=%0d", dependency_store_count);
+            $display("DEPENDENCY_BRANCH_REDIRECTS=%0d", dependency_branch_redirect_count);
+            if (dependency_side_effect_error || dependency_store_count != 9 ||
+                dependency_branch_redirect_count != 1) begin
+                dependency_side_effect_error = 1'b1;
+                $display("DEPENDENCY_SIDE_EFFECT_FAIL stores=%0d expected_stores=9 branches=%0d expected_branches=1",
+                         dependency_store_count, dependency_branch_redirect_count);
+            end
+            else begin
+                $display("DEPENDENCY_SIDE_EFFECTS_PASS stores=9 branch_redirects=1");
+            end
         end
         $fclose(trace_ref);
         if (global_err || trace_error)

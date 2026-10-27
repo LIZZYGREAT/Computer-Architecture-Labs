@@ -93,3 +93,22 @@ make -C "$tmp/lab7" CROSS_COMPILE=mipsel-linux-gnu-
 | 汇编源码重建、重建 ROM 的 CPU132 reference 与 DUT | `NOT_RUN`；当前环境无 MIPS 交叉编译器 |
 
 完成以上回归需要在普通 Windows PowerShell 运行 `scripts/run_hilo_unit_tb.tcl` 对应的 Vivado 命令、`scripts/verify.ps1` 中文档列出的四条累计命令，以及除法分支定向用例的 reference/DUT 命令。所有 10/26 PASS 及之前定向 PASS 仍作为修改前基线保留。
+
+## P2-A：Lab7 连续依赖与非对齐访存定向用例
+
+从仓库根目录构建 65-word 指令映像：
+
+```powershell
+python .\scripts\build_lab7_dependency_directed_image.py
+```
+
+输出位于 `results/lab6_lab7/directed/dependency-boundaries/image/`。脚本生成 COE、MIF 和 `lab7_dependency_boundaries_program.txt`；COE/MIF 深度及规范化内容一致性检查结果为 `IMAGE_MATCH=PASS`，包含 65 words，`INST_RAM_DEPTH=262144`。COE 文件 SHA-256 为 `2BB3AB57F3B71B8BD81E9465C69823D673D2C29E6D102FB27E5A35DB611288B9`，MIF 文件 SHA-256 为 `BFAD67266B488A524854D4174F1628002228ED58D690C19ADCA3C258F4CAC76A`。
+
+在普通 Windows PowerShell 中，先用独立 CPU132 生成该镜像的 reference trace，再运行带显式副作用检查的 DUT：
+
+```powershell
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\generate_reference_trace.ps1 -Case lab7 -InstructionCoe .\results\lab6_lab7\directed\dependency-boundaries\image\lab7_dependency_boundaries.coe -InstructionMif .\results\lab6_lab7\directed\dependency-boundaries\image\lab7_dependency_boundaries.mif -TraceOutput .\results\lab6_lab7\directed\dependency-boundaries\golden_trace.txt -ExpectedFunctionalPointOverride 0
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify.ps1 -Case lab7 -PipelineMode forwarding -ReferenceTrace .\results\lab6_lab7\directed\dependency-boundaries\golden_trace.txt -InstMif .\results\lab6_lab7\directed\dependency-boundaries\image\lab7_dependency_boundaries.mif -ExpectedPointOverride 0 -DependencyDirected
+```
+
+程序清单记录预期 GPR 与最终 RAM 内容。testbench 对照 9 笔实际写事务的地址、byte-enable 和写数据，并要求唯一一次 taken branch redirect；trace 检查 delay slot 写回、fall-through 未写回和目标指令写回。`verify.ps1` 只有同时识别 `DEPENDENCY_SIDE_EFFECTS_PASS`、全 trace 匹配及标准结束标记才会判 PASS。当前 AppContainer 会阻止 Vivado 仿真，故本次 reference trace 与 DUT 状态为 `NOT_RUN`；不能把镜像一致性检查当成 CPU 行为验收。

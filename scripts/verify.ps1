@@ -13,6 +13,7 @@ param(
     [long]$MaxSimulationNs = 0,
     [int]$TimeoutSeconds = 1800,
     [switch]$HazardDirected,
+    [switch]$DependencyDirected,
     [switch]$CaptureWaveform,
     [switch]$PreflightOnly
 )
@@ -194,6 +195,7 @@ Write-Output "RESULT_DIR=$resultDir"
 Write-Output "CASE=$Case"
 Write-Output "PIPELINE_MODE=$PipelineMode"
 Write-Output "HAZARD_DIRECTED=$([bool]$HazardDirected)"
+Write-Output "DEPENDENCY_DIRECTED=$([bool]$DependencyDirected)"
 Write-Output "CAPTURE_WAVEFORM=$([bool]$CaptureWaveform)"
 Write-Output "EXPECTED_FUNCTIONAL_POINTS=$expectedFunctionalPoints"
 Write-Output "MAX_SIMULATION_NS=$MaxSimulationNs"
@@ -271,8 +273,9 @@ if ($coeHash) { Write-Output "INST_COE=$instCoe SHA256=$coeHash" }
 $startedAt = [DateTime]::UtcNow
 $simExpectedFunctionalPoints = if ($HazardDirected) { 0 } else { $expectedFunctionalPoints }
 $simCaptureWaveform = if ($CaptureWaveform) { '1' } else { '0' }
+$simDependencyDirected = if ($DependencyDirected) { '1' } else { '0' }
 $simArgs = @($Xpr, $Case, [string]$MaxSimulationNs, $PipelineMode, $traceFile, $instMif, $resultDir,
-    [string]$simExpectedFunctionalPoints, $simCaptureWaveform)
+    [string]$simExpectedFunctionalPoints, $simCaptureWaveform, $simDependencyDirected)
 $simCode = Invoke-VivadoBatch 'simulation' $simTcl $simArgs
 $simWorkingDir = Split-Path -Parent $xsimLog
 $waveformPath = ''
@@ -336,7 +339,7 @@ $endMarker = $logText -match 'Test end!'
 $passMarker = $logText -match '----PASS!!!'
 $traceOpened = $logText -match 'TRACE_REF_OPEN_OK'
 $traceOpenFailed = $logText -match 'TRACE_REF_OPEN_FAIL'
-$errors = $logText -match 'Error!!!|Error\s*\([^\r\n]*\)!!!|Fail!!!|TRACE_MISMATCH|TRACE_REMAINING_RECORDS|TRACE_TAIL_READ_FAIL|FUNCTIONAL_POINT_COUNT_MISMATCH'
+$errors = $logText -match 'Error!!!|Error\s*\([^\r\n]*\)!!!|Fail!!!|TRACE_MISMATCH|TRACE_REMAINING_RECORDS|TRACE_TAIL_READ_FAIL|FUNCTIONAL_POINT_COUNT_MISMATCH|DEPENDENCY_STORE_MISMATCH|DEPENDENCY_SIDE_EFFECT_FAIL'
 $pointPasses = ([regex]::Matches($logText, 'Functional Test Point PASS!!!')).Count
 $functionalPointCountMatch = [regex]::Match($logText, 'FUNCTIONAL_POINT_PASSES=(\d+)')
 $finishAtEnd = $logText -match 'debug_wb_pc\s*=\s*0xbfc00100|Test end!'
@@ -400,6 +403,11 @@ if ($HazardDirected) {
         $hazardCoveragePass = $hazardCoveragePass -and $forwardUses -eq 0
     }
 }
+$dependencySideEffectsPass = $true
+if ($DependencyDirected) {
+    $dependencySideEffectsPass = ($logText -match 'DEPENDENCY_SIDE_EFFECTS_PASS') -and
+        -not ($logText -match 'DEPENDENCY_STORE_MISMATCH|DEPENDENCY_SIDE_EFFECT_FAIL')
+}
 
 $status = 'INCOMPLETE'
 if ($traceOpenFailed) {
@@ -419,7 +427,7 @@ if ($traceOpenFailed) {
 } elseif ($endMarker -and $passMarker -and $traceOpened -and $finishAtEnd -and
     $pointPasses -eq $expectedPointPasses -and
     $reportedFunctionalPointPasses -eq $expectedPointPasses -and
-    $hazardCoveragePass -and $zeroRegWritebackPass) {
+    $hazardCoveragePass -and $zeroRegWritebackPass -and $dependencySideEffectsPass) {
     if ($Case -eq 'lab4' -and $PipelineMode -eq 'forwarding' -and ($forwardUses -eq 0 -or $stallCycles -eq 0)) {
         $status = 'FAIL'
     } elseif ($Case -eq 'lab4' -and $PipelineMode -eq 'blocking' -and $stallCycles -eq 0) {
@@ -451,6 +459,8 @@ if ($traceOpenFailed) {
     "FORWARD_WB_USES=$forwardWb",
     "FORWARD_USES=$forwardUses",
     "HAZARD_DIRECTED=$([bool]$HazardDirected)",
+    "DEPENDENCY_DIRECTED=$([bool]$DependencyDirected)",
+    "DEPENDENCY_SIDE_EFFECTS_PASS=$dependencySideEffectsPass",
     "EXPECTED_FUNCTIONAL_POINT_PASSES=$expectedPointPasses",
     "HAZARD_LOAD_USE_STALLS=$($hazardMetrics['HAZARD_LOAD_USE_STALLS'])",
     "HAZARD_STORE_BASE_FORWARDS=$($hazardMetrics['HAZARD_STORE_BASE_FORWARDS'])",
@@ -501,6 +511,7 @@ Write-Output "HAZARD_NEW_BRANCH_FORWARDS=$($hazardMetrics['HAZARD_NEW_BRANCH_FOR
 Write-Output "HAZARD_JALR_FORWARDS=$($hazardMetrics['HAZARD_JALR_FORWARDS'])"
 Write-Output "HAZARD_PRIORITY_EX_USES=$($hazardMetrics['HAZARD_PRIORITY_EX_USES'])"
 Write-Output "HAZARD_ZERO_DEST_WRITES=$($hazardMetrics['HAZARD_ZERO_DEST_WRITES'])"
+Write-Output "DEPENDENCY_SIDE_EFFECTS_PASS=$dependencySideEffectsPass"
 Write-Output "ZERO_REG_WRITEBACK_ATTEMPTS=$zeroRegWritebackAttempts"
 Write-Output "ZERO_REG_WRITEBACK_PASS=$zeroRegWritebackPass"
 Write-Output "WAVEFORM_CAPTURED=$waveformCaptured"

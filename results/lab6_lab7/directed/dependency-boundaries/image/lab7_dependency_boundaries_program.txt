@@ -1,0 +1,73 @@
+# Lab7 directed dependency test; compare with an independent CPU132 trace.
+# Expected: r3=ffffffef, r4=000000ef, r5=ffffcdef, r6=0000cdef.
+# Expected: r8=ef000089, r9/r11=55443322, r12=ffffffff.
+# Expected: r13=00000011, r14 is not written, r15=00000033.
+# Expected final memory: [0]=89abcdef [4]=cdef00ef [8]=ef000089.
+# Expected final memory: [16]=44332211 [20]=88776655 [24]=55443322 [28]=ffffffff.
+# Store bus addresses/masks/data are checked by DEPENDENCY_DIRECTED testbench mode.
+# Word index 64 is the shared END_PC sentinel at 0xbfc00100.
+00  0xbfc00000  3c0a800d  lui r10, 0x800d
+01  0xbfc00004  3c0189ab  lui r1, 0x89ab
+02  0xbfc00008  3421cdef  ori r1, r1, 0xcdef
+03  0xbfc0000c  ad410000  sw r1, 0(r10)
+04  0xbfc00010  8d420000  lw r2, 0(r10)
+05  0xbfc00014  a1420004  sb r2, 4(r10)
+06  0xbfc00018  81430004  lb r3, 4(r10)
+07  0xbfc0001c  91440004  lbu r4, 4(r10)
+08  0xbfc00020  8d420000  lw r2, 0(r10)
+09  0xbfc00024  a5420006  sh r2, 6(r10)
+10  0xbfc00028  85450006  lh r5, 6(r10)
+11  0xbfc0002c  95460006  lhu r6, 6(r10)
+12  0xbfc00030  8d420000  lw r2, 0(r10)
+13  0xbfc00034  a9420008  swl r2, 8(r10)
+14  0xbfc00038  8d420000  lw r2, 0(r10)
+15  0xbfc0003c  b942000b  swr r2, 11(r10)
+16  0xbfc00040  8d480008  lw r8, 8(r10)
+17  0xbfc00044  3c014433  lui r1, 0x4433
+18  0xbfc00048  34212211  ori r1, r1, 0x2211
+19  0xbfc0004c  ad410010  sw r1, 16(r10)
+20  0xbfc00050  3c018877  lui r1, 0x8877
+21  0xbfc00054  34216655  ori r1, r1, 0x6655
+22  0xbfc00058  ad410014  sw r1, 20(r10)
+23  0xbfc0005c  8d490010  lw r9, 16(r10)
+24  0xbfc00060  89490014  lwl r9, 20(r10)
+25  0xbfc00064  99490011  lwr r9, 17(r10)
+26  0xbfc00068  ad490018  sw r9, 24(r10)
+27  0xbfc0006c  8d4b0018  lw r11, 24(r10)
+28  0xbfc00070  3c01ffff  lui r1, 0xffff
+29  0xbfc00074  3421ffff  ori r1, r1, 0xffff
+30  0xbfc00078  ad41001c  sw r1, 28(r10)
+31  0xbfc0007c  8d4c001c  lw r12, 28(r10)
+32  0xbfc00080  05800002  bltz r12, branch_target (offset 2)
+33  0xbfc00084  240d0011  addiu r13, r0, 17
+34  0xbfc00088  240e00ee  addiu r14, r0, 238
+35  0xbfc0008c  240f0033  addiu r15, r0, 51
+36  0xbfc00090  00000000  nop
+37  0xbfc00094  00000000  nop
+38  0xbfc00098  00000000  nop
+39  0xbfc0009c  00000000  nop
+40  0xbfc000a0  00000000  nop
+41  0xbfc000a4  00000000  nop
+42  0xbfc000a8  00000000  nop
+43  0xbfc000ac  00000000  nop
+44  0xbfc000b0  00000000  nop
+45  0xbfc000b4  00000000  nop
+46  0xbfc000b8  00000000  nop
+47  0xbfc000bc  00000000  nop
+48  0xbfc000c0  00000000  nop
+49  0xbfc000c4  00000000  nop
+50  0xbfc000c8  00000000  nop
+51  0xbfc000cc  00000000  nop
+52  0xbfc000d0  00000000  nop
+53  0xbfc000d4  00000000  nop
+54  0xbfc000d8  00000000  nop
+55  0xbfc000dc  00000000  nop
+56  0xbfc000e0  00000000  nop
+57  0xbfc000e4  00000000  nop
+58  0xbfc000e8  00000000  nop
+59  0xbfc000ec  00000000  nop
+60  0xbfc000f0  00000000  nop
+61  0xbfc000f4  00000000  nop
+62  0xbfc000f8  00000000  nop
+63  0xbfc000fc  00000000  nop
+64  0xbfc00100  00000000  nop ; END_PC sentinel at word 64

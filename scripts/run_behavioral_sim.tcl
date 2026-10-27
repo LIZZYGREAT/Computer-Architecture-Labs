@@ -33,6 +33,7 @@ set inst_mif [file normalize [lindex $argv 5]]
 set result_dir [file normalize [lindex $argv 6]]
 set expected_functional_points 23
 set capture_waveform 0
+set dependency_directed 0
 if {[llength $argv] >= 9} {
     set expected_functional_points [lindex $argv 7]
     set capture_waveform [lindex $argv 8]
@@ -43,6 +44,9 @@ if {[llength $argv] >= 9} {
     } else {
         set expected_functional_points $optional_arg
     }
+}
+if {[llength $argv] >= 10} {
+    set dependency_directed [lindex $argv 9]
 }
 if {![file isfile $xpr]} {
     fail "Vivado project not found: $xpr"
@@ -61,6 +65,9 @@ if {![string is integer -strict $expected_functional_points] || $expected_functi
 }
 if {$capture_waveform ni {0 1}} {
     fail "capture-waveform must be 0 or 1"
+}
+if {$dependency_directed ni {0 1}} {
+    fail "dependency-directed must be 0 or 1"
 }
 if {![file isfile $trace_file] || [file size $trace_file] == 0} {
     fail "reference trace is missing or empty: $trace_file"
@@ -171,12 +178,12 @@ set_property -name XSIM.ELABORATE.XELAB.MORE_OPTIONS \
     -value [format {-generic_top "PIPELINE_FORWARDING=%d"} $pipeline_forwarding] \
     -objects $sim_set
 set_property -name XSIM.SIMULATE.XSIM.MORE_OPTIONS \
-    -value [format {--testplusarg "TRACE_REF=%s" --testplusarg "EXPECTED_POINTS=%d"} \
-        $trace_file $expected_functional_points] \
+    -value [format {--testplusarg "TRACE_REF=%s" --testplusarg "EXPECTED_POINTS=%d" --testplusarg "DEPENDENCY_DIRECTED=%d"} \
+        $trace_file $expected_functional_points $dependency_directed] \
     -objects $sim_set
 set_property -name XSIM.SIMULATE.RUNTIME -value "${max_ns}ns" -objects $sim_set
 puts "XSIM_GENERIC_TOP=PIPELINE_FORWARDING=$pipeline_forwarding"
-puts "XSIM_TRACE_PLUSARG=TRACE_REF=$trace_file EXPECTED_POINTS=$expected_functional_points"
+puts "XSIM_TRACE_PLUSARG=TRACE_REF=$trace_file EXPECTED_POINTS=$expected_functional_points DEPENDENCY_DIRECTED=$dependency_directed"
 puts "XSIM_RUNTIME=${max_ns}ns"
 set project_name [file rootname [file tail $xpr]]
 set sim_working_dir [file normalize [file join [file dirname $xpr] "$project_name.sim" sim_1 behav xsim]]

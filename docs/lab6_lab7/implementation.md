@@ -78,3 +78,9 @@ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify
 - `lb/lbu` 按低两位选择 byte lane 并分别符号扩展/零扩展；`lh/lhu` 按地址位 1 选择半字。`sb/sh` 通过 `data_sram_wen[3:0]` 选择小端字节 lane 并对写数据移位。
 - `lwl/lwr` 使用经过前递与 RAW 检测的旧 `rt` 合并，`swl/swr` 按四种低地址偏移产生掩码及对应移位数据。公式与独立 CPU132 reference 的执行级合并/字节使能表逐项核对。
 - SoC 仍使用 32-bit data RAM 与 `data_sram_addr[17:2]` 字索引；同步读在 EX→MEM 交接沿采样。Lab7 最终累计 forwarding 仿真覆盖 68 个课程功能点并与独立 trace 匹配；验收日志及哈希见 [verification.md](verification.md)。
+
+## P2-A：依赖边界定向 ROM
+
+- `scripts/build_lab7_dependency_directed_image.py` 生成 65-word COE/MIF 和程序清单，覆盖 `lw→sb/sh/swl/swr` 写数据依赖、写后紧跟 `lb/lbu/lh/lhu` 读回、同一目标寄存器连续 `lwl/lwr` 拼接，以及 `lw→bltz` 的 load-use 与延迟槽。
+- 清单给出预期 GPR 值和最终 RAM 字；`mycpu_tb.v` 在 `DEPENDENCY_DIRECTED=1` 时逐笔检查 9 次实际 store 的有效地址、byte-enable 和写数据，并断言恰好一次 taken branch redirect。CPU132 trace 对照检查寄存器写回顺序，包括 delay slot、跳过的 fall-through 和分支目标；`verify.ps1` 必须同时看到副作用检查标记与完整 trace 匹配，不能只凭功能点计数判定。
+- 镜像生成及 COE/MIF 一致性检查为 `PASS`；由于当前会话运行于 AppContainer，CPU132 reference 和 DUT 行为仿真保持 `NOT_RUN`。可复现命令及哈希见 [verification.md](verification.md)。既有 ALU→`jalr` 与 DIV 等待期间分支用例继续分别补充覆盖。
