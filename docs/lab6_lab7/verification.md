@@ -57,3 +57,24 @@ Lab6/Lab7 golden trace 分别保存在 [`golden/lab6`](../../results/lab6_lab7/g
 ## 保留记录范围
 
 `results` 中保留本轮最终 PASS、必要阶段日志、稳定 golden trace、定向输入映像和 GCC 根因对照。本轮失败的 AppContainer 预检及临时 reference 尝试没有作为验收依据；历史 S2 失败用于解释 34/42 旧状态。reference CPU 源码仍在 `lab3/CPU_CDE/cpu132_gettrace/`，可按脚本重新生成。
+
+## Lab6/Lab7 源码重建状态（P1-A）
+
+已从 Lab6 和 Lab7 各删除一个重复的 `inst/n32_xori.S`。删除前四份 `n31_xori.S`/`n32_xori.S` 的 SHA-256 均为 `77559A51A58867B24663D7B0B92CDA2DBB1FBE7E784F3BFA5E97EDCCAB0732C3`；两个 `start.S` 都只调用 `n31_xori_test` 和 `n32_sllv_test`，而对应的 `n32_sllv.S` 保留。未改测试宏、功能点编号或已有 `obj/` 映像。
+
+本次检查结果：`SOURCE_REBUILD=NOT_RUN`。当前 Windows 执行环境没有可调用的 `mipsel-linux-gcc` 或 `mipsel-linux-gnu-gcc`，因此没有从汇编源码生成新 ROM，也没有生成与新 ROM 配套的 CPU132 trace 或 DUT 结果。已有 `.coe/.mif`、golden trace、Lab6 `42/42` 和 Lab7 `68/68` 记录保持原样，仍是历史已验收映像的结果，不作为源码重建通过的证据。
+
+在 Debian/Ubuntu Linux 上安装交叉工具链后，可在临时目录构建，避免覆盖仓库内的旧映像：
+
+```sh
+sudo apt install build-essential gcc-mipsel-linux-gnu binutils-mipsel-linux-gnu
+tmp=$(mktemp -d)
+cp -a lab6/func_lab6 "$tmp/lab6"
+cp -a lab7/func_lab7 "$tmp/lab7"
+make -C "$tmp/lab6" reset
+make -C "$tmp/lab6" CROSS_COMPILE=mipsel-linux-gnu-
+make -C "$tmp/lab7" reset
+make -C "$tmp/lab7" CROSS_COMPILE=mipsel-linux-gnu-
+```
+
+先记录两个 `inst/` 的 `*.S` 清单、编译退出码、`obj/inst_ram.coe`/`obj/inst_ram.mif` 的格式、深度和 SHA-256，再和仓库原映像比较。若新旧指令映像不同，使用新 COE/MIF 分别调用 `scripts/generate_reference_trace.ps1 -Case lab6`、`-Case lab7` 生成独立 trace；随后以各自的新 trace 和 MIF 调用 `scripts/verify.ps1 -Case lab6 -PipelineMode forwarding`、`-Case lab7 -PipelineMode forwarding`。不要把现存 golden trace 用于内容已改变的 ROM。Vivado reference/DUT 验收只从普通 Windows PowerShell 运行。
