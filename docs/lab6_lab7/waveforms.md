@@ -2,7 +2,7 @@
 
 ## 当前证据状态
 
-最新 Lab6/Lab7 累计回归分别为 [`lab6-20261026T163659Z`](../../results/lab6_lab7/lab6-20261026T163659Z/)（42/42）和 [`lab7-20261026T164130Z`](../../results/lab6_lab7/lab7-20261026T164130Z/)（68/68）；二者均未启用 `-CaptureWaveform`。新增指令前递定向回归 [`lab7-20261026T170957Z`](../../results/lab6_lab7/lab7-20261026T170957Z/) 也 PASS，但同样没有捕获波形。因此当前没有可供报告引用的 Lab6/Lab7 WDB、WCFG 或 Vivado 截图。
+最新 Lab6/Lab7 源码重建 ROM 回归分别为 [`lab6-20261027T033402Z`](../../results/lab6_lab7/lab6-20261027T033402Z/)（42/42）和 [`lab7-20261027T033802Z`](../../results/lab6_lab7/lab7-20261027T033802Z/)（68/68）；二者均未启用 `-CaptureWaveform`。10/27 原保存镜像累计回归也通过，完整结果 ID 见 [verification.md](verification.md)。目前没有可供报告引用的 Lab6/Lab7 WDB、WCFG 或 Vivado 截图。
 
 本文件是后续人工取证指南，不代表本轮已经生成波形。本轮遵从用户要求，没有创建波形文件或波形图。报告中的 Python 图是结构/流程/统计图，不能替代实测波形。验证入口及普通 Windows PowerShell 要求见 [environment.md](environment.md)。
 

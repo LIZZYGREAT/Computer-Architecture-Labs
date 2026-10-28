@@ -21,13 +21,14 @@ Lab4 必须传入与 Lab4 ROM 对应的独立 trace。Lab6/Lab7 默认使用已�
 
 Vivado GUI 可打开上述工程用于查看设计和 WDB；默认 Run All 使用工程当前仿真属性，不替代针对 Lab4/Lab6/Lab7 指定镜像与 trace 的自动验收脚本。
 
-## 最新复核结果
+## 修订后复核结果（2026-10-27）
 
-- Lab3 forwarding：23/23，172,599 周期，0 stall；trace 44,071/44,071；[`lab3-20261026T162836Z`](../../results/lab3_lab4/lab3-20261026T162836Z/)。
-- Lab4 forwarding：23/23，114,577 周期，50 stalls；trace 44,071/44,071；[`lab4-20261026T163305Z`](../../results/lab3_lab4/lab4-20261026T163305Z/)。
-- Lab6 forwarding：42/42，109,375 周期，89 stalls；trace 66,612/66,612；[`lab6-20261026T163659Z`](../../results/lab6_lab7/lab6-20261026T163659Z/)。
-- Lab7 forwarding：68/68，166,226 周期，926 stalls；trace 100,732/100,732；[`lab7-20261026T164130Z`](../../results/lab6_lab7/lab7-20261026T164130Z/)。
-- 新指令前递定向：trace 41/41，新增前递计数 store base/data/branch/jalr = 3/2/6/1；[`lab7-20261026T170957Z`](../../results/lab6_lab7/lab7-20261026T170957Z/)。
-- HI/LO 单元 testbench：PASS，接受/提交计数 3/4/6；[`hilo-unit-20261026T164656Z`](../../results/lab6_lab7/hilo-unit-20261026T164656Z/)。
+- Lab3 forwarding：23/23，172,599 周期；[`lab3-20261027T025645Z`](../../results/lab3_lab4/lab3-20261027T025645Z/)。
+- Lab4 forwarding：23/23，114,577 周期；[`lab4-20261027T030155Z`](../../results/lab3_lab4/lab4-20261027T030155Z/)。
+- Lab6 forwarding：42/42，109,439 周期，trace 66,612/66,612；[`lab6-20261027T030621Z`](../../results/lab6_lab7/lab6-20261027T030621Z/)。
+- Lab7 forwarding：68/68，166,330 周期，trace 100,732/100,732；[`lab7-20261027T031040Z`](../../results/lab6_lab7/lab7-20261027T031040Z/)。
+- 源码重建后的 reference / DUT 配对回归：Lab6 42/42、Lab7 68/68；结果序号与哈希见 [`verification.md`](verification.md)。
+- HI/LO 双路握手：PASS，`hilo-unit-20261027T032000Z`；DIV 等待期间分支：PASS，`lab6-20261027T031906Z`。
+- P2-A 连续依赖定向 reference / DUT：PASS，25/25 trace，`reference-lab7-20261027T025022Z` → `lab7-20261027T025231Z`。
 
-上述仿真均未捕获波形。真实 Vivado WDB/PNG 的人工取证步骤见 [`waveforms.md`](waveforms.md)；Lab3/Lab4 完整结果矩阵见 [`Lab3/Lab4 verification`](../lab3-lab4/verification-final.md)，Lab6/Lab7 哈希和细项见 [`Lab6/Lab7 verification`](verification.md)。
+以上结果均未捕获波形。真实 Vivado WDB/PNG 的人工取证步骤见 [`waveforms.md`](waveforms.md)；Lab3/Lab4 完整结果矩阵见 [`Lab3/Lab4 verification`](../lab3-lab4/verification-final.md)，Lab6/Lab7 哈希和核验序号见 [`Lab6/Lab7 verification`](verification.md)。

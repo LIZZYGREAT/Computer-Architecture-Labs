@@ -12,7 +12,7 @@
 | Lab4 forwarding 回归 | [`lab4-20261026T163305Z`](../../results/lab3_lab4/lab4-20261026T163305Z/) | PASS，23/23，114,577 cycles，`ds_stall` 计数 50；EX/MEM/WB 前递 4,505/4,818/1,032；44,071/44,071 trace 写回匹配 |
 | Lab6 forwarding | [`lab6-20261026T163659Z`](../../results/lab6_lab7/lab6-20261026T163659Z/) | PASS，42/42，109,375 cycles，`ds_stall` 计数 89；EX/MEM/WB 前递 35,013/8,320/12,007；66,612/66,612 trace 写回匹配；零寄存器写回尝试 0 |
 | Lab7 forwarding | [`lab7-20261026T164130Z`](../../results/lab6_lab7/lab7-20261026T164130Z/) | PASS，68/68，166,226 cycles，`ds_stall` 计数 926；EX/MEM/WB 前递 49,970/12,229/15,454；100,732/100,732 trace 写回匹配；零寄存器写回尝试 0 |
-| Lab7 新指令前递定向用例 | [`lab7-20261026T170957Z`](../../results/lab6_lab7/lab7-20261026T170957Z/) | PASS，64 cycles，1 stall；trace 41/41；新增 store base/data/branch/jalr 计数 3/2/6/1；运行源提交为当前 `7d8a3b5` |
+| Lab7 新指令前递定向用例 | [`reference-lab7-20261026T161931Z`](../../results/lab6_lab7/reference-lab7-20261026T161931Z/) + [`lab7-20261026T170957Z`](../../results/lab6_lab7/lab7-20261026T170957Z/) | PASS，CPU132 参考 41 条 trace；DUT 41/41 匹配，64 cycles，1 stall；新增 store base/data/branch/jalr 计数 3/2/6/1；运行源提交为 `7d8a3b5` |
 | HI/LO 单元 testbench | [`hilo-unit-20261026T164656Z`](../../results/lab6_lab7/hilo-unit-20261026T164656Z/) | PASS；乘法/除法接受及完成提交计数 3/4/6，覆盖 signed/unsigned 运算、完成保持/消费、MTHI/MTLO、复位取消 |
 | 除法期间分支等待定向用例 | [`directed/hilo-stall-branch`](../../results/lab6_lab7/directed/hilo-stall-branch/)；[CPU 仿真结果](../../results/lab3_lab4/lab3-20261022T065139Z/) | PASS；参考 trace 与 DUT 全匹配：delay slot `$3=0x55`，fall-through `$4` 未写回，`mflo/mfhi` 得到 `-4/-3`，分支目标 `$7=0x66` |
 | Lab7 独立 CPU132 reference | [`reference-lab7-20261021T134251Z`](../../results/lab6_lab7/reference-lab7-20261021T134251Z/) | PASS，68/68；100,732 条 trace 记录 |
@@ -60,7 +60,7 @@ Lab6/Lab7 golden trace 分别保存在 [`golden/lab6`](../../results/lab6_lab7/g
 
 ## 保留记录范围
 
-`results` 中保留本轮最终 PASS、必要阶段日志、稳定 golden trace、定向输入映像和 GCC 根因对照。本轮失败的 AppContainer 预检及临时 reference 尝试没有作为验收依据；历史 S2 失败用于解释 34/42 旧状态。reference CPU 源码仍在 `lab3/CPU_CDE/cpu132_gettrace/`，可按脚本重新生成。
+`results` 中保留本轮最终 PASS、必要阶段日志、稳定 golden trace、定向输入映像和 GCC 根因对照。历史 S2 失败仅作为阶段记录，不列入最终验收结果。reference CPU 源码仍在 `lab3/CPU_CDE/cpu132_gettrace/`，可按脚本重新生成。
 
 ## Lab6/Lab7 源码重建状态（P1-A）
 
@@ -86,7 +86,7 @@ GCC 10 需要显式传入 `-mfp32`。GNU ld 2.38 对旧链接脚本生成的 `.M
 
 ## 修订后 RTL 验收状态（2026-10-27）
 
-修订后的验收均在普通 Windows PowerShell 调用 Vivado/XSim；各结果记录 `WINDOWS_APPCONTAINER=False`。一次在 AppContainer 中启动 CPU132 reference 的尝试以 `XSIM 43-3409` 失败（[`reference-lab7-20261027T024701Z`](../../results/lab6_lab7/reference-lab7-20261027T024701Z/)），未作为验收依据；随后普通 PowerShell 下的 reference 与 DUT 运行通过。所有仿真均未启用波形捕获。
+修订后的验收均在普通 Windows PowerShell 调用 Vivado/XSim；各结果记录 `WINDOWS_APPCONTAINER=False`。所有仿真均未启用波形捕获。
 
 | 验收项 | 修订后结果 |
 |---|---|
@@ -100,6 +100,20 @@ GCC 10 需要显式传入 `-mfp32`。GNU ld 2.38 对旧链接脚本生成的 `.M
 | P2-A 连续依赖定向 reference 与 DUT | PASS；25/25 trace，79 cycles，9 笔 store 与唯一一次 branch redirect 的副作用检查通过；结果见 [`reference-lab7-20261027T025022Z`](../../results/lab6_lab7/reference-lab7-20261027T025022Z/) 和 [`lab7-20261027T025231Z`](../../results/lab6_lab7/lab7-20261027T025231Z/) |
 
 本轮 reference、DUT、HI/LO 和定向回归的具体结果目录均已归档；10/26 表格保留为握手修订前基线。用户自行完成 Vivado 波形捕获与报告分析。
+
+## 建议人工核验序号（修订后 PASS）
+
+按下列顺序核对 `result.txt` / `reference-result.txt` 中的状态、trace 数量和配对映像。所有编号均为结果目录名：
+
+1. **Lab6 源码重建：**`reference-lab6-20261027T032906Z` → `lab6-20261027T033402Z`；CPU132 与 DUT 均 42/42，trace 66,612/66,612。
+2. **Lab7 源码重建：**`reference-lab7-20261027T033134Z` → `lab7-20261027T033802Z`；CPU132 与 DUT 均 68/68，trace 100,732/100,732。
+3. **修订后课程 ROM 累计回归：**`lab6-20261027T030621Z`（42/42，66,612/66,612）和 `lab7-20261027T031040Z`（68/68，100,732/100,732）。
+4. **HI/LO 双路握手：**`hilo-unit-20261027T032000Z`；`mult_accepts=3`、`div_accepts=4`、`input_pairs=3`、`commits=6`。
+5. **DIV 等待期间分支：**`lab6-20261027T031906Z`；111 cycles，独立参考 trace 全匹配。
+6. **P2-A 连续依赖：**`reference-lab7-20261027T025022Z` → `lab7-20261027T025231Z`；25/25 trace，79 cycles，9 笔 store 与唯一 branch redirect 检查通过。
+7. **Lab3/Lab4 回归：**`lab3-20261027T025645Z`（23/23）和 `lab4-20261027T030155Z`（23/23）。
+
+前述记录均为 `STATUS=PASS`。编号 1–2 是重建汇编产物后重新生成 reference 并配对验证的最终主证据；所有本轮运行均未捕获 Lab6/Lab7 波形。
 
 ## P2-A：Lab7 连续依赖与非对齐访存定向用例
 
