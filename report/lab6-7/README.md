@@ -19,4 +19,4 @@
 python .\report\lab6-7\scripts\build_figures.py
 ```
 
-脚本读取 `results/lab6_lab7/lab6-20261026T163659Z/result.txt` 与 `lab7-20261026T164130Z/result.txt`，确认两轮功能点完整通过后才生成汇总图。当前四张插图仍是结构、流程或统计图；真实 Vivado 波形尚未捕获，人工采集步骤见 `docs/lab6_lab7/waveforms.md`。
+脚本读取 `results/lab6_lab7/lab6-20261028T093517Z/result.txt` 与 `lab7-20261028T102942Z/result.txt`，确认两轮功能点完整通过后才生成汇总图。当前四张插图仍是结构、流程或统计图；Lab6/Lab7 的 Vivado WDB 已捕获，波形 PNG 的人工导出步骤见 `docs/lab6_lab7/waveforms.md`。

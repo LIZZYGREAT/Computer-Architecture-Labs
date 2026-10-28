@@ -1,11 +1,11 @@
-# Lab3 / Lab4 最终验收（2026-10-22）
+# Lab3 / Lab4 最终验收（2026-10-28）
 
 当前最终结果入口见 [`delivery-manifest.md`](delivery-manifest.md)。Vivado GCC 启动上下文的诊断与结论见 [`gcc-startup-incident.md`](gcc-startup-incident.md)。
 
 ## 验收环境与 GCC 结论
 
 - Vivado 2025.2（64-bit，Build 6299465，IP Build 6300035），器件 `xc7a200tfbg676-2`，设计顶层 `soc_lite_top`，仿真顶层 `tb_top`。
-- Xelab 默认实际调用 Vivado 随附 GCC 6.2.0。调用参数和工作目录见事故记录与 [`gcc-diagnostic-20261022`](../../results/lab3_lab4/gcc-diagnostic-20261022/)。
+- Xelab 默认实际调用 Vivado 随附 GCC 6.2.0。调用参数和工作目录结论见事故记录；原始环境故障日志已从 `results` 清理。
 - Codex 受限 PowerShell 的 token 为 Windows AppContainer；在此上下文启动 GCC 会返回 Win32 623。普通 PowerShell 和隔离 PATH 下 GCC 6.2.0 均可启动，XSim 生成 C 文件的编译命令退出 0。`verify.ps1` 现会记录 token 上下文并在 AppContainer 下提前返回 `ENVIRONMENT_ERROR`。
 - 仿真脚本未指定替代 GCC，也未改写 `PATH`、`GCC_SIM_EXE_PATH` 或 `RDI_MINGW_LIB`。Windows loader 没有提供冲突 DLL 的装载跟踪，故报告不指定某个 DLL 为根因。没有替换系统 DLL、重装 Vivado 或重写 CPU。
 
@@ -23,11 +23,11 @@ Lab4 trace 位于 [`lab4/func_lab4/obj/golden_trace.txt`](../../lab4/func_lab4/o
 
 | 用例 | 结果目录 | 功能点 / 记录 | 周期 | stall | EX/MEM/WB 前递 | 状态 |
 |---|---|---:|---:|---:|---:|---|
-| Lab3 forwarding | [`lab3-20261022T035035Z`](../../results/lab3_lab4/lab3-20261022T035035Z/) | 23/23 | 172,599 | 0 | 1 / 0 / 0 | PASS |
+| Lab3 forwarding | [`lab3-20261027T025645Z`](../../results/lab3_lab4/lab3-20261027T025645Z/) | 23/23 | 172,599 | 0 | 1 / 0 / 0 | PASS |
 | Lab4 blocking | [`lab4-20261022T040641Z`](../../results/lab3_lab4/lab4-20261022T040641Z/) | 23/23 | 130,891 | 16,364 | 0 / 0 / 0 | PASS |
-| Lab4 forwarding | [`lab4-20261022T041047Z`](../../results/lab3_lab4/lab4-20261022T041047Z/) | 23/23 | 114,577 | 50 | 4,505 / 4,818 / 1,032 | PASS |
+| Lab4 forwarding | [`lab4-20261027T030155Z`](../../results/lab3_lab4/lab4-20261027T030155Z/) | 23/23 | 114,577 | 50 | 4,505 / 4,818 / 1,032 | PASS |
 
-两轮 Lab4 使用同一 MIF 和 trace。前递减少 16,314 周期（12.46%），load-use 相关仍产生 50 个停顿周期。三个结果目录均记录 `ZERO_REG_WRITEBACK_ATTEMPTS=0`、trace 匹配和仿真 MIF 与源 MIF 匹配。
+Lab4 blocking 与 forwarding 使用同一 MIF 和 trace。前递减少 16,314 周期（12.46%），load-use 相关仍产生 50 个停顿周期。三个结果目录均记录 `ZERO_REG_WRITEBACK_ATTEMPTS=0`、trace 匹配和仿真 MIF 与源 MIF 匹配。
 
 ## 定向冲突与波形
 
@@ -42,7 +42,7 @@ Forwarding 波形数据库为 [`hazard-directed-forwarding.wdb`](../../results/l
 
 ## 保留的阶段日志
 
-每个最终 DUT 结果目录保留 `result.txt`、`preflight-vivado.log`、`ip_status.rpt`、`simulation-vivado.log`、Xvlog/Xvhdl/Xelab/XSim 阶段日志、`xsim-sources.prj` 和 `instruction-image-check.txt`。临时命令、重复日志副本、拼接日志和重复 ROM 镜像已清理。GCC 根因证据单独收拢在 `gcc-diagnostic-20261022/`。
+保留的 DUT 结果目录提供 `result.txt`、Vivado/XSim 阶段日志、source manifest、图像一致性检查和 IP 状态报告。失败轮、已被后续验收覆盖的完整回归及临时启动副本已清理。GCC 根因与上下文结论保留在 [`gcc-startup-incident.md`](gcc-startup-incident.md)，不再保留独立诊断日志目录。
 
 从仓库根目录复现：
 

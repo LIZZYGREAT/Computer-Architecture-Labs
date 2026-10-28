@@ -17,9 +17,9 @@ D:\Verilog\2025.2\Vivado\data\..\tps\mingw\6.2.0\win64.o\nt\bin\gcc.exe -fPIC -c
 CWD=C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab3\CPU_CDE\mycpu_verify\run_vivado\mycpu_prj1\mycpu_prj1.sim\sim_1\behav\xsim
 ```
 
-Xelab 也用同一 GCC 6.2.0 链接 `xsimk.exe`、`xsim_0/1/2.win64.obj` 与 Vivado XSim kernel。原始命令和环境元数据在 [`gcc-diagnostic-20261022`](../../results/lab3_lab4/gcc-diagnostic-20261022/)；其中保留默认配置和注入路径对照、实际启动失败记录及 XSim C 编译复现。
+Xelab 也用同一 GCC 6.2.0 链接 `xsimk.exe`、`xsim_0/1/2.win64.obj` 与 Vivado XSim kernel。原始对照日志已在结果清理中删除；本页保留了可复核的调用参数、上下文边界和结论。
 
-本轮 Lab7/Lab3 的失败日志记录 `xsim_5.c` 和 `XSIM 43-3409`。这表示 Xelab 的 C 内核构建阶段失败，XSim 没有启动；该轮 0 个功能点、0 周期是“未执行”，不能写成仿真测得零周期。失败轮的 `result.txt`、`simulation-vivado.log` 与 `xsim-elaborate.log` 已收拢到同一诊断目录。
+历史 Lab7/Lab3 失败日志曾记录 `xsim_5.c` 和 `XSIM 43-3409`。这表示 Xelab 的 C 内核构建阶段失败，XSim 没有启动；该轮 0 个功能点、0 周期是“未执行”，不能写成仿真测得零周期。对应失败目录和原始日志现已清理，最终 PASS 结果见验收记录。
 
 ## PATH、环境变量与 DLL 搜索
 
@@ -39,4 +39,4 @@ Xelab 也用同一 GCC 6.2.0 链接 `xsimk.exe`、`xsim_0/1/2.win64.obj` 与 Viv
 - Vivado 保持默认编译器配置；没有替换系统 DLL、没有重装 Vivado、没有重写 CPU。
 - 普通上下文下 Lab3 forwarding、Lab4 blocking/forwarding、定向 blocking/forwarding 均通过；Lab7 累计 forwarding 也通过 68/68。当前结果入口见 [`verification-final.md`](verification-final.md) 和 [`docs/lab6_lab7/verification.md`](../lab6_lab7/verification.md)。
 
-Codex AppContainer 复现和普通上下文预检的精简记录在 [`gcc-diagnostic-20261022`](../../results/lab3_lab4/gcc-diagnostic-20261022/)。
+Codex AppContainer 复现和普通上下文预检的原始结果已清理；当前 `verify.ps1` 的 `WINDOWS_APPCONTAINER` 预检仍保留该边界的保护。

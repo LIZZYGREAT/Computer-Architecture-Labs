@@ -39,12 +39,11 @@ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify
 | 定向算术/逻辑 ROM | PASS，73 cycles，1 load-use stall，EX/MEM/WB forwards 7/6/3，trace 全匹配 |
 | Lab3 forwarding 回归 | PASS，23/23，172,599 cycles，0 stalls |
 | Lab4 forwarding 回归 | PASS，23/23，114,577 cycles，50 load-use stalls，EX/MEM/WB forwards 4,505/4,818/1,032 |
-| Lab6 S2 历史累计 ROM | 34/42 点通过；旧 RTL 首次失败在 n35 `div` 后的 `mflo` trace。该结果保留为 S2 阶段记录，不代表当前完整 RTL。 |
-| Lab6 累计 ROM（握手修订后） | PASS，42/42，109,439 cycles，89 stalls；trace 66,612/66,612 匹配，见 [`lab6-20261027T030621Z`](../../results/lab6_lab7/lab6-20261027T030621Z/)。 |
+| Lab6 累计 ROM（握手修订后） | PASS，42/42，109,439 cycles，89 stalls；trace 66,612/66,612 匹配，见 [`lab6-20261028T093517Z`](../../results/lab6_lab7/lab6-20261028T093517Z/)。 |
 
 累计 Lab6 首次失败的 trace 对照为：reference 在 `0xbfc2c9ec` 写 `$21=0x00000002`（n35 的 `mflo`），DUT 未实现 HI/LO 读取，下一条可见写回为 `0xbfc2c9f4` 对 `$2`；此前 n24–n34 已通过。
 
-详细命令输出和 Vivado/XSim 日志见 `results/lab6_lab7/directed/alu/`、`results/lab6_lab7/lab6-20261021T141122Z/` 及对应 Lab3/Lab4 结果目录。`lab6-20261021T141122Z` 的 34/42 是阶段历史；握手修订后的完整回归记录见 `lab6-20261027T030621Z`，源码重建映像的配对回归见 [verification.md](verification.md)。
+详细命令输出和 Vivado/XSim 日志见 `results/lab6_lab7/directed/alu/`、[`lab6-20261028T093517Z`](../../results/lab6_lab7/lab6-20261028T093517Z/) 及对应 Lab3/Lab4 结果目录。握手修订后的完整回归和波形记录见该目录，源码重建映像的配对回归见 [verification.md](verification.md)。
 
 ## S3：Lab6 乘除法 IP 与 HI/LO
 
@@ -70,7 +69,7 @@ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify
 
 - `mycpu_tb.v` 新增 store-base、store-data、六种新增条件分支 `rs`、`jalr` 目标前递计数；仅在 `ds_instruction_issued` 时加一，避免 EX 背压时对同一条 ID 指令重复采样。计数语义是发射指令周期/操作数被前递的使用次数，不是停顿数。
 - `scripts/build_lab7_forwarding_directed_image.py` 构建短 ROM，安排新增 store、条件分支和 `jalr` 依赖前序写者；CPU132 reference 与 DUT 比对通过，41/41 trace 记录匹配、64 cycles、1 stall，新增 store base/data/branch/jalr 计数为 3/2/6/1，见 [`reference-lab7-20261026T161931Z`](../../results/lab6_lab7/reference-lab7-20261026T161931Z/)、[`lab7-20261026T170957Z`](../../results/lab6_lab7/lab7-20261026T170957Z/) 和 [`directed/extended-forwarding`](../../results/lab6_lab7/directed/extended-forwarding/)。
-- 完整 Lab7 累计程序的对应计数为 112/0/1,229/28。累计程序没有触发新增 store-data 前递；定向用例的非零数据前递计数补充覆盖该路径。完整累计回归 68/68，100,732/100,732 trace 写回匹配，见 [`lab7-20261026T164130Z`](../../results/lab6_lab7/lab7-20261026T164130Z/)。
+- 完整 Lab7 累计程序的对应计数为 112/0/1,229/28。累计程序没有触发新增 store-data 前递；定向用例的非零数据前递计数补充覆盖该路径。完整累计回归 68/68，100,732/100,732 trace 写回匹配，见 [`lab7-20261028T102942Z`](../../results/lab6_lab7/lab7-20261028T102942Z/)。
 
 ## S5：Lab7 访存指令
 

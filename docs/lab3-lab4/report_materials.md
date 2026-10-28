@@ -1,6 +1,6 @@
 # 实验报告素材（按最终实测更新）
 
-> 可直接引用的最终统计、指令/trace 哈希、日志 ID 和完整命令见 [`verification-final.md`](verification-final.md)。下面内容按本轮实测更新；波形截图和上板情况单独标为未完成。
+> 可直接引用的最终统计、指令/trace 哈希、日志 ID 和完整命令见 [`verification-final.md`](verification-final.md)。下面内容按 2026-10-28 保留的最终验收更新；波形截图和上板情况单独标为未完成。
 
 ## 实验目的
 

@@ -4,7 +4,7 @@
 
 本轮完整回归已通过：Lab3 23/23、Lab4 23/23、Lab6 42/42、Lab7 68/68。Lab6 与 Lab7 分别与独立 CPU132 trace 的 66,612/66,612 和 100,732/100,732 条写回记录匹配；HI/LO 单元 testbench、除法后分支等待定向用例和新增指令前递定向用例也通过。结果目录、哈希及运行日志索引见 [verification.md](verification.md)。
 
-旧记录 `lab6-20261021T141122Z` 的 34/42 是 HI/LO 完成前 S2 阶段的历史失败，不能描述完整累计结果。2026-10-22 的 GCC/Xelab 失败也是早期环境诊断；后续普通 Windows PowerShell 下的完整 XSim 回归通过。上述 PASS 是 10/27 Divider 握手修订前的基线。
+早期 S2 阶段的 34/42 未完成结果和 2026-10-22 GCC/Xelab 环境失败均属于历史诊断，原始失败目录已清理，不作为报告验收证据。后续 Divider 握手修订、完整回归及波形捕获均已通过；当前可引用的运行 ID 与 trace 哈希见 [verification.md](verification.md)。
 
 ## 2026-10-27 修订后状态
 

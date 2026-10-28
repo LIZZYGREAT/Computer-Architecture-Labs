@@ -1,27 +1,25 @@
-# Lab6 / Lab7 验收记录（2026-10-27）
+# Lab6 / Lab7 验收记录（2026-10-28）
 
-当前结果只按 `result.txt` 中的 `STATUS` 判定。以下 10/26 UTC 运行 ID 对应本次完整复核；Lab3/Lab4 最终验收和 GCC 执行上下文说明见 [`../lab3-lab4/verification-final.md`](../lab3-lab4/verification-final.md) 与 [`../lab3-lab4/gcc-startup-incident.md`](../lab3-lab4/gcc-startup-incident.md)。
+当前状态只按各结果 `result.txt` 中的 `STATUS` 判定。结果目录已缩减为最终验收、独立 reference/DUT 配对和唯一专项证据；失败轮和被后续运行覆盖的完整回归已删除。Lab3/Lab4 指标见 [`../lab3-lab4/verification-final.md`](../lab3-lab4/verification-final.md)，GCC 执行上下文结论见 [`../lab3-lab4/gcc-startup-incident.md`](../lab3-lab4/gcc-startup-incident.md)。
 
-## 最近完整回归（2026-10-26，握手修订前基线）
+## 报告用最终结果索引
 
-下表的 PASS 均来自 10/26 或更早的运行。它们证明当时的已保存映像和 RTL；不表示 10/27 的 Divider 输入握手修订已通过回归。修订后状态见本文末尾。
-
-| 用例 | 结果目录 | 结果 |
+| 用例 | 保留结果目录 | 结果 |
 |---|---|---|
-| Lab3 forwarding 回归 | [`lab3-20261026T162836Z`](../../results/lab3_lab4/lab3-20261026T162836Z/) | PASS，23/23，172,599 cycles，`ds_stall` 计数 0；44,071/44,071 trace 写回匹配 |
-| Lab4 forwarding 回归 | [`lab4-20261026T163305Z`](../../results/lab3_lab4/lab4-20261026T163305Z/) | PASS，23/23，114,577 cycles，`ds_stall` 计数 50；EX/MEM/WB 前递 4,505/4,818/1,032；44,071/44,071 trace 写回匹配 |
-| Lab6 forwarding | [`lab6-20261026T163659Z`](../../results/lab6_lab7/lab6-20261026T163659Z/) | PASS，42/42，109,375 cycles，`ds_stall` 计数 89；EX/MEM/WB 前递 35,013/8,320/12,007；66,612/66,612 trace 写回匹配；零寄存器写回尝试 0 |
-| Lab7 forwarding | [`lab7-20261026T164130Z`](../../results/lab6_lab7/lab7-20261026T164130Z/) | PASS，68/68，166,226 cycles，`ds_stall` 计数 926；EX/MEM/WB 前递 49,970/12,229/15,454；100,732/100,732 trace 写回匹配；零寄存器写回尝试 0 |
-| Lab7 新指令前递定向用例 | [`reference-lab7-20261026T161931Z`](../../results/lab6_lab7/reference-lab7-20261026T161931Z/) + [`lab7-20261026T170957Z`](../../results/lab6_lab7/lab7-20261026T170957Z/) | PASS，CPU132 参考 41 条 trace；DUT 41/41 匹配，64 cycles，1 stall；新增 store base/data/branch/jalr 计数 3/2/6/1；运行源提交为 `7d8a3b5` |
-| HI/LO 单元 testbench | [`hilo-unit-20261026T164656Z`](../../results/lab6_lab7/hilo-unit-20261026T164656Z/) | PASS；乘法/除法接受及完成提交计数 3/4/6，覆盖 signed/unsigned 运算、完成保持/消费、MTHI/MTLO、复位取消 |
-| 除法期间分支等待定向用例 | [`directed/hilo-stall-branch`](../../results/lab6_lab7/directed/hilo-stall-branch/)；[CPU 仿真结果](../../results/lab3_lab4/lab3-20261022T065139Z/) | PASS；参考 trace 与 DUT 全匹配：delay slot `$3=0x55`，fall-through `$4` 未写回，`mflo/mfhi` 得到 `-4/-3`，分支目标 `$7=0x66` |
-| Lab7 独立 CPU132 reference | [`reference-lab7-20261021T134251Z`](../../results/lab6_lab7/reference-lab7-20261021T134251Z/) | PASS，68/68；100,732 条 trace 记录 |
-| Lab6 独立 CPU132 reference | [`reference-lab6-20261021T133931Z`](../../results/lab6_lab7/reference-lab6-20261021T133931Z/) | PASS，42/42；66,612 条 trace 记录 |
-| Lab6 S2 累计 DUT 历史轮 | [`lab6-20261021T141122Z`](../../results/lab6_lab7/lab6-20261021T141122Z/) | 34/42 后在当时尚未实现的 HI/LO `mflo` 处 FAIL；这是 S2 阶段记录，不是当前完整 Lab6 通过结果 |
+| Lab3 forwarding | [`lab3-20261027T025645Z`](../../results/lab3_lab4/lab3-20261027T025645Z/) | PASS，23/23，172,599 cycles |
+| Lab4 blocking / forwarding | [`lab4-20261022T040641Z`](../../results/lab3_lab4/lab4-20261022T040641Z/) / [`lab4-20261027T030155Z`](../../results/lab3_lab4/lab4-20261027T030155Z/) | 均 PASS，23/23；130,891 / 114,577 cycles |
+| Lab6 forwarding + WDB | [`lab6-20261028T093517Z`](../../results/lab6_lab7/lab6-20261028T093517Z/) | PASS，42/42，109,439 cycles，66,612/66,612 trace |
+| Lab7 forwarding + WDB | [`lab7-20261028T102942Z`](../../results/lab6_lab7/lab7-20261028T102942Z/) | PASS，68/68，166,330 cycles，100,732/100,732 trace |
+| 原课程 Lab6/Lab7 独立 CPU132 trace | [`reference-lab6-20261021T133931Z`](../../results/lab6_lab7/reference-lab6-20261021T133931Z/) / [`reference-lab7-20261021T134251Z`](../../results/lab6_lab7/reference-lab7-20261021T134251Z/) | PASS，分别 42/42、68/68；生成当前 `golden/` 使用的 trace |
+| Lab6/7 源码重建 reference → DUT | [`reference-lab6-20261027T032906Z`](../../results/lab6_lab7/reference-lab6-20261027T032906Z/) → [`lab6-20261027T033402Z`](../../results/lab6_lab7/lab6-20261027T033402Z/)；[`reference-lab7-20261027T033134Z`](../../results/lab6_lab7/reference-lab7-20261027T033134Z/) → [`lab7-20261027T033802Z`](../../results/lab6_lab7/lab7-20261027T033802Z/) | Lab6 42/42、Lab7 68/68，trace 全匹配 |
+| HI/LO 双路握手 | [`hilo-unit-20261027T032000Z`](../../results/lab6_lab7/hilo-unit-20261027T032000Z/) | PASS，3 mult 接受、4 div 接受、3 对输入、6 次提交 |
+| DIV 等待期间分支 | [`reference-lab3-20261022T064612Z`](../../results/lab3_lab4/reference-lab3-20261022T064612Z/) → [`lab6-20261027T031906Z`](../../results/lab6_lab7/lab6-20261027T031906Z/) | PASS，111 cycles，trace 匹配 |
+| Lab7 新指令前递定向 | [`reference-lab7-20261026T161931Z`](../../results/lab6_lab7/reference-lab7-20261026T161931Z/) → [`lab7-20261026T170957Z`](../../results/lab6_lab7/lab7-20261026T170957Z/) | PASS，41/41 trace，64 cycles，store base/data/branch/jalr=3/2/6/1 |
+| P2-A 连续依赖定向 | [`reference-lab7-20261027T025022Z`](../../results/lab6_lab7/reference-lab7-20261027T025022Z/) → [`lab7-20261027T025231Z`](../../results/lab6_lab7/lab7-20261027T025231Z/) | PASS，25/25 trace，9 笔 store 与一次 branch redirect 检查通过 |
 
-Lab6/Lab7 golden trace 分别保存在 [`golden/lab6`](../../results/lab6_lab7/golden/lab6/golden_trace.txt) 和 [`golden/lab7`](../../results/lab6_lab7/golden/lab7/golden_trace.txt)。Lab6 算术逻辑定向 DUT 结果及映像位于 [`lab3-20261021T140840Z`](../../results/lab3_lab4/lab3-20261021T140840Z/) 与 [`directed/alu`](../../results/lab6_lab7/directed/alu/)；该定向 DUT 通过，73 周期、1 次 load-use 停顿、EX/MEM/WB 前递 7/6/3。Lab7 新指令前递映像与 listing 位于 [`directed/extended-forwarding`](../../results/lab6_lab7/directed/extended-forwarding/)。
+Lab6/Lab7 原课程 trace 保存在 [`golden/lab6`](../../results/lab6_lab7/golden/lab6/golden_trace.txt) 和 [`golden/lab7`](../../results/lab6_lab7/golden/lab7/golden_trace.txt)。S2 算术逻辑定向 DUT 及映像见 [`lab3-20261021T140840Z`](../../results/lab3_lab4/lab3-20261021T140840Z/) 与 [`directed/alu`](../../results/lab6_lab7/directed/alu/)；73 cycles、1 次 load-use stall、EX/MEM/WB 前递 7/6/3。依赖边界映像见 [`directed/dependency-boundaries`](../../results/lab6_lab7/directed/dependency-boundaries/)，扩展前递映像见 [`directed/extended-forwarding`](../../results/lab6_lab7/directed/extended-forwarding/)。
 
-在上表对应的运行中，Lab6 累计 forwarding 通过 42 个功能点，Lab7 累计 forwarding 通过 68 个功能点，均与独立 CPU132 trace 全匹配；Lab3/Lab4 23/23 基线、HI/LO 模块级 testbench、除法期间分支等待及新增指令前递定向用例也通过。`lab6-20261021T141122Z` 的 34/42 是 S2 阶段旧 RTL 的历史结果，不代表完整 Lab6 状态。以上结果均未启用波形捕获；原波形分析和截图仍由用户完成。
+Lab6 原课程 ROM 的 forwarding 通过 42 个功能点，Lab7 通过 68 个；两份最新波形捕获运行均与独立 trace 全匹配。Lab3/Lab4 forwarding 回归和 Lab4 blocking 对照也通过。旧的 S2 失败和被覆盖的完整回归已从结果目录移除，不作为报告证据。
 
 旧 `FORWARD_EX/MEM/WB_USES` 与新增专项计数均只在 `ds_instruction_issued`（ID 指令被 EX 接收）时采样；常规前递每级只要 `rs` 或 `rt` 任一操作数使用该级就记一次，因此它是发射指令周期/前递级别使用次数，不是源操作数总数或 stall 周期。旧 `HAZARD_STORE_BASE_FORWARDS`/`HAZARD_STORE_DATA_FORWARDS` 只统计 `sw`，`HAZARD_BRANCH_FORWARDS` 只统计 `beq/bne`，`HAZARD_JR_FORWARDS` 只统计 `jr`。新增 `HAZARD_NEW_STORE_BASE_FORWARDS`、`HAZARD_NEW_STORE_DATA_FORWARDS` 分别统计 `sb/sh/swl/swr` 的基址和写数据前递；同一条指令若两操作数均前递，可同时增加两个值。`HAZARD_NEW_BRANCH_FORWARDS` 覆盖六种新增条件分支的 `rs` 前递；`HAZARD_JALR_FORWARDS` 覆盖 `jalr` 跳转目标 `rs` 前递。累计 Lab7 值为 112/0/1,229/28；定向映像值为 3/2/6/1。当前累计程序没有触发新增 store-data 前递，故其值为 0；定向程序已对该路径给出非零覆盖。
 
@@ -50,7 +48,7 @@ Lab6/Lab7 golden trace 分别保存在 [`golden/lab6`](../../results/lab6_lab7/g
 
 早期在 Codex 的 AppContainer PowerShell 中，Xelab 编译 `xsim_5.c` 报 `XSIM 43-3409`，XSim 未启动。重测确认：Codex PowerShell token 的 `TokenIsAppContainer=1`；该上下文用正常或隔离 PATH 启动 Vivado GCC 6.2.0 会失败。普通 Windows PowerShell token 为 `TokenIsAppContainer=0`；GCC `--version` 与 XSim C 编译通过，Lab3/Lab4/Lab7 完整仿真也通过。
 
-`verify.ps1` 已加入 AppContainer 预检和 `host-context.txt` 记录。处于 AppContainer 时会在启动 Vivado 前返回 `ENVIRONMENT_ERROR`，并标记测试点和周期未运行。精简命令、环境、Xelab 与 DLL 错误证据见 [`gcc-diagnostic-20261022`](../../results/lab3_lab4/gcc-diagnostic-20261022/)。未替换 DLL、未重装 Vivado、未修改 Xelab 默认 GCC 配置。
+`verify.ps1` 已加入 AppContainer 预检和 `host-context.txt` 记录。处于 AppContainer 时会在启动 Vivado 前返回 `ENVIRONMENT_ERROR`，并标记测试点和周期未运行。GCC/Xelab 执行上下文结论见 [`gcc-startup-incident.md`](../lab3-lab4/gcc-startup-incident.md)；原始环境故障日志已清理。未替换 DLL、未重装 Vivado、未修改 Xelab 默认 GCC 配置。
 
 另一次失败轮的 XSim 原因是 XSim 找不到自定义 `xsim-run.tcl`，随后停在交互提示符并超时。该脚本先前直接从结果目录执行，清理失败结果时可能被一并移除；现改为在 `scripts_only` 完成后（该步骤会重建仿真工作目录内容）于仿真工作目录生成并检查运行脚本，再将副本归档到结果目录。超时清理也会终止 Vivado 子进程树，避免遗留 XSim 持有失败日志。
 
@@ -60,7 +58,7 @@ Lab6/Lab7 golden trace 分别保存在 [`golden/lab6`](../../results/lab6_lab7/g
 
 ## 保留记录范围
 
-`results` 中保留本轮最终 PASS、必要阶段日志、稳定 golden trace、定向输入映像和 GCC 根因对照。历史 S2 失败仅作为阶段记录，不列入最终验收结果。reference CPU 源码仍在 `lab3/CPU_CDE/cpu132_gettrace/`，可按脚本重新生成。
+`results` 中保留最终 PASS、源码重建 manifest/映像、独立 reference/DUT 对照、唯一专项用例及报告用 WDB。失败轮、旧的重复完整回归、临时副本和冗余启动日志已删除。reference CPU 源码仍在 `lab3/CPU_CDE/cpu132_gettrace/`，可按脚本重新生成。
 
 ## Lab6/Lab7 源码重建状态（P1-A）
 
@@ -86,7 +84,7 @@ GCC 10 需要显式传入 `-mfp32`。GNU ld 2.38 对旧链接脚本生成的 `.M
 
 ## 修订后 RTL 验收状态（2026-10-27 至 28）
 
-修订后的验收均在普通 Windows PowerShell 调用 Vivado/XSim；各结果记录 `WINDOWS_APPCONTAINER=False`。所有仿真均未启用波形捕获。
+修订后的验收在普通 Windows PowerShell 调用 Vivado/XSim。10/27 的 HI/LO、DIV 分支和源码重建运行未启用波形捕获；10/28 Lab6/Lab7 完整回归启用了捕获。
 
 | 验收项 | 修订后结果 |
 |---|---|
@@ -94,14 +92,12 @@ GCC 10 需要显式传入 `-mfp32`。GNU ld 2.38 对旧链接脚本生成的 `.M
 | 除法期间分支等待定向用例 | PASS；[`lab6-20261027T031906Z`](../../results/lab6_lab7/lab6-20261027T031906Z/)，111 cycles，trace 全匹配 |
 | Lab3 forwarding 累计回归 | PASS；[`lab3-20261027T025645Z`](../../results/lab3_lab4/lab3-20261027T025645Z/)，23/23，172,599 cycles |
 | Lab4 forwarding 累计回归 | PASS；[`lab4-20261027T030155Z`](../../results/lab3_lab4/lab4-20261027T030155Z/)，23/23，114,577 cycles |
-| Lab6 forwarding 累计回归 | PASS；[`lab6-20261027T030621Z`](../../results/lab6_lab7/lab6-20261027T030621Z/)，42/42，109,439 cycles，66,612/66,612 trace |
-| Lab7 forwarding 累计回归 | PASS；[`lab7-20261027T031040Z`](../../results/lab6_lab7/lab7-20261027T031040Z/)，68/68，166,330 cycles，100,732/100,732 trace |
 | 新汇编源码重建、重建 ROM 的 CPU132 reference 与 DUT | PASS；细节及新旧映像差异见上一节 |
 | P2-A 连续依赖定向 reference 与 DUT | PASS；25/25 trace，79 cycles，9 笔 store 与唯一一次 branch redirect 的副作用检查通过；结果见 [`reference-lab7-20261027T025022Z`](../../results/lab6_lab7/reference-lab7-20261027T025022Z/) 和 [`lab7-20261027T025231Z`](../../results/lab6_lab7/lab7-20261027T025231Z/) |
 | Lab6 带波形捕获累计回归 | PASS；[`lab6-20261028T093517Z`](../../results/lab6_lab7/lab6-20261028T093517Z/)，42/42，109,439 cycles，66,612/66,612 trace；WDB SHA-256 `4D2A39C08107A145FEB5F63EC76C5BF189447B189DDE7A4B23627A5403EB8036` |
 | Lab7 带波形捕获累计回归 | PASS；[`lab7-20261028T102942Z`](../../results/lab6_lab7/lab7-20261028T102942Z/)，68/68，166,330 cycles，100,732/100,732 trace；WDB SHA-256 `0C9391FAB20AC99665F288A9CC59BBF6A78F5CACE2EC34367B70CA5C39D80F7B` |
 
-本轮 reference、DUT、HI/LO 和定向回归的具体结果目录均已归档；10/26 表格保留为握手修订前基线。10/27 的验收运行未捕获波形；10/28 单独执行的 Lab6/Lab7 捕获回归已生成 WDB，PNG 导出和报告信号分析仍待完成。
+最终 reference、DUT、HI/LO、定向回归和 WDB 均已归档。旧的握手修订前完整回归目录已由最终 PASS 结果替代并清理。Lab6/Lab7 的 WDB 已生成；PNG 导出和报告信号分析仍待完成。
 
 ## 建议人工核验序号（修订后 PASS）
 
@@ -109,13 +105,13 @@ GCC 10 需要显式传入 `-mfp32`。GNU ld 2.38 对旧链接脚本生成的 `.M
 
 1. **Lab6 源码重建：**`reference-lab6-20261027T032906Z` → `lab6-20261027T033402Z`；CPU132 与 DUT 均 42/42，trace 66,612/66,612。
 2. **Lab7 源码重建：**`reference-lab7-20261027T033134Z` → `lab7-20261027T033802Z`；CPU132 与 DUT 均 68/68，trace 100,732/100,732。
-3. **修订后课程 ROM 累计回归：**`lab6-20261027T030621Z`（42/42，66,612/66,612）和 `lab7-20261027T031040Z`（68/68，100,732/100,732）。
+3. **修订后课程 ROM 累计回归及波形：**`lab6-20261028T093517Z`（42/42，66,612/66,612）和 `lab7-20261028T102942Z`（68/68，100,732/100,732）；WDB 已捕获且哈希记录在结果文件中。
 4. **HI/LO 双路握手：**`hilo-unit-20261027T032000Z`；`mult_accepts=3`、`div_accepts=4`、`input_pairs=3`、`commits=6`。
 5. **DIV 等待期间分支：**`lab6-20261027T031906Z`；111 cycles，独立参考 trace 全匹配。
 6. **P2-A 连续依赖：**`reference-lab7-20261027T025022Z` → `lab7-20261027T025231Z`；25/25 trace，79 cycles，9 笔 store 与唯一 branch redirect 检查通过。
 7. **Lab3/Lab4 回归：**`lab3-20261027T025645Z`（23/23）和 `lab4-20261027T030155Z`（23/23）。
 
-前述记录均为 `STATUS=PASS`。编号 1–2 是重建汇编产物后重新生成 reference 并配对验证的最终主证据；所有本轮运行均未捕获 Lab6/Lab7 波形。
+前述记录均为 `STATUS=PASS`。编号 1–2 是重建汇编产物后重新生成 reference 并配对验证的主证据；编号 3 是带 WDB 的最终课程 ROM 回归。各 WDB 的路径和哈希见 [`waveforms.md`](waveforms.md)。
 
 ## P2-A：Lab7 连续依赖与非对齐访存定向用例
 
