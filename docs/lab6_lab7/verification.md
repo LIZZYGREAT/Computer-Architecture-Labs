@@ -84,7 +84,7 @@ GCC 10 需要显式传入 `-mfp32`。GNU ld 2.38 对旧链接脚本生成的 `.M
 | Lab6 | `3d9c478bdf985c7f6d106ad2ac953cb9800b069027c40720bbd7bedd2bb6ea12` / `3336713500a6a7c41c52b6904430a61e3998680ee2bd7f7285a1eb42c95e8569` | 66,612 条，`1C45DC3B5322536878CC6CCBAC88D0C669DF7FD341BFD63694F2CDCEAF34A716` | PASS，42/42，[`reference-lab6-20261027T032906Z`](../../results/lab6_lab7/reference-lab6-20261027T032906Z/) | PASS，42/42，[`lab6-20261027T033402Z`](../../results/lab6_lab7/lab6-20261027T033402Z/)；109,439 cycles，89 `ds_stall`，66,612/66,612 trace |
 | Lab7 | `e08d053bf3cd9e7f0bfe5b1d813053fd0c63bb0ffe7ffd622a761547e669ec91` / `d7d9a71898bfa0b59e12e44ba884609bd3c55e9ce89092304b12b9acfa059bcf` | 100,732 条，`FF70411F105009F10FEBFEB38251696DCEDFF76E68FB091B4AA124A75EF53DEB` | PASS，68/68，[`reference-lab7-20261027T033134Z`](../../results/lab6_lab7/reference-lab7-20261027T033134Z/) | PASS，68/68，[`lab7-20261027T033802Z`](../../results/lab6_lab7/lab7-20261027T033802Z/)；166,330 cycles，926 `ds_stall`，100,732/100,732 trace |
 
-## 修订后 RTL 验收状态（2026-10-27）
+## 修订后 RTL 验收状态（2026-10-27 至 28）
 
 修订后的验收均在普通 Windows PowerShell 调用 Vivado/XSim；各结果记录 `WINDOWS_APPCONTAINER=False`。所有仿真均未启用波形捕获。
 
@@ -98,8 +98,10 @@ GCC 10 需要显式传入 `-mfp32`。GNU ld 2.38 对旧链接脚本生成的 `.M
 | Lab7 forwarding 累计回归 | PASS；[`lab7-20261027T031040Z`](../../results/lab6_lab7/lab7-20261027T031040Z/)，68/68，166,330 cycles，100,732/100,732 trace |
 | 新汇编源码重建、重建 ROM 的 CPU132 reference 与 DUT | PASS；细节及新旧映像差异见上一节 |
 | P2-A 连续依赖定向 reference 与 DUT | PASS；25/25 trace，79 cycles，9 笔 store 与唯一一次 branch redirect 的副作用检查通过；结果见 [`reference-lab7-20261027T025022Z`](../../results/lab6_lab7/reference-lab7-20261027T025022Z/) 和 [`lab7-20261027T025231Z`](../../results/lab6_lab7/lab7-20261027T025231Z/) |
+| Lab6 带波形捕获累计回归 | PASS；[`lab6-20261028T093517Z`](../../results/lab6_lab7/lab6-20261028T093517Z/)，42/42，109,439 cycles，66,612/66,612 trace；WDB SHA-256 `4D2A39C08107A145FEB5F63EC76C5BF189447B189DDE7A4B23627A5403EB8036` |
+| Lab7 带波形捕获累计回归 | PASS；[`lab7-20261028T102942Z`](../../results/lab6_lab7/lab7-20261028T102942Z/)，68/68，166,330 cycles，100,732/100,732 trace；WDB SHA-256 `0C9391FAB20AC99665F288A9CC59BBF6A78F5CACE2EC34367B70CA5C39D80F7B` |
 
-本轮 reference、DUT、HI/LO 和定向回归的具体结果目录均已归档；10/26 表格保留为握手修订前基线。用户自行完成 Vivado 波形捕获与报告分析。
+本轮 reference、DUT、HI/LO 和定向回归的具体结果目录均已归档；10/26 表格保留为握手修订前基线。10/27 的验收运行未捕获波形；10/28 单独执行的 Lab6/Lab7 捕获回归已生成 WDB，PNG 导出和报告信号分析仍待完成。
 
 ## 建议人工核验序号（修订后 PASS）
 

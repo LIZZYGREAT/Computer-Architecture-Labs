@@ -1,4 +1,4 @@
-# Lab6–Lab7 实验报告材料（2026-10-26 验收基线）
+# Lab6–Lab7 实验报告材料（2026-10-28 验收结果）
 
 ## 最近完整回归
 
@@ -8,7 +8,7 @@
 
 ## 2026-10-27 修订后状态
 
-`hilo_unit.v` 已改为锁存除法输入并保持两路 `TVALID` 直到 NonBlocking Divider 的成对 ready；HI/LO testbench 已增加 ready 同步、payload 保持及唯一配对输入检查。2026-10-27 在普通 Windows PowerShell 下重跑后，HI/LO 单元、除法期间分支定向用例、Lab3/Lab4/Lab6/Lab7 累计回归、新汇编源码重建及其配套 CPU132 reference/DUT、P2-A 定向 reference/DUT 均为 `PASS`。每轮 ID、trace 和映像哈希见 [verification.md](verification.md)。本轮没有捕获波形；波形分析和截图仍由用户完成。
+`hilo_unit.v` 已改为锁存除法输入并保持两路 `TVALID` 直到 NonBlocking Divider 的成对 ready；HI/LO testbench 已增加 ready 同步、payload 保持及唯一配对输入检查。2026-10-27 在普通 Windows PowerShell 下重跑后，HI/LO 单元、除法期间分支定向用例、Lab3/Lab4/Lab6/Lab7 累计回归、新汇编源码重建及其配套 CPU132 reference/DUT、P2-A 定向 reference/DUT 均为 `PASS`。2026-10-28 又完成 Lab6/Lab7 波形捕获累计回归，WDB 路径和哈希见 [waveforms.md](waveforms.md)。每轮 ID、trace 和映像哈希见 [verification.md](verification.md)。
 
 ## 新增指令前递统计
 
@@ -20,6 +20,6 @@ Lab7 新增计数在 `ds_instruction_issued` 时采样，避免 EX 背压期间�
 
 ## Vivado 波形人工材料
 
-按用户本轮要求，本次没有运行 `-CaptureWaveform`，没有生成 WDB、WCFG 或 PNG。报告中的结构示意图、流程图和功能点汇总图均非仿真波形；不得将它们作为真实波形分析证据。剩余人工事项是根据 [waveforms.md](waveforms.md) 的步骤，从新鲜且 PASS 的 XSim 运行捕获 WDB，定位代表性指令并导出真实信号图，再把实测时间窗、PC/指令、信号值、预期/实际结果和运行 ID 写入证据表。
+2026-10-28 已生成 Lab6/Lab7 的 PASS WDB；当前没有 WCFG 或 PNG。报告中的结构示意图、流程图和功能点汇总图均非仿真波形；不得将它们作为真实波形分析证据。剩余人工事项是根据 [waveforms.md](waveforms.md) 的步骤打开 WDB、定位代表性指令并导出真实信号图，再把实测时间窗、PC/指令、信号值、预期/实际结果和运行 ID 写入证据表。
 
-本材料当前准确反映了完整数字回归状态；真实波形图与逐图分析仍待用户按课程提交要求人工完成。
+本材料当前准确反映了完整数字回归和波形采集状态；真实波形 PNG 与逐图分析仍待用户按课程提交要求人工完成。

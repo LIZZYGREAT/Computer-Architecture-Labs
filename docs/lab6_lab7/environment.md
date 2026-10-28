@@ -32,3 +32,5 @@ Vivado GUI 可打开上述工程用于查看设计和 WDB；默认 Run All 使�
 - P2-A 连续依赖定向 reference / DUT：PASS，25/25 trace，`reference-lab7-20261027T025022Z` → `lab7-20261027T025231Z`。
 
 以上结果均未捕获波形。真实 Vivado WDB/PNG 的人工取证步骤见 [`waveforms.md`](waveforms.md)；Lab3/Lab4 完整结果矩阵见 [`Lab3/Lab4 verification`](../lab3-lab4/verification-final.md)，Lab6/Lab7 哈希和核验序号见 [`Lab6/Lab7 verification`](verification.md)。
+
+2026-10-28 已另外完成 Lab6/Lab7 `-CaptureWaveform` 累计回归；两个 WDB 的准确路径、哈希和 PASS 指标见 [`waveforms.md`](waveforms.md)。

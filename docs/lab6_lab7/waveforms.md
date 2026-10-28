@@ -2,9 +2,14 @@
 
 ## 当前证据状态
 
-最新 Lab6/Lab7 源码重建 ROM 回归分别为 [`lab6-20261027T033402Z`](../../results/lab6_lab7/lab6-20261027T033402Z/)（42/42）和 [`lab7-20261027T033802Z`](../../results/lab6_lab7/lab7-20261027T033802Z/)（68/68）；二者均未启用 `-CaptureWaveform`。10/27 原保存镜像累计回归也通过，完整结果 ID 见 [verification.md](verification.md)。目前没有可供报告引用的 Lab6/Lab7 WDB、WCFG 或 Vivado 截图。
+已完成两次带波形捕获的完整累计回归：
 
-本文件是后续人工取证指南，不代表本轮已经生成波形。本轮遵从用户要求，没有创建波形文件或波形图。报告中的 Python 图是结构/流程/统计图，不能替代实测波形。验证入口及普通 Windows PowerShell 要求见 [environment.md](environment.md)。
+- **Lab6：**[`lab6-20261028T093517Z`](../../results/lab6_lab7/lab6-20261028T093517Z/)，PASS，42/42，109,439 cycles，trace 66,612/66,612；[WDB 文件](../../results/lab6_lab7/lab6-20261028T093517Z/lab6-20261028T093517Z-forwarding.wdb)，340,010 bytes，SHA-256 `4D2A39C08107A145FEB5F63EC76C5BF189447B189DDE7A4B23627A5403EB8036`。
+- **Lab7：**[`lab7-20261028T102942Z`](../../results/lab6_lab7/lab7-20261028T102942Z/)，PASS，68/68，166,330 cycles，trace 100,732/100,732；[WDB 文件](../../results/lab6_lab7/lab7-20261028T102942Z/lab7-20261028T102942Z-forwarding.wdb)，340,010 bytes，SHA-256 `0C9391FAB20AC99665F288A9CC59BBF6A78F5CACE2EC34367B70CA5C39D80F7B`。
+
+这两个 WDB 可在 Vivado Wave 窗口打开。当前尚未导出 WCFG 或报告 PNG；Lab6/Lab7 其他历史 PASS 与源码重建回归序号见 [verification.md](verification.md)。
+
+WDB 已生成，后续人工取证步骤是从 Vivado Wave 中选取代表信号，保存 WCFG 并导出 PNG。报告中的 Python 图是结构/流程/统计图，不能替代实测波形。验证入口及普通 Windows PowerShell 要求见 [environment.md](environment.md)。
 
 ## 推荐场景与信号
 
@@ -33,4 +38,4 @@
 
 ## 当前待人工完成
 
-需要人工运行带波形捕获的 PASS 仿真，按上表导出所需代表图并填写实际时间窗/数值；再将 PNG 和信号级分析纳入 `main.tex`、重新编译并检查 `main.pdf`。在这些步骤完成前，不能把任何图登记为实际波形证据。
+需要人工打开上述两个 WDB，按上表导出代表图并填写实际时间窗/数值；再将 PNG 和信号级分析纳入 `main.tex`、重新编译并检查 `main.pdf`。WDB 是已捕获的仿真波形，PNG 和信号级分析仍需人工完成。
