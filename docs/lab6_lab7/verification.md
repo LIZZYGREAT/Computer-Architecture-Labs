@@ -10,6 +10,7 @@
 | Lab4 blocking / forwarding | [`lab4-20261022T040641Z`](../../results/lab3_lab4/lab4-20261022T040641Z/) / [`lab4-20261027T030155Z`](../../results/lab3_lab4/lab4-20261027T030155Z/) | 均 PASS，23/23；130,891 / 114,577 cycles |
 | Lab6 forwarding + WDB | [`lab6-20261028T093517Z`](../../results/lab6_lab7/lab6-20261028T093517Z/) | PASS，42/42，109,439 cycles，66,612/66,612 trace |
 | Lab7 forwarding + WDB | [`lab7-20261028T102942Z`](../../results/lab6_lab7/lab7-20261028T102942Z/) | PASS，68/68，166,330 cycles，100,732/100,732 trace |
+| S2 算术逻辑定向波形补充 | [`lab3-20261028T132600Z`](../../results/lab3_lab4/lab3-20261028T132600Z/) | PASS，73 cycles，1 次 load-use，EX/MEM/WB 前递 7/6/3；WDB SHA-256 `BD2B6D0E5C4E2260450641E4FD1D007634DF7358960DE4EDFA325DFC61952F32` |
 | 原课程 Lab6/Lab7 独立 CPU132 trace | [`reference-lab6-20261021T133931Z`](../../results/lab6_lab7/reference-lab6-20261021T133931Z/) / [`reference-lab7-20261021T134251Z`](../../results/lab6_lab7/reference-lab7-20261021T134251Z/) | PASS，分别 42/42、68/68；生成当前 `golden/` 使用的 trace |
 | Lab6/7 源码重建 reference → DUT | [`reference-lab6-20261027T032906Z`](../../results/lab6_lab7/reference-lab6-20261027T032906Z/) → [`lab6-20261027T033402Z`](../../results/lab6_lab7/lab6-20261027T033402Z/)；[`reference-lab7-20261027T033134Z`](../../results/lab6_lab7/reference-lab7-20261027T033134Z/) → [`lab7-20261027T033802Z`](../../results/lab6_lab7/lab7-20261027T033802Z/) | Lab6 42/42、Lab7 68/68，trace 全匹配 |
 | HI/LO 双路握手 | [`hilo-unit-20261027T032000Z`](../../results/lab6_lab7/hilo-unit-20261027T032000Z/) | PASS，3 mult 接受、4 div 接受、3 对输入、6 次提交 |
@@ -17,7 +18,7 @@
 | Lab7 新指令前递定向 | [`reference-lab7-20261026T161931Z`](../../results/lab6_lab7/reference-lab7-20261026T161931Z/) → [`lab7-20261026T170957Z`](../../results/lab6_lab7/lab7-20261026T170957Z/) | PASS，41/41 trace，64 cycles，store base/data/branch/jalr=3/2/6/1 |
 | P2-A 连续依赖定向 | [`reference-lab7-20261027T025022Z`](../../results/lab6_lab7/reference-lab7-20261027T025022Z/) → [`lab7-20261027T025231Z`](../../results/lab6_lab7/lab7-20261027T025231Z/) | PASS，25/25 trace，9 笔 store 与一次 branch redirect 检查通过 |
 
-Lab6/Lab7 原课程 trace 保存在 [`golden/lab6`](../../results/lab6_lab7/golden/lab6/golden_trace.txt) 和 [`golden/lab7`](../../results/lab6_lab7/golden/lab7/golden_trace.txt)。S2 算术逻辑定向 DUT 及映像见 [`lab3-20261021T140840Z`](../../results/lab3_lab4/lab3-20261021T140840Z/) 与 [`directed/alu`](../../results/lab6_lab7/directed/alu/)；73 cycles、1 次 load-use stall、EX/MEM/WB 前递 7/6/3。依赖边界映像见 [`directed/dependency-boundaries`](../../results/lab6_lab7/directed/dependency-boundaries/)，扩展前递映像见 [`directed/extended-forwarding`](../../results/lab6_lab7/directed/extended-forwarding/)。
+Lab6/Lab7 原课程 trace 保存在 [`golden/lab6`](../../results/lab6_lab7/golden/lab6/golden_trace.txt) 和 [`golden/lab7`](../../results/lab6_lab7/golden/lab7/golden_trace.txt)。S2 算术逻辑定向 DUT 及映像见 [`lab3-20261021T140840Z`](../../results/lab3_lab4/lab3-20261021T140840Z/) 与 [`directed/alu`](../../results/lab6_lab7/directed/alu/)；补充波形运行见 [`lab3-20261028T132600Z`](../../results/lab3_lab4/lab3-20261028T132600Z/)。两次运行均为 73 cycles、1 次 load-use stall、EX/MEM/WB 前递 7/6/3。
 
 Lab6 原课程 ROM 的 forwarding 通过 42 个功能点，Lab7 通过 68 个；两份最新波形捕获运行均与独立 trace 全匹配。Lab3/Lab4 forwarding 回归和 Lab4 blocking 对照也通过。旧的 S2 失败和被覆盖的完整回归已从结果目录移除，不作为报告证据。
 

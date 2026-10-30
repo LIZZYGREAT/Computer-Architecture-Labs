@@ -6,8 +6,9 @@
 
 - **Lab6：**[`lab6-20261028T093517Z`](../../results/lab6_lab7/lab6-20261028T093517Z/)，PASS，42/42，109,439 cycles，trace 66,612/66,612；[WDB 文件](../../results/lab6_lab7/lab6-20261028T093517Z/lab6-20261028T093517Z-forwarding.wdb)，340,010 bytes，SHA-256 `4D2A39C08107A145FEB5F63EC76C5BF189447B189DDE7A4B23627A5403EB8036`。
 - **Lab7：**[`lab7-20261028T102942Z`](../../results/lab6_lab7/lab7-20261028T102942Z/)，PASS，68/68，166,330 cycles，trace 100,732/100,732；[WDB 文件](../../results/lab6_lab7/lab7-20261028T102942Z/lab7-20261028T102942Z-forwarding.wdb)，340,010 bytes，SHA-256 `0C9391FAB20AC99665F288A9CC59BBF6A78F5CACE2EC34367B70CA5C39D80F7B`。
+- **S2 算术逻辑定向补充：**[`lab3-20261028T132600Z`](../../results/lab3_lab4/lab3-20261028T132600Z/)，PASS，73 cycles、1 次 load-use；[WDB 文件](../../results/lab3_lab4/lab3-20261028T132600Z/lab3-20261028T132600Z-forwarding.wdb)，5,060,445 bytes，SHA-256 `BD2B6D0E5C4E2260450641E4FD1D007634DF7358960DE4EDFA325DFC61952F32`。这是 `directed/alu` 短映像的补充波形，不替代 Lab3 累计回归。
 
-这两个 WDB 可在 Vivado Wave 窗口打开。当前尚未导出 WCFG 或报告 PNG；Lab6/Lab7 其他历史 PASS 与源码重建回归序号见 [verification.md](verification.md)。
+这三个 WDB 可在 Vivado Wave 窗口打开。当前尚未导出 WCFG 或报告 PNG；Lab6/Lab7 其他历史 PASS 与源码重建回归序号见 [verification.md](verification.md)。
 
 WDB 已生成，后续人工取证步骤是从 Vivado Wave 中选取代表信号，保存 WCFG 并导出 PNG。报告中的 Python 图是结构/流程/统计图，不能替代实测波形。验证入口及普通 Windows PowerShell 要求见 [environment.md](environment.md)。
 
@@ -38,4 +39,4 @@ WDB 已生成，后续人工取证步骤是从 Vivado Wave 中选取代表信号
 
 ## 当前待人工完成
 
-需要人工打开上述两个 WDB，按上表导出代表图并填写实际时间窗/数值；再将 PNG 和信号级分析纳入 `main.tex`、重新编译并检查 `main.pdf`。WDB 是已捕获的仿真波形，PNG 和信号级分析仍需人工完成。
+需要人工打开 Lab6/Lab7 两个累计回归 WDB，按上表导出代表图并填写实际时间窗/数值；S2 定向 WDB 可作为 ALU 图的补充。之后将 PNG 和信号级分析纳入 `main.tex`、重新编译并检查 `main.pdf`。WDB 是已捕获的仿真波形，PNG 和信号级分析仍需人工完成。

@@ -31,6 +31,7 @@ results/lab6_lab7/**/combined.log
 # Waveform and programming outputs. Keep representative verified waveforms.
 *.wdb
 !results/lab3_lab4/lab4-20261022T041931Z/hazard-directed-forwarding.wdb
+!results/lab3_lab4/lab3-20261028T132600Z/lab3-20261028T132600Z-forwarding.wdb
 !results/lab6_lab7/lab6-20261028T093517Z/lab6-20261028T093517Z-forwarding.wdb
 !results/lab6_lab7/lab7-20261028T102942Z/lab7-20261028T102942Z-forwarding.wdb
 *.wcfg

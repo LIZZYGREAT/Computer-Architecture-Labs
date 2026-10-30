@@ -10,7 +10,7 @@
 | 新指令前递定向覆盖 PASS，trace 41/41，计数 3/2/6/1 | `results/lab6_lab7/lab7-20261026T170957Z/result.txt`、`results/lab6_lab7/directed/extended-forwarding/` |
 | HI/LO 单元接受/提交及运算检查通过 | `results/lab6_lab7/hilo-unit-20261027T032000Z/result.txt`、`vivado.log` |
 | 除法期间 held branch、delay slot、目标路径检查通过 | `results/lab6_lab7/directed/hilo-stall-branch/golden_trace.txt` 与 `results/lab6_lab7/lab6-20261027T031906Z/result.txt` |
-| 算术逻辑定向 ROM 通过 | `results/lab6_lab7/directed/alu/` 与 `results/lab3_lab4/lab3-20261021T140840Z/` |
+| 算术逻辑定向 ROM 通过并保存补充 WDB | `results/lab6_lab7/directed/alu/`、基线 `results/lab3_lab4/lab3-20261021T140840Z/`、波形运行 `results/lab3_lab4/lab3-20261028T132600Z/` |
 | RTL 实施范围与设计决策 | `docs/lab6_lab7/implementation.md` |
 | 仿真环境、复现命令和哈希 | `docs/lab6_lab7/verification.md`、`docs/lab6_lab7/environment.md` |
 

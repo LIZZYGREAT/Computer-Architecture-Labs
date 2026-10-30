@@ -142,7 +142,7 @@ Lab6/Lab7 在原 forwarding 流水线接口上继续传递新增控制和数据�
 
 仿真周期数和停顿数直接引用该轮 \code{result.txt}。Lab6 与 Lab7 使用不同累计课程程序，因此二者周期数不能用来直接比较处理器性能。HI/LO testbench 和除法后分支程序作为补充覆盖；定向分支测试的课程功能点数为 0 是预期配置，它按自定义 trace 比较判定，不代表没有执行指令。
 
-本轮按用户要求未启用 Vivado 波形捕获。图 1—3 是结构/程序流程说明图，图 4 是由验收结果绘制的功能点汇总图，均不是仿真波形。新增指令的真实信号级波形与逐图分析仍待人工采集；采集步骤和信号清单见 \code{docs/lab6\_lab7/waveforms.md}。运行脚本、trace、日志及哈希用于复核可重复性。
+Lab6/Lab7 累计回归已捕获 Vivado WDB；补充的 S2 算术逻辑定向用例也保存了 WDB。图 1—3 是结构/程序流程说明图，图 4 是由验收结果绘制的功能点汇总图，均不是仿真波形。报告尚未导出带注释的波形 PNG，也未完成逐图信号分析；采集步骤和信号清单见 \code{docs/lab6\_lab7/waveforms.md}。运行脚本、trace、日志及哈希用于复核可重复性。
 
 \reportsection{实验结果}
 图 4 汇总 Lab6、Lab7 的累计课程功能点结果。详细数字和辅助检查见表 2。
@@ -161,13 +161,13 @@ Lab6/Lab7 在原 forwarding 流水线接口上继续传递新增控制和数据�
 \midrule
 验收状态 & PASS & PASS \\
 课程功能点 & 42/42 & 68/68 \\
-流水线周期 & 109,375 & 166,226 \\
+流水线周期 & 109,439 & 166,330 \\
 流水线停顿周期 & 89 & 926 \\
 EX/MEM/WB 前递使用 & 35,013 / 8,320 / 12,007 & 49,970 / 12,229 / 15,454 \\
 新增指令前递 & 0 / 0 / 0 / 0 & 112 / 0 / 1,229 / 28 \\
 零号寄存器写回尝试 & 0（检查通过） & 0（检查通过） \\
 trace 与 ROM 映像 & 哈希匹配 & 哈希匹配 \\
-波形捕获 & 未启用 & 未启用 \\
+波形捕获 & WDB 已捕获 & WDB 已捕获 \\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -181,7 +181,7 @@ EX/MEM/WB 前递计数仅在 ID 指令被 EX 接收时采样；每一级只要 \
 \reportsection{结果分析与局限}
 Lab6 与 Lab7 的累计功能点均达到本轮设定的完整通过条件。不同数据路径都获得独立证据：算术逻辑定向程序检查立即数、比较和可变移位；HI/LO testbench 检查多周期单元握手；自定义分支测试检查除法背压期间的延迟槽和重定向；累计课程 ROM 检查完整功能点并与独立参考退休 trace 逐项匹配。
 
-当前验收证明的是指定课程映像和已记录定向场景下的仿真行为，不等同于形式化证明，也不包含板上实测、综合后时序收敛或所有非法输入组合。特别是除数为零没有列入 HI/LO testbench 覆盖；本报告不对该情况作正确性结论。本轮没有真实 Vivado 波形截图，新增指令波形及逐图分析属于尚待人工完成的报告事项；操作步骤和建议展示内容见 \code{docs/lab6\_lab7/waveforms.md}。
+当前验收证明的是指定课程映像和已记录定向场景下的仿真行为，不等同于形式化证明，也不包含板上实测、综合后时序收敛或所有非法输入组合。特别是除数为零没有列入 HI/LO testbench 覆盖；本报告不对该情况作正确性结论。Lab6/Lab7 WDB 和 S2 算术逻辑定向 WDB 已归档，但真实波形截图及逐图分析仍待人工完成；操作步骤和建议展示内容见 \code{docs/lab6\_lab7/waveforms.md}。
 
 \reportsection{总结}
 本次完成了 Lab6 算术逻辑与 HI/LO 乘除法扩展、Lab7 控制转移与延迟槽扩展，以及 12 类整字、字节、半字和非对齐访存操作。多周期单元通过 EX 级背压和完成消费握手避免重复执行；控制转移在 EX 停顿时等待，并保留一条延迟槽；访存操作按地址低位处理 lane、符号扩展和合并。
@@ -221,7 +221,7 @@ Lab7 累计 DUT 与波形 & \url{results/lab6_lab7/lab7-20261028T102942Z/result.
 新增指令前递定向用例 & \url{results/lab6_lab7/lab7-20261026T170957Z/result.txt}；输入映像及 trace 位于 \url{results/lab6_lab7/directed/extended-forwarding/}。 \\
 HI/LO 单元 testbench & \url{results/lab6_lab7/hilo-unit-20261027T032000Z/result.txt} 与同目录 Vivado 日志。 \\
 除法期间分支定向用例 & \url{results/lab6_lab7/directed/hilo-stall-branch/} 下程序映像及 golden trace；DUT 结果为 \url{results/lab6_lab7/lab6-20261027T031906Z/result.txt}。 \\
-算术逻辑定向用例 & \url{results/lab6_lab7/directed/alu/} 和 \url{results/lab3_lab4/lab3-20261021T140840Z/}。 \\
+算术逻辑定向用例 & \url{results/lab6_lab7/directed/alu/}；基线 DUT 为 \url{results/lab3_lab4/lab3-20261021T140840Z/}，补充波形运行与 WDB 为 \url{results/lab3_lab4/lab3-20261028T132600Z/result.txt} 和 \url{results/lab3_lab4/lab3-20261028T132600Z/lab3-20261028T132600Z-forwarding.wdb}。 \\
 实现记录 & \url{docs/lab6_lab7/implementation.md}。 \\
 完整验收与哈希 & \url{docs/lab6_lab7/verification.md}。真实波形人工采集指南：\url{docs/lab6_lab7/waveforms.md}。 \\
 环境和运行入口 & \url{docs/lab6_lab7/environment.md}。 \\

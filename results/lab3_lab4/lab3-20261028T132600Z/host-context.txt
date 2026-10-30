@@ -1,0 +1,2 @@
+﻿WINDOWS_APPCONTAINER=False
+POWERSHELL=C:\WINDOWS\system32\WindowsPowerShell\v1.0\PowerShell.exe
