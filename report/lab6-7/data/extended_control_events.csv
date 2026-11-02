@@ -1,0 +1,11 @@
+﻿run_id,pc,instruction,event,trace_index,destination_register,reference_write_data,gpr_write_in_trace,evidence_note
+lab7-20261026T170957Z,BFC00068,"addiu r2, r0, 1",branch source setup,19,2,00000001,True,CPU132 reference trace; DUT run reports full trace match
+lab7-20261026T170957Z,BFC0006C,"bgez r2, after_bgez (offset 2)",taken conditional branch,,,,False,CPU132 reference trace; DUT run reports full trace match
+lab7-20261026T170957Z,BFC00070,"addiu r3, r0, 64",conditional branch delay slot,20,3,00000040,True,CPU132 reference trace; DUT run reports full trace match
+lab7-20261026T170957Z,BFC00074,"addiu r3, r0, 153",conditional branch fall-through must be skipped,,,,False,CPU132 reference trace; DUT run reports full trace match
+lab7-20261026T170957Z,BFC00078,"addiu r2, r0, 1",conditional branch target,21,2,00000001,True,CPU132 reference trace; DUT run reports full trace match
+lab7-20261026T170957Z,BFC000E0,"ori r25, r25, 0x00f0 (target 0xbfc000f0)",JALR target setup,37,25,BFC000F0,True,CPU132 reference trace; DUT run reports full trace match
+lab7-20261026T170957Z,BFC000E4,"jalr r26, r25",JALR link value PC+8,38,26,BFC000EC,True,CPU132 reference trace; DUT run reports full trace match
+lab7-20261026T170957Z,BFC000E8,"addiu r4, r0, 97",JALR delay slot,39,4,00000061,True,CPU132 reference trace; DUT run reports full trace match
+lab7-20261026T170957Z,BFC000EC,"addiu r4, r0, 153",JALR fall-through must be skipped,,,,False,CPU132 reference trace; DUT run reports full trace match
+lab7-20261026T170957Z,BFC000F0,"addiu r2, r0, 1",JALR target,40,2,00000001,True,CPU132 reference trace; DUT run reports full trace match

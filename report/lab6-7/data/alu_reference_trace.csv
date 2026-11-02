@@ -1,0 +1,37 @@
+﻿run_id,trace_index,reference_sequence,pc,instruction,destination_register,write_data,evidence_note
+lab3-20261028T132600Z,1,1,BFC00000,"lui r10, 0x800d",10,800D0000,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,2,1,BFC00004,"addiu r1, r0, 0x8000",1,FFFF8000,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,3,1,BFC00008,"addiu r2, r0, 0x7fff",2,00007FFF,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,4,1,BFC0000C,"add r3, r1, r2",3,FFFFFFFF,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,5,1,BFC00010,"addi r4, r0, 0x8000",4,FFFF8000,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,6,1,BFC00014,"addi r5, r0, 0xffff",5,FFFFFFFF,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,7,1,BFC00018,"sub r6, r4, r2",6,FFFF0001,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,8,1,BFC0001C,"slti r7, r1, 0x7fff",7,00000001,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,9,1,BFC00020,"slti r8, r1, 0x8000",8,00000000,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,10,1,BFC00024,"sltiu r9, r1, 0x8000",9,00000000,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,11,1,BFC00028,"sltiu r11, r0, 0x8000",11,00000001,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,12,1,BFC0002C,"andi r12, r5, 0x8000",12,00008000,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,13,1,BFC00030,"ori r13, r0, 0x8000",13,00008000,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,14,1,BFC00034,"xori r14, r5, 0xffff",14,FFFF0000,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,15,1,BFC00038,"lui r15, 0x8000",15,80000000,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,16,1,BFC0003C,"lui r16, 0x8000",16,80000000,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,17,1,BFC00040,"addiu r16, r16, 0x0025",16,80000025,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,18,1,BFC00044,"sllv r17, r1, r16",17,FFF00000,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,19,1,BFC00048,"srlv r18, r15, r16",18,04000000,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,20,1,BFC0004C,"srav r19, r15, r16",19,FC000000,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,21,1,BFC00050,"addiu r20, r0, 0x1234",20,00001234,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,22,1,BFC00054,"add r21, r20, r20",21,00002468,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,23,1,BFC00058,"addiu r22, r0, 0x0011",22,00000011,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,24,1,BFC00060,"add r23, r22, r22",23,00000022,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,25,1,BFC00064,"addiu r24, r0, 0x0012",24,00000012,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,26,1,BFC00070,"add r25, r24, r24",25,00000024,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,27,1,BFC00074,"addiu r26, r0, 0x0001",26,00000001,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,28,1,BFC00078,"addi r27, r26, 0x7fff",27,00008000,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,29,1,BFC0007C,"ori r28, r0, 0xdead",28,0000DEAD,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,30,1,BFC00080,"andi r29, r28, 0x8000",29,00008000,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,31,1,BFC00088,"lw r30, 0(r10)",30,00007FFF,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,32,1,BFC0008C,"addi r31, r30, 0x0001",31,00008000,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,33,1,BFC00090,"addiu r16, r0, 0x003f",16,0000003F,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,34,1,BFC00094,"sllv r17, r2, r16",17,80000000,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,35,1,BFC00098,"srlv r18, r15, r16",18,00000001,CPU132 reference retirement trace; DUT result reports full trace match
+lab3-20261028T132600Z,36,1,BFC0009C,"srav r19, r15, r16",19,FFFFFFFF,CPU132 reference retirement trace; DUT result reports full trace match

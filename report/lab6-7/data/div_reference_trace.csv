@@ -1,0 +1,7 @@
+﻿run_id,trace_index,reference_sequence,pc,instruction,destination_register,write_data,evidence_note
+lab6-20261027T031906Z,1,1,BFC00000,"addiu r1, r0, -23",1,FFFFFFE9,CPU132 reference retirement trace; DUT result reports full trace match
+lab6-20261027T031906Z,2,1,BFC00004,"addiu r2, r0, 5",2,00000005,CPU132 reference retirement trace; DUT result reports full trace match
+lab6-20261027T031906Z,3,1,BFC00010,"addiu r3, r0, 0x55",3,00000055,CPU132 reference retirement trace; DUT result reports full trace match
+lab6-20261027T031906Z,4,1,BFC00018,mflo r5,5,FFFFFFFC,CPU132 reference retirement trace; DUT result reports full trace match
+lab6-20261027T031906Z,5,1,BFC0001C,mfhi r6,6,FFFFFFFD,CPU132 reference retirement trace; DUT result reports full trace match
+lab6-20261027T031906Z,6,1,BFC00020,"addiu r7, r0, 0x66",7,00000066,CPU132 reference retirement trace; DUT result reports full trace match

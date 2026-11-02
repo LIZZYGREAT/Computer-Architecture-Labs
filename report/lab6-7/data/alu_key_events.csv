@@ -1,0 +1,14 @@
+﻿run_id,pc,instruction,event,trace_index,destination_register,reference_write_data,gpr_write_in_trace,evidence_note
+lab3-20261028T132600Z,BFC0002C,"andi r12, r5, 0x8000",zero-extended immediate / ANDI,12,12,00008000,True,CPU132 reference trace; DUT run reports full trace match
+lab3-20261028T132600Z,BFC00030,"ori r13, r0, 0x8000",zero-extended immediate / ORI,13,13,00008000,True,CPU132 reference trace; DUT run reports full trace match
+lab3-20261028T132600Z,BFC00034,"xori r14, r5, 0xffff",zero-extended immediate / XORI,14,14,FFFF0000,True,CPU132 reference trace; DUT run reports full trace match
+lab3-20261028T132600Z,BFC00044,"sllv r17, r1, r16","variable shift, amount low 5 bits = 5 / SLLV",18,17,FFF00000,True,CPU132 reference trace; DUT run reports full trace match
+lab3-20261028T132600Z,BFC00048,"srlv r18, r15, r16","variable shift, amount low 5 bits = 5 / SRLV",19,18,04000000,True,CPU132 reference trace; DUT run reports full trace match
+lab3-20261028T132600Z,BFC0004C,"srav r19, r15, r16","variable shift, amount low 5 bits = 5 / SRAV",20,19,FC000000,True,CPU132 reference trace; DUT run reports full trace match
+lab3-20261028T132600Z,BFC00054,"add r21, r20, r20",EX forwarding,22,21,00002468,True,CPU132 reference trace; DUT run reports full trace match
+lab3-20261028T132600Z,BFC00060,"add r23, r22, r22",MEM forwarding,24,23,00000022,True,CPU132 reference trace; DUT run reports full trace match
+lab3-20261028T132600Z,BFC00070,"add r25, r24, r24",WB forwarding,26,25,00000024,True,CPU132 reference trace; DUT run reports full trace match
+lab3-20261028T132600Z,BFC0008C,"addi r31, r30, 0x0001",load-use result after one stall,32,31,00008000,True,CPU132 reference trace; DUT run reports full trace match
+lab3-20261028T132600Z,BFC00094,"sllv r17, r2, r16","variable shift, amount low 5 bits = 31 / SLLV",34,17,80000000,True,CPU132 reference trace; DUT run reports full trace match
+lab3-20261028T132600Z,BFC00098,"srlv r18, r15, r16","variable shift, amount low 5 bits = 31 / SRLV",35,18,00000001,True,CPU132 reference trace; DUT run reports full trace match
+lab3-20261028T132600Z,BFC0009C,"srav r19, r15, r16","variable shift, amount low 5 bits = 31 / SRAV",36,19,FFFFFFFF,True,CPU132 reference trace; DUT run reports full trace match

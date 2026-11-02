@@ -1,0 +1,10 @@
+﻿run_id,pc,instruction,event,trace_index,destination_register,reference_write_data,gpr_write_in_trace,evidence_note
+lab6-20261027T031906Z,BFC00000,"addiu r1, r0, -23",input dividend setup,1,1,FFFFFFE9,True,CPU132 reference trace; DUT run reports full trace match
+lab6-20261027T031906Z,BFC00004,"addiu r2, r0, 5",input divisor setup,2,2,00000005,True,CPU132 reference trace; DUT run reports full trace match
+lab6-20261027T031906Z,BFC00008,"div r1, r2",multi-cycle signed DIV; no GPR write,,,,False,CPU132 reference trace; DUT run reports full trace match
+lab6-20261027T031906Z,BFC0000C,"beq r0, r0, target",taken BEQ waits in ID; no GPR write,,,,False,CPU132 reference trace; DUT run reports full trace match
+lab6-20261027T031906Z,BFC00010,"addiu r3, r0, 0x55",branch delay slot retires,3,3,00000055,True,CPU132 reference trace; DUT run reports full trace match
+lab6-20261027T031906Z,BFC00014,"addiu r4, r0, 0x1234",taken-branch fall-through must be skipped,,,,False,CPU132 reference trace; DUT run reports full trace match
+lab6-20261027T031906Z,BFC00018,mflo r5,MFLO quotient readback,4,5,FFFFFFFC,True,CPU132 reference trace; DUT run reports full trace match
+lab6-20261027T031906Z,BFC0001C,mfhi r6,MFHI remainder readback,5,6,FFFFFFFD,True,CPU132 reference trace; DUT run reports full trace match
+lab6-20261027T031906Z,BFC00020,"addiu r7, r0, 0x66",branch target marker,6,7,00000066,True,CPU132 reference trace; DUT run reports full trace match

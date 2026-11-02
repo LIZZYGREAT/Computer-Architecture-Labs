@@ -3,9 +3,11 @@
 ## 交付内容
 
 - `main.tex`：按 Lab1 报告模板的封面和章节样式撰写的完整报告。
-- `figures/`：Python 生成的 CPU 结构、HI/LO 握手、定向分支流程和功能点汇总图。它们是说明图/统计图，不是 Vivado 波形截图。
-- `scripts/build_figures.py`：从仓库验收结果读取数据并重建上述 PNG。
+- `figures/`：Python 生成的结构、握手、退休事件和验收统计图。本版不包含 Vivado 波形截图。
+- `data/`：由验收结果、匹配后的 trace 和 HI/LO testbench 结果收集的 CSV，以及图像来源索引。
+- `scripts/build_figures.py`：校验当前结果后，重建 Python PNG 和 CSV 数据表。
 - `docs/evidence-index.md`：结论与原始验收证据之间的索引及范围说明。
+- `docs/report-data-notes.md`：面向后续报告修改的数据摘要、定向事件值和图表来源。
 
 ## 编译
 
@@ -19,4 +21,4 @@
 python .\report\lab6-7\scripts\build_figures.py
 ```
 
-脚本读取 `results/lab6_lab7/lab6-20261028T093517Z/result.txt` 与 `lab7-20261028T102942Z/result.txt`，确认两轮功能点完整通过后才生成汇总图。当前四张插图仍是结构、流程或统计图；Lab6/Lab7 的 Vivado WDB 已捕获，波形 PNG 的人工导出步骤见 `docs/lab6_lab7/waveforms.md`。
+脚本读取累计回归、ALU/DIV/扩展控制转移定向 trace 与 HI/LO 单元结果，先检查 DUT PASS、trace 哈希和参考匹配，再生成 CSV 与 Python 图表。Lab6/Lab7 累计回归和 ALU 定向运行的 WDB 已归档；DIV 与扩展控制转移定向运行没有 WDB，因此相关图是参考 trace 事件图，不是周期级波形。本版没有嵌入 Vivado 截图。
