@@ -1,5 +1,9 @@
 # 实验运行与结果管理
 
+## 完成实验后的证据准备
+
+实验结束并取得结果后，按 [`docs/workflow.md`](docs/workflow.md) 准备数据、Python 图表、Vivado WDB/WCFG 和报告素材。默认由用户最后在 Vivado 打开匹配的 WDB/WCFG 并截图。
+
 ## 如何运行
 
 从本目录（`lab` 仓库根目录）打开**普通 Windows PowerShell**。`-Case` 可选 `lab3`、`lab4`、`lab6`、`lab7`；`-PipelineMode` 可选 `blocking` 或 `forwarding`。按要验收的实验运行对应命令：
@@ -17,6 +21,6 @@ Vivado 默认安装在 `D:\Verilog\2025.2\Vivado\bin`。安装位置不同时加
 
 ## 结果保留与清理
 
-每轮运行会在 `results/<实验组>/<时间戳>/` 下生成结果。提交前只保留最终验收、报告引用、复查或复现所必需的文件：通过轮次的 `result.txt`、原始 Vivado/Xvlog/Xelab/XSim 阶段日志、source manifest、映像一致性报告、必要的 golden trace、定向输入映像，以及报告确实引用的波形文件。
+每轮运行会在 `results/<实验组>/<时间戳>/` 下生成结果。清理或提交前先检查 Git 状态和证据引用。保留报告、复查、复现和 Vivado 截图所需的 `result.txt`、日志、source manifest、映像、golden trace、WDB/WCFG 与波形文件；默认不批量清理结果目录。
 
-后续通过轮次已替代的失败重试、重复日志、`.jou`/`.cmd` 启动副本、拼接日志、空 console 文件、重复 ROM 暂存、Vivado 临时工程、probe 输出和其他无用文件应及时清理。只有用于说明根因的失败证据才保留一份，并在报告中注明。不要直接执行 `git add results/`；提交前逐项检查结果目录，只添加最终有用且会在报告中引用或能支持验收结论的文件。
+只有在用户明确要求清理，或已确认某个临时文件无需保留且不被报告/采集配置引用时，才删除该具体文件。移除截图时只移除指定图片，不删除对应的 `.wcfg`、`.wdb` 或数据记录。不要直接执行 `git add results/`；提交前逐项检查结果目录，只添加最终有用且会在报告中引用或能支持验收结论的文件。
