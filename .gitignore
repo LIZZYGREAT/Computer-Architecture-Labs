@@ -35,6 +35,8 @@ results/lab6_lab7/**/combined.log
 !results/lab6_lab7/lab6-20261028T093517Z/lab6-20261028T093517Z-forwarding.wdb
 !results/lab6_lab7/lab7-20261028T102942Z/lab7-20261028T102942Z-forwarding.wdb
 *.wcfg
+# Keep the Wave layouts that accompany the Lab6/Lab7 capture handoff.
+!report/lab6-7/figures/waveforms/**/*.wcfg
 *.vcd
 *.vpd
 *.fst

@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab6_lab7/lab6-20261102T054949Z/lab6-20261102T054949Z-forwarding.wdb" id="1">
+         <top_modules>
+            <top_module name="\tb_top(PIPELINE_FORWARDING=1) " />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0 ns" />
+      <ZoomEndTime time="1,094,390 ns" />
+      <Cursor1Time time="0 ns" />
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="243" />
+      <ValueColumnWidth column_width="73" />
+   </column_width_setting>
+   <WVObjectSize size="29" />
+   <wave_markers />
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) //clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/id_stage/ds_pc" type="array">
+      <obj_property name="ElementShortName">ds_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ds_pc[31:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/id_stage/ds_inst" type="array">
+      <obj_property name="ElementShortName">ds_inst[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ds_inst[31:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/id_stage/ds_valid" type="logic">
+      <obj_property name="ElementShortName">ds_valid</obj_property>
+      <obj_property name="ObjectShortName">ds_valid</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/id_stage/ds_allowin" type="logic">
+      <obj_property name="ElementShortName">ds_allowin</obj_property>
+      <obj_property name="ObjectShortName">ds_allowin</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/id_stage/br_taken" type="logic">
+      <obj_property name="ElementShortName">br_taken</obj_property>
+      <obj_property name="ObjectShortName">br_taken</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/id_stage/br_target" type="array">
+      <obj_property name="ElementShortName">br_target[31:0]</obj_property>
+      <obj_property name="ObjectShortName">br_target[31:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/es_pc" type="array">
+      <obj_property name="ElementShortName">es_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">es_pc[31:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/es_valid" type="logic">
+      <obj_property name="ElementShortName">es_valid</obj_property>
+      <obj_property name="ObjectShortName">es_valid</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/es_rs_value" type="array">
+      <obj_property name="ElementShortName">es_rs_value[31:0]</obj_property>
+      <obj_property name="ObjectShortName">es_rs_value[31:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/es_rt_value" type="array">
+      <obj_property name="ElementShortName">es_rt_value[31:0]</obj_property>
+      <obj_property name="ObjectShortName">es_rt_value[31:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/es_hilo_start" type="logic">
+      <obj_property name="ElementShortName">es_hilo_start</obj_property>
+      <obj_property name="ObjectShortName">es_hilo_start</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/es_hilo_busy" type="logic">
+      <obj_property name="ElementShortName">es_hilo_busy</obj_property>
+      <obj_property name="ObjectShortName">es_hilo_busy</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/es_hilo_done" type="logic">
+      <obj_property name="ElementShortName">es_hilo_done</obj_property>
+      <obj_property name="ObjectShortName">es_hilo_done</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/es_hilo_consume" type="logic">
+      <obj_property name="ElementShortName">es_hilo_consume</obj_property>
+      <obj_property name="ObjectShortName">es_hilo_consume</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/es_ready_go" type="logic">
+      <obj_property name="ElementShortName">es_ready_go</obj_property>
+      <obj_property name="ObjectShortName">es_ready_go</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/es_allowin" type="logic">
+      <obj_property name="ElementShortName">es_allowin</obj_property>
+      <obj_property name="ObjectShortName">es_allowin</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/hilo_hi_value" type="array">
+      <obj_property name="ElementShortName">hilo_hi_value[31:0]</obj_property>
+      <obj_property name="ObjectShortName">hilo_hi_value[31:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/hilo_lo_value" type="array">
+      <obj_property name="ElementShortName">hilo_lo_value[31:0]</obj_property>
+      <obj_property name="ObjectShortName">hilo_lo_value[31:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/u_hilo_unit/state" type="array">
+      <obj_property name="ElementShortName">state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">state[1:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/u_hilo_unit/accept_div" type="logic">
+      <obj_property name="ElementShortName">accept_div</obj_property>
+      <obj_property name="ObjectShortName">accept_div</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/u_hilo_unit/dividend_ready" type="logic">
+      <obj_property name="ElementShortName">dividend_ready</obj_property>
+      <obj_property name="ObjectShortName">dividend_ready</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/u_hilo_unit/divisor_ready" type="logic">
+      <obj_property name="ElementShortName">divisor_ready</obj_property>
+      <obj_property name="ObjectShortName">divisor_ready</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/u_hilo_unit/div_result_valid" type="logic">
+      <obj_property name="ElementShortName">div_result_valid</obj_property>
+      <obj_property name="ObjectShortName">div_result_valid</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/u_hilo_unit/div_result" type="array">
+      <obj_property name="ElementShortName">div_result[63:0]</obj_property>
+      <obj_property name="ObjectShortName">div_result[63:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) //debug_wb_pc" type="array">
+      <obj_property name="ElementShortName">debug_wb_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">debug_wb_pc[31:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) //debug_wb_rf_wen" type="array">
+      <obj_property name="ElementShortName">debug_wb_rf_wen[3:0]</obj_property>
+      <obj_property name="ObjectShortName">debug_wb_rf_wen[3:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) //debug_wb_rf_wnum" type="array">
+      <obj_property name="ElementShortName">debug_wb_rf_wnum[4:0]</obj_property>
+      <obj_property name="ObjectShortName">debug_wb_rf_wnum[4:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) //debug_wb_rf_wdata" type="array">
+      <obj_property name="ElementShortName">debug_wb_rf_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">debug_wb_rf_wdata[31:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+</wave_config>

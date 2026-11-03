@@ -1,7 +1,9 @@
 \documentclass[UTF8,a4paper,zihao=5]{ctexart}
 
+% 适用位置：仓库 report/lab6-7/main.tex
+% 报告图表与 Vivado 波形截图均位于 figures/。
 \usepackage[left=2.7cm,right=2.7cm,top=2.4cm,bottom=2.4cm]{geometry}
-\usepackage{array,booktabs,tabularx,longtable}
+\usepackage{array,booktabs,tabularx}
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{xcolor}
@@ -9,17 +11,15 @@
 \usepackage{enumitem}
 \usepackage{hyperref}
 \usepackage{caption}
-
 \hypersetup{hidelinks}
 \setlength{\parindent}{2em}
-\setlength{\parskip}{0.25em}
+\setlength{\parskip}{0.23em}
 \setlength{\emergencystretch}{2em}
 \setlength{\tabcolsep}{5pt}
-\renewcommand{\arraystretch}{1.25}
+\renewcommand{\arraystretch}{1.22}
 \pagestyle{plain}
 \setlist{nosep,leftmargin=2em}
 \lstset{
-  language=Verilog,
   basicstyle=\ttfamily\footnotesize,
   columns=fullflexible,
   keepspaces=true,
@@ -27,25 +27,24 @@
   showstringspaces=false,
   frame=single,
   rulecolor=\color{black!25},
-  aboveskip=0.4em,
-  belowskip=0.4em
+  aboveskip=0.45em,
+  belowskip=0.45em
 }
-
 \newcolumntype{C}{>{\centering\arraybackslash}X}
-\newcommand{\reportsection}[1]{%
-  \par\addvspace{0.75\baselineskip}%
-  \noindent{\heiti\zihao{-4}#1\par}%
-  \vspace{0.15\baselineskip}%
+\newcommand{\reportsection}[1]{\par\addvspace{0.8\baselineskip}\noindent{\heiti\zihao{-4}#1\par}\vspace{0.15\baselineskip}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+% 存在对应图片文件时自动插入报告。
+\newcommand{\repofigure}[3]{%
+  \IfFileExists{figures/#1}{\begin{figure}[htbp]\centering
+      \includegraphics[width=#2\linewidth]{figures/#1}\caption{#3}
+    \end{figure}}{}%
 }
-\newcommand{\code}[1]{\texttt{#1}}
 
 \begin{document}
-
 \begin{center}
   {\bfseries\zihao{3} 计算机组成原理实验课程第 6—7 次实验报告\par}
 \end{center}
 \vspace{0.3em}
-
 \begin{center}
 \begin{tabularx}{\textwidth}{|*{6}{C|}}
 \hline
@@ -58,219 +57,224 @@
 \end{tabularx}
 \end{center}
 
-\reportsection{实验目的}
-本实验在已有五级流水线 CPU 和 Lab3/Lab4 数据前递框架上，完成 Lab6 与 Lab7 的累计功能扩展。Lab6 主要加入算术逻辑指令、乘除法及 HI/LO 特殊寄存器操作；Lab7 继续加入控制转移、延迟槽和字节/半字/非对齐访存指令。实现时需要维持流水级握手、同步 RAM 时序和精确的写回边界，避免多周期运算期间重复接受或提交指令。
+\reportsection{一、实验目的}
+本次实验是在前面已经完成的五级流水线 CPU 上继续添加指令。之前 Lab3--Lab5 已经能够执行基本的 MIPS 指令，并处理流水线中的数据相关问题。Lab6 需要继续支持算术逻辑、乘除法和 HI/LO 寄存器操作；Lab7 则增加转移指令，以及字节、半字和非对齐访存指令。
 
-本次验收目标包括：按课程测试程序逐点检查 Lab6、Lab7；使用独立 CPU132 参考模型生成退休 trace 并与 DUT 比对；通过 HI/LO 单元级测试和除法期间分支等待定向用例补充检查；记录仿真周期、停顿、旁路使用和零号寄存器写回情况。
+我这次主要想完成三件事：一是让新增指令能正确译码和执行；二是保证它们不会破坏原来已经实现的阻塞和数据前递；三是使用 Vivado 仿真，通过课程功能测试、参考 CPU 的写回记录和一些针对性用例来检查结果。乘除法部分按照实验允许的方式使用 Xilinx IP 核实现。
 
-\reportsection{实验环境与总体设计}
-实验使用 Vivado 2025.2、XSim 和 Windows 普通 PowerShell。Lab3 至 Lab7 共用一个 Vivado 工程，顶层为 \code{soc\_lite\_top}，仿真顶层为 \code{tb\_top}，目标器件为 \code{xc7a200tfbg676-2}。CPU 数据通路由 IF、ID、EX、MEM、WB 五级构成；IF 使用同步 ROM，MEM 连接 32 位数据 RAM。验证脚本在 Vivado 启动前检查执行环境，并为每轮仿真保留编译、展开、仿真阶段日志和结构化 \code{result.txt}。
+\reportsection{二、实验环境与原有 CPU 结构}
+实验环境使用 Windows、Vivado 2025.2 和 XSim，目标器件为 \code{xc7a200tfbg676-2}。沿用原来 Lab3 的 \code{mycpu_verify} 工程，设计顶层为 \code{soc_lite_top}，仿真顶层为 \code{tb_top}。Lab6 和 Lab7 的目录主要存放各自的功能测试程序，没有重新复制一套 CPU。
 
-图 1 根据 RTL 接口和流水级职责展示五级流水结构。图中前递回路、多周期 HI/LO 等待以及 MEM 字节通道用于说明主要设计关系；完整流水级信号与模块边界以工程 RTL 为准。
+CPU 保留 IF、ID、EX、MEM、WB 五个流水级。执行指令时，IF 从指令存储器取指；ID 译码并读取寄存器；EX 进行运算、计算访存地址，或等待乘除法单元；MEM 取得数据存储器的结果；WB 将结果写回寄存器。原本的前递逻辑允许 ID 直接取得 EX、MEM 或 WB 中已经准备好的结果，如果数据还没有产生，则先暂停后续指令。
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.98\textwidth]{figures/cpu_pipeline.png}
-  \caption{五级流水线及 Lab6/Lab7 主要控制点}
-\end{figure}
+\repofigure{cpu_pipeline.png}{0.95}{五级流水线与新增的乘除法、转移及访存通路（结构示意图）}
 
-\reportsection{Lab6：算术逻辑与 HI/LO 扩展}
-\textbf{算术逻辑指令。} ID 阶段增加 \code{add/sub/addi/slti/sltiu/andi/ori/xori/sllv/srav/srlv} 的译码，并相应确定源寄存器使用、目的寄存器和合法写回条件。EX 阶段对 \code{andi/ori/xori} 使用零扩展立即数，其余立即数按指令语义符号扩展；有符号比较与无符号比较分开处理。可变移位由 \code{rs[4:0]} 提供移位量、\code{rt} 提供被移位数据。
+本次改动主要涉及指令译码、执行和访存控制，并新增了 \code{hilo_unit.v} 处理多周期乘除法。ID 负责识别新指令及其操作数，EX 和 MEM 计算结果，控制总线把必要信息传到后续流水级。
 
-为避免未知或不支持编码造成伪写回，写回资格来自显式的合法指令集合，而不是仅凭某个译码位推断。新增 65-word 算术逻辑定向映像覆盖立即数边界、有符号/无符号比较、三种可变移位、高位移位量忽略、流水前递和 load-use。该定向 DUT 测试通过，73 周期、1 次 load-use 停顿，EX/MEM/WB 前递次数为 7/6/3，且 trace 与独立参考一致。
+\reportsection{三、Lab6：算术逻辑与乘除法指令}
+\textbf{1. 算术逻辑指令的扩展。}
 
-图 2 用该通过用例的参考退休 trace 绘制关键 ALU 写回值，适合检查立即数、移位边界和前递结果。图中数据与 DUT 退休 trace 全匹配，但不编码时钟周期关系。
+首先在 ID 阶段增加 \code{add}、\code{addi}、\code{sub}、\code{slti}、\code{sltiu}、\code{andi}、\code{ori}、\code{xori} 以及 \code{sllv/srlv/srav} 的译码。这里除了确定 ALU 要做哪种操作，还需要告诉相关检测逻辑，这条指令是否真的会读取 \code{rs}、\code{rt}，以及最终要写哪个寄存器。
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.95\textwidth]{figures/alu_key_values.png}
-  \caption{ALU 定向用例关键退休写回值与结果位分布}
-\end{figure}
+立即数处理是这部分比较容易出错的地方。例如 \code{addi} 使用符号扩展，而 \code{andi/ori/xori} 使用零扩展。现有 EX 阶段用下面的方式选择第二个 ALU 操作数（节选自 \code{EXE_stage.v}）：
 
-\textbf{HI/LO 运算。} 新增 \code{hilo\_unit.v} 封装乘法和除法 IP。乘法支持 signed/unsigned；除法器为 unsigned IP，signed 运算通过输入幅值化和输出符号恢复实现。乘法结果写为 HI=乘积高 32 位、LO=乘积低 32 位；除法结果写为 HI=余数、LO=商。\code{mfhi/mflo} 在 EX 使用 HI/LO 当前值，\code{mthi/mtlo} 在指令能够离开 EX 的提交边界更新特殊寄存器。
+\begin{lstlisting}[language=Verilog]
+assign es_imm_zero_extend = es_src2_is_imm &&
+    (es_alu_op[4] || es_alu_op[6] || es_alu_op[7]);
+assign es_alu_src2 = es_src2_is_imm ?
+    (es_imm_zero_extend ? {16'b0, es_imm} :
+                          {{16{es_imm[15]}}, es_imm}) :
+    es_src2_is_8 ? 32'd8 : es_rt_value;
+\end{lstlisting}
 
-多周期乘除法在 EX 保持当前指令，\code{busy} 期间阻止更年轻指令越过；完成结果保持到 \code{consume\_done}，随后回到空闲态。\code{start} 仅在该指令有效、属于乘除法、且单元既不忙也未完成时发出。以下为实际 RTL 中关键握手的节选：
+可变移位指令还要把移位量改成从寄存器 \code{rs} 的低 5 位取得，被移位数据仍来自 \code{rt}。例如移位量为 31 时，只看低 5 位，算术右移还必须保留符号位。相关操作在 ALU 中通过移位和符号扩展来完成。
 
-\begin{lstlisting}
+我们另外使用了一组短指令程序检查这些情况。比如 \code{andi r12,r5,0x8000} 的正确结果为 \code{0x00008000}，\code{xori r14,r5,0xffff} 得到 \code{0xFFFF0000}；可变算术右移的测试也得到了正确的符号扩展结果。下图按参考 CPU 的寄存器写回记录整理了几个关键值，能够直接观察不同运算的输出。
+
+\repofigure{alu_key_values.png}{0.93}{算术逻辑定向用例的关键寄存器写回结果（来自匹配的参考 trace）}
+
+\textbf{2. 乘除法 IP 与 HI/LO 寄存器。}
+
+MIPS 的乘除法结果通常放在 HI 和 LO 两个特殊寄存器中。乘法把 64 位乘积的高 32 位放入 HI、低 32 位放入 LO；除法把余数放入 HI、商放入 LO。之后由 \code{mfhi/mflo} 读取，也可以用 \code{mthi/mtlo} 直接修改对应寄存器。
+
+实现时新增了 \code{hilo_unit.v}，调用 Vivado 生成的乘法与除法 IP。乘法使用 33 位有符号扩展后的乘法器，兼顾有符号和无符号的 32 位乘法；除法器本身是无符号运算，有符号除法先取得两个操作数的绝对值，算出商和余数后再恢复符号。
+
+乘除法不能像普通加法一样每个周期都得到结果，所以 EX 阶段需要等待。这里使用的主要控制信号是 \code{start}、\code{busy}、\code{done} 和 \code{consume_done}。实际流水线中关键控制代码如下：
+
+\begin{lstlisting}[language=Verilog]
 assign es_hilo_start = es_valid && es_hilo_multdiv &&
                        !es_hilo_busy && !es_hilo_done;
 assign es_hilo_consume = es_valid && es_hilo_done && ms_allowin;
 assign es_ready_go = !es_hilo_multdiv || es_hilo_done;
-assign es_allowin = !es_valid || es_ready_go && ms_allowin;
+assign es_allowin = !es_valid || (es_ready_go && ms_allowin);
 assign es_to_ms_valid = es_valid && es_ready_go;
 \end{lstlisting}
 
-图 3 展示单元请求、等待、完成保持和消费的状态关系。该图是依照 RTL 独立 testbench 观察到的握手绘制，图中状态名与实现一致。
+它的执行过程可以简单概括为：
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.83\textwidth]{figures/hilo_handshake.png}
-  \caption{HI/LO 单元的请求与完成握手}
-\end{figure}
+\begin{lstlisting}[language={}]
+EX 接收乘除法指令，锁存输入操作数
+发出一次乘除法请求
+while 结果尚未完成:
+    EX 保留当前指令，不接收下一条
+    IF、ID 根据 allowin 信号等待
+结果有效后，更新 HI、LO
+当前指令允许进入后一级，只消费一次结果
+\end{lstlisting}
 
-\textbf{HI/LO 单元测试。} 独立 testbench 共接受 3 次乘法和 4 次除法请求，完成并提交 6 次；另有一次在完成前由复位取消。检查覆盖 signed/unsigned 运算、零乘数、完成保持直到消费、单次接受与单次提交、\code{MTHI/MTLO} 以及复位清除进行中的除法。testbench 通过。除法除数为零不属于本次已记录的测试覆盖，报告不据此推断其行为。
+除法 IP 有两路输入（被除数和除数），需要它们在同一次握手中被正确接收。为此，在 \code{HILO_DIV_SEND} 状态下保持两路有效信号和输入值，直到两路 \code{ready} 同时成立，再等待结果返回，避免除法请求重复或只提交一半输入。
 
-图 4 汇总 HI/LO 单元 testbench 的请求接受数、完成提交数和复位取消数，数值直接来自该轮结构化结果文件。
+\repofigure{hilo_handshake.png}{0.82}{HI/LO 单元请求、等待、完成与消费的状态关系（流程示意图）}
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.72\textwidth]{figures/hilo_unit_counts.png}
-  \caption{HI/LO 单元级测试的操作接受、完成提交和复位取消计数}
-\end{figure}
+在单元级测试中，共接受 3 次乘法和 4 次除法请求，完成并提交 6 次；还有一次进行中的除法被复位取消。测试也检查了 HI/LO 读写与完成状态保持，结果为 PASS。这说明单元的基本运算和握手能够按预期工作。
 
-\reportsection{Lab7：控制转移、延迟槽与访存}
-\textbf{控制转移。} 新增 \code{j}、\code{jalr}、\code{bgez/bgtz/blez/bltz} 和 \code{bgezal/bltzal}。条件分支按有符号 \code{rs} 判断；\code{jalr} 的目标来自经过前递的 \code{rs}，链接目的寄存器使用指令 \code{rd}。条件分支目标按 \code{PC+4+signext(imm<<2)} 计算，跳转目标使用 \code{(PC+4)[31:28]} 与索引字段拼接，链接值为 \code{PC+8}。\code{bgezal/bltzal} 的链接行为按课程测试宏要求，即使条件不成立也写链接值，是否重定向仍由条件决定。
+\reportsection{四、Lab7：转移指令与延迟槽}
+本次在原有 \code{beq/bne/jr/jal} 等指令的基础上增加了 \code{j}、\code{jalr}、\code{bgez}、\code{bgtz}、\code{blez}、\code{bltz}、\code{bgezal} 和 \code{bltzal}。这些指令主要在 ID 阶段根据寄存器值计算是否跳转，以及跳转到哪个地址。
 
-分支仅在 ID 指令能够被 EX 接收时发出，保留一条延迟槽指令；若 EX 被多周期运算占用，ID 中的分支保持等待，不重复重定向。该路径使用独立定向程序验证：\code{DIV} 后紧接 taken \code{BEQ}，延迟槽写入 \code{r3=0x55}，fall-through 对 \code{r4} 的写入必须被跳过，分支目标后 \code{MFLO/MFHI} 分别读出商 $-4$ 和余数 $-3$，目标标记写入 \code{r7=0x66}。trace 中恰好出现 \code{r3/r5/r6/r7} 写回记录而没有 \code{r4} 写回记录，DUT 与独立参考 trace 全匹配。图 5 为该程序控制流的说明图，图 6 将 trace 中实际退休的写回记录按顺序展开。
+例如 \code{bgez} 判断 \code{rs} 是否大于等于 0；\code{bltz} 判断它是否小于 0。链接跳转的返回地址是当前 PC 加 8，这是因为实验采用的 MIPS 流水线保留一条延迟槽指令。分支决定跳转后，紧接着的一条指令仍然需要执行。
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.98\textwidth]{figures/div_branch_delay_slot.png}
-  \caption{除法占用 EX 时的分支等待、延迟槽和跳过路径}
-\end{figure}
+这里继续沿用原来的前递机制。若分支依赖前面指令写入的 \code{rs}，ID 可以取得已经产生的结果；遇到尚未准备好的值则需要等待。特别是 EX 正在执行较长的除法时，ID 即使已经算出分支目标，也不能反复发出跳转。RTL 中把跳转条件和当前指令是否能够推进联系起来：
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.95\textwidth]{figures/div_branch_retirement.png}
-  \caption{除法后分支定向程序的参考退休写回顺序}
-\end{figure}
+\begin{lstlisting}[language=Verilog]
+assign br_taken = (inst_j || inst_jal || inst_jr ||
+                   inst_jalr || ds_branch_cond_taken) &&
+                  ds_valid && ds_ready_go && ds_allowin;
+\end{lstlisting}
 
-扩展控制转移定向 trace 还记录了普通条件分支和 \code{jalr} 的延迟槽与目标路径。下面两图按退休记录展示写回值，并标出 trace 中未出现的 fall-through PC；横轴为退休记录序号，不表示时钟周期。
+为检查这部分，我们设计过一组“除法后立即执行分支”的短程序：先令 \code{r1=-23}、\code{r2=5}，执行有符号除法，再执行一条恒成立的 \code{beq}。从参考 trace 与 DUT 全部匹配的写回记录中可以看到：延迟槽将 \code{r3} 写为 \code{0x55}，跳过路径没有出现 \code{r4} 写回，跳转目标处 \code{mflo} 和 \code{mfhi} 分别读出了 \code{-4} 和 \code{-3}。这与预期执行顺序一致。
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.92\textwidth]{figures/extended_branch_retirement.png}
-  \caption{Lab7 条件分支定向 trace：延迟槽写回及目标路径}
-\end{figure}
+\repofigure{div_branch_retirement.png}{0.91}{除法后分支测试中实际出现的写回顺序（退休 trace 图）}
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.92\textwidth]{figures/jalr_retirement.png}
-  \caption{Lab7 JALR 定向 trace：PC+8 链接值、延迟槽及目标路径}
-\end{figure}
+\code{jalr} 也单独检查了链接地址和延迟槽。例如定向用例在 \code{PC=0xBFC000E4} 执行 \code{jalr r26,r25}，得到 \code{r26=0xBFC000EC}，也就是 PC+8；随后的延迟槽写回 \code{r4=0x61}，跳转目标为 \code{0xBFC000F0}，原本需要跳过的路径没有产生写回。
 
-\textbf{访存指令。} 访存控制由单一 load/store 信号扩为 12 位 one-hot \code{mem\_op}，在一个字 RAM 接口上支持下表指令。地址按字索引访问 RAM，低地址位用于字节/半字通道选择；读数据由 MEM 阶段完成扩展或合并，写数据和 byte enable 在 EX 阶段按地址偏移生成。
+\repofigure{jalr_retirement.png}{0.91}{JALR 的链接、延迟槽与目标路径写回记录（退休 trace 图）}
+
+\reportsection{五、Lab7：字节、半字和非对齐访存}
+前面的 CPU 主要实现 \code{lw/sw}，每次读写一个完整的 32 位字。本次新增 \code{lb/lbu/lh/lhu}, \code{sb/sh} 和 \code{lwl/lwr/swl/swr}，需要在保留原有同步 RAM 的情况下处理不同的访存宽度。
+
+我们的数据 RAM 以 32 位字为单位，实际的字节位置由地址低两位决定。例如小端存储中，地址最低两位为 0 的字节放在读出数据的 \code{[7:0]}，偏移为 1 的字节放在 \code{[15:8]}。\code{lb} 需要把选中的字节进行符号扩展，\code{lbu} 则补零；半字的处理方法类似。MEM 阶段已有相应的数据选择逻辑，下面以 \code{lb} 的一部分为例：
+
+\begin{lstlisting}[language=Verilog]
+if (ms_mem_op[`MEM_OP_LB]) begin
+    case (ms_alu_result[1:0])
+        2'd0: mem_result = {{24{data_sram_rdata[7]}},
+                            data_sram_rdata[7:0]};
+        2'd1: mem_result = {{24{data_sram_rdata[15]}},
+                            data_sram_rdata[15:8]};
+        // offsets 2 and 3 use the higher byte lanes
+    endcase
+end
+\end{lstlisting}
+
+写入也要指定哪些字节可以改变。例如 \code{sb} 只使能一个字节通道，不能覆盖同一个字里的另外三个字节。EX 阶段实际代码如下：
+
+\begin{lstlisting}[language=Verilog]
+else if (es_mem_op[`MEM_OP_SB]) begin
+    es_store_wen_r  = 4'b0001 << es_alu_result[1:0];
+    es_store_data_r = es_rt_value <<
+                      {es_alu_result[1:0], 3'b000};
+end
+\end{lstlisting}
+
+这里 \code{es_store_wen_r} 是四位字节写使能，\code{es_store_data_r} 将要写的字节移到对应位置。\code{sh} 则使用两位写使能。
+
+\code{lwl/lwr/swl/swr} 还要处理非对齐数据。其中 \code{lwl/lwr} 并不一定覆盖目标寄存器的全部 32 位，有一部分要保留旧的 \code{rt}。因此除了内存读出的字，还要把经过相关检测和前递的 \code{rt} 原值送到 MEM 阶段，按地址低两位合并。比如 \code{lwl} 偏移为 1 时，实际合并代码是：
+
+\begin{lstlisting}[language=Verilog]
+// From MEM_stage.v, LWL with address offset = 1
+2'd1: mem_result = {data_sram_rdata[15:0],
+                    ms_rt_value[15:0]};
+\end{lstlisting}
+
+\code{swl/swr} 则按照地址偏移生成不同的字节写使能和写入数据。这一部分最需要注意的是：内存访问的数据正确还不够，写入时不能破坏不应该修改的其他字节。
+
+我们增加了专门的连续依赖测试，覆盖 \code{lw} 后立即执行字节/非对齐 store、load 后继续使用读出的数据、\code{lwl/lwr} 连续合并，以及 \code{lw} 后的条件分支。测试对 9 次 store 的实际地址、写使能和写数据进行检查，还检查了分支重定向次数。结果为 PASS，25 条写回记录全部匹配独立参考 CPU。
+
+\reportsection{六、测试方法与实验结果}
+\textbf{1. 验证方法。}
+
+Lab6 和 Lab7 使用课程给出的累计测试程序。我们先用独立 CPU132 参考工程执行同一份指令映像，生成包含 PC、写回寄存器编号和写回数值的 \code{golden_trace.txt}；然后在本次修改的 CPU 上执行，比较每一次写回结果。除此之外，还要求 testbench 输出完整功能点通过标记，并且没有出现 trace 不匹配。
+
+为避免只依赖完整课程程序，我们还使用了 ALU、HI/LO、分支前递和访存相关的短测试。短测试通常不计入课程的 42/68 个功能点，而是通过参考 trace 和额外检查条件判断是否正确。
+
+\textbf{2. 完整功能测试。}
 
 \begin{center}
 \small
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.3cm}X X@{}}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.0cm}CC@{}}
 \toprule
-类别 & 指令 & 实现要点 \\
+检查内容 & Lab6 & Lab7 \\
 \midrule
-整字 & \code{lw/sw} & 读写 32 位字，\code{sw} 的四个 byte enable 全开。 \\
-字节 & \code{lb/lbu/sb} & 按地址低两位选 lane；\code{lb} 符号扩展，\code{lbu} 零扩展，\code{sb} 只使能目标 lane 并移位写数据。 \\
-半字 & \code{lh/lhu/sh} & 用地址位 1 选择半字；load 分别进行符号扩展或零扩展，store 使能对应两个 lane。 \\
-非对齐读 & \code{lwl/lwr} & 按低两位与旧 \code{rt} 合并；旧值来自经过 RAW 检测和前递的源操作数。 \\
-非对齐写 & \code{swl/swr} & 按低两位生成写掩码和移位后的写数据。 \\
+课程功能点 & 42/42，通过 & 68/68，通过 \\
+参考 trace 写回匹配 & 66,612/66,612 & 100,732/100,732 \\
+总执行周期 & 109,439 & 166,330 \\
+记录的 ID 停顿周期 & 89 & 926 \\
+零号寄存器实际写回尝试 & 0 & 0 \\
+XSim 仿真结束状态 & PASS & PASS \\
 \bottomrule
 \end{tabularx}
 \end{center}
 
-本实现沿用 32 位同步 data RAM，EX→MEM 总线增加有效地址和原 \code{rt} 值等信息。\code{lwl/lwr} 合并关系、\code{swl/swr} 四种偏移的掩码与数据排列已与独立 CPU132 reference 的执行级规则逐项核对。累计 Lab7 功能点回归通过并与 golden trace 匹配。
+上述数据来自两次成功的前递模式仿真，Lab6 的运行编号为 \code{lab6-20261102T054949Z}，Lab7 为 \code{lab7-20261102T055526Z}。两次测试均确认加载的指令映像与预期文件一致，且参考 trace 全量匹配。
 
-\reportsection{流水线接口与冒险处理}
-Lab6/Lab7 在原 forwarding 流水线接口上继续传递新增控制和数据。\code{DS\_TO\_ES\_BUS\_WD} 扩为 154 位，\code{ES\_TO\_MS\_BUS\_WD} 扩为 114 位。普通数据相关使用 EX/MEM/WB 前递；HI/LO 运算通过 EX 的 ready/allow 握手施加多周期背压；同步 load 数据只有在 RAM 返回后才可用。零号寄存器始终不接受写回。
+\repofigure{functional_coverage.png}{0.77}{Lab6 与 Lab7 累计课程测试的功能点通过情况（统计图）}
 
-普通 RAW 前递按最近写者优先选择 EX、MEM、WB、寄存器堆。若最近写者匹配但结果尚未有效，消费者等待，不越过它去取更旧结果。这个优先级对 ALU 输入、分支比较、\code{jr/jalr} 目标以及 store 写数据保持一致。同步 RAM 的时序没有改变，因此 load-use 仍可能停顿；这是等待数据到达的必要等待，不作为普通 ALU 前递失败。
+\repofigure{cumulative_metrics.png}{0.93}{两次累计运行的周期、停顿及前递统计（由验收结果生成）}
 
-\reportsection{实验方法与验收规则}
-累计课程映像的参考轨迹由独立 CPU132 参考环境生成；DUT 使用同一份 ROM MIF 运行 forwarding 模式。验收不仅检查 testbench 的功能点通过数，也检查参考 trace 是否打开、测试结束标记、PASS 标记、仿真退出码、使用的映像与源文件是否匹配，以及零号寄存器写回检查。每轮 Xvlog、Xelab、XSim 阶段的新鲜日志一并记录。
+Lab7 的周期数比 Lab6 多，是因为 Lab7 的测试程序本身包含更多测试内容，因此不能直接拿两者的周期数比较 CPU 性能。这里的“停顿周期”主要统计 ID 阶段由于数据尚未准备好而等待的周期，并不等于乘除法 IP 内部的全部等待时间。
 
-仿真周期数和停顿数直接引用该轮 \code{result.txt}。Lab6 与 Lab7 使用不同累计课程程序，因此二者周期数不能用来直接比较处理器性能。HI/LO testbench 和除法后分支程序作为补充覆盖；定向分支测试的课程功能点数为 0 是预期配置，它按自定义 trace 比较判定，不代表没有执行指令。
-
-累计回归的结果文件、参考 trace、仿真日志与波形数据库均已归档，用于复核功能点、trace 匹配及统计结果。定向事件图基于匹配后的参考退休记录，按写回顺序展示关键结果。
-
-\reportsection{实验结果}
-图 9 汇总 Lab6、Lab7 的累计课程功能点结果。详细数字和辅助检查见表 2。
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.82\textwidth]{figures/functional_coverage.png}
-  \caption{Lab6 与 Lab7 累计课程功能点通过率}
-\end{figure}
+\textbf{3. 针对性测试。}
 
 \begin{center}
 \small
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.35cm}*{2}{>{\centering\arraybackslash}X}@{}}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.3cm}>{\raggedright\arraybackslash}X>{\centering\arraybackslash}p{2.3cm}@{}}
 \toprule
-指标 & Lab6 累计 & Lab7 累计 \\
+测试场景 & 主要检查内容 & 结果 \\
 \midrule
-验收状态 & PASS & PASS \\
-课程功能点 & 42/42 & 68/68 \\
-流水线周期 & 109,439 & 166,330 \\
-流水线停顿周期 & 89 & 926 \\
-EX/MEM/WB 前递使用 & 35,013 / 8,320 / 12,007 & 49,970 / 12,229 / 15,454 \\
-新增指令前递 & 0 / 0 / 0 / 0 & 112 / 0 / 1,229 / 28 \\
-零号寄存器写回尝试 & 0（检查通过） & 0（检查通过） \\
-trace 与 ROM 映像 & 哈希匹配 & 哈希匹配 \\
-波形捕获 & WDB 已捕获 & WDB 已捕获 \\
+算术与前递定向 & 立即数扩展、移位、EX/MEM/WB 前递、load-use；73 周期，36 条 trace 匹配 & PASS \\
+HI/LO 单元测试 & 乘除请求、完成消费、符号处理和复位取消 & PASS \\
+除法后分支 & 分支等待、延迟槽、HI/LO 结果；111 周期，6 条 trace 匹配 & PASS \\
+Lab7 转移及前递 & 条件分支、JALR、存储相关；64 周期，41 条 trace 匹配 & PASS \\
+访存连续依赖 & 9 次 store 的地址、写掩码、数据及 25 条 trace 对照 & PASS \\
 \bottomrule
 \end{tabularx}
 \end{center}
 
-Lab6 累计 trace 共 66,612 条记录，SHA-256 为 \code{FB92799C...6986850CA1}；本轮课程 MIF SHA-256 为 \code{845D9793...C28E8F28}。Lab7 累计 trace 共 100,732 条记录，SHA-256 为 \code{23ADD75B...B22035991C3}；本轮课程 MIF SHA-256 为 \code{8EBF3140...B9B75BE}。完整哈希、原始绝对路径和运行起止时间保存在对应 \code{result.txt}。
+这些测试中最能说明设计正确性的，是除法和分支的组合：CPU 必须先等待 EX 的多周期运算完成，之后再让分支推进，同时保证延迟槽只执行一次。另一个重点是非对齐访存，测试不仅比较寄存器结果，还对写 RAM 的字节通道进行了检查。
 
-图 10 从结构化验收结果绘制累计仿真周期、停顿周期和 EX/MEM/WB 前递次数。Lab6 与 Lab7 使用不同长度的课程程序，因此图中周期和停顿只描述各自运行，不作为性能优劣比较。
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.98\textwidth]{figures/cumulative_metrics.png}
-  \caption{Lab6/Lab7 累计回归周期、停顿与前递统计}
-\end{figure}
-
-EX/MEM/WB 前递计数仅在 ID 指令被 EX 接收时采样；每一级只要 \code{rs} 或 \code{rt} 任一源操作数使用该级就记一次，因此计数不是源操作数总数或停顿周期。新增指令计数也在发射时采样；store 基址与数据可能对同一条指令分别计数。完整 Lab7 累计程序的新增 store-base/store-data/conditional-branch/\code{jalr} 计数为 112/0/1,229/28。累计 ROM 没有触发新增 store-data 前递；独立短定向程序覆盖该依赖，trace 41/41 匹配，计数为 3/2/6/1。
-
-两轮累计 DUT 均在预期功能点数上全部通过，参考 trace 与仿真镜像匹配；zero-register 检查均报告 0 次实际写回尝试。HI/LO 单元 testbench 和除法期间分支等待定向用例也通过。S2 历史结果曾在当时尚未实现 HI/LO 的 \code{mflo} 处通过 34/42；该历史状态不能代替当前完整 RTL 的 42/42 结果。
-
-\reportsection{结果分析与局限}
-Lab6 与 Lab7 的累计功能点均达到本轮设定的完整通过条件。不同数据路径都获得独立证据：算术逻辑定向程序检查立即数、比较和可变移位；HI/LO testbench 检查多周期单元握手；自定义分支测试检查除法背压期间的延迟槽和重定向；累计课程 ROM 检查完整功能点并与独立参考退休 trace 逐项匹配。
-
-当前验收证明的是指定课程映像和已记录定向场景下的仿真行为，不等同于形式化证明，也不包含板上实测、综合后时序收敛或所有非法输入组合。特别是除数为零没有列入 HI/LO testbench 覆盖；本报告不对该情况作正确性结论。图表数据源与运行索引见报告配套的 \code{data/evidence\_index.csv}。
-
-\reportsection{总结}
-本次完成了 Lab6 算术逻辑与 HI/LO 乘除法扩展、Lab7 控制转移与延迟槽扩展，以及 12 类整字、字节、半字和非对齐访存操作。多周期单元通过 EX 级背压和完成消费握手避免重复执行；控制转移在 EX 停顿时等待，并保留一条延迟槽；访存操作按地址低位处理 lane、符号扩展和合并。
-
-
+% Vivado screenshots are stored directly in figures/ and included by their actual filenames.
+\repofigure{01_alu_immediate.png}{0.96}{andi、ori、xori 的立即数处理与结果写回（Vivado 仿真波形）}
+\repofigure{02_variable_shift.png}{0.96}{sllv、srlv、srav 的移位结果写回（Vivado 仿真波形）}
+\repofigure{03_forwarding_load_use-BFC00054.png}{0.96}{EX/MEM/WB 数据前递与相关指令执行（Vivado 仿真波形）}
+\repofigure{03_forwarding_load_use-BFC00084.png}{0.96}{load-use 相关指令与流水线停顿（Vivado 仿真波形）}
+\repofigure{04_mult_signed.png}{0.96}{有符号 MULT 的操作数、乘积及 HI/LO 结果（Vivado 仿真波形）}
+\repofigure{04_multu_unsigned.png}{0.96}{无符号 MULTU 的操作数、乘积及 HI/LO 结果（Vivado 仿真波形）}
+\repofigure{05_div_stall_branch-BFC00008.png}{0.96}{DIV 请求期间的流水线保持与分支等待（Vivado 仿真波形）}
+\repofigure{05_div_stall_branch-BFC0000C.png}{0.96}{除法结果、分支延迟槽及后续 HI/LO 读回（Vivado 仿真波形）}
+\repofigure{06_branch_delay_slot_jalr-BFC70398.png}{0.96}{JALR 链接值与延迟槽 LUI 写回（Vivado 仿真波形）}
+\repofigure{06_branch_delay_slot_jalr-BFC96694.png}{0.96}{BGEZ 分支与延迟槽 MFHI 写回（Vivado 仿真波形）}
+\repofigure{07_partial_store_mask-BFC8E15C.png}{0.96}{SB 的地址、写数据与字节写掩码（Vivado 仿真波形）}
+\repofigure{07_partial_store_mask-BFC1AACC.png}{0.96}{SH 的地址、写数据与字节写掩码（Vivado 仿真波形）}
+\repofigure{07_partial_store_mask-BFC8759C.png}{0.96}{SWL 的地址、写数据与字节写掩码（Vivado 仿真波形）}
+\repofigure{07_partial_store_mask-BFC2B5CC.png}{0.96}{SWR 的地址、写数据与字节写掩码（Vivado 仿真波形）}
+\repofigure{08_byte_half_load-BFC5D874.png}{0.96}{LB 的符号扩展结果（Vivado 仿真波形）}
+\repofigure{08_byte_half_load-BFC1D2B4.png}{0.96}{LBU 的零扩展结果（Vivado 仿真波形）}
+\repofigure{08_byte_half_load-BFC6ABC0.png}{0.96}{LH 的符号扩展结果（Vivado 仿真波形）}
+\repofigure{08_byte_half_load-BFC7E7D4.png}{0.96}{LHU 的零扩展结果（Vivado 仿真波形）}
+\repofigure{09_unaligned_load_merge-BFC5BEAC.png}{0.96}{LWL 与旧 RT、RAM 字数据的合并结果（Vivado 仿真波形）}
+\repofigure{09_unaligned_load_merge-BFC9A1E0.png}{0.96}{LWR 与旧 RT、RAM 字数据的合并结果（Vivado 仿真波形）}
+\repofigure{10_store_readback-BFC8E170.png}{0.96}{SB 后的字读取回结果（Vivado 仿真波形）}
+\repofigure{10_store_readback-BFC1AAE0.png}{0.96}{SH 后的字读取回结果（Vivado 仿真波形）}
+\repofigure{10_store_readback-BFC875B0.png}{0.96}{SWL 后的字读取回结果（Vivado 仿真波形）}
+\repofigure{10_store_readback-BFC2B5E0.png}{0.96}{SWR 后的字读取回结果（Vivado 仿真波形）}
+\repofigure{11_hilo_unsigned_optional.png}{0.96}{无符号除法运行期间的操作数与 BUSY 状态（Vivado 仿真波形）}
 \clearpage
-\reportsection{附录 A：复现命令与证据索引}
-从仓库根目录 \code{C:\textbackslash Users\textbackslash lenovo\textbackslash Desktop\textbackslash Projects\textbackslash FPGA\textbackslash lab} 的普通 Windows PowerShell 运行：
 
-\begin{lstlisting}[language=bash]
-powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass `
-  -File .\scripts\verify.ps1 -Case lab6 -PipelineMode forwarding
-powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass `
-  -File .\scripts\verify.ps1 -Case lab7 -PipelineMode forwarding
-\end{lstlisting}
+\reportsection{七、实验总结}
+这次是在原来已经能够处理流水线冲突的 CPU 上继续扩展指令，修改范围比前面单独添加几条 ALU 指令要大一些。算术逻辑部分主要是译码和操作数选择；乘除法需要额外处理多周期等待和 HI/LO；转移指令要照顾分支的延迟槽；访存指令则需要正确处理字节位置、符号扩展以及非对齐时的新旧数据合并。
 
-Vivado 不应从 AppContainer 受限 PowerShell 启动。仓库脚本会在 Vivado 启动前检查当前 token，并记录 host context。报告配套图可在仓库根目录用下列命令重新生成（需安装 Python 与 Matplotlib）：
+在实现和调试中，我感觉比较重要的一点是，每增加一类指令，都要检查它会不会使用前面指令尚未写回的数据。例如 \code{lwl/lwr} 除了写目标寄存器，还会用到它原来的值，如果漏掉这个源操作数，单条指令可能没有问题，连续执行时就容易出错。同样，乘除法的结果即使算对了，如果流水线等待和解除等待的时机不正确，也可能导致后续指令重复执行或跳转错误。
 
-\begin{lstlisting}[language=bash]
-python .\report\lab6-7\scripts\build_figures.py
-\end{lstlisting}
+最终，Lab6 的 42 个测试点和 Lab7 的 68 个测试点全部通过，且与独立参考 CPU 的写回记录一致；另外的乘除法单元与相关定向测试也通过。本次结果说明新增指令能够在现有五级流水线中正确运行，并保留原来的阻塞与前递功能。此次主要完成了行为仿真验证，没有进行 FPGA 上板测试。
 
-\small
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{11.1cm}@{}}
-\caption{报告结论对应的原始证据}\\
-\toprule
-报告内容 & 仓库内证据 \\
-\midrule
-\endfirsthead
-\toprule
-报告内容 & 仓库内证据（续） \\
-\midrule
-\endhead
-Lab3/Lab4 forwarding 回归 & \url{results/lab3_lab4/lab3-20261027T025645Z/result.txt}；\url{results/lab3_lab4/lab4-20261027T030155Z/result.txt}。 \\
-Lab6 累计 DUT 与波形 & \url{results/lab6_lab7/lab6-20261028T093517Z/result.txt}、\url{results/lab6_lab7/lab6-20261028T093517Z/lab6-20261028T093517Z-forwarding.wdb}；同目录 XSim 阶段日志。 \\
-Lab7 累计 DUT 与波形 & \url{results/lab6_lab7/lab7-20261028T102942Z/result.txt}、\url{results/lab6_lab7/lab7-20261028T102942Z/lab7-20261028T102942Z-forwarding.wdb}；同目录 XSim 阶段日志。 \\
-新增指令前递定向用例 & \url{results/lab6_lab7/lab7-20261026T170957Z/result.txt}；输入映像及 trace 位于 \url{results/lab6_lab7/directed/extended-forwarding/}。 \\
-HI/LO 单元 testbench & \url{results/lab6_lab7/hilo-unit-20261027T032000Z/result.txt} 与同目录 Vivado 日志。 \\
-除法期间分支定向用例 & \url{results/lab6_lab7/directed/hilo-stall-branch/} 下程序映像及 golden trace；DUT 结果为 \url{results/lab6_lab7/lab6-20261027T031906Z/result.txt}。 \\
-算术逻辑定向用例 & \url{results/lab6_lab7/directed/alu/}；基线 DUT 为 \url{results/lab3_lab4/lab3-20261021T140840Z/}，补充波形运行与 WDB 为 \url{results/lab3_lab4/lab3-20261028T132600Z/result.txt} 和 \url{results/lab3_lab4/lab3-20261028T132600Z/lab3-20261028T132600Z-forwarding.wdb}。 \\
-实现记录 & \url{docs/lab6_lab7/implementation.md}。 \\
-完整验收与哈希 & \url{docs/lab6_lab7/verification.md}。本报告图表与数据源索引：\url{report/lab6-7/data/evidence_index.csv}。 \\
-环境和运行入口 & \url{docs/lab6_lab7/environment.md}。 \\
-\bottomrule
-\end{longtable}
-
-\normalsize
 \end{document}
