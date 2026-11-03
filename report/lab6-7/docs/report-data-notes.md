@@ -13,13 +13,15 @@
 | 新增 store-base/store-data/conditional-branch/JALR 前递 | 0 / 0 / 0 / 0 | 112 / 0 / 1,229 / 28 |
 | 退休 trace 记录数 | 66,612 | 100,732 |
 | 零号寄存器实际写回尝试 | 0 | 0 |
-| 波形数据库 | 已保存 WDB | 已保存 WDB |
+| 波形数据库 | 已在隔离工程中重新采集有效 WDB；42/42 PASS | 已在隔离工程中重新采集有效 WDB；68/68 PASS |
 
-Lab6 trace SHA-256：`FB92799CBA4C42B1ECB729DD6659DADC63195B07E16C3FD6E25B2A6986850CA1`；MIF SHA-256：`845D97935C29D651D1D73D906DC3E92DC5690C23F77920111A369D33C28E8F28`。对应结果与 WDB：`results/lab6_lab7/lab6-20261028T093517Z/`。
+Lab6 trace SHA-256：`FB92799CBA4C42B1ECB729DD6659DADC63195B07E16C3FD6E25B2A6986850CA1`；MIF SHA-256：`845D97935C29D651D1D73D906DC3E92DC5690C23F77920111A369D33C28E8F28`。本次有效波形运行 `lab6-20261102T054949Z` 复用了相同输入。
 
-Lab7 trace SHA-256：`23ADD75B2BADFDABF98B1863A89896DFC60B4B351CC49321B22BEB22035991C3`；MIF SHA-256：`8EBF314084B3B06BF40A9F4DF2B402E74BE5D1F705A75F7ADFC858868B9B75BE`。对应结果与 WDB：`results/lab6_lab7/lab7-20261028T102942Z/`。
+Lab7 trace SHA-256：`23ADD75B2BADFDABF98B1863A89896DFC60B4B351CC49321B22BEB22035991C3`；MIF SHA-256：`8EBF314084B3B06BF40A9F4DF2B402E74BE5D1F705A75F7ADFC858868B9B75BE`。本次有效波形运行 `lab7-20261102T055526Z` 复用了相同输入。
 
 两轮课程 ROM 长度和测试内容不同，周期与停顿数用于描述各自运行，不据此比较性能。前递计数按被 EX 接收的指令采样；每条指令每级至多计一次，不能解释为源操作数总数。
+
+2026-11-02 波形重采集：Lab6 完整运行 `lab6-20261102T054949Z`，Lab7 完整运行 `lab7-20261102T055526Z`。两者均使用与原课程回归相同的 reference trace/MIF，STATUS=PASS；WDB 分别为 113,757,682 bytes（SHA-256 `9704AA3BB6446A03DAA02D06C9A45E15858A894F2087467CF8B6A35BB7CCBC98`）和 175,790,426 bytes（SHA-256 `F5B2935BA085351AE79D0FE32FCFA05C53FF9AD44CAD4BAB31474F533FA5541B`）。定向 DIV/分支保持运行 `lab6-20261102T060138Z`，111 周期、6 条 trace 写回记录匹配；WDB 5,038,883 bytes，SHA-256 `ACDA06311C4467DBC8C0EA8325736D5B6AF145A9BA97AC6A98B20EE0B21DB5CA`。所有新运行的仿真日志记录 `log_wave -r /`，未出现 HDL 层级未匹配警告；对应结果目录在 `results/lab6_lab7/`。
 
 ## 定向用例
 
@@ -80,12 +82,18 @@ Lab7 trace SHA-256：`23ADD75B2BADFDABF98B1863A89896DFC60B4B351CC49321B22BEB2203
 
 ## 后续写作提示
 
+### WDB 捕获状态核查（2026-11-02）
+
+历史 Lab6 Run `lab6-20261028T093517Z` 的 WDB 不可用：`xsim-simulate-stage.log` 记录 `log_wave -r /tb_top` 后出现 `[Simtcl 6-55] No matching HDL object or HDL scope found`。历史 Lab7 Run `lab7-20261028T102942Z` 的阶段日志缺失，不能仅凭旧 `WAVEFORM_CAPTURED=True` 判断其 WDB 有效。两份旧文件均保留，但新的截图配置不再引用它们。
+
+已按用户授权在隔离副本 `lab3/CPU_CDE/mycpu_verify/run_vivado/mycpu_prj1_wave_recapture/mycpu_prj1_wave_recapture.xpr` 中重跑 Lab6、Lab7 和 DIV/分支保持定向用例。三次运行均通过只读预检，使用 `log_wave -r /`，仿真日志无层级未匹配警告；结果和哈希见上文。13 份 WCFG 位于 `figures/waveforms/`，已更新为重采集 WDB 的路径；实际截图时间窗和观察值仍应从 Vivado Wave 读取，不从 expected 推断。
+
 - 正文应写实验方法、已测数据、分析和技术范围；不要写“没有导出截图”或代理工作过程等交付状态说明。
 - 不要把 trace 顺序图称为 Vivado 波形。其横轴为退休记录序号，没有时钟周期含义。
-- 先前的 Vivado JPG 已被用户判定不可用，不应放入报告。移除截图时应保留 `.wcfg`；当前曾生成的 `figures/waveforms/01_alu_directed_full_run.wcfg` 被误删，需从 Vivado 恢复后再作为配置使用。
+- 先前的 Vivado JPG 不是有效证据，不应放入报告。原有 `figures/01_alu.wcfg`、`02_shift.wcfg`、`03_mul.wcfg` 均保留；`figures/waveforms/01_alu_directed_full_run.wcfg` 已根据 ALU 信号布局重建，并关联到当前 PASS 的定向 ALU WDB。该配置副本不依赖旧 JPG。
 
 ## 当前草稿交接状态
 
 - 正文中的截图采集状态和代理工作过程说明已清理；后续改稿继续只写实验技术内容，不要加入“本版不含 Vivado 截图”一类工作状态。
 - `main.pdf` 是前次编译的旧版，需在正文和图表最终修订后重新编译并检查版面。
-- 已移除的 JPG 不应恢复进报告。WCFG 与 JPG 是不同文件，WCFG 的恢复不要求重新使用该 JPG。
+- WCFG 与 JPG 是不同文件；波形配置保存在 `figures/waveforms/`，不依赖旧 JPG。

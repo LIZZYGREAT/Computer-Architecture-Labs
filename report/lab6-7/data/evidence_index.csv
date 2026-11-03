@@ -1,7 +1,7 @@
 ﻿artifact,run_id,data_file,source
 alu_key_values.png,lab3-20261028T132600Z,data/alu_key_events.csv,reference retirement trace matched by DUT PASS result
-div_branch_retirement.png,lab6-20261027T031906Z,data/div_branch_events.csv,reference trace matched by DUT PASS result; no WDB captured for this run
-extended_branch_retirement.png,lab7-20261026T170957Z,data/extended_control_events.csv,reference trace matched by DUT PASS result; no WDB captured for this run
-jalr_retirement.png,lab7-20261026T170957Z,data/extended_control_events.csv,reference trace matched by DUT PASS result; no WDB captured for this run
-cumulative_metrics.png,lab6-20261028T093517Z / lab7-20261028T102942Z,data/verification_summary.csv,cumulative result.txt fields; Lab6 and Lab7 program lengths differ
+div_branch_retirement.png,lab6-20261102T060138Z,data/div_branch_events.csv,reference trace matched by DUT PASS result; retirement order only; directed timing WDB available separately
+extended_branch_retirement.png,lab7-20261026T170957Z,data/extended_control_events.csv,reference trace matched by DUT PASS result; retirement order only; full Lab7 timing WDB available separately
+jalr_retirement.png,lab7-20261026T170957Z,data/extended_control_events.csv,reference trace matched by DUT PASS result; retirement order only; full Lab7 timing WDB available separately
+cumulative_metrics.png,lab6-20261102T054949Z / lab7-20261102T055526Z,data/verification_summary.csv,cumulative result.txt fields; Lab6 and Lab7 program lengths differ
 hilo_unit_counts.png,hilo-unit-20261027T032000Z,data/hilo_unit_summary.csv,HI/LO unit test result.txt

@@ -31,10 +31,10 @@ PALE = "#F2F6F8"
 INK = "#203040"
 MUTED = "#617486"
 
-LAB6_RESULT = RESULTS / "lab6-20261028T093517Z" / "result.txt"
-LAB7_RESULT = RESULTS / "lab7-20261028T102942Z" / "result.txt"
+LAB6_RESULT = LAB_ROOT / "results" / "wave_recapture" / "lab6-20261102T054949Z" / "result.txt"
+LAB7_RESULT = LAB_ROOT / "results" / "wave_recapture" / "lab7-20261102T055526Z" / "result.txt"
 ALU_DIRECTED_RESULT = LEGACY_RESULTS / "lab3-20261028T132600Z" / "result.txt"
-DIV_DIRECTED_RESULT = RESULTS / "lab6-20261027T031906Z" / "result.txt"
+DIV_DIRECTED_RESULT = LAB_ROOT / "results" / "wave_recapture" / "lab6-20261102T060138Z" / "result.txt"
 EXTENDED_DIRECTED_RESULT = RESULTS / "lab7-20261026T170957Z" / "result.txt"
 HILO_UNIT_RESULT = RESULTS / "hilo-unit-20261027T032000Z" / "result.txt"
 ALU_IMAGE = RESULTS / "directed" / "alu" / "image" / "lab6_alu_directed_program.txt"
@@ -107,6 +107,12 @@ def verified_result(path: Path, expected_case: str | None = None) -> dict[str, s
         waveform_hash = sha256(waveform_path)
         if waveform_hash != result.get("WAVEFORM_SHA256", "").upper():
             raise RuntimeError(f"WDB hash does not match result.txt: {waveform_path}")
+        simulate_log = path.parent / "xsim-simulate-stage.log"
+        if not simulate_log.is_file():
+            raise FileNotFoundError(f"WDB capture log referenced by {path} is missing: {simulate_log}")
+        simulate_text = simulate_log.read_text(encoding="utf-8-sig", errors="replace")
+        if "No matching HDL object or HDL scope found" in simulate_text:
+            raise RuntimeError(f"WDB capture did not match an HDL scope: {simulate_log}")
         result["_WDB_PATH"] = str(waveform_path)
     else:
         result["_WDB_PATH"] = ""
@@ -326,9 +332,9 @@ def collect_report_data() -> dict[str, object]:
 
     manifest = [
         {"artifact": "alu_key_values.png", "run_id": alu["RUN_ID"], "data_file": "data/alu_key_events.csv", "source": "reference retirement trace matched by DUT PASS result"},
-        {"artifact": "div_branch_retirement.png", "run_id": div["RUN_ID"], "data_file": "data/div_branch_events.csv", "source": "reference trace matched by DUT PASS result; no WDB captured for this run"},
-        {"artifact": "extended_branch_retirement.png", "run_id": extended["RUN_ID"], "data_file": "data/extended_control_events.csv", "source": "reference trace matched by DUT PASS result; no WDB captured for this run"},
-        {"artifact": "jalr_retirement.png", "run_id": extended["RUN_ID"], "data_file": "data/extended_control_events.csv", "source": "reference trace matched by DUT PASS result; no WDB captured for this run"},
+        {"artifact": "div_branch_retirement.png", "run_id": div["RUN_ID"], "data_file": "data/div_branch_events.csv", "source": "reference trace matched by DUT PASS result; retirement order only; directed timing WDB available separately"},
+        {"artifact": "extended_branch_retirement.png", "run_id": extended["RUN_ID"], "data_file": "data/extended_control_events.csv", "source": "reference trace matched by DUT PASS result; retirement order only; full Lab7 timing WDB available separately"},
+        {"artifact": "jalr_retirement.png", "run_id": extended["RUN_ID"], "data_file": "data/extended_control_events.csv", "source": "reference trace matched by DUT PASS result; retirement order only; full Lab7 timing WDB available separately"},
         {"artifact": "cumulative_metrics.png", "run_id": f"{lab6['RUN_ID']} / {lab7['RUN_ID']}", "data_file": "data/verification_summary.csv", "source": "cumulative result.txt fields; Lab6 and Lab7 program lengths differ"},
         {"artifact": "hilo_unit_counts.png", "run_id": hilo_row["run_id"], "data_file": "data/hilo_unit_summary.csv", "source": "HI/LO unit test result.txt"},
     ]
@@ -508,8 +514,8 @@ def draw_branch_case() -> None:
 
 
 def draw_verification_summary() -> None:
-    lab6 = parse_result(RESULTS / "lab6-20261028T093517Z" / "result.txt")
-    lab7 = parse_result(RESULTS / "lab7-20261028T102942Z" / "result.txt")
+    lab6 = parse_result(LAB6_RESULT)
+    lab7 = parse_result(LAB7_RESULT)
     rows = [
         ("Lab6", int(lab6["FUNCTIONAL_POINT_PASSES"]),
          int(lab6["EXPECTED_FUNCTIONAL_POINTS"]), BLUE),
