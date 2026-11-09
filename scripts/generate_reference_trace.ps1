@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('lab3', 'lab4', 'lab6', 'lab7')]
+    [ValidateSet('lab3', 'lab4', 'lab6', 'lab7', 'lab8', 'lab9')]
     [string]$Case,
     [string]$TraceOutput,
     [string]$InstructionCoe,
@@ -33,7 +33,7 @@ $runId = "reference-$Case-$stamp"
 $resultDir = Join-Path (Join-Path $labRoot $caseSettings.ResultRoot) $runId
 New-Item -ItemType Directory -Path $resultDir -Force | Out-Null
 $referenceSourceRoot = Join-Path $labRoot 'lab3\CPU_CDE\cpu132_gettrace'
-$workRoot = Join-Path $labRoot "results\lab6_lab7\reference-work\$runId\CPU_CDE\cpu132_gettrace"
+$workRoot = Join-Path (Join-Path $labRoot $caseSettings.ResultRoot) "reference-work\$runId\CPU_CDE\cpu132_gettrace"
 $xpr = Join-Path $workRoot 'run_vivado\cpu132_gettrace\cpu132_gettrace.xpr'
 $coe = if ($InstructionCoe) {
     if ([IO.Path]::IsPathRooted($InstructionCoe)) { $InstructionCoe } else { Join-Path $labRoot $InstructionCoe }

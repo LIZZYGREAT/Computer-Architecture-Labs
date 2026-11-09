@@ -59,6 +59,15 @@ if {$sim_top ne "tb_top"} {
     fail "unexpected simulation top: $sim_top (expected tb_top)"
 }
 
+set cp0_file [file normalize [file join [file dirname $xpr] .. .. rtl myCPU cp0_reg.v]]
+foreach fileset [list $source_set $sim_set] {
+    set cp0_files [get_files -quiet -of_objects $fileset $cp0_file]
+    if {[llength $cp0_files] != 1} {
+        fail "CP0 RTL must be present exactly once in [get_property NAME $fileset]: $cp0_file"
+    }
+}
+puts "CP0_RTL_IN_SOURCE_AND_SIM=PASS FILE=$cp0_file"
+
 set missing_files {}
 foreach fileset [list $source_set $sim_set] {
     set files [get_files -quiet -of_objects $fileset]

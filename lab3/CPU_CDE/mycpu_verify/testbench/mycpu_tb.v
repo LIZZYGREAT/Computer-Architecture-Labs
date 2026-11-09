@@ -43,6 +43,7 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 module tb_top #(parameter PIPELINE_FORWARDING = 1'b1)();
 reg resetn;
 reg clk;
+reg [5:0] ext_int;
 
 //goio
 wire [15:0] led;
@@ -62,6 +63,7 @@ initial
 begin
     clk = 1'b0;
     resetn = 1'b0;
+    ext_int = 6'b0;
     #2000;
     resetn = 1'b1;
 end
@@ -70,6 +72,7 @@ soc_lite_top #(.SIMULATION(1'b1), .PIPELINE_FORWARDING(PIPELINE_FORWARDING)) soc
 (
        .resetn      (resetn     ), 
        .clk         (clk        ),
+       .ext_int     (ext_int    ),
     
         //------gpio-------
         .num_csn    (num_csn    ),

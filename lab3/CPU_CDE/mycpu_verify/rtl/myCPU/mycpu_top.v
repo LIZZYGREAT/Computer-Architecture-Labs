@@ -1,6 +1,7 @@
 module mycpu_top #(parameter PIPELINE_FORWARDING = 1'b1)(
     input         clk,
     input         resetn,
+    input  [ 5:0] hw_int,
     // inst sram interface
     output        inst_sram_en,
     output [ 3:0] inst_sram_wen,
@@ -38,11 +39,54 @@ wire [`WS_TO_RF_BUS_WD -1:0] ws_to_rf_bus;
 wire [`BR_BUS_WD       -1:0] br_bus;
 wire [38:0] es_producer_bus;
 wire [38:0] ms_producer_bus;
+wire [31:0] cp0_rdata;
+wire [31:0] cp0_wdata;
+wire [31:0] cp0_epc;
+wire [ 7:0] cp0_raddr;
+wire [ 7:0] cp0_waddr;
+wire        cp0_we;
+wire        cp0_bev;
+wire        interrupt_pending;
+wire        trap_commit;
+wire [ 4:0] trap_code;
+wire [31:0] trap_pc;
+wire        trap_bd;
+wire [31:0] trap_bad_vaddr;
+wire        eret_commit;
+wire        pipeline_flush;
+wire [31:0] exception_vector;
+
+assign pipeline_flush = trap_commit || eret_commit;
+assign exception_vector = cp0_bev ? 32'hbfc0_0380 : 32'h8000_0180;
+
+cp0_reg cp0_reg(
+    .clk              (clk),
+    .reset            (reset),
+    .hw_int           (hw_int),
+    .cp0_we           (cp0_we),
+    .cp0_waddr        (cp0_waddr),
+    .cp0_wdata        (cp0_wdata),
+    .cp0_raddr        (cp0_raddr),
+    .cp0_rdata        (cp0_rdata),
+    .exc_commit       (trap_commit),
+    .exc_code         (trap_code),
+    .exc_pc           (trap_pc),
+    .exc_bd           (trap_bd),
+    .exc_bad_vaddr    (trap_bad_vaddr),
+    .eret_commit      (eret_commit),
+    .cp0_epc          (cp0_epc),
+    .cp0_bev          (cp0_bev),
+    .interrupt_pending(interrupt_pending)
+);
 
 // IF stage
 if_stage if_stage(
     .clk            (clk            ),
     .reset          (reset          ),
+    .trap_redirect  (trap_commit    ),
+    .eret_redirect  (eret_commit    ),
+    .trap_vector    (exception_vector),
+    .eret_target    (cp0_epc        ),
     //allowin
     .ds_allowin     (ds_allowin     ),
     //brbus
@@ -61,6 +105,7 @@ if_stage if_stage(
 id_stage #(.PIPELINE_FORWARDING(PIPELINE_FORWARDING)) id_stage(
     .clk            (clk            ),
     .reset          (reset          ),
+    .flush          (pipeline_flush ),
     //allowin
     .es_allowin     (es_allowin     ),
     .ds_allowin     (ds_allowin     ),
@@ -81,6 +126,7 @@ id_stage #(.PIPELINE_FORWARDING(PIPELINE_FORWARDING)) id_stage(
 exe_stage exe_stage(
     .clk            (clk            ),
     .reset          (reset          ),
+    .flush          (pipeline_flush ),
     //allowin
     .ms_allowin     (ms_allowin     ),
     .es_allowin     (es_allowin     ),
@@ -101,6 +147,17 @@ exe_stage exe_stage(
 mem_stage mem_stage(
     .clk            (clk            ),
     .reset          (reset          ),
+    .cp0_rdata      (cp0_rdata      ),
+    .cp0_we         (cp0_we         ),
+    .cp0_waddr      (cp0_waddr      ),
+    .cp0_wdata      (cp0_wdata      ),
+    .cp0_raddr      (cp0_raddr      ),
+    .trap_commit    (trap_commit    ),
+    .trap_code      (trap_code      ),
+    .trap_pc        (trap_pc        ),
+    .trap_bd        (trap_bd        ),
+    .trap_bad_vaddr (trap_bad_vaddr ),
+    .eret_commit    (eret_commit    ),
     //allowin
     .ws_allowin     (ws_allowin     ),
     .ms_allowin     (ms_allowin     ),

@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('lab3', 'lab4', 'lab6', 'lab7')]
+    [ValidateSet('lab3', 'lab4', 'lab6', 'lab7', 'lab8', 'lab9')]
     [string]$Case,
     [ValidateSet('blocking', 'forwarding')]
     [string]$PipelineMode = 'forwarding',
@@ -223,11 +223,7 @@ if ($PreflightOnly) {
 }
 
 if (-not $traceFile -or -not (Test-Path -LiteralPath $traceFile) -or (Get-Item -LiteralPath $traceFile).Length -eq 0) {
-    $message = if ($Case -eq 'lab4') {
-        'an independent Lab4 reference trace is required; generate it with the reference CPU using the Lab4 instruction image, then pass -ReferenceTrace.'
-    } else {
-        "the Lab3 reference trace is missing or empty: $traceFile"
-    }
+    $message = "the $Case reference trace is missing or empty: $traceFile; generate it with the independent reference CPU using the matching instruction image, then pass -ReferenceTrace."
     "STATUS=ENVIRONMENT_ERROR`nREASON=$message`nCASE=$Case`nPIPELINE_MODE=$PipelineMode" |
         Set-Content -LiteralPath (Join-Path $resultDir 'result.txt') -Encoding UTF8
     Write-Output "ENVIRONMENT_ERROR: $message"

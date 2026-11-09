@@ -30,5 +30,21 @@
     "ExpectedFunctionalPoints": 68,
     "DefaultMaxSimulationNs": 50000000,
     "ResultRoot": "results/lab6_lab7"
+  },
+  "lab8": {
+    "InstructionCoe": "lab8/func_lab8/obj/inst_ram.coe",
+    "InstructionMif": "lab8/func_lab8/obj/inst_ram.mif",
+    "ReferenceTrace": "results/lab8_lab9/golden/lab8/golden_trace.txt",
+    "ExpectedFunctionalPoints": 69,
+    "DefaultMaxSimulationNs": 100000000,
+    "ResultRoot": "results/lab8_lab9"
+  },
+  "lab9": {
+    "InstructionCoe": "lab9/func_lab9/obj/inst_ram.coe",
+    "InstructionMif": "lab9/func_lab9/obj/inst_ram.mif",
+    "ReferenceTrace": "results/lab8_lab9/golden/lab9/golden_trace.txt",
+    "ExpectedFunctionalPoints": 94,
+    "DefaultMaxSimulationNs": 100000000,
+    "ResultRoot": "results/lab8_lab9"
   }
 }

@@ -51,7 +51,7 @@ if {[llength $argv] >= 10} {
 if {![file isfile $xpr]} {
     fail "Vivado project not found: $xpr"
 }
-if {$test_case ni {lab3 lab4 lab6 lab7}} {
+if {$test_case ni {lab3 lab4 lab6 lab7 lab8 lab9}} {
     fail "unsupported case: $test_case"
 }
 if {![string is integer -strict $max_ns] || $max_ns <= 0} {

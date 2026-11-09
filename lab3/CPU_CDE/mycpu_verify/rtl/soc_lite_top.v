@@ -67,6 +67,7 @@ module soc_lite_top #(parameter SIMULATION=1'b0,
 (
     input         resetn, 
     input         clk,
+    input  [5:0]  ext_int,
 
     //------gpio-------
     output [15:0] led,
@@ -139,6 +140,7 @@ wire [31:0] conf_rdata;
 mycpu_top #(.PIPELINE_FORWARDING(PIPELINE_FORWARDING)) cpu(
     .clk              (cpu_clk   ),
     .resetn           (cpu_resetn),  //low active
+    .hw_int           (ext_int   ),
 
     .inst_sram_en     (cpu_inst_en   ),
     .inst_sram_wen    (cpu_inst_wen  ),

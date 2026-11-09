@@ -9,6 +9,18 @@ module mem_stage(
     //from es
     input                          es_to_ms_valid,
     input  [`ES_TO_MS_BUS_WD -1:0] es_to_ms_bus  ,
+    // CP0 access and precise exception/return interface
+    input  [31:0]                  cp0_rdata,
+    output                         cp0_we,
+    output [ 7:0]                  cp0_waddr,
+    output [31:0]                  cp0_wdata,
+    output [ 7:0]                  cp0_raddr,
+    output                         trap_commit,
+    output [ 4:0]                  trap_code,
+    output [31:0]                  trap_pc,
+    output                         trap_bd,
+    output [31:0]                  trap_bad_vaddr,
+    output                         eret_commit,
     //to ws
     output                         ms_to_ws_valid,
     output [`MS_TO_WS_BUS_WD -1:0] ms_to_ws_bus  ,
@@ -21,6 +33,13 @@ reg         ms_valid;
 wire        ms_ready_go;
 
 reg [`ES_TO_MS_BUS_WD -1:0] es_to_ms_bus_r;
+wire [1:0]  ms_cp0_op;
+wire [7:0]  ms_cp0_addr;
+wire [31:0] ms_cp0_write_data;
+wire        ms_exception_valid;
+wire [4:0]  ms_exception_code;
+wire [31:0] ms_bad_vaddr;
+wire        ms_is_delay_slot;
 wire [`MEM_OP_WD-1:0] ms_mem_op;
 wire        ms_res_from_mem;
 wire        ms_gr_we;
@@ -28,7 +47,14 @@ wire [ 4:0] ms_dest;
 wire [31:0] ms_alu_result;
 wire [31:0] ms_rt_value;
 wire [31:0] ms_pc;
-assign {ms_mem_op      ,  //113:102
+assign {ms_cp0_op,
+        ms_cp0_addr,
+        ms_cp0_write_data,
+        ms_exception_valid,
+        ms_exception_code,
+        ms_bad_vaddr,
+        ms_is_delay_slot,
+        ms_mem_op      ,  //113:102 legacy fields
         ms_gr_we       ,  //101:101
         ms_dest        ,  //100:96
         ms_alu_result  ,  //95:64 effective address / ALU result
@@ -46,23 +72,43 @@ assign ms_to_ws_bus = {ms_gr_we       ,  //69:69
                        ms_final_result,  //63:32
                        ms_pc             //31:0
                       };
-assign ms_producer_bus = {ms_valid && ms_gr_we && (ms_dest != 5'd0),
-                          ms_valid && ms_gr_we && (ms_dest != 5'd0),
+assign ms_producer_bus = {ms_valid && !ms_exception_valid &&
+                              (ms_cp0_op != `CP0_OP_ERET) &&
+                              ms_gr_we && (ms_dest != 5'd0),
+                          ms_valid && !ms_exception_valid &&
+                              (ms_cp0_op != `CP0_OP_ERET) &&
+                              ms_gr_we && (ms_dest != 5'd0),
                           ms_dest,
                           ms_final_result};
 
 assign ms_ready_go    = 1'b1;
 assign ms_allowin     = !ms_valid || ms_ready_go && ws_allowin;
-assign ms_to_ws_valid = ms_valid && ms_ready_go;
+assign ms_to_ws_valid = ms_valid && ms_ready_go &&
+                        !ms_exception_valid && (ms_cp0_op != `CP0_OP_ERET);
+assign trap_commit = ms_valid && ms_ready_go && ws_allowin && ms_exception_valid;
+assign eret_commit = ms_valid && ms_ready_go && ws_allowin &&
+                     !ms_exception_valid && (ms_cp0_op == `CP0_OP_ERET);
+assign cp0_we = ms_valid && ms_ready_go && ws_allowin &&
+                !ms_exception_valid && (ms_cp0_op == `CP0_OP_MTC0);
+assign cp0_waddr = cp0_we ? ms_cp0_addr : 8'b0;
+assign cp0_wdata = cp0_we ? ms_cp0_write_data : 32'b0;
+assign cp0_raddr = (ms_valid && (ms_cp0_op == `CP0_OP_MFC0)) ? ms_cp0_addr : 8'b0;
+assign trap_code = ms_exception_code;
+assign trap_pc = ms_pc;
+assign trap_bd = ms_is_delay_slot;
+assign trap_bad_vaddr = ms_bad_vaddr;
 always @(posedge clk) begin
     if (reset) begin
+        ms_valid <= 1'b0;
+    end
+    else if (trap_commit || eret_commit) begin
         ms_valid <= 1'b0;
     end
     else if (ms_allowin) begin
         ms_valid <= es_to_ms_valid;
     end
 
-    if (es_to_ms_valid && ms_allowin) begin
+    if (!reset && !trap_commit && !eret_commit && es_to_ms_valid && ms_allowin) begin
         es_to_ms_bus_r  <= es_to_ms_bus;
     end
 end
@@ -113,7 +159,7 @@ always @(*) begin
     end
 end
 
-assign ms_final_result = ms_res_from_mem ? mem_result
-                                         : ms_alu_result;
+assign ms_final_result = (ms_cp0_op == `CP0_OP_MFC0) ? cp0_rdata :
+                         ms_res_from_mem ? mem_result : ms_alu_result;
 
 endmodule

@@ -3,6 +3,7 @@
 module exe_stage(
     input                          clk           ,
     input                          reset         ,
+    input                          flush         ,
     //allowin
     input                          ms_allowin    ,
     output                         es_allowin    ,
@@ -24,6 +25,13 @@ reg         es_valid      ;
 wire        es_ready_go   ;
 
 reg  [`DS_TO_ES_BUS_WD -1:0] ds_to_es_bus_r;
+wire [1:0]  es_cp0_op;
+wire [7:0]  es_cp0_addr;
+wire [31:0] es_cp0_write_data;
+wire        es_exception_valid;
+wire [4:0]  es_exception_code;
+wire [31:0] es_exception_bad_vaddr;
+wire        es_is_delay_slot;
 wire [`HILO_OP_WD-1:0] es_hilo_op;
 wire [11:0] es_alu_op     ;
 wire [`MEM_OP_WD-1:0] es_mem_op;
@@ -37,7 +45,14 @@ wire [15:0] es_imm        ;
 wire [31:0] es_rs_value   ;
 wire [31:0] es_rt_value   ;
 wire [31:0] es_pc         ;
-assign {es_hilo_op     ,  //153:146
+assign {es_cp0_op,
+        es_cp0_addr,
+        es_cp0_write_data,
+        es_exception_valid,
+        es_exception_code,
+        es_exception_bad_vaddr,
+        es_is_delay_slot,
+        es_hilo_op     ,  //153:146 legacy fields
         es_alu_op      ,  //145:134
         es_mem_op      ,  //133:122
         es_src1_is_sa  ,  //121:121
@@ -74,11 +89,21 @@ wire [31:0] es_store_data;
 
 assign es_res_from_mem = |es_mem_op[6:0];
 assign es_mem_store = |es_mem_op[11:7];
-assign es_producer_bus = {es_valid && es_gr_we && (es_dest != 5'd0),
-                          es_valid && es_gr_we && !es_res_from_mem && (es_dest != 5'd0),
+assign es_producer_bus = {es_valid && !flush && !es_exception_valid &&
+                              es_gr_we && (es_dest != 5'd0),
+                          es_valid && !flush && !es_exception_valid &&
+                              es_gr_we && !es_res_from_mem &&
+                              (es_cp0_op != `CP0_OP_MFC0) && (es_dest != 5'd0),
                           es_dest,
                           es_result};
-assign es_to_ms_bus = {es_mem_op      ,  //113:102
+assign es_to_ms_bus = {es_cp0_op,
+                       es_cp0_addr,
+                       es_cp0_write_data,
+                       es_exception_valid,
+                       es_exception_code,
+                       es_exception_bad_vaddr,
+                       es_is_delay_slot,
+                       es_mem_op      ,  //113:102 legacy fields
                        es_gr_we       ,  //101:101
                        es_dest        ,  //100:96
                        es_result      ,  //95:64
@@ -90,22 +115,26 @@ assign es_hilo_multdiv = es_hilo_op[`HILO_OP_MULT]  |
                          es_hilo_op[`HILO_OP_MULTU] |
                          es_hilo_op[`HILO_OP_DIV]   |
                          es_hilo_op[`HILO_OP_DIVU];
-assign es_hilo_start   = es_valid && es_hilo_multdiv && !es_hilo_busy && !es_hilo_done;
-assign es_hilo_write_hi = es_valid && es_ready_go && ms_allowin && es_hilo_op[`HILO_OP_MTHI];
-assign es_hilo_write_lo = es_valid && es_ready_go && ms_allowin && es_hilo_op[`HILO_OP_MTLO];
-assign es_hilo_consume   = es_valid && es_hilo_done && ms_allowin;
+assign es_hilo_start   = es_valid && !flush && !es_exception_valid &&
+                         es_hilo_multdiv && !es_hilo_busy && !es_hilo_done;
+assign es_hilo_write_hi = es_valid && !flush && !es_exception_valid &&
+                          es_ready_go && ms_allowin && es_hilo_op[`HILO_OP_MTHI];
+assign es_hilo_write_lo = es_valid && !flush && !es_exception_valid &&
+                          es_ready_go && ms_allowin && es_hilo_op[`HILO_OP_MTLO];
+assign es_hilo_consume   = es_valid && !flush && !es_exception_valid &&
+                           es_hilo_done && ms_allowin;
 assign es_ready_go     = !es_hilo_multdiv || es_hilo_done;
-assign es_allowin     = !es_valid || es_ready_go && ms_allowin;
-assign es_to_ms_valid =  es_valid && es_ready_go;
+assign es_allowin     = !es_valid || es_ready_go && ms_allowin || flush;
+assign es_to_ms_valid =  es_valid && es_ready_go && !flush;
 always @(posedge clk) begin
-    if (reset) begin
+    if (reset || flush) begin
         es_valid <= 1'b0;
     end
     else if (es_allowin) begin
         es_valid <= ds_to_es_valid;
     end
 
-    if (ds_to_es_valid && es_allowin) begin
+    if (!reset && !flush && ds_to_es_valid && es_allowin) begin
         ds_to_es_bus_r <= ds_to_es_bus;
     end
 end
@@ -154,6 +183,7 @@ alu u_alu(
     );
 
 assign data_sram_en    = es_valid && es_ready_go && ms_allowin &&
+                         !flush && !es_exception_valid &&
                          (es_res_from_mem || es_mem_store);
 assign data_sram_wen   = data_sram_en && es_mem_store ? es_store_wen : 4'h0;
 assign data_sram_addr  = es_alu_result;

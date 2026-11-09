@@ -3,6 +3,7 @@
 module id_stage #(parameter PIPELINE_FORWARDING = 1'b1)(
     input                          clk           ,
     input                          reset         ,
+    input                          flush         ,
     //allowin
     input                          es_allowin    ,
     output                         ds_allowin    ,
@@ -25,14 +26,24 @@ reg         ds_valid   ;
 wire        ds_ready_go;
 wire        ds_stall;
 
-wire [31                 :0] fs_pc;
 reg  [`FS_TO_DS_BUS_WD -1:0] fs_to_ds_bus_r;
-assign fs_pc = fs_to_ds_bus[31:0];
+wire [31:0] fs_pc;
+wire [31:0] fs_inst;
+wire [31:0] fs_bad_vaddr;
+wire [ 4:0] fs_exception_code;
+wire        fs_exception_valid;
+wire        fs_delay_slot;
+assign {fs_bad_vaddr, fs_exception_code, fs_exception_valid,
+        fs_delay_slot, fs_inst, fs_pc} = fs_to_ds_bus;
 
 wire [31:0] ds_inst;
 wire [31:0] ds_pc  ;
-assign {ds_inst,
-        ds_pc  } = fs_to_ds_bus_r;
+wire [31:0] ds_bad_vaddr;
+wire [ 4:0] ds_exception_code;
+wire        ds_fetch_exception_valid;
+wire        ds_delay_slot;
+assign {ds_bad_vaddr, ds_exception_code, ds_fetch_exception_valid,
+        ds_delay_slot, ds_inst, ds_pc} = fs_to_ds_bus_r;
 
 wire        rf_we   ;
 wire [ 4:0] rf_waddr;
@@ -149,6 +160,10 @@ wire        inst_j;
 wire        inst_jal;
 wire        inst_jr;
 wire        inst_jalr;
+wire        inst_syscall;
+wire        inst_mfc0;
+wire        inst_mtc0;
+wire        inst_eret;
 wire        inst_bgez;
 wire        inst_bgtz;
 wire        inst_blez;
@@ -158,6 +173,18 @@ wire        inst_bltzal;
 wire        inst_link;
 wire        inst_gpr_write;
 wire [`HILO_OP_WD-1:0] hilo_op;
+wire [1:0]  cp0_op;
+wire [7:0]  cp0_addr;
+wire [31:0] cp0_write_data;
+wire        exception_valid;
+wire [4:0]  exception_code;
+wire [31:0] exception_bad_vaddr;
+wire        is_delay_slot;
+wire        ds_exec_enabled;
+wire [11:0] ds_alu_op;
+wire [`MEM_OP_WD-1:0] ds_mem_op;
+wire [`HILO_OP_WD-1:0] ds_hilo_op;
+wire        br_delay_slot;
 
 wire        dst_is_r31;  
 wire        dst_is_rt;   
@@ -170,22 +197,33 @@ wire [31:0] rf_rdata2;
 wire        rs_eq_rt;
 wire        ds_branch_cond_taken;
 
-assign br_bus       = {br_taken,br_target};
+assign br_bus = {br_taken, br_target, br_delay_slot};
 
-assign ds_to_es_bus = {hilo_op      ,  //153:146
-                       alu_op       ,  //145:134
-                       mem_op       ,  //133:122
-                       src1_is_sa   ,  //121:121
-                       src1_is_pc   ,  //120:120
-                       src2_is_imm  ,  //119:119
-                       src2_is_8    ,  //118:118
-                       gr_we        ,  //117:117
-                       dest         ,  //116:112
-                       imm          ,  //111:96
-                       rs_value     ,  //95 :64
-                       rt_value     ,  //63 :32
-                       ds_pc           //31 :0
-                      };
+assign ds_exec_enabled = ds_valid && !exception_valid && !flush;
+assign ds_alu_op = ds_exec_enabled ? alu_op : 12'b0;
+assign ds_mem_op = ds_exec_enabled ? mem_op : {`MEM_OP_WD{1'b0}};
+assign ds_hilo_op = ds_exec_enabled ? hilo_op : {`HILO_OP_WD{1'b0}};
+
+assign ds_to_es_bus = {cp0_op,
+                       cp0_addr,
+                       cp0_write_data,
+                       exception_valid,
+                       exception_code,
+                       exception_bad_vaddr,
+                       is_delay_slot,
+                       ds_hilo_op,     //153:146 legacy fields
+                       ds_alu_op,      //145:134
+                       ds_mem_op,      //133:122
+                       (ds_exec_enabled && src1_is_sa),
+                       (ds_exec_enabled && src1_is_pc),
+                       (ds_exec_enabled && src2_is_imm),
+                       (ds_exec_enabled && src2_is_8),
+                       gr_we,
+                       dest,
+                       imm,
+                       rs_value,
+                       rt_value,
+                       ds_pc};
 
 assign {es_hazard_valid, es_forward_valid, es_producer_dest, es_forward_value} = es_producer_bus;
 assign {ms_hazard_valid, ms_forward_valid, ms_producer_dest, ms_forward_value} = ms_producer_bus;
@@ -204,7 +242,7 @@ assign ds_rt_used = inst_addu | inst_subu | inst_add | inst_sub |
                     inst_and | inst_or | inst_xor | inst_nor |
                     inst_sll | inst_srl | inst_sra | inst_sllv | inst_srlv | inst_srav |
                     inst_mult | inst_multu | inst_div | inst_divu |
-                    inst_store | inst_lwl | inst_lwr | inst_beq | inst_bne;
+                    inst_store | inst_lwl | inst_lwr | inst_beq | inst_bne | inst_mtc0;
 
 assign ds_rs_hazard = ds_valid && ds_rs_used && (rs != 5'd0) &&
                       ((es_hazard_valid && (es_producer_dest == rs)) ||
@@ -245,17 +283,17 @@ assign ds_forward_rt_ws = PIPELINE_FORWARDING && ds_valid && ds_rt_used &&
                           !(ms_hazard_valid && (ms_producer_dest == rt)) &&
                           ws_forward_valid && (ws_producer_dest == rt);
 assign ds_ready_go    = !ds_stall;
-assign ds_allowin     = !ds_valid || ds_ready_go && es_allowin;
-assign ds_to_es_valid = ds_valid && ds_ready_go;
+assign ds_allowin     = !ds_valid || ds_ready_go && es_allowin || flush;
+assign ds_to_es_valid = ds_valid && ds_ready_go && !flush;
 always @(posedge clk) begin
-    if (reset) begin
+    if (reset || flush) begin
         ds_valid <= 1'b0;
     end
     else if (ds_allowin) begin
         ds_valid <= fs_to_ds_valid;
     end
 
-    if (!reset && fs_to_ds_valid && ds_allowin) begin
+    if (!reset && !flush && fs_to_ds_valid && ds_allowin) begin
         fs_to_ds_bus_r <= fs_to_ds_bus;
     end
 end
@@ -328,6 +366,10 @@ assign inst_j      = op_d[6'h02];
 assign inst_jal    = op_d[6'h03];
 assign inst_jr     = op_d[6'h00] & func_d[6'h08] & rt_d[5'h00] & rd_d[5'h00] & sa_d[5'h00];
 assign inst_jalr   = op_d[6'h00] & func_d[6'h09] & rt_d[5'h00] & sa_d[5'h00];
+assign inst_syscall = op_d[6'h00] & func_d[6'h0c];
+assign inst_mfc0   = op_d[6'h10] & rs_d[5'h00] & (ds_inst[2:0] == 3'b000);
+assign inst_mtc0   = op_d[6'h10] & rs_d[5'h04] & (ds_inst[2:0] == 3'b000);
+assign inst_eret   = (ds_inst == 32'h4200_0018);
 assign inst_bltz   = op_d[6'h01] & rt_d[5'h00];
 assign inst_bgez   = op_d[6'h01] & rt_d[5'h01];
 assign inst_bltzal = op_d[6'h01] & rt_d[5'h10];
@@ -376,14 +418,15 @@ assign mem_op[`MEM_OP_SWL] = inst_swl;
 assign mem_op[`MEM_OP_SWR] = inst_swr;
 assign dst_is_r31   = inst_jal | inst_bltzal | inst_bgezal;
 assign dst_is_rt    = inst_addiu | inst_addi | inst_slti | inst_sltiu |
-                      inst_andi | inst_ori | inst_xori | inst_lui | inst_load;
+                      inst_andi | inst_ori | inst_xori | inst_lui | inst_load | inst_mfc0;
 assign inst_gpr_write = inst_addu | inst_subu | inst_add | inst_sub |
                         inst_slt | inst_sltu | inst_and | inst_or | inst_xor | inst_nor |
                         inst_sll | inst_srl | inst_sra | inst_sllv | inst_srlv | inst_srav |
                         inst_addiu | inst_addi | inst_slti | inst_sltiu |
                         inst_andi | inst_ori | inst_xori | inst_lui | inst_load | inst_jal |
-                        inst_mfhi | inst_mflo | inst_jalr | inst_bltzal | inst_bgezal;
-assign gr_we        = inst_gpr_write;
+                        inst_mfhi | inst_mflo | inst_jalr | inst_bltzal | inst_bgezal |
+                        inst_mfc0;
+assign gr_we        = ds_exec_enabled && inst_gpr_write;
 
 assign dest         = dst_is_r31 ? 5'd31 :
                       dst_is_rt  ? rt    : 
@@ -422,13 +465,33 @@ assign ds_branch_cond_taken = (inst_beq && rs_eq_rt) ||
                               (inst_bltz && rs_value[31]) ||
                               (inst_bltzal && rs_value[31]) ||
                               (inst_bgezal && !rs_value[31]);
-assign br_taken = (inst_j || inst_jal || inst_jr || inst_jalr || ds_branch_cond_taken) &&
-                  ds_valid && ds_ready_go && ds_allowin;
+wire ds_control_transfer;
+assign ds_control_transfer = inst_j || inst_jal || inst_jr || inst_jalr ||
+                             inst_beq || inst_bne || inst_bgez || inst_bgtz ||
+                             inst_blez || inst_bltz || inst_bgezal || inst_bltzal;
+assign br_delay_slot = ds_exec_enabled && ds_control_transfer &&
+                       ds_ready_go && ds_allowin;
+assign br_taken = br_delay_slot &&
+                  (inst_j || inst_jal || inst_jr || inst_jalr || ds_branch_cond_taken);
 assign ds_pc_plus_4 = ds_pc + 32'd4;
 assign br_target = (inst_beq || inst_bne || inst_bgez || inst_bgtz || inst_blez ||
                     inst_bltz || inst_bgezal || inst_bltzal) ?
                    (ds_pc_plus_4 + {{14{imm[15]}}, imm[15:0], 2'b0}) :
                    (inst_jr || inst_jalr) ? rs_value :
                    /*j/jal*/               {ds_pc_plus_4[31:28], jidx[25:0], 2'b0};
+
+assign exception_valid = ds_valid && (ds_fetch_exception_valid || inst_syscall);
+assign exception_code = ds_fetch_exception_valid ? ds_exception_code :
+                        (inst_syscall ? `EXC_SYS : 5'b0);
+assign exception_bad_vaddr = ds_fetch_exception_valid ? ds_bad_vaddr : 32'b0;
+assign is_delay_slot = ds_valid && ds_delay_slot;
+
+assign cp0_op = !ds_exec_enabled ? `CP0_OP_NONE :
+                inst_mfc0 ? `CP0_OP_MFC0 :
+                inst_mtc0 ? `CP0_OP_MTC0 :
+                inst_eret ? `CP0_OP_ERET : `CP0_OP_NONE;
+assign cp0_addr = (ds_exec_enabled && (inst_mfc0 || inst_mtc0)) ?
+                  {rd, ds_inst[2:0]} : 8'b0;
+assign cp0_write_data = (ds_exec_enabled && inst_mtc0) ? rt_value : 32'b0;
 
 endmodule
