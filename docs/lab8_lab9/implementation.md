@@ -21,9 +21,9 @@ Vivado 2025.2 / XSim 隔离仿真：
 - `TRAPS_OBSERVED=2`
 - `STATUS=PASS`
 
-断言覆盖复位值、Count 分频、Compare/TI、Status 写掩码、Cause/IP 保留规则、EPC/BD/EXL/ERET、BadVAddr、软件 IP0/IP1、外部 IP2–IP7 映射和中断屏蔽、IP7 双源合并，以及未实现 CP0 select/register 的明确行为。隔离项目由 `scripts/run_cp0_unit_tb.tcl` 创建在每次新建的结果目录内；未改动原 CPU `.xpr`。
+断言覆盖复位值、Count 分频、Compare/TI、Status 写掩码、Cause/IP 保留规则、EPC/BD/EXL/ERET、BadVAddr、软件 IP0/IP1、外部 IP2-IP7 映射和中断屏蔽、IP7 双源合并，以及未实现 CP0 select/register 的明确行为。波形数据库为 `results/lab8_lab9/cp0-unit-20261109T141303Z/cp0-unit.wdb`，SHA-256 `BE7425DB5FFFD5D829619714998C11DDFC8F251C885FAD79A2D4B50C07E7D202`。隔离项目由 `scripts/run_cp0_unit_tb.tcl` 创建在每次新建的结果目录内；未改动原 CPU `.xpr`。
 
-首轮 runner 在测试台 `$finish` 后重复执行 `run all`，造成额外 timeout；该 runner 已修正，首轮目录 `results/lab8_lab9/cp0-unit-20261109T141112Z/` 保留作诊断，不作为通过证据。
+首轮 runner 在测试台 `$finish` 后重复执行 `run all`，造成额外 timeout；该 runner 已修正。首轮失败目录已在结果清理时删除；本项通过证据仅为最终运行 `cp0-unit-20261109T141303Z`。
 
 本阶段尚未修改流水线总线或 CPU 顶层；以上结果不代表 CP0 已集成，也不代表 Lab8/Lab9 课程映像已通过。
 
@@ -31,25 +31,25 @@ Vivado 2025.2 / XSim 隔离仿真：
 
 把 CP0 和同步 `syscall` 元数据接入五级流水线。流水线总线扩展为 `FS_TO_DS=103`、`DS_TO_ES=235`、`ES_TO_MS=195`，字段包含取指异常、延迟槽标记、CP0 操作及异常 PC/code/BadVAddr。CPU 顶层将 `cp0_reg` 接到 MEM；MEM 是唯一 trap/eret 提交点，异常和 `eret` 重定向 IF 并冲刷更年轻 ID/EX，EX 同拍屏蔽 store。`mfc0` 结果从 MEM 通道进入 GPR 写回并参与 MEM 前递；`mtc0` 只在 MEM 提交沿写 CP0，ID 将其 RT 纳入 RAW 依赖；普通控制转移（无论条件是否成立）向其下一条指令传递 delay-slot 标记。
 
-S2 集成时曾在 SoC 顶层增加 `ext_int[5:0]` 输入；S4 已将这个未约束的顶层端口移除，改由已有 XDC 约束的 `switch[5:0]` 经两级同步器产生 IP2-IP7，仿真模式下则固定为零。CP0 RTL 已加入原 Vivado 工程的 `sources_1` 和 `sim_1`，项目 preflight 现在要求两处都恰好存在该文件。`cases.json`、`verify.ps1`、行为仿真 Tcl 和 CPU132 trace 生成入口已支持 Lab8/Lab9；参考 trace 在每个用例独立的 `results/lab8_lab9/reference-work/` 工程中以对应原始镜像生成，没有修改课程 COE/MIF。
+S2 集成时曾在 SoC 顶层增加 `ext_int[5:0]` 输入；S4 已将这个未约束的顶层端口移除，改由已有 XDC 约束的 `switch[5:0]` 经两级同步器产生 IP2-IP7，仿真模式下则固定为零。CP0 RTL 已加入原 Vivado 工程的 `sources_1` 和 `sim_1`，项目 preflight 现在要求两处都恰好存在该文件。`cases.json`、`verify.ps1`、行为仿真 Tcl 和 CPU132 trace 生成入口已支持 Lab8/Lab9；参考 trace 按每个用例独立工程、使用对应原始镜像生成，没有修改课程 COE/MIF。临时 `reference-work/` Vivado 工程副本已清理，可复用的 reference 日志和 trace 保留在 `reference-lab8-*`、`reference-lab9-*` 结果目录及 `golden/`。
 
 ### Lab8 实测
 
 - CPU132 reference：Run `reference-lab8-20261109T142849Z`，69/69 功能点，100,913 条 GPR trace 记录，trace SHA-256 `F6A7268A79725186B9EC8602A404CC5BE8E1D439E93ACAD1B2ADA04937723994`。
-- DUT：Run `lab8-20261109T143142Z`，Vivado 2025.2/XSim compile、elaborate、simulate 均成功；69/69 功能点、trace 全量匹配，166,827 周期、950 停顿周期；零寄存器写入尝试 0；WDB SHA-256 `B44C7C3A860746D20D91359205696A82A76733049BA8110519B0919AD1706B7C`；`STATUS=PASS`。
-- 输入 MIF SHA-256 与 S0 记录相同：`D611D547FFDC000F003673B1B9276D1BA813C15008BE071EE6B639DE278ABF51`。运行状态、参数、trace 和波形路径见 `results/lab8_lab9/lab8-20261109T143142Z/`；reference 日志与 trace 哈希见 `results/lab8_lab9/reference-lab8-20261109T142849Z/`。
+- DUT：早期运行 `lab8-20261109T143142Z` 曾通过并用于阶段开发；其结果目录和波形已由最终回归 `lab8-20261109T163413Z` 替代并清理。当前验收以“最终课程回归”表和 `report/lab8-9/data/evidence_index.csv` 中的最终结果为准。
+- 输入 MIF SHA-256 与 S0 记录相同：`D611D547FFDC000F003673B1B9276D1BA813C15008BE071EE6B639DE278ABF51`。reference 日志与 trace 哈希见 `results/lab8_lab9/reference-lab8-20261109T142849Z/`。
 
 本阶段覆盖累计 Lab8 镜像中的 syscall、mfc0/mtc0/eret 和 CP0 异常返回链。它尚未覆盖 break、RI、溢出、Load/Store 对齐异常、Lab9 定时器/软件中断，以及独立外部中断断言；这些在后续阶段执行。Vivado 运行后递增的 XPR 启动计数器已还原；XPR 提交差异仅保留 CP0 在两个文件集中的源文件条目。
 
 ### 波形采集修正
 
-S2 早期运行的 WDB 使用了不匹配的 `/tb_top` 静态层级；`xsim-simulate-stage.log` 出现 `[Simtcl 6-55] No matching HDL object or HDL scope found`，因此那份 WDB 不用于截图或报告。`scripts/run_behavioral_sim.tcl` 已改为 `log_wave -r /`，此后才将新 WDB 作为波形证据。后文的最终 Lab8/Lab9 运行均使用修正后的采集方式。
+S2 早期运行的 WDB 使用了不匹配的 `/tb_top` 静态层级；`xsim-simulate-stage.log` 出现 `[Simtcl 6-55] No matching HDL object or HDL scope found`，因此那份 WDB 不用于截图或报告，且已清理。`scripts/run_behavioral_sim.tcl` 已改为 `log_wave -r /`，此后才将新 WDB 作为波形证据。后文的最终 Lab8/Lab9 运行均使用修正后的采集方式。
 
 ## S3 - 完整同步例外和精确副作用
 
 在现有 CP0/流水线通道上加入 `break`、RI、add/addi/sub 溢出、load/store 对齐错误与取指 AdEL。ID 对已实现合法指令建立完整识别集合；未知编码才产生 RI，已有 IF 取指异常优先保留。EX 用实际 ALU 源和结果判断溢出，用原始字节地址判断对齐，并在本指令异常或更老 trap 冲刷时阻止 RAM 请求。普通分支仍标记紧随的延迟槽指令，MEM 提交延迟槽异常时以分支 PC 写 EPC 并设置 BD。
 
-HI/LO 单元增加 `cancel`。被异常冲刷的除法重置输入/状态机并丢弃未提交结果，既有 HI/LO 值保持不变。`hilo_unit_tb.v` 增加中途取消除法的断言；最终运行日志为 `HILO_UNIT_TB_PASS mult_accepts=3 div_accepts=5 input_pairs=3 commits=6`，证明取消项不增加结果提交次数，之前写入的 HI/LO 值保持不变。
+HI/LO 单元增加 `cancel`。被异常冲刷的除法重置输入/状态机并丢弃未提交结果，既有 HI/LO 值保持不变。`hilo_unit_tb.v` 增加中途取消除法的断言；最终运行日志为 `HILO_UNIT_TB_PASS mult_accepts=3 div_accepts=5 input_pairs=3 commits=6`，证明取消项不增加结果提交次数，之前写入的 HI/LO 值保持不变。对应波形数据库保存在 `results/lab8_lab9/hilo-cancel-20261109T150200Z/hilo-unit.wdb`，SHA-256 `391292DC9CD04BF42A60CDEACFE1EC2AE389272B8BDFB8BF2699C495C85A8484`。
 
 课程 Lab9 的 94 点用例覆盖 break、OV、数据地址 AdEL/AdES、取指 AdEL、RI 和延迟槽异常；每个类型的 expected EPC/BD/BadVAddr 和搜索 PC 已列入波形采集表。精确 store kill 另由 CPU 级硬件中断测试检查年轻 store 在 trap 边界不写内存、ERET 后只执行一次。当前没有额外的同步异常 CPU directed TB 专门排列“老 store / 故障 store / 年轻 store”三项，因此这项更严格的 side-effect 序列不据此单独宣称通过。
 
@@ -70,7 +70,7 @@ HI/LO 单元增加 `cancel`。被异常冲刷的除法重置输入/状态机并�
 | IP6 | `interrupt-ip6-20261110T` | 10 条断言，1 trap，1 eret，1 store，PASS |
 | IP7 | `interrupt-ip7-20261110T-retry` | 10 条断言，1 trap，1 eret，1 store，PASS |
 
-IP7 与 timer 共用 Cause.IP7。定向用例先执行 `mtc0 zero,Compare` 清除复位后 `Count==Compare` 锁存的 TI，再开启 IM7，以便该轮 CPU 级 trap 能归因到外部 IP7。首轮未做此隔离的日志保留在 `interrupt-ip7-20261110T/`，不作为 IP7 外部源通过证据。课程 Lab9 n81/n82 与 CP0 单测分别覆盖 timer/software 请求的置位、屏蔽、清除和返回。
+IP7 与 timer 共用 Cause.IP7。定向用例先执行 `mtc0 zero,Compare` 清除复位后 `Count==Compare` 锁存的 TI，再开启 IM7，以便该轮 CPU 级 trap 能归因到外部 IP7。首轮未做此隔离的失败目录已删除；通过证据为表中的 `interrupt-ip7-20261110T-retry`。课程 Lab9 n81/n82 与 CP0 单测分别覆盖 timer/software 请求的置位、屏蔽、清除和返回。
 
 ## 最终课程回归
 
@@ -85,7 +85,7 @@ IP7 与 timer 共用 Cause.IP7。定向用例先执行 `mtc0 zero,Compare` 清�
 | Lab8 | `lab8-20261109T163413Z` | 69/69 | 166,850 | 986 | PASS |
 | Lab9 | `lab9-20261109T163846Z` | 94/94 | 195,004 | 3,910 | PASS |
 
-Lab8/Lab9 的最终波形 capture 均使用 `log_wave -r /`。各自 WDB 的 SHA-256 已存入对应 `result.txt`；其匹配 WCFG 在 Vivado 静态打开校验后，信号数与 `.wcfg` 声明一致。早期无效 WDB 被保留为诊断产物，不引用作报告证据。
+Lab8/Lab9 的最终波形 capture 均使用 `log_wave -r /`。各自 WDB 的 SHA-256 已存入对应 `result.txt`；其匹配 WCFG 在 Vivado 静态打开校验后，信号数与 `.wcfg` 声明一致。早期无效或被替代的 WDB/WCFG 与临时构建副本已清理；保留文件及校验情况见 [`artifact-audit.md`](artifact-audit.md)。
 
 ## 板级和证据范围
 

@@ -69,6 +69,12 @@ if {![regexp {INTERRUPT_TB_PASS} $simulation_text] ||
     error "external interrupt test did not produce a clean PASS; see $simulation_log"
 }
 
+set simulation_log_out [file join $run_dir simulate.log]
+if {[file exists $simulation_log_out]} {
+    error "refusing to overwrite existing interrupt simulation log: $simulation_log_out"
+}
+file copy $simulation_log $simulation_log_out
+
 set wave_db_candidates [glob -nocomplain [file join $project_dir interrupt_tb.sim sim_1 behav xsim *.wdb]]
 if {[llength $wave_db_candidates] == 0} {
     error "XSim did not create an external-interrupt WDB"

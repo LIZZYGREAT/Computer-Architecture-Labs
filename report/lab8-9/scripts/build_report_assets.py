@@ -181,7 +181,9 @@ def load_directed_runs() -> list[dict[str, object]]:
 
     for ip_bit, run_id in IRQ_RUNS.items():
         run_dir = RESULTS / "lab8_lab9" / run_id
-        log_path = run_dir / "vivado_project" / "interrupt_tb.sim" / "sim_1" / "behav" / "xsim" / "simulate.log"
+        # Keep the canonical test record beside the exported WDB so the
+        # generated project/build tree can be removed without losing evidence.
+        log_path = run_dir / "simulate.log"
         wdb_path = run_dir / f"interrupt-ip{ip_bit}.wdb"
         require_file(log_path, f"IP{ip_bit} XSim log")
         require_file(wdb_path, f"IP{ip_bit} WDB")
