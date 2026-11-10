@@ -29,7 +29,7 @@ Vivado 2025.2 / XSim 隔离仿真：
 
 ## S2 — CP0/系统指令流水线接入与 Lab8
 
-把 CP0 和同步 `syscall` 元数据接入五级流水线。流水线总线扩展为 `FS_TO_DS=103`、`DS_TO_ES=235`、`ES_TO_MS=195`，字段包含取指异常、延迟槽标记、CP0 操作及异常 PC/code/BadVAddr。CPU 顶层将 `cp0_reg` 接到 MEM；MEM 是唯一 trap/eret 提交点，异常和 `eret` 重定向 IF 并冲刷更年轻 ID/EX，EX 同拍屏蔽 store。`mfc0` 结果从 MEM 通道进入 GPR 写回并参与 MEM 前递；`mtc0` 只在 MEM 提交沿写 CP0，ID 将其 RT 纳入 RAW 依赖；普通控制转移（无论条件是否成立）向其下一条指令传递 delay-slot 标记。
+把 CP0 和同步 `syscall` 元数据接入五级流水线。流水线总线扩展为 `FS_TO_DS=103`、`DS_TO_ES=237`、`ES_TO_MS=195`。ID→EX 拼接字段宽度为 `2+8+32+1+5+32+1+1+1+8+12+12+4+1+5+16+32+32+32=237` 位，与 `mycpu.h` 定义及 EX 拆包一致；字段包含取指异常、延迟槽标记、CP0 操作及异常 PC/code/BadVAddr。CPU 顶层将 `cp0_reg` 接到 MEM；MEM 是唯一 trap/eret 提交点，异常和 `eret` 重定向 IF 并冲刷更年轻 ID/EX，EX 同拍屏蔽 store。`mfc0` 结果从 MEM 通道进入 GPR 写回并参与 MEM 前递；`mtc0` 只在 MEM 提交沿写 CP0，ID 将其 RT 纳入 RAW 依赖；普通控制转移（无论条件是否成立）向其下一条指令传递 delay-slot 标记。
 
 S2 集成时曾在 SoC 顶层增加 `ext_int[5:0]` 输入；S4 已将这个未约束的顶层端口移除，改由已有 XDC 约束的 `switch[5:0]` 经两级同步器产生 IP2-IP7，仿真模式下则固定为零。CP0 RTL 已加入原 Vivado 工程的 `sources_1` 和 `sim_1`，项目 preflight 现在要求两处都恰好存在该文件。`cases.json`、`verify.ps1`、行为仿真 Tcl 和 CPU132 trace 生成入口已支持 Lab8/Lab9；参考 trace 按每个用例独立工程、使用对应原始镜像生成，没有修改课程 COE/MIF。临时 `reference-work/` Vivado 工程副本已清理，可复用的 reference 日志和 trace 保留在 `reference-lab8-*`、`reference-lab9-*` 结果目录及 `golden/`。
 
@@ -40,6 +40,10 @@ S2 集成时曾在 SoC 顶层增加 `ext_int[5:0]` 输入；S4 已将这个未�
 - 输入 MIF SHA-256 与 S0 记录相同：`D611D547FFDC000F003673B1B9276D1BA813C15008BE071EE6B639DE278ABF51`。reference 日志与 trace 哈希见 `results/lab8_lab9/reference-lab8-20261109T142849Z/`。
 
 本阶段覆盖累计 Lab8 镜像中的 syscall、mfc0/mtc0/eret 和 CP0 异常返回链。它尚未覆盖 break、RI、溢出、Load/Store 对齐异常、Lab9 定时器/软件中断，以及独立外部中断断言；这些在后续阶段执行。Vivado 运行后递增的 XPR 启动计数器已还原；XPR 提交差异仅保留 CP0 在两个文件集中的源文件条目。
+
+### 保留 CP0 编码修订
+
+ID 译码现在要求 `mfc0/mtc0` 的 `[10:3]` 全零，并仍只接受 `sel=0`。非零保留位因此从 `inst_known` 排除，沿既有 RI=10 通路提交；合法 `mfc0/mtc0`、CP0 串行化和副作用门控没有更改。CPU 级 `cp0_decode_tb` 以实际 SRAM ROM 跑了两种 `[5:3]` 非零与两种 `[10:6]` 非零编码：4 次 RI、4 次 EPC 跳过后 ERET；验证 Cause.ExcCode、EPC、合法 Status 读写、非法读写无 GPR/CP0/SRAM 副作用。Vivado 2025.2 / XSim 本轮 Run ID `cp0-decode-20261110T033652Z`，24 条断言，PASS。
 
 ### 波形采集修正
 

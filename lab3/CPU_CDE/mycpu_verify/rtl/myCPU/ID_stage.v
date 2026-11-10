@@ -166,6 +166,7 @@ wire        inst_syscall;
 wire        inst_break;
 wire        inst_mfc0;
 wire        inst_mtc0;
+wire        cp0_reserved_bits_valid;
 wire        inst_eret;
 wire        inst_known;
 wire        inst_bgez;
@@ -376,8 +377,11 @@ assign inst_jr     = op_d[6'h00] & func_d[6'h08] & rt_d[5'h00] & rd_d[5'h00] & s
 assign inst_jalr   = op_d[6'h00] & func_d[6'h09] & rt_d[5'h00] & sa_d[5'h00];
 assign inst_syscall = op_d[6'h00] & func_d[6'h0c];
 assign inst_break   = op_d[6'h00] & func_d[6'h0d];
-assign inst_mfc0   = op_d[6'h10] & rs_d[5'h00] & (ds_inst[2:0] == 3'b000);
-assign inst_mtc0   = op_d[6'h10] & rs_d[5'h04] & (ds_inst[2:0] == 3'b000);
+assign cp0_reserved_bits_valid = (ds_inst[10:3] == 8'b0);
+assign inst_mfc0   = op_d[6'h10] & rs_d[5'h00] & cp0_reserved_bits_valid &
+                     (ds_inst[2:0] == 3'b000);
+assign inst_mtc0   = op_d[6'h10] & rs_d[5'h04] & cp0_reserved_bits_valid &
+                     (ds_inst[2:0] == 3'b000);
 assign inst_eret   = (ds_inst == 32'h4200_0018);
 assign inst_bltz   = op_d[6'h01] & rt_d[5'h00];
 assign inst_bgez   = op_d[6'h01] & rt_d[5'h01];

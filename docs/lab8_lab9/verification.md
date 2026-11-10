@@ -31,6 +31,7 @@ The final SoC wrapper reruns used the same simulation behavior as the earlier le
 | Test | Run ID / evidence folder | Assertions and result |
 |---|---|---|
 | CP0 register unit | `cp0-unit-20261109T141303Z` | 62 assertions, 2 traps, PASS |
+| CP0 reserved-field CPU decode | `cp0-decode-20261110T033652Z` | 24 assertions; legal MFC0/MTC0 unchanged; 2 malformed MFC0 + 2 malformed MTC0 each RI=10, Cause/EPC/ERET verified, no GPR/CP0/SRAM side effects; PASS |
 | HI/LO divide cancellation | `hilo-cancel-20261109T150200Z` | `HILO_UNIT_TB_PASS`; 3 mult accepts, 5 div accepts, 6 result commits; cancelled divide did not commit |
 | External IP2 | `interrupt-ip2-20261110T` | 10 assertions, 1 trap, 1 ERET, 1 resumed store, PASS |
 | External IP3 | `interrupt-ip3-20261110T` | 10 assertions, 1 trap, 1 ERET, 1 resumed store, PASS |
@@ -49,6 +50,7 @@ Each external-input test starts with one `hw_int` bit asserted while its Status.
 | T01 CP0 behavior | CP0 unit test: masks, exceptions, EPC/BD, timer, software/hardware IP mapping | PASS |
 | T02 syscall and Lab8 | Final Lab8 69/69 and matching trace | PASS |
 | T03 CP0 instructions and return | Lab8 course run; CP0 read/write and ERET flow | PASS |
+| T03a reserved CP0 instruction fields | CPU-level decode test for `[10:6]` and `[5:3]` on MFC0/MTC0 | PASS |
 | T04-T08 synchronous exceptions | Lab9 94/94 and matching trace, including break, OV, data/fetch AdEL, AdES, RI, delay-slot EPC/BD | PASS at course-image level |
 | T09 timer interrupt | Lab9 `n81` path plus CP0 timer unit checks for TI/IP7, mask and Compare clear | PASS at course-image and CP0-unit levels |
 | T10 software interrupt | Lab9 `n82` path plus CP0 IP0/IP1 mask and clear checks | PASS at course-image and CP0-unit levels |

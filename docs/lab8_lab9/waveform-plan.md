@@ -10,7 +10,7 @@ The screenshot set is prepared as 10 focused Wave configurations. Exact run IDs,
 | 04 | Misaligned LW / AdEL | Final Lab9 course WDB | `es_pc[31:0] = 0xBFC68E4C` |
 | 05 | Misaligned SW / AdES | Final Lab9 course WDB | `es_pc[31:0] = 0xBFC7E348` |
 | 06 | Misaligned instruction fetch | Final Lab9 course WDB | `bad_vaddr[31:0] = 0xB27F9789` |
-| 07 | Syscall in branch delay slot | Final Lab9 course WDB | `epc[31:0] = 0xBFC97F3C` |
+| 07 | Syscall in branch delay slot | Final Lab9 course WDB | Search `epc[31:0] = 0xBFC97F3C`; correlate delay-slot syscall PC `0xBFC97F40` and `Cause.BD=1` |
 | 08 | Count/Compare timer interrupt | Final Lab9 course WDB | `epc[31:0] = 0xBFC5FA8C` |
 | 09 | Cause software interrupt | Final Lab9 course WDB | `epc[31:0] = 0xBFC16C54` |
 | 10 | CPU-level external IP2 | Standalone IP2 directed WDB | `trap_pc[31:0] = 0xBFC0001C` |
