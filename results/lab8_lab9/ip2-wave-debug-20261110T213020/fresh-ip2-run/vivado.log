@@ -1,0 +1,418 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Tue Nov 10 22:05:49 2026
+# Process ID         : 34952
+# Current directory  : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run
+# Command line       : vivado.exe -mode batch -log vivado.log -journal vivado.jou -source C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/diagnostic-runner.tcl -tclargs C:/Users/lenovo/Desktop/Projects/FPGA/lab C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run 0
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/vivado.log
+# Journal file       : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run\vivado.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 10439 MB
+# Total Virtual      : 33899 MB
+# Available Virtual  : 6747 MB
+#-----------------------------------------------------------
+source C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/diagnostic-runner.tcl
+# if {[llength $argv] ni {2 3}} {
+#     error "usage: run_interrupt_tb.tcl <lab-root> <new-run-directory> ?hw-int-index-0-to-5?"
+# }
+# set lab_root [file normalize [lindex $argv 0]]
+# set run_dir [file normalize [lindex $argv 1]]
+# set irq_index 0
+# if {[llength $argv] == 3} { set irq_index [lindex $argv 2] }
+# if {![string is integer -strict $irq_index] || $irq_index < 0 || $irq_index > 5} {
+#     error "hardware interrupt input index must be an integer from 0 to 5: $irq_index"
+# }
+# set ip_bit [expr {$irq_index + 2}]
+# set rtl_dir [file join $lab_root lab3 CPU_CDE mycpu_verify rtl myCPU]
+# set ip_dir [file join $lab_root lab3 CPU_CDE mycpu_verify rtl xilinx_ip]
+# set tb_file [file join $lab_root lab3 CPU_CDE mycpu_verify testbench interrupt_tb.v]
+# set project_dir [file join $run_dir vivado_project]
+# set rtl_sources {}
+# foreach name {
+#     mycpu.h tools.v regfile.v alu.v IF_stage.v ID_stage.v EXE_stage.v
+#     MEM_stage.v WB_stage.v hilo_unit.v cp0_reg.v mycpu_top.v
+# } {
+#     lappend rtl_sources [file join $rtl_dir $name]
+# }
+# set ip_sources [list \
+#     [file join $ip_dir lab6_mult33 lab6_mult33.xci] \
+#     [file join $ip_dir lab6_div32 lab6_div32.xci]]
+# foreach path [concat $rtl_sources $ip_sources [list $tb_file]] {
+#     if {![file isfile $path]} {
+#         error "required interrupt test source is missing: $path"
+#     }
+# }
+# if {[file exists $project_dir]} {
+#     error "refusing to replace existing interrupt-test project: $project_dir"
+# }
+# file mkdir $run_dir
+# create_project interrupt_tb $project_dir -part xc7a200tfbg676-2
+INFO: [ProjectBase 1-489] The host OS only allows 260 characters in a normal path. The project is stored in a path with more than 80 characters. If you experience issues with IP, Block Designs, or files not being found, please consider moving the project to a location with a shorter path. Alternately consider using the OS subst command to map part of the path to a drive letter.
+Current project path is 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/vivado_project'
+create_project: Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 527.930 ; gain = 222.008
+# add_files -fileset sources_1 $rtl_sources
+# add_files -fileset sources_1 $ip_sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'D:/Verilog/2025.2/Vivado/data/ip'.
+WARNING: [Vivado 12-13650] The IP file 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/lab6_mult33/lab6_mult33.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in 'c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/lab6_mult33'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+WARNING: [Vivado 12-13650] The IP file 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/lab6_div32/lab6_div32.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in 'c:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/lab6_div32'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+# set_property include_dirs [list $rtl_dir] [get_filesets sources_1]
+# add_files -fileset sim_1 $tb_file
+# set_property include_dirs [list $rtl_dir] [get_filesets sim_1]
+# set_property verilog_define [list IRQ_INDEX=$irq_index] [get_filesets sim_1]
+# set_property top interrupt_tb [get_filesets sim_1]
+# set_property XSIM.SIMULATE.RUNTIME 100us [get_filesets sim_1]
+# set wave_tcl [file join $run_dir capture_interrupt_wave.tcl]
+# set vcd_out [file join $run_dir "interrupt-ip$ip_bit-capture.vcd"]
+# set wave_tcl_handle [open $wave_tcl w]
+# puts $wave_tcl_handle {puts "CUSTOM_CAPTURE_BEGIN=1"}
+# puts $wave_tcl_handle [list open_vcd $vcd_out]
+# puts $wave_tcl_handle {puts "CUSTOM_CAPTURE_VCD_OPEN=1"}
+# foreach signal {
+#     /interrupt_tb/clk
+#     /interrupt_tb/resetn
+#     /interrupt_tb/hw_int
+#     /interrupt_tb/dut/cp0_reg/cause_ip
+#     /interrupt_tb/dut/cp0_reg/status_ie
+#     /interrupt_tb/dut/cp0_reg/status_im
+#     /interrupt_tb/dut/cp0_reg/status_exl
+#     /interrupt_tb/dut/cp0_reg/interrupt_pending
+#     /interrupt_tb/dut/exe_stage/es_pc
+#     /interrupt_tb/dut/exe_stage/es_valid
+#     /interrupt_tb/dut/mem_stage/ms_pc
+#     /interrupt_tb/dut/mem_stage/ms_exception_valid
+#     /interrupt_tb/dut/mem_stage/ms_exception_code
+#     /interrupt_tb/dut/trap_commit
+#     /interrupt_tb/dut/trap_code
+#     /interrupt_tb/dut/trap_pc
+#     /interrupt_tb/dut/cp0_epc
+#     /interrupt_tb/dut/eret_commit
+#     /interrupt_tb/dut/pipeline_flush
+#     /interrupt_tb/debug_wb_pc
+#     /interrupt_tb/debug_wb_rf_wen
+#     /interrupt_tb/data_sram_wen
+# } {
+#     puts $wave_tcl_handle [list log_vcd $signal]
+# }
+# puts $wave_tcl_handle {puts "CUSTOM_CAPTURE_LOG_WAVE_BEGIN=1"}
+# puts $wave_tcl_handle {if {[catch {log_wave -r /} message]} { puts "CUSTOM_CAPTURE_LOG_WAVE_ERROR=$message"; error $message }}
+# puts $wave_tcl_handle {puts "CUSTOM_CAPTURE_LOG_WAVE_DONE=1"}
+# puts $wave_tcl_handle {run 100us}
+# puts $wave_tcl_handle {close_vcd}
+# puts $wave_tcl_handle {puts "CUSTOM_CAPTURE_VCD_CLOSED=1"}
+# close $wave_tcl_handle
+# set_property XSIM.SIMULATE.CUSTOM_TCL $wave_tcl [get_filesets sim_1]
+# update_compile_order -fileset sim_1
+update_compile_order: Time (s): cpu = 00:00:00 ; elapsed = 00:00:14 . Memory (MB): peak = 539.469 ; gain = 0.000
+# launch_simulation -simset sim_1 -mode behavioral
+Command: launch_simulation  -simset sim_1 -mode behavioral
+INFO: [Vivado 12-25911] Executing simulation for 'XSim' simulator
+INFO: [Vivado 12-28535] Process started - Tue Nov 10 22:06:37 2026
+
+INFO: [Vivado 12-12493] Simulation top is 'interrupt_tb'
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/vivado_project/interrupt_tb.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-13660] Precompiled IP simulation library mode is enabled (default). The design IP libraries will be referenced from the compiled library path. Please note that if the precompiled version of the library is not found from the path or the IP is in locked state, then the library source files for these IPs will be compiled locally as part of the compile order.
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-72] Using boost library from 'D:/Verilog/2025.2/Vivado/tps/boost_1_72_0'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'D:/Verilog/2025.2/Vivado/data/xsim/xsim.ini' copied to run dir:'C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/vivado_project/interrupt_tb.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'interrupt_tb' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/vivado_project/interrupt_tb.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj interrupt_tb_vlog.prj"
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module exe_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module id_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module if_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module wb_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module alu
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/cp0_reg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cp0_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/hilo_unit.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module hilo_unit
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mycpu_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module regfile
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module decoder_5_32
+INFO: [VRFC 10-311] analyzing module decoder_6_64
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/testbench/interrupt_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module interrupt_tb
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/vivado_project/interrupt_tb.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+"xvhdl --incr --relax -prj interrupt_tb_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/lab6_div32/sim/lab6_div32.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'lab6_div32'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/xilinx_ip/lab6_mult33/sim/lab6_mult33.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'lab6_mult33'
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:09 . Memory (MB): peak = 549.449 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '9' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/vivado_project/interrupt_tb.sim/sim_1/behav/xsim'
+"xelab --incr --debug typical --relax --mt 2 -L xil_defaultlib -L xbip_utils_v3_0_15 -L axi_utils_v2_0_11 -L xbip_pipe_v3_0_11 -L xbip_dsp48_wrapper_v3_0_7 -L mult_gen_v12_0_24 -L floating_point_v7_0_26 -L div_gen_v5_1_25 -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot interrupt_tb_behav xil_defaultlib.interrupt_tb xil_defaultlib.glbl -log elaborate.log"
+Vivado Simulator v2025.2
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Verilog/2025.2/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L xbip_utils_v3_0_15 -L axi_utils_v2_0_11 -L xbip_pipe_v3_0_11 -L xbip_dsp48_wrapper_v3_0_7 -L mult_gen_v12_0_24 -L floating_point_v7_0_26 -L div_gen_v5_1_25 -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot interrupt_tb_behav xil_defaultlib.interrupt_tb xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/mycpu_top.v" Line 1. Module mycpu_top doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/cp0_reg.v" Line 1. Module cp0_reg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/IF_stage.v" Line 3. Module if_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/ID_stage.v" Line 3. Module id_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 14. Module decoder_6_64 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 14. Module decoder_6_64 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/tools.v" Line 1. Module decoder_5_32 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/regfile.v" Line 1. Module regfile doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/EXE_stage.v" Line 3. Module exe_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/hilo_unit.v" Line 3. Module hilo_unit doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/alu.v" Line 1. Module alu doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/MEM_stage.v" Line 3. Module mem_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/rtl/myCPU/WB_stage.v" Line 3. Module wb_stage doesn't have a timescale but at least one module in design has a timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.numeric_std
+Compiling package xbip_utils_v3_0_15.xbip_utils_v3_0_15_pkg
+Compiling package mult_gen_v12_0_24.mult_gen_v12_0_24_viv_comp
+Compiling package mult_gen_v12_0_24.mult_gen_v12_0_24_pkg
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_signed
+Compiling package unisim.vcomponents
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.vital_timing
+Compiling package ieee.vital_primitives
+Compiling package unisim.vpkg
+Compiling package div_gen_v5_1_25.div_gen_v5_1_25_viv_comp
+Compiling package xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv_comp
+Compiling package axi_utils_v2_0_11.axi_utils_v2_0_11_pkg
+Compiling package ieee.math_real
+Compiling package axi_utils_v2_0_11.global_util_pkg
+Compiling package axi_utils_v2_0_11.axi_utils_comps
+Compiling package div_gen_v5_1_25.div_gen_pkg
+Compiling package div_gen_v5_1_25.pkg_addsub
+Compiling module xil_defaultlib.cp0_reg
+Compiling module xil_defaultlib.if_stage
+Compiling module xil_defaultlib.decoder_6_64
+Compiling module xil_defaultlib.decoder_5_32
+Compiling module xil_defaultlib.regfile
+Compiling module xil_defaultlib.id_stage
+Compiling architecture lut2_v of entity unisim.LUT2 [\LUT2(init="1000")(0,3)\]
+Compiling architecture mult_and_v of entity unisim.MULT_AND [mult_and_default]
+Compiling architecture muxcy_v of entity unisim.MUXCY [muxcy_default]
+Compiling architecture xorcy_v of entity unisim.XORCY [xorcy_default]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.op_resize [\op_resize(ai_width=33,bi_width=...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.luts [\luts(c_xdevicefamily="artix7",c...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.mult_gen_v12_0_24_viv [\mult_gen_v12_0_24_viv(c_verbosi...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.mult_gen_v12_0_24 [\mult_gen_v12_0_24(c_xdevicefami...]
+Compiling architecture lab6_mult33_arch of entity xil_defaultlib.lab6_mult33 [lab6_mult33_default]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture rtl of entity div_gen_v5_1_25.c_addsub_lut6 [\c_addsub_lut6(c_width=33,c_add_...]
+Compiling architecture synth of entity div_gen_v5_1_25.c_addsub_viv [\c_addsub_viv(c_a_width=33,c_b_w...]
+Compiling architecture virtex of entity div_gen_v5_1_25.addsubreg_v [\addsubreg_v(c_bus_width=33,c_ha...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture rtl of entity div_gen_v5_1_25.c_addsub_lut6 [\c_addsub_lut6(c_width=33,c_add_...]
+Compiling architecture synth of entity div_gen_v5_1_25.c_addsub_viv [\c_addsub_viv(c_a_width=33,c_b_w...]
+Compiling architecture virtex of entity div_gen_v5_1_25.addsubreg_v [\addsubreg_v(c_bus_width=33,c_ha...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture virtex of entity div_gen_v5_1_25.dividervdc_v [\dividervdc_v(bus_num=32,bus_div...]
+Compiling architecture synth of entity div_gen_v5_1_25.bip_sdivider_synth [\bip_sdivider_synth(c_xdevicefam...]
+Compiling architecture synth of entity div_gen_v5_1_25.div_gen_synth [\div_gen_synth(c_xdevicefamily="...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity div_gen_v5_1_25.div_gen_v5_1_25_viv [\div_gen_v5_1_25_viv(c_xdevicefa...]
+Compiling architecture xilinx of entity div_gen_v5_1_25.div_gen_v5_1_25 [\div_gen_v5_1_25(c_xdevicefamily...]
+Compiling architecture lab6_div32_arch of entity xil_defaultlib.lab6_div32 [lab6_div32_default]
+Compiling module xil_defaultlib.hilo_unit
+Compiling module xil_defaultlib.alu
+Compiling module xil_defaultlib.exe_stage
+Compiling module xil_defaultlib.mem_stage
+Compiling module xil_defaultlib.wb_stage
+Compiling module xil_defaultlib.mycpu_top
+Compiling module xil_defaultlib.interrupt_tb
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot interrupt_tb_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:32 . Memory (MB): peak = 549.449 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '31' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/vivado_project/interrupt_tb.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "interrupt_tb_behav -key {Behavioral:sim_1:Functional:interrupt_tb} -tclbatch {C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/capture_interrupt_wave.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Time resolution is 1 ps
+source C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/capture_interrupt_wave.tcl
+## puts "CUSTOM_CAPTURE_BEGIN=1"
+CUSTOM_CAPTURE_BEGIN=1
+## open_vcd C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/interrupt-ip2-capture.vcd
+## puts "CUSTOM_CAPTURE_VCD_OPEN=1"
+CUSTOM_CAPTURE_VCD_OPEN=1
+## log_vcd /interrupt_tb/clk
+## log_vcd /interrupt_tb/resetn
+## log_vcd /interrupt_tb/hw_int
+## log_vcd /interrupt_tb/dut/cp0_reg/cause_ip
+## log_vcd /interrupt_tb/dut/cp0_reg/status_ie
+## log_vcd /interrupt_tb/dut/cp0_reg/status_im
+## log_vcd /interrupt_tb/dut/cp0_reg/status_exl
+## log_vcd /interrupt_tb/dut/cp0_reg/interrupt_pending
+## log_vcd /interrupt_tb/dut/exe_stage/es_pc
+## log_vcd /interrupt_tb/dut/exe_stage/es_valid
+## log_vcd /interrupt_tb/dut/mem_stage/ms_pc
+## log_vcd /interrupt_tb/dut/mem_stage/ms_exception_valid
+## log_vcd /interrupt_tb/dut/mem_stage/ms_exception_code
+## log_vcd /interrupt_tb/dut/trap_commit
+## log_vcd /interrupt_tb/dut/trap_code
+## log_vcd /interrupt_tb/dut/trap_pc
+## log_vcd /interrupt_tb/dut/cp0_epc
+## log_vcd /interrupt_tb/dut/eret_commit
+## log_vcd /interrupt_tb/dut/pipeline_flush
+## log_vcd /interrupt_tb/debug_wb_pc
+## log_vcd /interrupt_tb/debug_wb_rf_wen
+## log_vcd /interrupt_tb/data_sram_wen
+## puts "CUSTOM_CAPTURE_LOG_WAVE_BEGIN=1"
+CUSTOM_CAPTURE_LOG_WAVE_BEGIN=1
+## if {[catch {log_wave -r /} message]} { puts "CUSTOM_CAPTURE_LOG_WAVE_ERROR=$message"; error $message }
+## puts "CUSTOM_CAPTURE_LOG_WAVE_DONE=1"
+CUSTOM_CAPTURE_LOG_WAVE_DONE=1
+## run 100us
+CASE_NAME=external_irq_ip2
+ASSERTIONS_PASS=10
+TRAPS_OBSERVED=1
+STATUS=PASS
+INTERRUPT_TB_PASS ip=2 traps=1 erets=1 stores=1 masked_then_taken=1
+$finish called at time : 446 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/testbench/interrupt_tb.v" Line 209
+## close_vcd
+## puts "CUSTOM_CAPTURE_VCD_CLOSED=1"
+CUSTOM_CAPTURE_VCD_CLOSED=1
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'interrupt_tb_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 100us
+launch_simulation: Time (s): cpu = 00:00:02 ; elapsed = 00:00:50 . Memory (MB): peak = 557.660 ; gain = 18.191
+# set simulation_log [file join $project_dir interrupt_tb.sim sim_1 behav xsim simulate.log]
+# if {![file isfile $simulation_log]} {
+#     error "XSim did not create its interrupt simulation log: $simulation_log"
+# }
+# set log_handle [open $simulation_log r]
+# set simulation_text [read $log_handle]
+# close $log_handle
+# if {![regexp {INTERRUPT_TB_PASS} $simulation_text] ||
+#     [regexp {INTERRUPT_TB_FAIL|Fatal:} $simulation_text]} {
+#     error "external interrupt test did not produce a clean PASS; see $simulation_log"
+# }
+# set simulation_log_out [file join $run_dir simulate.log]
+# if {[file exists $simulation_log_out]} {
+#     error "refusing to overwrite existing interrupt simulation log: $simulation_log_out"
+# }
+# file copy $simulation_log $simulation_log_out
+# set xsim_output_dir [file join $project_dir interrupt_tb.sim sim_1 behav xsim]
+# proc describe_wdb_candidates {label candidates} {
+#     puts "${label}_CANDIDATE_COUNT=[llength $candidates]"
+#     foreach candidate $candidates {
+#         puts "${label}_CANDIDATE=[file normalize $candidate] BYTES=[file size $candidate] MTIME=[clock format [file mtime $candidate] -format {%Y-%m-%dT%H:%M:%S}]"
+#     }
+# }
+# set candidate_error 0
+# set wave_db_candidates [glob -nocomplain -types f [file join $xsim_output_dir *.wdb]]
+# describe_wdb_candidates WDB_BEFORE_CLOSE $wave_db_candidates
+WDB_BEFORE_CLOSE_CANDIDATE_COUNT=1
+WDB_BEFORE_CLOSE_CANDIDATE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/vivado_project/interrupt_tb.sim/sim_1/behav/xsim/interrupt_tb_behav.wdb BYTES=209137 MTIME=2026-11-10T22:07:27
+# set wave_db ""
+# set before_close_out [file join $run_dir probe-before-close.wdb]
+# if {[llength $wave_db_candidates] == 1} {
+#     set wave_db [file normalize [lindex $wave_db_candidates 0]]
+#     if {[file exists $before_close_out]} {
+#         error "refusing to overwrite pre-close WDB probe: $before_close_out"
+#     }
+#     file copy $wave_db $before_close_out
+#     puts "WDB_BEFORE_CLOSE_PATH=$before_close_out"
+#     puts "WDB_BEFORE_CLOSE_BYTES=[file size $before_close_out]"
+# } else {
+#     set candidate_error 1
+# }
+WDB_BEFORE_CLOSE_PATH=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/probe-before-close.wdb
+WDB_BEFORE_CLOSE_BYTES=209137
+# if {![file isfile $vcd_out] || [file size $vcd_out] < 1024} {
+#     error "XSim did not create a usable external-interrupt VCD: $vcd_out"
+# }
+INFO: [Simtcl 6-16] Simulation closed
+# set close_sim_failed [catch {close_sim} close_sim_message]
+# puts "CLOSE_SIM_STATUS=[expr {$close_sim_failed ? {FAIL} : {PASS}}]"
+CLOSE_SIM_STATUS=PASS
+# if {$close_sim_failed} { puts "CLOSE_SIM_ERROR=$close_sim_message" }
+# set wave_db_candidates_after [glob -nocomplain -types f [file join $xsim_output_dir *.wdb]]
+# describe_wdb_candidates WDB_AFTER_CLOSE $wave_db_candidates_after
+WDB_AFTER_CLOSE_CANDIDATE_COUNT=1
+WDB_AFTER_CLOSE_CANDIDATE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/vivado_project/interrupt_tb.sim/sim_1/behav/xsim/interrupt_tb_behav.wdb BYTES=251593 MTIME=2026-11-10T22:07:28
+# set after_close_out [file join $run_dir probe-after-close.wdb]
+# if {[llength $wave_db_candidates_after] == 1} {
+#     set wave_db_after [file normalize [lindex $wave_db_candidates_after 0]]
+#     if {[file exists $after_close_out]} {
+#         error "refusing to overwrite post-close WDB probe: $after_close_out"
+#     }
+#     file copy $wave_db_after $after_close_out
+#     puts "WDB_AFTER_CLOSE_PATH=$after_close_out"
+#     puts "WDB_AFTER_CLOSE_BYTES=[file size $after_close_out]"
+# } else {
+#     set candidate_error 1
+# }
+WDB_AFTER_CLOSE_PATH=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/probe-after-close.wdb
+WDB_AFTER_CLOSE_BYTES=251593
+# set close_project_failed [catch {close_project} close_project_message]
+# puts "CLOSE_PROJECT_STATUS=[expr {$close_project_failed ? {FAIL} : {PASS}}]"
+CLOSE_PROJECT_STATUS=PASS
+# if {$close_project_failed} { puts "CLOSE_PROJECT_ERROR=$close_project_message" }
+# if {$close_sim_failed || $close_project_failed || $candidate_error} {
+#     error "diagnostic capture did not complete cleanly; inspect candidate and close statuses above"
+# }
+# puts "INTERRUPT_TB_RUN_COMPLETE=1"
+INTERRUPT_TB_RUN_COMPLETE=1
+# puts "INTERRUPT_TB_IP_BIT=$ip_bit"
+INTERRUPT_TB_IP_BIT=2
+# puts "INTERRUPT_TB_WDB_BEFORE_CLOSE=$before_close_out"
+INTERRUPT_TB_WDB_BEFORE_CLOSE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/probe-before-close.wdb
+# puts "INTERRUPT_TB_WDB_AFTER_CLOSE=$after_close_out"
+INTERRUPT_TB_WDB_AFTER_CLOSE=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/probe-after-close.wdb
+# puts "INTERRUPT_TB_VCD=$vcd_out"
+INTERRUPT_TB_VCD=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/interrupt-ip2-capture.vcd
+INFO: [Common 17-206] Exiting Vivado at Tue Nov 10 22:07:28 2026...

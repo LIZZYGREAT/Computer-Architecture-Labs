@@ -1,0 +1,7 @@
+Time resolution is 1 ps
+CASE_NAME=external_irq_ip2
+ASSERTIONS_PASS=10
+TRAPS_OBSERVED=1
+STATUS=PASS
+INTERRUPT_TB_PASS ip=2 traps=1 erets=1 stores=1 masked_then_taken=1
+$finish called at time : 446 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab3/CPU_CDE/mycpu_verify/testbench/interrupt_tb.v" Line 209

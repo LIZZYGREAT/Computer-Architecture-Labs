@@ -1,0 +1,83 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Tue Nov 10 22:17:22 2026
+# Process ID         : 9268
+# Current directory  : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020
+# Command line       : vivado.exe -mode batch -log validate-after-close.log -journal validate-after-close.jou -source C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\validate_wave_configs.tcl -tclargs C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab8_lab9\ip2-wave-debug-20261110T213020\fresh-ip2-run\probe-after-close.wdb C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab8_lab9\ip2-wave-debug-20261110T213020\probe-after-close.wcfg
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/validate-after-close.log
+# Journal file       : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020\validate-after-close.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 10257 MB
+# Total Virtual      : 33717 MB
+# Available Virtual  : 6459 MB
+#-----------------------------------------------------------
+source {C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\validate_wave_configs.tcl}
+# if {[llength $argv] < 2} {
+#     error "usage: validate_wave_configs.tcl <wdb> <wcfg> [<wcfg> ...]"
+# }
+# set wdb [file normalize [lindex $argv 0]]
+# if {![file isfile $wdb]} { error "waveform database is missing: $wdb" }
+# set expected_db [string map {\\ /} $wdb]
+# open_wave_database -noautoloadwcfg C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/probe-after-close.wdb
+# if {[llength [get_scopes -r /]] == 0} {
+#     error "waveform database contains no HDL scopes: $wdb"
+# }
+# foreach wcfg [lrange $argv 1 end] {
+#     set wcfg [file normalize $wcfg]
+#     if {![file isfile $wcfg] || [file size $wcfg] == 0} {
+#         error "wave configuration is missing or empty: $wcfg"
+#     }
+#     set handle [open $wcfg r]
+#     set contents [read $handle]
+#     close $handle
+#     if {[string first $expected_db [string map {\\ /} $contents]] < 0} {
+#         error "WCFG does not reference the requested WDB: $wcfg"
+#     }
+#     if {![regexp {<WVObjectSize size="([0-9]+)"} $contents -> expected_wave_count]} {
+#         error "WCFG does not declare a wave count: $wcfg"
+#     }
+#     set wvobjects [regexp -all -inline {<wvobject fp_name="[^"]+" type="[^"]+"} $contents]
+#     if {[llength $wvobjects] != $expected_wave_count} {
+#         error "WCFG declares $expected_wave_count waves but contains [llength $wvobjects] HDL objects: $wcfg"
+#     }
+#     set missing_paths {}
+#     foreach wvobject $wvobjects {
+#         if {![regexp {fp_name="([^"]+)"} $wvobject -> hdl_path]} {
+#             error "could not read HDL path from WCFG object '$wvobject': $wcfg"
+#         }
+#         if {[llength [get_objects -r -quiet $hdl_path]] == 0} {
+#             lappend missing_paths $hdl_path
+#         }
+#     }
+#     if {[llength $missing_paths] > 0} {
+#         error "WCFG references HDL objects missing from the WDB: [join $missing_paths {, }] ($wcfg)"
+#     }
+#     if {[catch {open_wave_config $wcfg} message]} {
+#         error "Vivado could not open WCFG '$wcfg': $message"
+#     }
+#     set waves [get_waves *]
+#     if {[llength $waves] != $expected_wave_count} {
+#         error "loaded [llength $waves] waves, expected $expected_wave_count from $wcfg"
+#     }
+#     puts "WAVE_CONFIG_VALID=$wcfg"
+#     puts "WAVE_CONFIG_WDB=$wdb"
+#     puts "WAVE_CONFIG_WAVE_COUNT=[llength $waves]"
+#     puts "WAVE_CONFIG_SIGNAL_PATHS_RESOLVED=[llength $wvobjects]"
+# }
+WAVE_CONFIG_VALID=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/probe-after-close.wcfg
+WAVE_CONFIG_WDB=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/probe-after-close.wdb
+WAVE_CONFIG_WAVE_COUNT=22
+WAVE_CONFIG_SIGNAL_PATHS_RESOLVED=22
+# puts "WAVE_CONFIG_VALIDATION_COMPLETE=1"
+WAVE_CONFIG_VALIDATION_COMPLETE=1
+INFO: [Common 17-206] Exiting Vivado at Tue Nov 10 22:17:35 2026...

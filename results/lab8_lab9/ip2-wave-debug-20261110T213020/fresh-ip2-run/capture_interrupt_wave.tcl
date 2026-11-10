@@ -1,0 +1,31 @@
+puts "CUSTOM_CAPTURE_BEGIN=1"
+open_vcd C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T213020/fresh-ip2-run/interrupt-ip2-capture.vcd
+puts "CUSTOM_CAPTURE_VCD_OPEN=1"
+log_vcd /interrupt_tb/clk
+log_vcd /interrupt_tb/resetn
+log_vcd /interrupt_tb/hw_int
+log_vcd /interrupt_tb/dut/cp0_reg/cause_ip
+log_vcd /interrupt_tb/dut/cp0_reg/status_ie
+log_vcd /interrupt_tb/dut/cp0_reg/status_im
+log_vcd /interrupt_tb/dut/cp0_reg/status_exl
+log_vcd /interrupt_tb/dut/cp0_reg/interrupt_pending
+log_vcd /interrupt_tb/dut/exe_stage/es_pc
+log_vcd /interrupt_tb/dut/exe_stage/es_valid
+log_vcd /interrupt_tb/dut/mem_stage/ms_pc
+log_vcd /interrupt_tb/dut/mem_stage/ms_exception_valid
+log_vcd /interrupt_tb/dut/mem_stage/ms_exception_code
+log_vcd /interrupt_tb/dut/trap_commit
+log_vcd /interrupt_tb/dut/trap_code
+log_vcd /interrupt_tb/dut/trap_pc
+log_vcd /interrupt_tb/dut/cp0_epc
+log_vcd /interrupt_tb/dut/eret_commit
+log_vcd /interrupt_tb/dut/pipeline_flush
+log_vcd /interrupt_tb/debug_wb_pc
+log_vcd /interrupt_tb/debug_wb_rf_wen
+log_vcd /interrupt_tb/data_sram_wen
+puts "CUSTOM_CAPTURE_LOG_WAVE_BEGIN=1"
+if {[catch {log_wave -r /} message]} { puts "CUSTOM_CAPTURE_LOG_WAVE_ERROR=$message"; error $message }
+puts "CUSTOM_CAPTURE_LOG_WAVE_DONE=1"
+run 100us
+close_vcd
+puts "CUSTOM_CAPTURE_VCD_CLOSED=1"
