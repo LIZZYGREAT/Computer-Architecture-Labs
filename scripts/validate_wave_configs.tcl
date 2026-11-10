@@ -27,6 +27,22 @@ foreach wcfg [lrange $argv 1 end] {
     if {![regexp {<WVObjectSize size="([0-9]+)"} $contents -> expected_wave_count]} {
         error "WCFG does not declare a wave count: $wcfg"
     }
+    set wvobjects [regexp -all -inline {<wvobject fp_name="[^"]+" type="[^"]+"} $contents]
+    if {[llength $wvobjects] != $expected_wave_count} {
+        error "WCFG declares $expected_wave_count waves but contains [llength $wvobjects] HDL objects: $wcfg"
+    }
+    set missing_paths {}
+    foreach wvobject $wvobjects {
+        if {![regexp {fp_name="([^"]+)"} $wvobject -> hdl_path]} {
+            error "could not read HDL path from WCFG object '$wvobject': $wcfg"
+        }
+        if {[llength [get_objects -r -quiet $hdl_path]] == 0} {
+            lappend missing_paths $hdl_path
+        }
+    }
+    if {[llength $missing_paths] > 0} {
+        error "WCFG references HDL objects missing from the WDB: [join $missing_paths {, }] ($wcfg)"
+    }
     if {[catch {open_wave_config $wcfg} message]} {
         error "Vivado could not open WCFG '$wcfg': $message"
     }
@@ -37,6 +53,7 @@ foreach wcfg [lrange $argv 1 end] {
     puts "WAVE_CONFIG_VALID=$wcfg"
     puts "WAVE_CONFIG_WDB=$wdb"
     puts "WAVE_CONFIG_WAVE_COUNT=[llength $waves]"
+    puts "WAVE_CONFIG_SIGNAL_PATHS_RESOLVED=[llength $wvobjects]"
 }
 
 puts "WAVE_CONFIG_VALIDATION_COMPLETE=1"
