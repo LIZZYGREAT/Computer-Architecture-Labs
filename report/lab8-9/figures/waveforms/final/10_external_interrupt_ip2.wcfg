@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/interrupt-ip2-20261110T/interrupt-ip2.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="interrupt_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+   </zoom_setting>
+   <column_width_setting>
+   </column_width_setting>
+   <WVObjectSize size="22" />
+   <wvobject fp_name="/interrupt_tb/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/resetn" type="logic">
+      <obj_property name="ElementShortName">resetn</obj_property>
+      <obj_property name="ObjectShortName">resetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/hw_int" type="array">
+      <obj_property name="ElementShortName">hw_int[5:0]</obj_property>
+      <obj_property name="ObjectShortName">hw_int[5:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/dut/cp0_reg/cause_ip" type="array">
+      <obj_property name="ElementShortName">cause_ip[7:0]</obj_property>
+      <obj_property name="ObjectShortName">cause_ip[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/dut/cp0_reg/status_ie" type="logic">
+      <obj_property name="ElementShortName">status_ie</obj_property>
+      <obj_property name="ObjectShortName">status_ie</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/dut/cp0_reg/status_im" type="array">
+      <obj_property name="ElementShortName">status_im[7:0]</obj_property>
+      <obj_property name="ObjectShortName">status_im[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/dut/cp0_reg/status_exl" type="logic">
+      <obj_property name="ElementShortName">status_exl</obj_property>
+      <obj_property name="ObjectShortName">status_exl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/dut/cp0_reg/interrupt_pending" type="logic">
+      <obj_property name="ElementShortName">interrupt_pending</obj_property>
+      <obj_property name="ObjectShortName">interrupt_pending</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/dut/exe_stage/es_pc" type="array">
+      <obj_property name="ElementShortName">es_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">es_pc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/dut/exe_stage/es_valid" type="logic">
+      <obj_property name="ElementShortName">es_valid</obj_property>
+      <obj_property name="ObjectShortName">es_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/dut/mem_stage/ms_pc" type="array">
+      <obj_property name="ElementShortName">ms_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ms_pc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/dut/mem_stage/ms_exception_valid" type="logic">
+      <obj_property name="ElementShortName">ms_exception_valid</obj_property>
+      <obj_property name="ObjectShortName">ms_exception_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/dut/mem_stage/ms_exception_code" type="array">
+      <obj_property name="ElementShortName">ms_exception_code[4:0]</obj_property>
+      <obj_property name="ObjectShortName">ms_exception_code[4:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/dut/trap_commit" type="logic">
+      <obj_property name="ElementShortName">trap_commit</obj_property>
+      <obj_property name="ObjectShortName">trap_commit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/dut/trap_code" type="array">
+      <obj_property name="ElementShortName">trap_code[4:0]</obj_property>
+      <obj_property name="ObjectShortName">trap_code[4:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/dut/trap_pc" type="array">
+      <obj_property name="ElementShortName">trap_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">trap_pc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/dut/cp0_epc" type="array">
+      <obj_property name="ElementShortName">cp0_epc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cp0_epc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/dut/eret_commit" type="logic">
+      <obj_property name="ElementShortName">eret_commit</obj_property>
+      <obj_property name="ObjectShortName">eret_commit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/dut/pipeline_flush" type="logic">
+      <obj_property name="ElementShortName">pipeline_flush</obj_property>
+      <obj_property name="ObjectShortName">pipeline_flush</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/debug_wb_pc" type="array">
+      <obj_property name="ElementShortName">debug_wb_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">debug_wb_pc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/debug_wb_rf_wen" type="array">
+      <obj_property name="ElementShortName">debug_wb_rf_wen[3:0]</obj_property>
+      <obj_property name="ObjectShortName">debug_wb_rf_wen[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/interrupt_tb/data_sram_wen" type="array">
+      <obj_property name="ElementShortName">data_sram_wen[3:0]</obj_property>
+      <obj_property name="ObjectShortName">data_sram_wen[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+</wave_config>

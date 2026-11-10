@@ -1,0 +1,167 @@
+\documentclass[UTF8,a4paper,zihao=5]{ctexart}
+
+\usepackage[left=2.6cm,right=2.6cm,top=2.3cm,bottom=2.3cm]{geometry}
+\usepackage{array,booktabs,tabularx}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{float}
+\hypersetup{hidelinks}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.22em}
+\setlength{\emergencystretch}{4em}
+\setlength{\tabcolsep}{4.5pt}
+\renewcommand{\arraystretch}{1.2}
+\pagestyle{plain}
+\setlist{nosep,leftmargin=2em}
+\captionsetup{font=small,labelfont=bf}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  showstringspaces=false,
+  frame=single,
+  rulecolor=\color{black!25},
+  aboveskip=0.4em,
+  belowskip=0.4em
+}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcommand{\reportsection}[1]{%
+  \par\addvspace{0.75\baselineskip}%
+  \noindent{\heiti\zihao{-4}#1\par}%
+  \vspace{0.18\baselineskip}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\reportfig}[3]{%
+  \IfFileExists{figures/#1}{%
+    \begin{figure}[H]
+      \centering\includegraphics[width=#2\linewidth]{figures/#1}
+      \caption{#3}
+    \end{figure}%
+  }{}%
+}
+
+\begin{document}
+\begin{center}
+  {\bfseries\zihao{3} Lab8 / Lab9 CPU 例外与中断支持实验报告\par}
+  \vspace{0.35em}
+  {\zihao{-4} 五级流水线中的 CP0、精确例外和中断处理}
+\end{center}
+
+\reportsection{一、实验目标与环境}
+
+本实验在已有 MIPS 五级流水线 CPU 上加入 CP0、同步例外和可屏蔽中断。实现范围包括 \code{syscall}、\code{break}、保留指令、算术溢出、访存及取指地址错误、\code{mfc0/mtc0/eret}、Count/Compare 定时器、Cause 软件中断和 IP2-IP7 外部硬件中断。验证重点是异常提交时按程序顺序保留较老指令的结果，并阻止故障指令与年轻指令造成额外副作用。
+
+实验使用 Windows、Vivado 2025.2 和 XSim，工程沿用 \code{lab3/CPU_CDE/mycpu_verify}。课程 Lab8 与 Lab9 使用原始课程 MIF，分别通过 69 点和 94 点累计测试，并与 CPU132 参考模型的 GPR trace 比较。CPU 仍使用 IF、ID、EX、MEM、WB 五级结构；异常、访存和 HI/LO 控制在原有级间总线上扩展。
+
+\reportsection{二、CP0 和异常提交通路}
+
+CP0 实现 BadVAddr、Count、Compare、Status、Cause 和 EPC。Status 的 IE、EXL、IM、BEV 字段用于控制全局中断、异常嵌套、请求屏蔽及异常向量；Cause 保存 BD、ExcCode、软件中断、定时器和外部中断状态。仅支持本实验使用的 \code{sel=0} 寄存器选择，其它选择读零且写忽略。
+
+异常信息随指令在流水线中前进。IF 标记取指地址错误，ID 译码 syscall、break、RI 并维护分支延迟槽属性，EX 检查有符号运算溢出和数据对齐。MEM 作为统一提交点，选中最老的有效异常或 ERET，再向 IF 重定向 PC 并清除较年轻的流水线内容。同步异常按 Cause.ExcCode 更新 CP0；延迟槽异常把分支 PC 写入 EPC 并置 BD。BEV 置位时进入课程向量 \code{0xBFC00380}。
+
+\begin{center}
+\fbox{IF 取指/AdEL}
+\quad$\longrightarrow$\quad
+\fbox{ID 译码/延迟槽/中断边界}
+\quad$\longrightarrow$\quad
+\fbox{EX 溢出/地址检查}
+\quad$\longrightarrow$\quad
+\fbox{MEM trap/CP0/ERET 提交}
+\quad$\longrightarrow$\quad
+\fbox{WB GPR 写回}
+\end{center}
+
+普通分支仍执行一个延迟槽；异常和 ERET 的 PC 更新优先于普通分支。\code{mfc0} 在 MEM 读取 CP0 并像普通结果一样送入写回；\code{mtc0} 只在有效指令到达提交边界时更新寄存器。对 CP0 写和 ERET 建立串行停顿，避免 ID 用尚未提交的旧 Status/Cause 状态决定是否注入中断。
+
+\reportsection{三、精确例外与副作用控制}
+
+有符号溢出检查只作用于 \code{add/addi/sub}；无符号算术不产生 OV。字和半字访存分别检查 4 字节和 2 字节对齐，BadVAddr 保留原始字节地址。发生地址错误时，EX 关闭本条 load/store 的 SRAM 请求；MEM 提交更老异常时，也会抑制同拍较年轻 EX 指令的访存。
+
+乘除法单元接收异常 flush 的 cancel 信号。被杀掉的除法请求停止并丢弃未完成结果，已提交的 HI/LO 值保留。独立 HI/LO 测试观察到 3 次乘法接收、5 次除法接收和 6 次结果提交，其中一项在运算中取消，没有错误提交。
+
+课程 Lab9 包含 break、OV、load/store AdEL/AdES、取指 AdEL、RI 和延迟槽例外。对应实际 PC、EPC、BD、BadVAddr 和控制信号配置在静态 WDB 的 Vivado Wave 视图中；本报告中的统计值来自 run 结果记录和 reference trace，不把 expected 值写成波形实测时间或数值。
+
+\reportsection{四、定时器、软件和外部中断}
+
+Count 每两个 CPU 时钟递增一次。Count 与 Compare 相等会锁存 TI，并作为 Cause.IP7 \mbox{请求}；写 Compare 清除 TI。Cause 软件写入只更新 IP0/IP1，不覆盖硬件维护的 ExcCode、BD 或 TI。外部输入 \code{hw\_int[5:0]} 映射到 IP2-IP7，IP7 同时可由 timer 和外部 IP7 置位。
+
+CPU 在 ID 的可发射边界注入可屏蔽中断，使选中的指令不执行其原有副作用。IE、EXL 和对应 IM 位决定请求是否受理。异常处理期间 EXL 阻止嵌套进入；处理程序清除请求并用 ERET 恢复 EPC。SoC 硬件模式从已有约束的 \code{switch[5:0]} 取外部输入，经两级寄存器同步至 CPU 时钟。仿真模式固定中断源为零，避免课程 testbench 的开关常值影响原回归。
+
+CP0 单元通过 62 条断言，覆盖位域、EPC/BD/EXL、定时器、软件 IP0/IP1、外部 IP2-IP7、屏蔽和 IP7 双源合并。另用 CPU 级独立用例逐路测试 IP2-IP7：每路先保持屏蔽，再开启对应 IM 位，检查向量、清除请求、ERET 继续执行和 store 只提交一次。六路用例均通过。
+
+\reportsection{五、课程回归与实测统计}
+
+六份 forwarding 课程程序均达到预期功能点，并与各自 reference GPR trace 全量匹配。Lab8 和 Lab9 同时生成了静态 WDB，Vivado 已打开对应 WCFG 并核对信号对象数。
+
+\begin{center}
+\small
+\begin{tabular}{lrrrrl}
+\toprule
+用例 & 功能点 & 周期 & 停顿周期 & trace & 结果 \\
+\midrule
+Lab3 & 23/23 & 172,599 & 0 & 全量匹配 & PASS \\
+Lab4 & 23/23 & 114,577 & 50 & 全量匹配 & PASS \\
+Lab6 & 42/42 & 109,439 & 89 & 全量匹配 & PASS \\
+Lab7 & 68/68 & 166,330 & 926 & 全量匹配 & PASS \\
+Lab8 & 69/69 & 166,850 & 986 & 全量匹配 & PASS \\
+Lab9 & 94/94 & 195,004 & 3,910 & 全量匹配 & PASS \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\reportfig{regression_metrics.png}{0.98}{最终课程回归的功能点、流水周期和停顿统计。课程程序长度不同，周期数只作为各自运行记录，不作性能比较。}
+
+Lab8/Lab9 的输入 MIF、reference trace 和 WDB 的 SHA-256，以及各次运行的 ID、功能点、周期和停顿数据，都列在随附的 evidence index 中。
+
+\clearpage
+\begin{samepage}
+\reportsection{六、波形视图和结论}
+
+WDB 保存周期级内部信号，WCFG 将 PC、异常元数据、CP0 字段、访存使能、冲刷和返回控制按场景分组。最终准备了 syscall、break、overflow、load/store AdEL/AdES、取指 AdEL、延迟槽、timer、software 和 CPU 级 IP2 视图。图表统计与 Vivado 周期级波形属于不同证据类型；PNG 截图和波形实测时间仍待按交接表从 Vivado 保存。
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{}c l l X@{}}
+\toprule
+视图 & 场景 & WDB & 搜索锚点（信号 = 值） \\
+\midrule
+01 & Lab8 syscall & Lab8 & \code{ds\_pc[31:0]} = \code{0xBFC1DDFC} \\
+02 & Lab9 break & Lab9 & \code{es\_pc[31:0]} = \code{0xBFC864EC} \\
+03 & 有符号溢出 & Lab9 & \code{es\_pc[31:0]} = \code{0xBFC3BA4C} \\
+04 & Load AdEL & Lab9 & \code{es\_pc[31:0]} = \code{0xBFC68E4C} \\
+05 & Store AdES & Lab9 & \code{es\_pc[31:0]} = \code{0xBFC7E348} \\
+06 & 取指 AdEL & Lab9 & \code{bad\_vaddr[31:0]} = \code{0xB27F9789} \\
+07 & 延迟槽 syscall & Lab9 & \code{epc[31:0]} = \code{0xBFC97F3C} \\
+08 & 定时器中断 & Lab9 & \code{epc[31:0]} = \code{0xBFC5FA8C} \\
+09 & 软件中断 & Lab9 & \code{epc[31:0]} = \code{0xBFC16C54} \\
+10 & 外部 IP2 & IP2 & \code{trap\_pc[31:0]} = \code{0xBFC0001C} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+表中 PC 是 Vivado Wave 的搜索定位值，代表目标指令或预期 EPC/BadVAddr，不代表测得的波形时间或信号采样结果。各条目的 WDB/WCFG 路径、哈希和验收预期见 evidence index 与 wave capture log。
+\end{samepage}
+
+\reportfig{waveforms/final/01_syscall.png}{0.98}{Syscall 提交时的 PC、Cause、EPC、EXL 与返回控制波形。}
+\reportfig{waveforms/final/03_overflow.png}{0.98}{有符号溢出判定、异常提交和 GPR 写回抑制波形。}
+\reportfig{waveforms/final/07_delay_slot.png}{0.98}{延迟槽异常的 BD 与分支 EPC 更新波形。}
+\reportfig{waveforms/final/08_timer_irq.png}{0.98}{Count/Compare、TI/IP7、屏蔽和 ERET 波形。}
+\reportfig{waveforms/final/09_software_irq.png}{0.98}{Cause 软件中断请求、屏蔽、清除及返回波形。}
+\reportfig{waveforms/final/10_external_interrupt_ip2.png}{0.98}{CPU 级外部 IP2 的屏蔽、受理、撤销和 ERET 返回波形。}
+
+实验结果表明，当前 RTL 能通过 Lab8 69 点和 Lab9 94 点课程程序，并通过 CP0、HI/LO cancel 与 IP2-IP7 独立断言。报告结论只覆盖实际运行的 XSim 用例。同步异常下老 store、故障 store、年轻 store 的三项 RAM 记分板用例以及异常期间取消在途除法的集成 CPU 用例仍需补充；硬件 switch 映射也没有经过 bitstream 或 FPGA 实板验证。
+
+\reportsection{参考资料}
+
+\begin{enumerate}
+  \item 《CPU设计实战》，第 7 章“例外和中断的支持”，重点参考 7.2、7.3。
+  \item 课程仓库 \code{lab8/func_lab8} 与 \code{lab9/func_lab9} 的原始测试程序和处理程序。
+  \item 仓库中的 CPU132 参考模型及与对应课程镜像生成的 GPR trace。
+\end{enumerate}
+
+\end{document}

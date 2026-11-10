@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/lab9-20261109T163846Z/lab9-20261109T163846Z-forwarding.wdb" id="1">
+         <top_modules>
+            <top_module name="\tb_top(PIPELINE_FORWARDING=1) " />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+   </zoom_setting>
+   <column_width_setting>
+   </column_width_setting>
+   <WVObjectSize size="26" />
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/if_stage/fs_pc" type="array">
+      <obj_property name="ElementShortName">fs_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">fs_pc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/if_stage/fs_exception_valid" type="logic">
+      <obj_property name="ElementShortName">fs_exception_valid</obj_property>
+      <obj_property name="ObjectShortName">fs_exception_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/if_stage/fs_exception_code" type="array">
+      <obj_property name="ElementShortName">fs_exception_code[4:0]</obj_property>
+      <obj_property name="ObjectShortName">fs_exception_code[4:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/id_stage/ds_pc" type="array">
+      <obj_property name="ElementShortName">ds_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ds_pc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/id_stage/ds_inst" type="array">
+      <obj_property name="ElementShortName">ds_inst[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ds_inst[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/id_stage/ds_fetch_exception_valid" type="logic">
+      <obj_property name="ElementShortName">ds_fetch_exception_valid</obj_property>
+      <obj_property name="ObjectShortName">ds_fetch_exception_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/id_stage/ds_exception_code" type="array">
+      <obj_property name="ElementShortName">ds_exception_code[4:0]</obj_property>
+      <obj_property name="ObjectShortName">ds_exception_code[4:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/id_stage/ds_bad_vaddr" type="array">
+      <obj_property name="ElementShortName">ds_bad_vaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ds_bad_vaddr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/es_pc" type="array">
+      <obj_property name="ElementShortName">es_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">es_pc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/es_valid" type="logic">
+      <obj_property name="ElementShortName">es_valid</obj_property>
+      <obj_property name="ObjectShortName">es_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/es_exception_valid" type="logic">
+      <obj_property name="ElementShortName">es_exception_valid</obj_property>
+      <obj_property name="ObjectShortName">es_exception_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/exe_stage/es_exception_code" type="array">
+      <obj_property name="ElementShortName">es_exception_code[4:0]</obj_property>
+      <obj_property name="ObjectShortName">es_exception_code[4:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/mem_stage/ms_pc" type="array">
+      <obj_property name="ElementShortName">ms_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ms_pc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/mem_stage/ms_exception_valid" type="logic">
+      <obj_property name="ElementShortName">ms_exception_valid</obj_property>
+      <obj_property name="ObjectShortName">ms_exception_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/mem_stage/ms_exception_code" type="array">
+      <obj_property name="ElementShortName">ms_exception_code[4:0]</obj_property>
+      <obj_property name="ObjectShortName">ms_exception_code[4:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/mem_stage/ms_is_delay_slot" type="logic">
+      <obj_property name="ElementShortName">ms_is_delay_slot</obj_property>
+      <obj_property name="ObjectShortName">ms_is_delay_slot</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/trap_commit" type="logic">
+      <obj_property name="ElementShortName">trap_commit</obj_property>
+      <obj_property name="ObjectShortName">trap_commit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/trap_code" type="array">
+      <obj_property name="ElementShortName">trap_code[4:0]</obj_property>
+      <obj_property name="ObjectShortName">trap_code[4:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/trap_pc" type="array">
+      <obj_property name="ElementShortName">trap_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">trap_pc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/cp0_reg/epc" type="array">
+      <obj_property name="ElementShortName">epc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">epc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/cp0_reg/cause_exc_code" type="array">
+      <obj_property name="ElementShortName">cause_exc_code[4:0]</obj_property>
+      <obj_property name="ObjectShortName">cause_exc_code[4:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/cp0_reg/cause_bd" type="logic">
+      <obj_property name="ElementShortName">cause_bd</obj_property>
+      <obj_property name="ObjectShortName">cause_bd</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/cp0_reg/status_exl" type="logic">
+      <obj_property name="ElementShortName">status_exl</obj_property>
+      <obj_property name="ObjectShortName">status_exl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/eret_commit" type="logic">
+      <obj_property name="ElementShortName">eret_commit</obj_property>
+      <obj_property name="ObjectShortName">eret_commit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/\tb_top(PIPELINE_FORWARDING=1) /soc_lite/cpu/pipeline_flush" type="logic">
+      <obj_property name="ElementShortName">pipeline_flush</obj_property>
+      <obj_property name="ObjectShortName">pipeline_flush</obj_property>
+   </wvobject>
+</wave_config>
