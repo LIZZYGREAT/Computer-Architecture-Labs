@@ -147,12 +147,12 @@ WDB 保存周期级内部信号，WCFG 将 PC、异常元数据、CP0 字段、�
 表中 PC 是 Vivado Wave 的搜索定位值，代表目标指令或预期 EPC/BadVAddr，不代表测得的波形时间或信号采样结果。各条目的 WDB/WCFG 路径、哈希和验收预期见 evidence index 与 wave capture log。
 \end{samepage}
 
-\reportfig{waveforms/final/01_syscall.png}{0.98}{Syscall 提交时的 PC、Cause、EPC、EXL 与返回控制波形。}
-\reportfig{waveforms/final/03_overflow.png}{0.98}{有符号溢出判定、异常提交和 GPR 写回抑制波形。}
-\reportfig{waveforms/final/07_delay_slot.png}{0.98}{延迟槽异常的 BD 与分支 EPC 更新波形。}
-\reportfig{waveforms/final/08_timer_irq.png}{0.98}{Count/Compare、TI/IP7、屏蔽和 ERET 波形。}
-\reportfig{waveforms/final/09_software_irq.png}{0.98}{Cause 软件中断请求、屏蔽、清除及返回波形。}
-\reportfig{waveforms/final/10_external_interrupt_ip2.png}{0.98}{CPU 级外部 IP2 的屏蔽、受理、撤销和 ERET 返回波形。}
+\reportfig{waveforms/01_syscall.png}{0.98}{Syscall 提交时的 PC、Cause、EPC、EXL 与返回控制波形。}
+\reportfig{waveforms/03_overflow.png}{0.98}{有符号溢出判定、异常提交和 GPR 写回抑制波形。}
+\reportfig{waveforms/07_delay_slot.png}{0.98}{延迟槽异常的 BD 与分支 EPC 更新波形。}
+\reportfig{waveforms/08_timer_irq.png}{0.98}{Count/Compare、TI/IP7、屏蔽和 ERET 波形。}
+\reportfig{waveforms/09_software_irq.png}{0.98}{Cause 软件中断请求、屏蔽、清除及返回波形。}
+\reportfig{waveforms/10_external_interrupt_ip2.png}{0.98}{CPU 级外部 IP2 的屏蔽、受理、撤销和 ERET 返回波形。}
 
 实验结果表明，当前 RTL 能通过 Lab8 69 点和 Lab9 94 点课程程序，并通过 CP0、HI/LO cancel 与 IP2-IP7 独立断言。报告结论只覆盖实际运行的 XSim 用例。同步异常下老 store、故障 store、年轻 store 的三项 RAM 记分板用例以及异常期间取消在途除法的集成 CPU 用例仍需补充；硬件 switch 映射也没有经过 bitstream 或 FPGA 实板验证。
 

@@ -37,6 +37,8 @@ results/lab6_lab7/**/combined.log
 *.wcfg
 # Keep the Wave layouts that accompany the Lab6/Lab7 capture handoff.
 !report/lab6-7/figures/waveforms/**/*.wcfg
+# Keep the Lab8/Lab9 Wave layouts used by the report and capture handoff.
+!report/lab8-9/figures/waveforms/*.wcfg
 *.vcd
 *.vpd
 *.fst

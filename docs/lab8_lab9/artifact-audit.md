@@ -67,16 +67,16 @@ All 23 WCFG files also retain an existing WDB reference, were opened in Vivado a
 | `report/lab6-7/figures/waveforms/09_unaligned_load_merge.wcfg` | Lab7 `lab7-20261102T055526Z-forwarding.wdb` | 19 |
 | `report/lab6-7/figures/waveforms/10_store_readback.wcfg` | Lab7 `lab7-20261102T055526Z-forwarding.wdb` | 24 |
 | `report/lab6-7/figures/waveforms/11_hilo_unsigned_optional.wcfg` | Lab6 `lab6-20261102T054949Z-forwarding.wdb` | 21 |
-| `report/lab8-9/figures/waveforms/final/01_syscall.wcfg` | Lab8 `lab8-20261109T163413Z-forwarding.wdb` | 21 |
-| `report/lab8-9/figures/waveforms/final/02_break.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 21 |
-| `report/lab8-9/figures/waveforms/final/03_overflow.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 30 |
-| `report/lab8-9/figures/waveforms/final/04_load_adel.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 27 |
-| `report/lab8-9/figures/waveforms/final/05_store_ades.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 30 |
-| `report/lab8-9/figures/waveforms/final/06_fetch_adel.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 26 |
-| `report/lab8-9/figures/waveforms/final/07_delay_slot.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 25 |
-| `report/lab8-9/figures/waveforms/final/08_timer_irq.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 20 |
-| `report/lab8-9/figures/waveforms/final/09_software_irq.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 16 |
-| `report/lab8-9/figures/waveforms/final/10_external_interrupt_ip2.wcfg` | IP2 `interrupt-ip2.wdb` | 22 |
+| `report/lab8-9/figures/waveforms/01_syscall.wcfg` | Lab8 `lab8-20261109T163413Z-forwarding.wdb` | 21 |
+| `report/lab8-9/figures/waveforms/02_break.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 21 |
+| `report/lab8-9/figures/waveforms/03_overflow.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 30 |
+| `report/lab8-9/figures/waveforms/04_load_adel.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 27 |
+| `report/lab8-9/figures/waveforms/05_store_ades.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 30 |
+| `report/lab8-9/figures/waveforms/06_fetch_adel.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 26 |
+| `report/lab8-9/figures/waveforms/07_delay_slot.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 25 |
+| `report/lab8-9/figures/waveforms/08_timer_irq.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 20 |
+| `report/lab8-9/figures/waveforms/09_software_irq.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 16 |
+| `report/lab8-9/figures/waveforms/10_external_interrupt_ip2.wcfg` | IP2 `interrupt-ip2.wdb` | 22 |
 
 The following failed or superseded files were removed after checking their Run IDs and keeping the final replacements:
 
@@ -89,3 +89,13 @@ The following failed or superseded files were removed after checking their Run I
 The four new CPU-directed WDBs were checked with `scripts/validate_wave_db.tcl`; each Vivado log is retained under `results/lab8_lab9/wdb-audit-20261110T/`.
 
 The six post-revision course result folders are kept as final regression evidence. They contain fresh `result.txt` files and source/simulation logs, and are indexed in `report/lab8-9/data/evidence_index.csv`; the existing screenshot WDBs remain the separate, validated capture baseline.
+
+## IP2 WDB/WCFG display follow-up
+
+On 2026-11-10, the 10 retained Lab8/Lab9 WCFGs were moved from `report/lab8-9/figures/waveforms/final/` to `report/lab8-9/figures/waveforms/`. The WCFG inventory table above reflects their current paths. The report include paths, asset-builder output directory, and capture handoff were updated to use the same location. `.gitignore` now keeps these WCFGs trackable.
+
+The moved `10_external_interrupt_ip2.wcfg` still references the exact `interrupt-ip2.wdb` in its `<db_ref>` entry. Vivado 2025.2 opened that WDB and WCFG, loaded 22 waves, and the added path check resolved all 22 HDL object names against the WDB hierarchy. The testbench reports PASS with 10 assertions and finishes at 446 ns; its capture script runs `log_wave -r /` before `run 100us`.
+
+The screenshot's visible time window is only 0–12 ps. The testbench uses a 1 ns time unit and a 5 ns half-period, so this view ends long before the first clock transition and cannot show the interrupt sequence. The WCFG has an empty `<zoom_setting>`, which leaves the view without a saved full-run range. Use **Zoom Fit**, then place the cursor after time zero and search `trap_pc[31:0] = 0xBFC0001C`. WCFG loading and path resolution validate the pair, but do not by themselves prove that GUI-visible event values were reviewed; no screenshot or observed values are recorded in the CSV.
+
+A one-off attempt to query event values through live-simulation Tcl commands failed because the WDB is a static, completed simulation. Its temporary script, log, and journal are removed; the successful WCFG open and HDL-path validation logs are retained.

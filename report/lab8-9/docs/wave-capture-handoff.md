@@ -7,7 +7,7 @@ Use Vivado 2025.2 and open each WDB from the same row as its WCFG in `data/wave-
 1. Open the run's `.wdb` using **Flow -> Open Static Simulation**.
 2. In the Wave window choose **File -> Simulation Waveform -> Open Configuration** and load the listed `.wcfg`.
 3. Use **Zoom Fit**, then locate the `search_signal` and exact `search_value` from the CSV. Zoom to the short interval that shows the triggering instruction/event, trap/CP0 updates, flush, and return.
-4. Save the PNG using the exact `image_name` under `report/lab8-9/figures/waveforms/final/`.
+4. Save the PNG using the exact `image_name` under `report/lab8-9/figures/waveforms/`.
 5. Fill `observed_time_window` and `observed_values` from the Wave display. Keep the expected fields unchanged.
 
 ## Final WDB/WCFG pairs

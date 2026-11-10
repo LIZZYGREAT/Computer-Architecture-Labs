@@ -16,7 +16,7 @@ REPORT_ROOT = Path(__file__).resolve().parents[1]
 LAB_ROOT = Path(__file__).resolve().parents[3]
 RESULTS = LAB_ROOT / "results"
 DATA = REPORT_ROOT / "data"
-WAVEFORMS = REPORT_ROOT / "figures" / "waveforms" / "final"
+WAVEFORMS = REPORT_ROOT / "figures" / "waveforms"
 
 COURSE_RUNS = [
     ("lab3", "lab3-20261109T164953Z", "results/lab3_lab4"),
