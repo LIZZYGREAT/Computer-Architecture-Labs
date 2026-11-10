@@ -49,9 +49,38 @@ set_property verilog_define [list IRQ_INDEX=$irq_index] [get_filesets sim_1]
 set_property top interrupt_tb [get_filesets sim_1]
 set_property XSIM.SIMULATE.RUNTIME 100us [get_filesets sim_1]
 set wave_tcl [file join $run_dir capture_interrupt_wave.tcl]
+set vcd_out [file join $run_dir "interrupt-ip$ip_bit-capture.vcd"]
 set wave_tcl_handle [open $wave_tcl w]
+puts $wave_tcl_handle [list open_vcd $vcd_out]
+foreach signal {
+    /interrupt_tb/clk
+    /interrupt_tb/resetn
+    /interrupt_tb/hw_int
+    /interrupt_tb/dut/cp0_reg/cause_ip
+    /interrupt_tb/dut/cp0_reg/status_ie
+    /interrupt_tb/dut/cp0_reg/status_im
+    /interrupt_tb/dut/cp0_reg/status_exl
+    /interrupt_tb/dut/cp0_reg/interrupt_pending
+    /interrupt_tb/dut/exe_stage/es_pc
+    /interrupt_tb/dut/exe_stage/es_valid
+    /interrupt_tb/dut/mem_stage/ms_pc
+    /interrupt_tb/dut/mem_stage/ms_exception_valid
+    /interrupt_tb/dut/mem_stage/ms_exception_code
+    /interrupt_tb/dut/trap_commit
+    /interrupt_tb/dut/trap_code
+    /interrupt_tb/dut/trap_pc
+    /interrupt_tb/dut/cp0_epc
+    /interrupt_tb/dut/eret_commit
+    /interrupt_tb/dut/pipeline_flush
+    /interrupt_tb/debug_wb_pc
+    /interrupt_tb/debug_wb_rf_wen
+    /interrupt_tb/data_sram_wen
+} {
+    puts $wave_tcl_handle [list log_vcd $signal]
+}
 puts $wave_tcl_handle {log_wave -r /}
 puts $wave_tcl_handle {run 100us}
+puts $wave_tcl_handle {close_vcd}
 close $wave_tcl_handle
 set_property XSIM.SIMULATE.CUSTOM_TCL $wave_tcl [get_filesets sim_1]
 update_compile_order -fileset sim_1
@@ -88,9 +117,13 @@ file copy $wave_db $wave_db_out
 if {[file size $wave_db_out] < 1024} {
     error "external-interrupt WDB is unexpectedly small: $wave_db_out"
 }
+if {![file isfile $vcd_out] || [file size $vcd_out] < 1024} {
+    error "XSim did not create a usable external-interrupt VCD: $vcd_out"
+}
 
 close_sim
 close_project
 puts "INTERRUPT_TB_RUN_COMPLETE=1"
 puts "INTERRUPT_TB_IP_BIT=$ip_bit"
 puts "INTERRUPT_TB_WDB=$wave_db_out"
+puts "INTERRUPT_TB_VCD=$vcd_out"

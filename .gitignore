@@ -21,6 +21,8 @@ results/**/*.err
 *.log
 !results/lab3_lab4/**/*.log
 !results/lab6_lab7/**/*.log
+!results/lab8_lab9/interrupt-ip2-20261110T/simulate.log
+!results/lab8_lab9/wdb-audit-20261110T/ip2-final-wcfg-validate.log
 results/lab3_lab4/**/*console.log
 results/lab3_lab4/**/*-vivado-copy.log
 results/lab3_lab4/**/combined.log
@@ -34,12 +36,14 @@ results/lab6_lab7/**/combined.log
 !results/lab3_lab4/lab3-20261028T132600Z/lab3-20261028T132600Z-forwarding.wdb
 !results/lab6_lab7/lab6-20261028T093517Z/lab6-20261028T093517Z-forwarding.wdb
 !results/lab6_lab7/lab7-20261028T102942Z/lab7-20261028T102942Z-forwarding.wdb
+!results/lab8_lab9/interrupt-ip2-20261110T/interrupt-ip2.wdb
 *.wcfg
 # Keep the Wave layouts that accompany the Lab6/Lab7 capture handoff.
 !report/lab6-7/figures/waveforms/**/*.wcfg
 # Keep the Lab8/Lab9 Wave layouts used by the report and capture handoff.
 !report/lab8-9/figures/waveforms/*.wcfg
 *.vcd
+!results/lab8_lab9/interrupt-ip2-20261110T/interrupt-ip2-capture.vcd
 *.vpd
 *.fst
 *.wlf
