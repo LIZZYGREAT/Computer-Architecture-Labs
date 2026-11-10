@@ -1,0 +1,71 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Tue Nov 10 22:19:13 2026
+# Process ID         : 21744
+# Current directory  : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T221317Z
+# Command line       : vivado.exe -mode batch -log static-values-final.log -journal static-values-final.jou -source C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab8_lab9\ip2-wave-debug-20261110T221317Z\probe-static-values-final.tcl -tclargs C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab8_lab9\ip2-wave-debug-20261110T221317Z\interrupt-ip2.wdb C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab8_lab9\ip2-wave-debug-20261110T221317Z\final-interrupt-ip2.wcfg
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T221317Z/static-values-final.log
+# Journal file       : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T221317Z\static-values-final.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 10257 MB
+# Total Virtual      : 33717 MB
+# Available Virtual  : 6551 MB
+#-----------------------------------------------------------
+source {C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab8_lab9\ip2-wave-debug-20261110T221317Z\probe-static-values-final.tcl}
+# if {[llength $argv] != 2} {
+#     error "usage: probe-static-values-final.tcl <wdb> <wcfg>"
+# }
+# set wdb [file normalize [lindex $argv 0]]
+# set wcfg [file normalize [lindex $argv 1]]
+# puts "STATIC_WDB=$wdb"
+STATIC_WDB=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T221317Z/interrupt-ip2.wdb
+# puts "STATIC_WCFG=$wcfg"
+STATIC_WCFG=C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T221317Z/final-interrupt-ip2.wcfg
+# open_wave_database -noautoloadwcfg C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T221317Z/interrupt-ip2.wdb
+# if {[catch {open_wave_config $wcfg} message]} {
+#     puts "STATIC_WCFG_OPEN=FAIL $message"
+#     exit 1
+# }
+# puts "STATIC_WCFG_OPEN=PASS"
+STATIC_WCFG_OPEN=PASS
+# puts "STATIC_WAVE_COUNT=[llength [get_waves *]]"
+STATIC_WAVE_COUNT=22
+# if {[catch {current_time} value]} {
+#     puts "STATIC_CURRENT_TIME=UNAVAILABLE $value"
+# } else {
+#     puts "STATIC_CURRENT_TIME=$value"
+# }
+STATIC_CURRENT_TIME=UNAVAILABLE ERROR: [Simulator 45-12] This command cannot operate on a simulation which has already exited.  To use this command you must first create a live simulation by launching Vivado Simulator.
+
+# foreach path {
+#     /interrupt_tb/clk
+#     /interrupt_tb/dut/trap_commit
+#     /interrupt_tb/dut/trap_pc
+#     /interrupt_tb/dut/cp0_epc
+#     /interrupt_tb/dut/eret_commit
+#     /interrupt_tb/data_sram_wen
+# } {
+#     if {[catch {get_value -radix hex $path} value]} {
+#         puts "STATIC_VALUE_UNAVAILABLE $path $value"
+#     } else {
+#         puts "STATIC_VALUE $path $value"
+#     }
+# }
+STATIC_VALUE /interrupt_tb/clk 
+STATIC_VALUE /interrupt_tb/dut/trap_commit 
+STATIC_VALUE /interrupt_tb/dut/trap_pc 
+STATIC_VALUE /interrupt_tb/dut/cp0_epc 
+STATIC_VALUE /interrupt_tb/dut/eret_commit 
+STATIC_VALUE /interrupt_tb/data_sram_wen 
+# exit
+INFO: [Common 17-206] Exiting Vivado at Tue Nov 10 22:19:26 2026...

@@ -104,25 +104,35 @@ if {[file exists $simulation_log_out]} {
 }
 file copy $simulation_log $simulation_log_out
 
-set wave_db_candidates [glob -nocomplain [file join $project_dir interrupt_tb.sim sim_1 behav xsim *.wdb]]
-if {[llength $wave_db_candidates] == 0} {
-    error "XSim did not create an external-interrupt WDB"
-}
-set wave_db [lindex $wave_db_candidates 0]
-set wave_db_out [file join $run_dir "interrupt-ip$ip_bit.wdb"]
-if {[file exists $wave_db_out]} {
-    error "refusing to overwrite existing interrupt WDB: $wave_db_out"
-}
-file copy $wave_db $wave_db_out
-if {[file size $wave_db_out] < 1024} {
-    error "external-interrupt WDB is unexpectedly small: $wave_db_out"
-}
 if {![file isfile $vcd_out] || [file size $vcd_out] < 1024} {
     error "XSim did not create a usable external-interrupt VCD: $vcd_out"
 }
 
 close_sim
+puts "INTERRUPT_TB_CLOSE_SIM=PASS"
+
+# Vivado finalizes the waveform database when the simulation closes.  Select
+# the result only after that finalization, and refuse ambiguous sources.
+set wave_db_candidates [glob -nocomplain [file join $project_dir interrupt_tb.sim sim_1 behav xsim *.wdb]]
+puts "INTERRUPT_TB_WDB_CANDIDATE_COUNT=[llength $wave_db_candidates]"
+if {[llength $wave_db_candidates] == 0} {
+    error "XSim did not leave an external-interrupt WDB after close_sim"
+}
+if {[llength $wave_db_candidates] != 1} {
+    error "expected exactly one external-interrupt WDB after close_sim, found: $wave_db_candidates"
+}
+set wave_db [file normalize [lindex $wave_db_candidates 0]]
+puts "INTERRUPT_TB_WDB_SOURCE=$wave_db"
+set wave_db_out [file join $run_dir "interrupt-ip$ip_bit.wdb"]
+if {[file exists $wave_db_out]} {
+    error "refusing to overwrite existing interrupt WDB: $wave_db_out"
+}
+file copy $wave_db $wave_db_out
+if {[file size $wave_db_out] < 1024 || [file size $wave_db_out] != [file size $wave_db]} {
+    error "external-interrupt WDB copy failed size verification: $wave_db_out"
+}
 close_project
+puts "INTERRUPT_TB_CLOSE_PROJECT=PASS"
 puts "INTERRUPT_TB_RUN_COMPLETE=1"
 puts "INTERRUPT_TB_IP_BIT=$ip_bit"
 puts "INTERRUPT_TB_WDB=$wave_db_out"

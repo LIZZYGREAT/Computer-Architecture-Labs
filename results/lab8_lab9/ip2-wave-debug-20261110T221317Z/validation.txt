@@ -1,0 +1,46 @@
+IP2 WAVEFORM VALIDATION
+Run ID: ip2-wave-debug-20261110T221317Z
+Vivado: 2025.2
+Mode: batch only; no GUI window launched by this run
+
+PASS — Testbench
+Source: simulate.log
+ASSERTIONS_PASS=10
+TRAPS_OBSERVED=1
+STATUS=PASS
+INTERRUPT_TB_PASS ip=2 traps=1 erets=1 stores=1 masked_then_taken=1
+$finish at 446 ns
+
+PASS — Capture ordering
+Source: vivado.log / capture_interrupt_wave.tcl
+CUSTOM_TCL executed; 22 log_vcd paths were issued; log_wave -r / preceded run 100us; close_vcd completed.
+INTERRUPT_TB_CLOSE_SIM=PASS
+INTERRUPT_TB_WDB_CANDIDATE_COUNT=1
+INTERRUPT_TB_CLOSE_PROJECT=PASS
+
+PASS — Archived WDB integrity
+Source: vivado_project/interrupt_tb.sim/sim_1/behav/xsim/interrupt_tb_behav.wdb
+Source bytes: 251577
+Archived bytes: 251577
+Source and archived SHA-256: 42EC99EF073385D5773BE8D77C4334E47B928AE6423E0E40D3BA30DA12A141F1
+
+PASS — Same-run VCD
+Command: python scripts/validate_interrupt_vcd.py results/lab8_lab9/ip2-wave-debug-20261110T221317Z/interrupt-ip2-capture.vcd results/lab8_lab9/ip2-wave-debug-20261110T221317Z/final-interrupt-ip2.wcfg
+Output: WCFG_PATHS_MATCHED=22; CLOCK_TRANSITIONS=89; IP2_EVENTS=PASS; INTERRUPTED_GPR_WRITE=NONE
+
+PASS — Static WDB/WCFG path binding
+Command: Vivado 2025.2 batch mode with scripts/validate_wave_configs.tcl and the run's WDB/WCFG
+Output: WAVE_CONFIG_VALIDATION_COMPLETE=1; WAVE_CONFIG_WAVE_COUNT=22; WAVE_CONFIG_SIGNAL_PATHS_RESOLVED=22
+
+PENDING — Numeric WDB values visible in Vivado/XSim Wave UI
+The user's requested no-computer-use boundary was respected. Headless static Tcl opened the WDB and WCFG but does not expose historical values via get_value/current_time. No numeric WDB display is claimed as verified.
+
+Diagnostic close-order measurements (run ID ip2-wave-debug-20261110T213020):
+WDB_CANDIDATE_COUNT=1 before and after close
+WDB_BEFORE_CLOSE_BYTES=209137
+WDB_BEFORE_CLOSE_SHA256=6F61DCB1AC726B6244231B46EB8E7C5EDDC04E176FEC976FA9894913B8B7BEF3
+CLOSE_SIM_STATUS=PASS
+WDB_AFTER_CLOSE_BYTES=251593
+WDB_AFTER_CLOSE_SHA256=0A51EC751C7F51357B800F77BA1F61462F5F31D244468550440C9FD74CE0FC60
+WDB_BEFORE_CLOSE_DISPLAY=GUI_PENDING
+WDB_AFTER_CLOSE_DISPLAY=GUI_PENDING

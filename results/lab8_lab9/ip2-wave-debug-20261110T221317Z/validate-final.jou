@@ -1,0 +1,24 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Tue Nov 10 22:17:38 2026
+# Process ID         : 34528
+# Current directory  : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T221317Z
+# Command line       : vivado.exe -mode batch -log validate-final.log -journal validate-final.jou -source C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\validate_wave_configs.tcl -tclargs C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab8_lab9\ip2-wave-debug-20261110T221317Z\interrupt-ip2.wdb C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab8_lab9\ip2-wave-debug-20261110T221317Z\final-interrupt-ip2.wcfg
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T221317Z/validate-final.log
+# Journal file       : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab8_lab9/ip2-wave-debug-20261110T221317Z\validate-final.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 10257 MB
+# Total Virtual      : 33717 MB
+# Available Virtual  : 6504 MB
+#-----------------------------------------------------------
+source {C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\validate_wave_configs.tcl}
