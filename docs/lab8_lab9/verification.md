@@ -32,6 +32,9 @@ The final SoC wrapper reruns used the same simulation behavior as the earlier le
 |---|---|---|
 | CP0 register unit | `cp0-unit-20261109T141303Z` | 62 assertions, 2 traps, PASS |
 | CP0 reserved-field CPU decode | `cp0-decode-20261110T033652Z` | 24 assertions; legal MFC0/MTC0 unchanged; 2 malformed MFC0 + 2 malformed MTC0 each RI=10, Cause/EPC/ERET verified, no GPR/CP0/SRAM side effects; PASS |
+| Precise store exception ordering | `precise-store-20261110T` | 6 assertions; older store 1, faulting AdES store 0, younger store 1 after ERET; ExcCode=5, EPC=0xBFC0000C, BadVAddr=2; PASS |
+| CPU HI/LO exception/interrupt ordering | `hilo-order-20261110T` | 8 assertions; older syscall kills younger DIV before start and preserves HI/LO; DIV during EX completes once before IP2 trap; 2 traps, 2 ERETs, PASS |
+| Software IP0/IP1 and timer TI/IP7 | `software-timer-20261110T035119Z` | 13 assertions; each source is first observed masked, then accepted once; Cause/Compare handler clears requests; 3 traps, 3 ERETs; timer-only IP7 with `hw_int=0`; PASS |
 | HI/LO divide cancellation | `hilo-cancel-20261109T150200Z` | `HILO_UNIT_TB_PASS`; 3 mult accepts, 5 div accepts, 6 result commits; cancelled divide did not commit |
 | External IP2 | `interrupt-ip2-20261110T` | 10 assertions, 1 trap, 1 ERET, 1 resumed store, PASS |
 | External IP3 | `interrupt-ip3-20261110T` | 10 assertions, 1 trap, 1 ERET, 1 resumed store, PASS |
@@ -52,12 +55,12 @@ Each external-input test starts with one `hw_int` bit asserted while its Status.
 | T03 CP0 instructions and return | Lab8 course run; CP0 read/write and ERET flow | PASS |
 | T03a reserved CP0 instruction fields | CPU-level decode test for `[10:6]` and `[5:3]` on MFC0/MTC0 | PASS |
 | T04-T08 synchronous exceptions | Lab9 94/94 and matching trace, including break, OV, data/fetch AdEL, AdES, RI, delay-slot EPC/BD | PASS at course-image level |
-| T09 timer interrupt | Lab9 `n81` path plus CP0 timer unit checks for TI/IP7, mask and Compare clear | PASS at course-image and CP0-unit levels |
-| T10 software interrupt | Lab9 `n82` path plus CP0 IP0/IP1 mask and clear checks | PASS at course-image and CP0-unit levels |
+| T09 timer interrupt | Lab9 `n81`, CP0 unit and CPU directed Count/Compare run with external IP7 held low | PASS at course-image, CP0-unit and CPU levels |
+| T10 software interrupt | Lab9 `n82`, CP0 unit and CPU directed IP0/IP1 masked-then-taken cases | PASS at course-image, CP0-unit and CPU levels |
 | T11-T12 external hardware IP2-IP7 | Six separate CPU-level mask/take/clear/ERET tests | PASS |
 | T13 interrupt masks and IP7 merge | CP0 unit covers IE/IM and IP7 OR; direct IP7 run isolates external input | PASS at CP0 and CPU levels |
-| T14 synchronous exception store ordering | Course image and external-interrupt flush test cover relevant pieces | Partial: no dedicated old-store/faulting-store/younger-store sequence with RAM scoreboard |
-| T15 exception during in-flight HI/LO operation | HI/LO unit directly tests cancel and preservation | Partial: no integrated CPU test that raises a synchronous exception while a divide is in flight |
+| T14 synchronous exception store ordering | `precise_exception_tb` real SRAM scoreboard and exact AdES metadata | PASS: older/faulting/younger stores counted 1/0/1 |
+| T15 exception during HI/LO operation | `hilo_order_tb` synchronous syscall flush plus DIV-busy external IP2 case; `hilo_unit_tb` retains direct cancel test | PASS for both real CPU orderings; unit cancellation remains separate evidence |
 | T16 complete Lab9 image | Final Lab9 94/94 and full reference trace | PASS |
 | T17 branch, delay slot and ERET | Lab9 delay-slot tests and CP0/ERET integration | PASS at course-image level |
 | T18 timeout and waveform quality | Verify timeout, fresh log checks, WDB hash, static WCFG load/count validation | PASS for executed tests |

@@ -90,6 +90,27 @@ if {[file size $wave_db_out] < 1024} {
 
 close_sim
 close_project
+set result_path [file join $run_dir result.txt]
+if {[file exists $result_path]} {
+    error "refusing to overwrite existing CPU-directed result summary: $result_path"
+}
+set result_handle [open $result_path w]
+foreach key {CASE_NAME ASSERTIONS_PASS TRAPS_OBSERVED ERETS_OBSERVED} {
+    set pattern [format {%s=([^\r\n]+)} $key]
+    if {![regexp -line $pattern $simulation_text -> value]} {
+        close $result_handle
+        error "required summary field $key is missing from $simulation_log"
+    }
+    puts $result_handle "$key=$value"
+}
+puts $result_handle "TESTBENCH_TOP=$top_name"
+puts $result_handle "STATUS=PASS"
+puts $result_handle "SIMULATION_LOG=simulate.log"
+puts $result_handle "WAVEFORM_FILE=[file tail $wave_db_out]"
+close $result_handle
+
+# Keep the reviewed outputs and discard rebuildable Vivado/XSim project caches.
+file delete -force $project_dir $wave_tcl
 puts "CPU_DIRECTED_TB_RUN_COMPLETE=1"
 puts "CPU_DIRECTED_TB_TOP=$top_name"
 puts "CPU_DIRECTED_TB_WDB=$wave_db_out"

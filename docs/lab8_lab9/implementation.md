@@ -55,13 +55,15 @@ S2 早期运行的 WDB 使用了不匹配的 `/tb_top` 静态层级；`xsim-simu
 
 HI/LO 单元增加 `cancel`。被异常冲刷的除法重置输入/状态机并丢弃未提交结果，既有 HI/LO 值保持不变。`hilo_unit_tb.v` 增加中途取消除法的断言；最终运行日志为 `HILO_UNIT_TB_PASS mult_accepts=3 div_accepts=5 input_pairs=3 commits=6`，证明取消项不增加结果提交次数，之前写入的 HI/LO 值保持不变。对应波形数据库保存在 `results/lab8_lab9/hilo-cancel-20261109T150200Z/hilo-unit.wdb`，SHA-256 `391292DC9CD04BF42A60CDEACFE1EC2AE389272B8BDFB8BF2699C495C85A8484`。
 
-课程 Lab9 的 94 点用例覆盖 break、OV、数据地址 AdEL/AdES、取指 AdEL、RI 和延迟槽异常；每个类型的 expected EPC/BD/BadVAddr 和搜索 PC 已列入波形采集表。精确 store kill 另由 CPU 级硬件中断测试检查年轻 store 在 trap 边界不写内存、ERET 后只执行一次。当前没有额外的同步异常 CPU directed TB 专门排列“老 store / 故障 store / 年轻 store”三项，因此这项更严格的 side-effect 序列不据此单独宣称通过。
+课程 Lab9 的 94 点用例覆盖 break、OV、数据地址 AdEL/AdES、取指 AdEL、RI 和延迟槽异常；每个类型的 expected EPC/BD/BadVAddr 和搜索 PC 已列入波形采集表。新增 `precise_exception_tb.v` 用真实同步 SRAM 记分板验证“老 store / 故障 store / 年轻 store”序列，实测分别写 1/0/1 次。新增 `hilo_order_tb.v` 验证老 syscall 冲刷年轻 DIV 时不启动并保留既有 HI/LO；另验证 DIV 在 EX 忙碌时外部 IP2 到达，DIV 完成并更新 HI/LO 后再接受中断。两项均通过，运行记录见 `verification.md`。
 
 ## S4 - 定时器、软件和外部硬件中断
 
 `cp0_reg` 把 `hw_int[5:0]` 接到 Cause.IP2-IP7；IP7 与 timer TI 按位 OR。SoC 硬件模式从 `switch[5:0]` 取输入，经两个 `cpu_clk` 寄存器同步后接到 CPU；仿真模式使用常零源，避免课程 testbench 固定 `switch=8'hff` 意外触发中断。CPU 外部端口仍为 `mycpu_top.hw_int`，直接测试可以逐路注入。
 
 独立 CP0 单测 `cp0-unit-20261109T141303Z` 通过 62 条断言、提交 2 次 trap；覆盖 Count 半速递增、Compare 清 TI、Status/Cause 写掩码、Cause.IP0/IP1、外部 IP2-IP7 映射和屏蔽、IP7 双源 OR、EPC/BD/EXL/ERET。
+
+新增 CPU 级 `software_timer_irq_tb.v` 验证 Cause.IP0、IP1 与 Count/Compare TI/IP7：每个请求先在对应 IM 位屏蔽时保持可见且不 trap，再开启屏蔽位后恰好 trap 一次；handler 清 Cause 软件位和 Compare，ERET 后无重入。Timer 用例保持 `hw_int=0`，确认 IP7 来自 TI。Run `software-timer-20261110T035119Z` 通过 13 条断言、3 次 trap 和 3 次 ERET。
 
 `interrupt_tb.v` 和 `scripts/run_interrupt_tb.tcl` 以 `IRQ_INDEX=0..5` 分别运行 IP2-IP7，每路都让输入从复位期间保持有效开始，先验证 IM 屏蔽，再设置对应 IM 位，检查向量和 ExcCode=0，随后清除输入、在 handler 中修正 EPC 并 ERET。testbench 还断言被打断指令没有 GPR 写回、trap 当拍没有年轻 store、后继 store 在返回后恰好写一次，并且请求清除后不重复进入。
 
