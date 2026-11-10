@@ -4,6 +4,8 @@ module id_stage #(parameter PIPELINE_FORWARDING = 1'b1)(
     input                          clk           ,
     input                          reset         ,
     input                          flush         ,
+    input                          interrupt_pending,
+    input                          cp0_serial_busy,
     //allowin
     input                          es_allowin    ,
     output                         ds_allowin    ,
@@ -161,9 +163,11 @@ wire        inst_jal;
 wire        inst_jr;
 wire        inst_jalr;
 wire        inst_syscall;
+wire        inst_break;
 wire        inst_mfc0;
 wire        inst_mtc0;
 wire        inst_eret;
+wire        inst_known;
 wire        inst_bgez;
 wire        inst_bgtz;
 wire        inst_blez;
@@ -181,6 +185,8 @@ wire [4:0]  exception_code;
 wire [31:0] exception_bad_vaddr;
 wire        is_delay_slot;
 wire        ds_exec_enabled;
+wire        overflow_check_add;
+wire        overflow_check_sub;
 wire [11:0] ds_alu_op;
 wire [`MEM_OP_WD-1:0] ds_mem_op;
 wire [`HILO_OP_WD-1:0] ds_hilo_op;
@@ -211,6 +217,8 @@ assign ds_to_es_bus = {cp0_op,
                        exception_code,
                        exception_bad_vaddr,
                        is_delay_slot,
+                       overflow_check_add,
+                       overflow_check_sub,
                        ds_hilo_op,     //153:146 legacy fields
                        ds_alu_op,      //145:134
                        ds_mem_op,      //133:122
@@ -263,7 +271,7 @@ assign ds_rt_stall = ds_rt_hazard &&
                       (es_hazard_valid && (es_producer_dest == rt) && !es_forward_valid) ||
                       (!(es_hazard_valid && (es_producer_dest == rt)) &&
                        ms_hazard_valid && (ms_producer_dest == rt) && !ms_forward_valid));
-assign ds_stall = ds_rs_stall || ds_rt_stall;
+assign ds_stall = ds_rs_stall || ds_rt_stall || cp0_serial_busy;
 assign ds_forward_rs_ex = PIPELINE_FORWARDING && ds_valid && ds_rs_used &&
                           es_forward_valid && (es_producer_dest == rs);
 assign ds_forward_rt_ex = PIPELINE_FORWARDING && ds_valid && ds_rt_used &&
@@ -367,6 +375,7 @@ assign inst_jal    = op_d[6'h03];
 assign inst_jr     = op_d[6'h00] & func_d[6'h08] & rt_d[5'h00] & rd_d[5'h00] & sa_d[5'h00];
 assign inst_jalr   = op_d[6'h00] & func_d[6'h09] & rt_d[5'h00] & sa_d[5'h00];
 assign inst_syscall = op_d[6'h00] & func_d[6'h0c];
+assign inst_break   = op_d[6'h00] & func_d[6'h0d];
 assign inst_mfc0   = op_d[6'h10] & rs_d[5'h00] & (ds_inst[2:0] == 3'b000);
 assign inst_mtc0   = op_d[6'h10] & rs_d[5'h04] & (ds_inst[2:0] == 3'b000);
 assign inst_eret   = (ds_inst == 32'h4200_0018);
@@ -376,6 +385,23 @@ assign inst_bltzal = op_d[6'h01] & rt_d[5'h10];
 assign inst_bgezal = op_d[6'h01] & rt_d[5'h11];
 assign inst_bgtz   = op_d[6'h07] & rt_d[5'h00];
 assign inst_blez   = op_d[6'h06] & rt_d[5'h00];
+
+// Reserved instructions must reach the precise exception path instead of
+// disappearing as side-effect-free NOPs.  These are all instructions decoded
+// by this implementation plus the architectural exception/CP0 operations.
+assign inst_known = inst_addu | inst_subu | inst_add | inst_sub |
+                    inst_slt | inst_sltu | inst_and | inst_or | inst_xor | inst_nor |
+                    inst_sll | inst_srl | inst_sra | inst_sllv | inst_srlv | inst_srav |
+                    inst_addiu | inst_addi | inst_slti | inst_sltiu |
+                    inst_andi | inst_ori | inst_xori | inst_lui |
+                    inst_mult | inst_multu | inst_div | inst_divu |
+                    inst_mfhi | inst_mflo | inst_mthi | inst_mtlo |
+                    inst_lw | inst_lb | inst_lbu | inst_lh | inst_lhu | inst_lwl | inst_lwr |
+                    inst_sw | inst_sb | inst_sh | inst_swl | inst_swr |
+                    inst_beq | inst_bne | inst_j | inst_jal | inst_jr | inst_jalr |
+                    inst_bgez | inst_bgtz | inst_blez | inst_bltz |
+                    inst_bgezal | inst_bltzal | inst_syscall | inst_break |
+                    inst_mfc0 | inst_mtc0 | inst_eret;
 
 // The course's MIPS branch-and-link tests expect the PC+8 link on both
 // taken and not-taken cases; only the PC redirect depends on the condition.
@@ -427,6 +453,8 @@ assign inst_gpr_write = inst_addu | inst_subu | inst_add | inst_sub |
                         inst_mfhi | inst_mflo | inst_jalr | inst_bltzal | inst_bgezal |
                         inst_mfc0;
 assign gr_we        = ds_exec_enabled && inst_gpr_write;
+assign overflow_check_add = ds_exec_enabled && (inst_add || inst_addi);
+assign overflow_check_sub = ds_exec_enabled && inst_sub;
 
 assign dest         = dst_is_r31 ? 5'd31 :
                       dst_is_rt  ? rt    : 
@@ -480,9 +508,20 @@ assign br_target = (inst_beq || inst_bne || inst_bgez || inst_bgtz || inst_blez 
                    (inst_jr || inst_jalr) ? rs_value :
                    /*j/jal*/               {ds_pc_plus_4[31:28], jidx[25:0], 2'b0};
 
-assign exception_valid = ds_valid && (ds_fetch_exception_valid || inst_syscall);
+wire ds_sync_exception_valid;
+wire ds_interrupt_exception;
+assign ds_sync_exception_valid = ds_valid &&
+                                 (ds_fetch_exception_valid || inst_syscall ||
+                                  inst_break || !inst_known);
+assign ds_interrupt_exception = interrupt_pending && ds_valid &&
+                                !ds_sync_exception_valid && !cp0_serial_busy &&
+                                ds_ready_go && es_allowin && !flush;
+assign exception_valid = ds_sync_exception_valid || ds_interrupt_exception;
 assign exception_code = ds_fetch_exception_valid ? ds_exception_code :
-                        (inst_syscall ? `EXC_SYS : 5'b0);
+                        inst_syscall ? `EXC_SYS :
+                        inst_break ? `EXC_BP :
+                        (!inst_known && ds_valid ? `EXC_RI :
+                         ds_interrupt_exception ? `EXC_INT : 5'b0);
 assign exception_bad_vaddr = ds_fetch_exception_valid ? ds_bad_vaddr : 32'b0;
 assign is_delay_slot = ds_valid && ds_delay_slot;
 

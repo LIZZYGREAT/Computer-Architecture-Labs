@@ -3,6 +3,7 @@
 module hilo_unit(
     input         clk,
     input         resetn,
+    input         cancel,
     input         start,
     input         is_mult,
     input         is_multu,
@@ -93,7 +94,7 @@ lab6_mult33 u_mult(
 
 lab6_div32 u_div(
     .aclk                    (clk),
-    .aresetn                 (resetn),
+    .aresetn                 (resetn && !cancel),
     .s_axis_divisor_tvalid   (div_input_valid),
     .s_axis_divisor_tready   (divisor_ready),
     .s_axis_divisor_tdata    (div_divisor_data),
@@ -114,6 +115,11 @@ always @(posedge clk) begin
         divisor_negative    <= 1'b0;
         div_dividend_data   <= 32'b0;
         div_divisor_data    <= 32'b0;
+    end
+    else if (cancel) begin
+        // Discard only the in-flight operation.  Previously committed HI/LO
+        // values remain architectural state across a younger-instruction kill.
+        state <= HILO_IDLE;
     end
     else begin
         if (write_hi_en) begin

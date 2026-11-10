@@ -67,7 +67,6 @@ module soc_lite_top #(parameter SIMULATION=1'b0,
 (
     input         resetn, 
     input         clk,
-    input  [5:0]  ext_int,
 
     //------gpio-------
     output [15:0] led,
@@ -94,6 +93,32 @@ always @(posedge cpu_clk)
 begin
     cpu_resetn <= resetn;
 end
+
+// The physical board already constrains switch[7:0].  In hardware mode,
+// route switch[5:0] to IP2..IP7 after synchronizing each level to cpu_clk.
+// The course-test SoC instance explicitly disables these board inputs so
+// Lab3..Lab9 regression images remain deterministic.
+wire [5:0] ext_int;
+generate if (SIMULATION) begin: simulation_interrupt_source
+    assign ext_int = 6'b0;
+end
+else begin: hardware_interrupt_source
+    reg [5:0] ext_int_meta;
+    reg [5:0] ext_int_sync;
+    always @(posedge cpu_clk) begin
+        if (!cpu_resetn) begin
+            ext_int_meta <= 6'b0;
+            ext_int_sync <= 6'b0;
+        end
+        else begin
+            ext_int_meta <= switch[5:0];
+            ext_int_sync <= ext_int_meta;
+        end
+    end
+    assign ext_int = ext_int_sync;
+end
+endgenerate
+
 generate if(SIMULATION && `SIMU_USE_PLL==0)
 begin: speedup_simulation
     assign cpu_clk   = clk;

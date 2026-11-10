@@ -45,6 +45,9 @@ wire [31:0] cp0_epc;
 wire [ 7:0] cp0_raddr;
 wire [ 7:0] cp0_waddr;
 wire        cp0_we;
+wire        es_cp0_serial_busy;
+wire        ms_cp0_serial_busy;
+wire        cp0_serial_busy;
 wire        cp0_bev;
 wire        interrupt_pending;
 wire        trap_commit;
@@ -57,6 +60,7 @@ wire        pipeline_flush;
 wire [31:0] exception_vector;
 
 assign pipeline_flush = trap_commit || eret_commit;
+assign cp0_serial_busy = es_cp0_serial_busy || ms_cp0_serial_busy;
 assign exception_vector = cp0_bev ? 32'hbfc0_0380 : 32'h8000_0180;
 
 cp0_reg cp0_reg(
@@ -106,6 +110,8 @@ id_stage #(.PIPELINE_FORWARDING(PIPELINE_FORWARDING)) id_stage(
     .clk            (clk            ),
     .reset          (reset          ),
     .flush          (pipeline_flush ),
+    .interrupt_pending(interrupt_pending),
+    .cp0_serial_busy(cp0_serial_busy),
     //allowin
     .es_allowin     (es_allowin     ),
     .ds_allowin     (ds_allowin     ),
@@ -137,6 +143,7 @@ exe_stage exe_stage(
     .es_to_ms_valid (es_to_ms_valid ),
     .es_to_ms_bus   (es_to_ms_bus   ),
     .es_producer_bus(es_producer_bus),
+    .cp0_serial_busy(es_cp0_serial_busy),
     // data sram interface
     .data_sram_en   (data_sram_en   ),
     .data_sram_wen  (data_sram_wen  ),
@@ -152,6 +159,7 @@ mem_stage mem_stage(
     .cp0_waddr      (cp0_waddr      ),
     .cp0_wdata      (cp0_wdata      ),
     .cp0_raddr      (cp0_raddr      ),
+    .cp0_serial_busy(ms_cp0_serial_busy),
     .trap_commit    (trap_commit    ),
     .trap_code      (trap_code      ),
     .trap_pc        (trap_pc        ),

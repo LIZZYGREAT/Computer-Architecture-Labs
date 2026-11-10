@@ -3,6 +3,7 @@
 module hilo_unit_tb;
 reg clk;
 reg resetn;
+reg cancel;
 reg start;
 reg is_mult;
 reg is_multu;
@@ -36,6 +37,7 @@ always #5 clk = ~clk;
 hilo_unit uut(
     .clk(clk),
     .resetn(resetn),
+    .cancel(cancel),
     .start(start),
     .is_mult(is_mult),
     .is_multu(is_multu),
@@ -63,7 +65,7 @@ always @(posedge clk) begin
         if (uut.dividend_ready !== uut.divisor_ready) begin
             $fatal(1, "HILO_TB_FAIL configured NonBlocking divider input ready signals diverged");
         end
-        if (div_input_was_stalled &&
+        if (div_input_was_stalled && !cancel &&
             (!uut.div_input_valid ||
              uut.div_dividend_data !== stalled_dividend_data ||
              uut.div_divisor_data !== stalled_divisor_data)) begin
@@ -180,6 +182,7 @@ endtask
 initial begin
     clk = 1'b0;
     resetn = 1'b0;
+    cancel = 1'b0;
     start = 1'b0;
     is_mult = 1'b0;
     is_multu = 1'b0;
@@ -241,6 +244,23 @@ initial begin
         $fatal(1, "HILO_TB_FAIL MTHI/MTLO values HI=%08x LO=%08x", hi_value, lo_value);
     end
 
+    // A precise-exception kill discards a younger divide without clearing
+    // architectural HI/LO values that were committed before it.
+    commits_before_cancel = done_commit_count;
+    launch_operation(1'b0, 1'b0, 1'b0, 1'b1, 32'h80000000, 32'h00000003);
+    @(negedge clk);
+    cancel = 1'b1;
+    repeat (5) @(posedge clk);
+    #1;
+    if (busy || done || hi_value !== 32'h12345678 || lo_value !== 32'h89abcdef) begin
+        $fatal(1, "HILO_TB_FAIL kill-cancelled operation changed architectural HI/LO");
+    end
+    if (done_commit_count != commits_before_cancel) begin
+        $fatal(1, "HILO_TB_FAIL kill-cancelled operation completed unexpectedly");
+    end
+    @(negedge clk);
+    cancel = 1'b0;
+
     // Reset while a divide is active: discard the in-flight result and HI/LO.
     commits_before_cancel = done_commit_count;
     launch_operation(1'b0, 1'b0, 1'b0, 1'b1, 32'h80000000, 32'h00000003);
@@ -258,7 +278,7 @@ initial begin
     resetn = 1'b1;
     repeat (3) @(posedge clk);
 
-    if (done_commit_count != mult_accept_count + div_accept_count - 1) begin
+    if (done_commit_count != mult_accept_count + div_accept_count - 2) begin
         $fatal(1, "HILO_TB_FAIL cancelled request changed accept/commit accounting");
     end
     $display("HILO_UNIT_TB_PASS mult_accepts=%0d div_accepts=%0d input_pairs=%0d commits=%0d",

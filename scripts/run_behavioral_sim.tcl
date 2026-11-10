@@ -246,8 +246,11 @@ set sim_tcl_file [open $sim_custom_tcl w]
 puts $sim_tcl_file "file copy -force [list $inst_mif] [list $sim_inst_mif]"
 puts $sim_tcl_file "puts [list STAGED_INSTRUCTION_MIF=$sim_inst_mif]"
 if {$capture_waveform} {
-    puts $sim_tcl_file {log_wave -r /tb_top}
-    puts "XSIM_WAVE_LOGGING=log_wave -r /tb_top"
+    # The elaborated top includes the PIPELINE_FORWARDING generic in its
+    # scope name, so /tb_top is not a valid scope. Log from the simulation
+    # root to capture every displayable HDL object (UG900 recommendation).
+    puts $sim_tcl_file {log_wave -r /}
+    puts "XSIM_WAVE_LOGGING=log_wave -r /"
 }
 puts $sim_tcl_file "run $max_ns ns"
 puts $sim_tcl_file "quit"

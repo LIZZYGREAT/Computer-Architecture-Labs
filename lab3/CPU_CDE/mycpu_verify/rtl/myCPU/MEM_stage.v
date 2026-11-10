@@ -15,6 +15,7 @@ module mem_stage(
     output [ 7:0]                  cp0_waddr,
     output [31:0]                  cp0_wdata,
     output [ 7:0]                  cp0_raddr,
+    output                         cp0_serial_busy,
     output                         trap_commit,
     output [ 4:0]                  trap_code,
     output [31:0]                  trap_pc,
@@ -93,6 +94,9 @@ assign cp0_we = ms_valid && ms_ready_go && ws_allowin &&
 assign cp0_waddr = cp0_we ? ms_cp0_addr : 8'b0;
 assign cp0_wdata = cp0_we ? ms_cp0_write_data : 32'b0;
 assign cp0_raddr = (ms_valid && (ms_cp0_op == `CP0_OP_MFC0)) ? ms_cp0_addr : 8'b0;
+assign cp0_serial_busy = ms_valid &&
+                         ((ms_cp0_op == `CP0_OP_MTC0) ||
+                          (ms_cp0_op == `CP0_OP_ERET));
 assign trap_code = ms_exception_code;
 assign trap_pc = ms_pc;
 assign trap_bd = ms_is_delay_slot;

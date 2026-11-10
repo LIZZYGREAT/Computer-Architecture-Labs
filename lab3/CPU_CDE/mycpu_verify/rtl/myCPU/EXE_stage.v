@@ -14,6 +14,7 @@ module exe_stage(
     output                         es_to_ms_valid,
     output [`ES_TO_MS_BUS_WD -1:0] es_to_ms_bus  ,
     output [38:0]                  es_producer_bus,
+    output                         cp0_serial_busy,
     // data sram interface
     output        data_sram_en   ,
     output [ 3:0] data_sram_wen  ,
@@ -28,10 +29,15 @@ reg  [`DS_TO_ES_BUS_WD -1:0] ds_to_es_bus_r;
 wire [1:0]  es_cp0_op;
 wire [7:0]  es_cp0_addr;
 wire [31:0] es_cp0_write_data;
+wire        es_pipe_exception_valid;
+wire [4:0]  es_pipe_exception_code;
+wire [31:0] es_pipe_exception_bad_vaddr;
+wire        es_is_delay_slot;
+wire        es_overflow_check_add;
+wire        es_overflow_check_sub;
 wire        es_exception_valid;
 wire [4:0]  es_exception_code;
 wire [31:0] es_exception_bad_vaddr;
-wire        es_is_delay_slot;
 wire [`HILO_OP_WD-1:0] es_hilo_op;
 wire [11:0] es_alu_op     ;
 wire [`MEM_OP_WD-1:0] es_mem_op;
@@ -48,10 +54,12 @@ wire [31:0] es_pc         ;
 assign {es_cp0_op,
         es_cp0_addr,
         es_cp0_write_data,
-        es_exception_valid,
-        es_exception_code,
-        es_exception_bad_vaddr,
+        es_pipe_exception_valid,
+        es_pipe_exception_code,
+        es_pipe_exception_bad_vaddr,
         es_is_delay_slot,
+        es_overflow_check_add,
+        es_overflow_check_sub,
         es_hilo_op     ,  //153:146 legacy fields
         es_alu_op      ,  //145:134
         es_mem_op      ,  //133:122
@@ -72,6 +80,13 @@ wire [31:0] es_alu_src2   ;
 wire [31:0] es_alu_result ;
 wire [31:0] es_result     ;
 wire        es_imm_zero_extend;
+wire        es_add_overflow;
+wire        es_sub_overflow;
+wire        es_word_align_error;
+wire        es_half_align_error;
+wire        es_new_overflow;
+wire        es_new_address_error;
+wire        es_address_is_store;
 wire        es_hilo_multdiv;
 wire        es_hilo_start;
 wire        es_hilo_busy;
@@ -87,6 +102,31 @@ wire        es_mem_store;
 wire [3:0]  es_store_wen;
 wire [31:0] es_store_data;
 
+assign es_add_overflow = es_overflow_check_add &&
+                         (~(es_alu_src1[31] ^ es_alu_src2[31])) &&
+                         (es_alu_src1[31] ^ es_alu_result[31]);
+assign es_sub_overflow = es_overflow_check_sub &&
+                         (es_alu_src1[31] ^ es_alu_src2[31]) &&
+                         (es_alu_src1[31] ^ es_alu_result[31]);
+assign es_word_align_error = (es_mem_op[`MEM_OP_LW] || es_mem_op[`MEM_OP_SW]) &&
+                             (es_alu_result[1:0] != 2'b00);
+assign es_half_align_error = (es_mem_op[`MEM_OP_LH] || es_mem_op[`MEM_OP_LHU] ||
+                              es_mem_op[`MEM_OP_SH]) && es_alu_result[0];
+assign es_new_overflow = !es_pipe_exception_valid &&
+                         (es_add_overflow || es_sub_overflow);
+assign es_new_address_error = !es_pipe_exception_valid &&
+                              !es_new_overflow &&
+                              (es_word_align_error || es_half_align_error);
+assign es_address_is_store = es_mem_op[`MEM_OP_SW] || es_mem_op[`MEM_OP_SH];
+assign es_exception_valid = es_pipe_exception_valid || es_new_overflow ||
+                            es_new_address_error;
+assign es_exception_code = es_pipe_exception_valid ? es_pipe_exception_code :
+                           es_new_overflow ? `EXC_OV :
+                           es_new_address_error ? (es_address_is_store ? `EXC_ADES : `EXC_ADEL) :
+                           5'b0;
+assign es_exception_bad_vaddr = es_pipe_exception_valid ? es_pipe_exception_bad_vaddr :
+                                es_new_address_error ? es_alu_result : 32'b0;
+
 assign es_res_from_mem = |es_mem_op[6:0];
 assign es_mem_store = |es_mem_op[11:7];
 assign es_producer_bus = {es_valid && !flush && !es_exception_valid &&
@@ -96,6 +136,9 @@ assign es_producer_bus = {es_valid && !flush && !es_exception_valid &&
                               (es_cp0_op != `CP0_OP_MFC0) && (es_dest != 5'd0),
                           es_dest,
                           es_result};
+assign cp0_serial_busy = es_valid && !flush && !es_exception_valid &&
+                         ((es_cp0_op == `CP0_OP_MTC0) ||
+                          (es_cp0_op == `CP0_OP_ERET));
 assign es_to_ms_bus = {es_cp0_op,
                        es_cp0_addr,
                        es_cp0_write_data,
@@ -158,6 +201,7 @@ assign es_result = es_hilo_op[`HILO_OP_MFHI] ? hilo_hi_value :
 hilo_unit u_hilo_unit(
     .clk              (clk),
     .resetn           (~reset),
+    .cancel           (flush || es_exception_valid),
     .start            (es_hilo_start),
     .is_mult          (es_hilo_op[`HILO_OP_MULT]),
     .is_multu         (es_hilo_op[`HILO_OP_MULTU]),
