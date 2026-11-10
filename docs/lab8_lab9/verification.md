@@ -26,15 +26,28 @@ The final Lab8 input hashes are MIF `D611D547FFDC000F003673B1B9276D1BA813C15008B
 
 The final SoC wrapper reruns used the same simulation behavior as the earlier legacy tests: `SIMULATION=1` hardwires the external interrupt source to zero. The six final course runs below were all executed after this wrapper change.
 
+### Post-revision regression
+
+After the reserved-field decode fix (`8ad33b3`) and directed CPU tests (`d6f6256`), all six course images were rerun. Each passed its existing point count and full reference GPR trace comparison; input MIFs and reference traces are unchanged. These runs did not retain run-specific WDB evidence; the screenshot databases remain the separately validated final course captures above.
+
+| Case | Run ID | Points | Cycles | Stall cycles | Trace SHA-256 | Result |
+|---|---|---:|---:|---:|---|---|
+| Lab3 | `lab3-20261110T040419Z` | 23/23 | 172,599 | 0 | `441D74893AD9AC7C8E40B92E10144639A3B8A700FE1290FDECBF4A8DEC60EFFA` | PASS |
+| Lab4 | `lab4-20261110T041056Z` | 23/23 | 114,577 | 50 | `EC1C8C84E14928FED411BF23DA3FB3DD0E2FED090F494710FC8EC21FFCFEB9DB` | PASS |
+| Lab6 | `lab6-20261110T041435Z` | 42/42 | 109,439 | 89 | `FB92799CBA4C42B1ECB729DD6659DADC63195B07E16C3FD6E25B2A6986850CA1` | PASS |
+| Lab7 | `lab7-20261110T041820Z` | 68/68 | 166,330 | 926 | `23ADD75B2BADFDABF98B1863A89896DFC60B4B351CC49321B22BEB22035991C3` | PASS |
+| Lab8 | `lab8-20261110T035510Z` | 69/69 | 166,850 | 986 | `F6A7268A79725186B9EC8602A404CC5BE8E1D439E93ACAD1B2ADA04937723994` | PASS |
+| Lab9 | `lab9-20261110T035940Z` | 94/94 | 195,004 | 3,910 | `8AEE862561B79A7020E1753590B25E37DBB4ECC379E9B75B234F9FA6212F30CF` | PASS |
+
 ## Directed tests
 
 | Test | Run ID / evidence folder | Assertions and result |
 |---|---|---|
 | CP0 register unit | `cp0-unit-20261109T141303Z` | 62 assertions, 2 traps, PASS |
-| CP0 reserved-field CPU decode | `cp0-decode-20261110T033652Z` | 24 assertions; legal MFC0/MTC0 unchanged; 2 malformed MFC0 + 2 malformed MTC0 each RI=10, Cause/EPC/ERET verified, no GPR/CP0/SRAM side effects; PASS |
-| Precise store exception ordering | `precise-store-20261110T` | 6 assertions; older store 1, faulting AdES store 0, younger store 1 after ERET; ExcCode=5, EPC=0xBFC0000C, BadVAddr=2; PASS |
-| CPU HI/LO exception/interrupt ordering | `hilo-order-20261110T` | 8 assertions; older syscall kills younger DIV before start and preserves HI/LO; DIV during EX completes once before IP2 trap; 2 traps, 2 ERETs, PASS |
-| Software IP0/IP1 and timer TI/IP7 | `software-timer-20261110T035119Z` | 13 assertions; each source is first observed masked, then accepted once; Cause/Compare handler clears requests; 3 traps, 3 ERETs; timer-only IP7 with `hw_int=0`; PASS |
+| CP0 reserved-field CPU decode | `cp0-decode-20261110T033652Z` | 24 assertions; legal MFC0/MTC0 unchanged; 2 malformed MFC0 + 2 malformed MTC0 each RI=10, Cause/EPC/ERET verified, no GPR/CP0/SRAM side effects; PASS; WDB opens with 592 scopes / 11 clock objects |
+| Precise store exception ordering | `precise-store-20261110T` | 6 assertions; older store 1, faulting AdES store 0, younger store 1 after ERET; ExcCode=5, EPC=0xBFC0000C, BadVAddr=2; PASS; WDB opens with 592 scopes / 11 clock objects |
+| CPU HI/LO exception/interrupt ordering | `hilo-order-20261110T` | 8 assertions; older syscall kills younger DIV before start and preserves HI/LO; DIV during EX completes once before IP2 trap; 2 traps, 2 ERETs, PASS; WDB opens with 592 scopes / 11 clock objects |
+| Software IP0/IP1 and timer TI/IP7 | `software-timer-20261110T035119Z` | 13 assertions; each source is first observed masked, then accepted once; Cause/Compare handler clears requests; 3 traps, 3 ERETs; timer-only IP7 with `hw_int=0`; PASS; WDB opens with 592 scopes / 11 clock objects |
 | HI/LO divide cancellation | `hilo-cancel-20261109T150200Z` | `HILO_UNIT_TB_PASS`; 3 mult accepts, 5 div accepts, 6 result commits; cancelled divide did not commit |
 | External IP2 | `interrupt-ip2-20261110T` | 10 assertions, 1 trap, 1 ERET, 1 resumed store, PASS |
 | External IP3 | `interrupt-ip3-20261110T` | 10 assertions, 1 trap, 1 ERET, 1 resumed store, PASS |
@@ -69,6 +82,6 @@ The two partial rows are kept explicit; course functional points and a HI/LO uni
 
 ## Waveform validation
 
-The final screenshot set contains 10 WCFG files under `report/lab8-9/figures/waveforms/final/`: one syscall profile bound to the final Lab8 WDB, eight exception/timer/software profiles bound to the final Lab9 WDB, and one CPU-level IP2 profile bound to its standalone WDB. `scripts/validate_wave_configs.tcl` opened all 10 against their matching WDBs in Vivado. Each loaded wave count matched the WCFG declaration (21, 21, 30, 27, 30, 26, 25, 20, 16, and 22 signals).
+The final screenshot set contains 10 WCFG files under `report/lab8-9/figures/waveforms/final/`: one syscall profile bound to the final Lab8 WDB, eight exception/timer/software profiles bound to the final Lab9 WDB, and one CPU-level IP2 profile bound to its standalone WDB. `scripts/validate_wave_configs.tcl` opened all 10 against their matching WDBs in Vivado. Each loaded wave count matched the WCFG declaration (21, 21, 30, 27, 30, 26, 25, 20, 16, and 22 signals). The 13 retained Lab6/Lab7 WCFGs were also loaded against their referenced WDBs and matched their declared counts. The complete retained set is 23 WCFGs and 21 WDBs; the repository's artifact audit records how all retained files were validated and which obsolete captures were removed.
 
 No PNG screenshots or GUI-observed time windows have been created. The observed-time and observed-value columns in `report/lab8-9/data/wave-capture-log.csv` remain blank for the user to fill after opening each matching WDB/WCFG. Expected values in that table come from the course instruction image, source or the directed CPU testbench; they are not labelled as WDB observations.

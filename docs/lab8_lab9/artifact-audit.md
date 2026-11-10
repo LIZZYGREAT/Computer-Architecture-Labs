@@ -38,3 +38,54 @@ The 17 retained databases are grouped by use:
 - Removed generated `reference-work/`, XSim `.sim`/`xsim.dir` contents, the duplicate WDB and build cache under `mycpu_prj1_wave_recapture`, and per-run `vivado_project/` build trees after preserving the final WDBs and logs needed as evidence. Kept the tracked `mycpu_prj1_wave_recapture.xpr` project recipe.
 
 The final run records and report CSVs continue to point to retained files. `implementation.md` was updated to avoid links to removed diagnostic directories. No screenshots or waveform time values were synthesized during this audit.
+
+## Follow-up after the Lab8/Lab9 revisions
+
+On 2026-11-10, six post-revision course regressions passed (Lab3 through Lab9), and four new CPU-directed WDBs were produced for reserved CP0 decode, precise store ordering, CPU HI/LO ordering, and software/timer interrupts. Each new WDB was opened by Vivado 2025.2; it contained 592 HDL scopes and 11 clock-named objects. The 17 WDBs retained from the earlier audit remain unchanged and were already reopened successfully in Vivado. The repository now has 21 retained WDBs and 23 retained WCFGs.
+
+| New directed WDB | Bytes | SHA-256 | Vivado open |
+|---|---:|---|---|
+| `cp0-decode-20261110T033652Z/cp0_decode_tb.wdb` | 400,935 | `61B460482CB365D9B3BA228F80B868BE99DA3DB936CADB5F05D14012F78271FF` | PASS; 592 scopes, 11 clock objects |
+| `precise-store-20261110T/precise_exception_tb.wdb` | 207,740 | `6675C815B094EF02227B8F6890BF50F8A59595ABA654520EE5DCB6A577C678FC` | PASS; 592 scopes, 11 clock objects |
+| `hilo-order-20261110T/hilo_order_tb.wdb` | 223,894 | `041CC49DC57B9A68996B36DEF391EC088053A184B416E3B93100A693844F1D68` | PASS; 592 scopes, 11 clock objects |
+| `software-timer-20261110T035119Z/software_timer_irq_tb.wdb` | 253,714 | `7A8CADBE126CD809FBD3868F3F130AFA31B6FF5F7458D9464725725A2BEE55C8` | PASS; 592 scopes, 11 clock objects |
+
+All 23 WCFG files also retain an existing WDB reference, were opened in Vivado against that WDB, and loaded the exact number of signals declared in the configuration:
+
+| WCFG | Referenced WDB | Declared / loaded signals |
+|---|---|---:|
+| `report/lab6-7/figures/waveforms/01_alu_directed_full_run.wcfg` | Lab3 `lab3-20261028T132600Z-forwarding.wdb` | 17 |
+| `report/lab6-7/figures/waveforms/01_alu_immediate.wcfg` | Lab3 `lab3-20261028T132600Z-forwarding.wdb` | 17 |
+| `report/lab6-7/figures/waveforms/02_variable_shift.wcfg` | Lab3 `lab3-20261028T132600Z-forwarding.wdb` | 14 |
+| `report/lab6-7/figures/waveforms/03_forwarding_load_use.wcfg` | Lab3 `lab3-20261028T132600Z-forwarding.wdb` | 24 |
+| `report/lab6-7/figures/waveforms/04_mult_hilo.wcfg` | Lab6 `lab6-20261102T054949Z-forwarding.wdb` | 22 |
+| `report/lab6-7/figures/waveforms/05_div_hilo_full_lab6.wcfg` | Lab6 `lab6-20261102T054949Z-forwarding.wdb` | 29 |
+| `report/lab6-7/figures/waveforms/05_div_stall_branch_directed.wcfg` | Lab6 `lab6-20261102T060138Z-forwarding.wdb` | 29 |
+| `report/lab6-7/figures/waveforms/06_branch_delay_slot_jalr.wcfg` | Lab7 `lab7-20261102T055526Z-forwarding.wdb` | 20 |
+| `report/lab6-7/figures/waveforms/07_partial_store_mask.wcfg` | Lab7 `lab7-20261102T055526Z-forwarding.wdb` | 17 |
+| `report/lab6-7/figures/waveforms/08_byte_half_load.wcfg` | Lab7 `lab7-20261102T055526Z-forwarding.wdb` | 21 |
+| `report/lab6-7/figures/waveforms/09_unaligned_load_merge.wcfg` | Lab7 `lab7-20261102T055526Z-forwarding.wdb` | 19 |
+| `report/lab6-7/figures/waveforms/10_store_readback.wcfg` | Lab7 `lab7-20261102T055526Z-forwarding.wdb` | 24 |
+| `report/lab6-7/figures/waveforms/11_hilo_unsigned_optional.wcfg` | Lab6 `lab6-20261102T054949Z-forwarding.wdb` | 21 |
+| `report/lab8-9/figures/waveforms/final/01_syscall.wcfg` | Lab8 `lab8-20261109T163413Z-forwarding.wdb` | 21 |
+| `report/lab8-9/figures/waveforms/final/02_break.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 21 |
+| `report/lab8-9/figures/waveforms/final/03_overflow.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 30 |
+| `report/lab8-9/figures/waveforms/final/04_load_adel.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 27 |
+| `report/lab8-9/figures/waveforms/final/05_store_ades.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 30 |
+| `report/lab8-9/figures/waveforms/final/06_fetch_adel.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 26 |
+| `report/lab8-9/figures/waveforms/final/07_delay_slot.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 25 |
+| `report/lab8-9/figures/waveforms/final/08_timer_irq.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 20 |
+| `report/lab8-9/figures/waveforms/final/09_software_irq.wcfg` | Lab9 `lab9-20261109T163846Z-forwarding.wdb` | 16 |
+| `report/lab8-9/figures/waveforms/final/10_external_interrupt_ip2.wcfg` | IP2 `interrupt-ip2.wdb` | 22 |
+
+The following failed or superseded files were removed after checking their Run IDs and keeping the final replacements:
+
+- `cp0-decode-20261110T/` (Vivado startup failure) and `cp0-decode-20261110T033210Z/` (earlier pass superseded by the final Cause/EPC/ERET-checked run `033652Z`).
+- `software-timer-20261110T/` (testbench passed, but its first runner failed to produce a valid summary; replaced by `software-timer-20261110T035119Z/`).
+- Rebuildable `vivado_project/`, `xsim.dir/`, and generated per-run wave Tcl files under the retained CP0, precise-store, and HI/LO CPU test results. Their final WDB, simulation log, summary, and Vivado logs are kept.
+- Vivado also left an incidental `tb_top_behav.wdb` in the shared Lab7 project output while the fresh run record correctly said `WAVEFORM_CAPTURED=False`. The database opened successfully (973 scopes, 26 clock-named objects), but no WCFG referenced it and it was not included in the run record; it was removed with its disposable `xsim.dir/` cache and per-run Tcl copy. Its SHA-256 was `2C611C090FF67F13E28BD55EB86A210A8963B50C5B5D7052CE30D4112FACD990`.
+- Temporary audit probe scripts and logs from a rejected clock-value query. The supported validation record uses Vivado's successful WDB open, hierarchy and recorded-clock object checks, plus the matching WCFG load and wave-count check; it does not claim GUI-observed values or screenshots.
+
+The four new CPU-directed WDBs were checked with `scripts/validate_wave_db.tcl`; each Vivado log is retained under `results/lab8_lab9/wdb-audit-20261110T/`.
+
+The six post-revision course result folders are kept as final regression evidence. They contain fresh `result.txt` files and source/simulation logs, and are indexed in `report/lab8-9/data/evidence_index.csv`; the existing screenshot WDBs remain the separate, validated capture baseline.
