@@ -26,12 +26,24 @@ if {$case eq "lab13"} {
     set wrapper [file join $repo lab16 cache_verify rtl cache_top.v]
     set official_tb [file join $repo lab16 cache_verify testbench testbench.v]
     set directed_tb [file join $repo lab16 cache_verify testbench tb_cache_directed.sv]
+} elseif {$case eq "lab14_translate"} {
+    set rtl [list \
+        [file join $repo lab13 tlb_verify rtl tlb.v] \
+        [file join $repo lab14 cpu_tlb rtl myCPU addr_translate.v]]
+    set directed_tb [file join $repo lab14 cpu_tlb testbench tb_lab14_translate.sv]
+} elseif {$case eq "lab11_axi3"} {
+    set rtl [list \
+        [file join $repo lab14 cpu_tlb rtl myCPU IF_stage.v] \
+        [file join $repo lab14 cpu_tlb rtl myCPU axi3_cpu_bus.v]]
+    set directed_tb [file join $repo lab14 cpu_tlb testbench tb_lab11_axi3_bus.sv]
 } else {
     error "unsupported unit case: $case"
 }
 
-if {![file isfile $rtl]} {
-    error "required RTL is missing: $rtl"
+foreach rtl_file $rtl {
+    if {![file isfile $rtl_file]} {
+        error "required RTL is missing: $rtl_file"
+    }
 }
 if {$suite eq "directed"} {
     if {![file isfile $directed_tb]} {
@@ -49,6 +61,11 @@ if {$suite eq "directed"} {
 }
 
 set_property top $sim_top [get_filesets sim_1]
+if {$case eq "lab11_axi3"} {
+    set cpu_include [file join $repo lab14 cpu_tlb rtl myCPU]
+    set_property include_dirs [list $cpu_include] [get_filesets sources_1]
+    set_property include_dirs [list $cpu_include] [get_filesets sim_1]
+}
 set_property xsim.simulate.log_all_signals true [get_filesets sim_1]
 set_property xsim.simulate.runtime 1000000ns [get_filesets sim_1]
 update_compile_order -fileset sim_1
@@ -81,7 +98,13 @@ if {[regexp -nocase {WATCHDOG_TIMEOUT|----FAIL!!!|Fatal:|ERROR:|Error:} $sim_tex
     error "simulation reported a failure; inspect $sim_log"
 }
 if {$suite eq "directed"} {
-    set pass_marker "DIRECTED_PASS"
+    if {$case eq "lab14_translate"} {
+        set pass_marker "LAB14_TRANSLATE_PASS"
+    } elseif {$case eq "lab11_axi3"} {
+        set pass_marker "LAB11_AXI3_BUS_PASS"
+    } else {
+        set pass_marker "DIRECTED_PASS"
+    }
 } elseif {$case eq "lab13"} {
     set pass_marker "----PASS!!!"
     foreach marker {"OK!!!write" "OK!!!read" "OK!!!search" "Test end!"} {
@@ -97,6 +120,22 @@ if {$suite eq "directed"} {
 }
 if {[string first $pass_marker $sim_text] < 0} {
     error "simulation missed PASS marker $pass_marker; inspect $sim_log"
+}
+if {$case eq "lab11_axi3"} {
+    foreach marker {
+        "LAB11_AXI3_IF_REDIRECT_STALLED_AR_PASS"
+        "LAB11_AXI3_IF_REDIRECT_ACCEPTED_AR_PASS"
+        "LAB11_AXI3_HANDSHAKE_PASS reads=2 stores=2 AW_first=1 W_first=1"
+        "LAB11_AXI3_RID_CHECK_PASS"
+        "LAB11_AXI3_RRESP_CHECK_PASS"
+        "LAB11_AXI3_RLAST_CHECK_PASS"
+        "LAB11_AXI3_BID_CHECK_PASS"
+        "LAB11_AXI3_BRESP_CHECK_PASS"
+    } {
+        if {[string first $marker $sim_text] < 0} {
+            error "Lab11 AXI regression missed required marker: $marker"
+        }
+    }
 }
 foreach filename {compile.log elaborate.log simulate.log} {
     set source_path [file join $sim_dir $filename]
