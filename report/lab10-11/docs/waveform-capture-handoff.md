@@ -32,16 +32,16 @@ SHA-256：`DBA494CF17EDD813F38062B20C4A78C14199997375A85CDB8EE4BEECAC8C0A7F`
 
 | 图 | 主题 | 活动 WCFG | 搜索信号 | 搜索值 | 日志锚点 | 核对重点 | PNG |
 | --- | --- | --- | --- | --- | ---: | --- | --- |
-| L11-01 | AXI3 单拍读事务 | `report/lab10-11/figures/lab11/01_axi_read__lab11-prot-fix-full-20261117-01.wcfg` | `/tb_top/soc_lite/cpu_araddr` | `0xbfc00000` | AR 2,045 ns | ARID=0、ARLEN=0，之后 RVALID/RREADY、RID、RRESP、RLAST 配对 | `L11-01.png` |
-| L11-02 | IF/Load 读仲裁 | `report/lab10-11/figures/lab11/02_read_arbitration__lab11-prot-fix-full-20261117-01.wcfg` | `/tb_top/soc_lite/u_cpu/mem_stage/ms_pc` | `0xbfc00d64` | Load 74,565 ns | `rd_owner_data=1`、ID=1 的 Load 响应回到 MEM；IF owner 为 ID=0 | `L11-02.png` |
-| L11-03 | AW/W/B 写事务与保护属性 | `report/lab10-11/figures/lab11/03_axi_write__lab11-prot-fix-full-20261117-01.wcfg` | `/tb_top/soc_lite/u_cpu/mem_stage/ms_pc` | `0xbfc006f4` | Store 3,285 ns | AWPROT=`010`、AWID=WID、AWSIZE=`010`、AWLEN=0、AWBURST=`01`、WLAST=1；B 后 MEM 完成 | `L11-03.png` |
-| L11-04 | READY 反压 | `report/lab10-11/figures/lab11/04_axi_backpressure__lab11-prot-fix-full-20261117-01.wcfg` | `/tb_top/soc_lite/cpu_arvalid` | `1` | AR backpressure 2,035 ns | 同一 AR 地址 `0xbfc00000`、ID=0；下一锚点 2,045 ns 握手 | `L11-04.png` |
-| L11-05 | 异常期间旧读响应丢弃 | `report/lab10-11/figures/lab11/05_redirect_stale__lab11-prot-fix-full-20261117-01.wcfg` | `/tb_top/soc_lite/u_cpu/if_stage/restart_pc` | `0xbfc00380` | stale drop 9,304,945 ns | redirect 在 9,304,925 ns；旧 IF 读排空后丢弃，转到目标 PC | `L11-05.png` |
+| L11-01 | AXI3 单拍读事务 | `report/lab10-11/figures/lab11/01_axi_read__lab11-prot-fix-full-20261117-01-v2.wcfg` | `/tb_top/soc_lite/cpu_araddr` | `0xbfc00000` | AR 2,045 ns | 在 `ARVALID && ARREADY` 接受时刻读取 ARID=0、ARPROT=`110`、ARLEN=0；之后 RVALID/RREADY、RID、RRESP、RLAST 配对 | `L11-01.png` |
+| L11-02 | IF/Load 读仲裁 | `report/lab10-11/figures/lab11/02_read_arbitration__lab11-prot-fix-full-20261117-01-v2.wcfg` | `/tb_top/soc_lite/u_cpu/mem_stage/ms_pc` | `0xbfc00d64` | Load 74,565 ns | 在各自 `ARVALID && ARREADY` 接受时刻比较：IF ARPROT=`110`，Load ARPROT=`010`；`rd_owner_data=1`、ID=1 的 Load 响应回到 MEM，IF owner 为 ID=0 | `L11-02.png` |
+| L11-03 | AW/W/B 写事务与保护属性 | `report/lab10-11/figures/lab11/03_axi_write__lab11-prot-fix-full-20261117-01-v2.wcfg` | `/tb_top/soc_lite/u_cpu/mem_stage/ms_pc` | `0xbfc006f4` | Store 3,285 ns | AWPROT=`010`、AWID=WID、AWSIZE=`010`、AWLEN=0、AWBURST=`01`、WLAST=1；B 后 MEM 完成 | `L11-03.png` |
+| L11-04 | READY 反压 | `report/lab10-11/figures/lab11/04_axi_backpressure__lab11-prot-fix-full-20261117-01-v2.wcfg` | `/tb_top/soc_lite/cpu_arvalid` | `1` | AR backpressure 2,035 ns | 同一 AR 地址 `0xbfc00000`、ID=0；下一锚点 2,045 ns 握手 | `L11-04.png` |
+| L11-05 | 异常期间旧读响应丢弃 | `report/lab10-11/figures/lab11/05_redirect_stale__lab11-prot-fix-full-20261117-01-v2.wcfg` | `/tb_top/soc_lite/u_cpu/if_stage/restart_pc` | `0xbfc00380` | stale drop 9,304,945 ns | redirect 在 9,304,925 ns；旧 IF 读排空后丢弃，转到目标 PC | `L11-05.png` |
 
-`AWPROT=010` 表示数据访问、Non-secure、unprivileged；取指 ARPROT=`110`，Load ARPROT=`010`。L11-03 配置包含 21 个信号，含 `cpu_wid`、`cpu_awprot`、`cpu_awsize`、`cpu_awlen`、`cpu_awburst`。`L11-04` 的 `search_value=1` 只对应 ARVALID；地址和 ID 在同次 Run 的 `search_context` 锚点中，不要把 VALID 值与地址 payload 混淆。
+`AWPROT=010` 表示数据访问、Non-secure、unprivileged；取指 ARPROT=`110`，Load ARPROT=`010`。新版 `L11-01`、`L11-02` 分别包含 13、17 个信号并显示 `cpu_arprot`；`L11-03` 保持 21 个信号，含 `cpu_wid`、`cpu_awprot`、`cpu_awsize`、`cpu_awlen`、`cpu_awburst`。`L11-04` 的 `search_value=1` 只对应 ARVALID；地址和 ID 在同次 Run 的 `search_context` 锚点中，不要把 VALID 值与地址 payload 混淆。
 
 ## 状态与历史版本
 
-`wave-capture-log.csv` 中 Lab10 四行和修正后 Lab11 五行仍是 `PENDING_CAPTURE`；旧的修正前 Lab11 五行标为 `SUPERSEDED`，请勿用旧 Run 截图作为 AxPROT 验收证据。原有 9 份 WCFG 均保留；Lab10 `-v4`、历史 Lab11 `-v2` 及修正后 Run 的配置为版本化副本，均使用相对 WDB 路径。
+`wave-capture-log.csv` 中 Lab10 四行和修正后 Lab11 五行仍是 `PENDING_CAPTURE`；旧的修正前 Lab11 五行标为 `SUPERSEDED`，请勿用旧 Run 截图作为 AxPROT 验收证据。原有 9 份 WCFG 均保留；Lab10 `-v4`、历史 Lab11 `-v2` 及修正后 Run 的 `-v2` 配置为版本化副本，均使用相对 WDB 路径。
 
 截图前的 `expected` 与日志锚点仅供定位和对照，不是 `observed`。请在 Vivado Wave 实际读取显示值并保存 PNG 后，再填写观测值、时间窗并将对应行改为 `CAPTURED_VERIFIED`。

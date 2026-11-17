@@ -1,0 +1,7 @@
+﻿RUN_ID=preflight-stage-separation-20261118-02
+CASE=lab11
+SUITE=preflight
+VIVADO_PREFLIGHT_STATUS=PASS
+VIVADO_VERSION=2025.2
+IP_STATUS=REPORTED
+PROJECT_PREFLIGHT_REPORT=C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\lab11\preflight-stage-separation-20261118-02\preflight\project-preflight.txt

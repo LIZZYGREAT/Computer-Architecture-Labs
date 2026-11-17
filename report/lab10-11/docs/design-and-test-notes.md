@@ -36,9 +36,9 @@ Lab10 full-run 没有输出运行时协议断言计数，因此 transaction summ
 
 修正后 Lab11 full-run 结束时 `inst_req_accept=172894`、`inst_data_complete=172893`，故 `terminal_pending_if=1`。这表示仿真终止时一笔末尾 IF 请求已进入 adapter、尚未发出外部 AR；它不是一个未返回的 R 响应。外部 AR/R 各 177,511 次并完全配对，Load 与 Store 也无尾项。
 
-最终 WDB 的 SHA-256 为 `DBA494CF17EDD813F38062B20C4A78C14199997375A85CDB8EE4BEECAC8C0A7F`；大小 981,401,793 字节。本机文件：`results/lab10_lab11/lab11/lab11-prot-fix-full-20261117-01/wave-full.wdb`。Run 的 `source-manifest.csv` SHA-256 为 `D68D3FF789C33851F8FF6AF13FD6A5F8D1363EF5FCE7E02FF9C85F13E4893340`，在 `evidence_index.csv` 中逐 Run 记录。
+最终 WDB 的 SHA-256 为 `DBA494CF17EDD813F38062B20C4A78C14199997375A85CDB8EE4BEECAC8C0A7F`；大小 981,401,793 字节。本机文件：`results/lab10_lab11/lab11/lab11-prot-fix-full-20261117-01/wave-full.wdb`。历史 Run 的五列 `source-manifest.csv` SHA-256 为 `D68D3FF789C33851F8FF6AF13FD6A5F8D1363EF5FCE7E02FF9C85F13E4893340`，该清单的可信边界与事后关联结果见 `source-provenance-audit.md`。
 
-波形交接有 23 条结构校验记录（原 9 份、9 份版本化可移植副本、修正后 Run 的 5 份）；Vivado 校验均 PASS。L11-03 的活动配置包括 AWPROT、WID、AWSIZE、AWLEN 与 AWBURST，人工波形读值仍待截图后填写。
+波形交接有 28 条结构校验记录（原 9 份、9 份版本化可移植副本、修正后 Run 的原始 5 份配置及新增 `-v2` 5 份配置）；Vivado 校验均 PASS。新增 `L11-01/L11-02` 配置分别含 13/17 个信号并加入 `cpu_arprot`。L11-03 继续包括 AWPROT、WID、AWSIZE、AWLEN 与 AWBURST；人工波形读值仍待截图后填写。
 
 ## 原 CPU 异常/中断回归复核
 
