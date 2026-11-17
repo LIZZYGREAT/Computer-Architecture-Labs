@@ -1,0 +1,15 @@
+Time resolution is 1 ps
+LAB14_TRANSLATE_CHECK=1 kseg0_direct_cached_alias
+LAB14_TRANSLATE_CHECK=2 kseg1_direct_uncached_alias
+LAB14_TRANSLATE_CHECK=3 tlb_miss_blocks_translation_without_va_fallback
+LAB14_TRANSLATE_CHECK=4 mapped_even_page_translation
+LAB14_TRANSLATE_CHECK=5 mapped_odd_page_translation
+LAB14_TRANSLATE_CHECK=6 asid_mismatch_misses
+LAB14_TRANSLATE_CHECK=7 global_entry_matches_any_asid
+LAB14_TRANSLATE_CHECK=8 invalid_page_blocks_translation
+LAB14_TRANSLATE_CHECK=9 clean_page_allows_load
+LAB14_TRANSLATE_CHECK=10 clean_page_blocks_store
+LAB14_TRANSLATE_CHECK=11 dirty_page_allows_store
+DIRECTED_CHECKS=11
+LAB14_TRANSLATE_PASS checks=11
+$finish called at time : 102 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab14/cpu_tlb/testbench/tb_lab14_translate.sv" Line 173

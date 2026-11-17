@@ -1,0 +1,15 @@
+RUN_ID=lab14-n1-n6-official-20261118-05
+CASE=lab14
+SUITE=lab14
+STATUS=PASS
+SIM_TOP=tb_lab14_tlb
+PASS_MARKER=LAB14_N1_N6_PASS score=6/6
+TESTPOINTS=6
+TLB_OP_COMMIT=MEM
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab14/lab14-n1-n6-official-20261118-05/project/lab14_soc.xpr
+PROGRAM_IMAGE=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab14/tlb_func/obj/inst_ram.coe
+WAVEFORM=wave-full.wdb
+SOURCE_INTEGRITY=PASS
+SOURCE_MANIFEST=source-manifest.csv
+INPUT_MANIFEST=input_manifest.csv
+GIT_HEAD=985f64facb4ee9bf8df21acdac74c1bef61e5068

@@ -1,0 +1,18 @@
+RUN_ID=lab11-cpu-golden-20261118-03
+CASE=lab11
+SUITE=lab11_trace
+STATUS=PASS
+SIM_TOP=tb_top
+PASS_MARKER=COURSE_SOC_PASS
+TRACE_REFERENCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab11/CPU_CDE_AXI/cpu132_gettrace/golden_trace.txt
+TESTPOINTS=94
+TRACE_RECORDS=111625
+TRACE_VALID_RECORDS=111583
+BUS_METRICS=pipeline_cycles=1067615 inst_req_accept=172888 inst_data_complete=172887 load_req_accept=4618 load_data_complete=4618 store_req_accept=3753 store_data_complete=3753 duplicate_store_count=0 protocol_assertions_failed=0 stale_fetch_drops=687 ar_handshakes=177505 r_handshakes=177505 aw_handshakes=3753 w_handshakes=3753 b_handshakes=3753 backpressure_ar_cycles=177505 backpressure_r_cycles=0 backpressure_aw_cycles=3753 backpressure_w_cycles=7506 backpressure_b_cycles=0
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab14/lab11-cpu-golden-20261118-03/project/lab11_trace_soc.xpr
+PROGRAM_IMAGE=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab11/CPU_CDE_AXI/soft/func_lab9/obj/inst_ram.coe
+WAVEFORM=OMITTED_LONG_RUN
+SOURCE_INTEGRITY=PASS
+SOURCE_MANIFEST=source-manifest.csv
+INPUT_MANIFEST=input_manifest.csv
+GIT_HEAD=985f64facb4ee9bf8df21acdac74c1bef61e5068

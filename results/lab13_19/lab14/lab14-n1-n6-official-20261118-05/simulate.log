@@ -1,0 +1,12 @@
+Time resolution is 1 ps
+ Block Memory Generator module loading initial data...
+ Block Memory Generator data initialization complete.
+Block Memory Generator module tb_lab14_tlb.soc_lite.u_axi_ram.ram.inst.axi_mem_module.blk_mem_gen_v8_4_12_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
+LAB14_TESTPOINT=1 SCORE=1
+LAB14_TESTPOINT=2 SCORE=2
+LAB14_TESTPOINT=3 SCORE=3
+LAB14_TESTPOINT=4 SCORE=4
+LAB14_TESTPOINT=5 SCORE=5
+LAB14_TESTPOINT=6 SCORE=6
+LAB14_N1_N6_PASS score=6/6 cycles=4705
+$finish called at time : 47047 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab14/cpu_tlb/testbench/tb_lab14_tlb.sv" Line 74

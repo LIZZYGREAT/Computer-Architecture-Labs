@@ -1,0 +1,8 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab14/cpu_tlb/rtl/myCPU/IF_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module if_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab14/cpu_tlb/rtl/myCPU/axi3_cpu_bus.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module axi3_cpu_bus
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab14/cpu_tlb/testbench/tb_lab11_axi3_bus.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_lab11_axi3_bus
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab14/lab11-axi3-directed-20261118-02/project/lab11_axi3_directed.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
