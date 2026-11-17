@@ -1,1 +1,6 @@
 case,run_id,metric,value,unit,source,notes
+lab13,lab13-tlb-official-unit-20261118-01,indexed_writes,16,entries,lab13/tlb_verify/rtl/tlb_top.v; official simulate.log,Inferred from official tlb_w_cnt sweep 0..15; official write and overall PASS markers observed
+lab13,lab13-tlb-official-unit-20261118-01,indexed_readbacks,16,entries,lab13/tlb_verify/rtl/tlb_top.v; official simulate.log,Inferred from official tlb_r_cnt sweep 0..15; official read and overall PASS markers observed
+lab13,lab13-tlb-official-unit-20261118-01,search_port_cases,26,port_cases,lab13/tlb_verify/rtl/tlb_top.v; official simulate.log,13 official s0/s1 cycles times two independent lookup ports; official search and overall PASS markers observed
+lab13,lab13-tlb-official-unit-20261118-01,test_error,0,assertions,lab13/tlb_verify/rtl/tlb_top.v; official simulate.log,Official testbench reached joint PASS without test_error
+lab13,lab13-tlb-directed-20261118-04,directed_checks,9,checks,lab13/tlb_verify/testbench/tb_tlb_directed.sv; simulate.log,"Explicit checks passed for simultaneous ports, ASID/global matching, odd/even page selection, invalid-page hit, indexed read, unwritten zero, and overwrite"

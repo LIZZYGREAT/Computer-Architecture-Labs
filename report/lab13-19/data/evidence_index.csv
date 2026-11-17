@@ -1,2 +1,4 @@
 case,run_id,suite,status,head,artifact_path,notes
-baseline,s0-merge-baseline-20261118-02,s0,BASELINE_CAPTURED,64e2586cbd94856abef57cabb9142d839c56f3bc,results/lab13_19/baseline/s0-merge-baseline-20261118-02,"Read-only Vivado inspection; official clock IP requires private upgrade; tlb.v and cache.v are implementation gaps"
+baseline,s0-merge-baseline-20261118-02,s0,BASELINE_CAPTURED,64e2586cbd94856abef57cabb9142d839c56f3bc,results/lab13_19/baseline/s0-merge-baseline-20261118-02,Read-only Vivado inspection; official clock IP requires private upgrade; tlb.v and cache.v are implementation gaps
+lab13,lab13-tlb-official-unit-20261118-01,official,PASS,22bb2085f32920a1e1b95efd22cc1fd01a8b6b00,results/lab13_19/lab13/lab13-tlb-official-unit-20261118-01,"Official Lab13 wrapper PASS; 16 writes, 16 indexed readbacks, 26 search-port cases, zero test_error"
+lab13,lab13-tlb-directed-20261118-04,directed,PASS,22bb2085f32920a1e1b95efd22cc1fd01a8b6b00,results/lab13_19/lab13/lab13-tlb-directed-20261118-04,Separate directed TLB RTL testbench PASS; 9 checks
