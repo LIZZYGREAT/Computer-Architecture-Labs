@@ -16,6 +16,8 @@ lab11,s4-directed-lab11-20261117,,,,,,,,,,,,,,,,NOT_INSTRUMENTED
 lab11,s4-directed-telemetry-lab11-20261117,,,,,,,,,,,,,,,,ENVIRONMENT_ERROR
 lab11,s4-preflight-final-lab11-20261117,,,,,,,,,,,,,,,,INCOMPLETE
 lab11,s4-preflight-lab11-20261117,,,,,,,,,,,,,,,,INCOMPLETE
+lab11,s5-full-capture-lab11-20261117,,,,,,,,,,,,,,,,ENVIRONMENT_ERROR
+lab11,s5-full-capture-lab11-fix1-20261117,172894,172893,4618,4618,3753,3753,177511,177511,3753,3753,3753,693,0,0,,PASS
 lab10,s2-lab10-soc-20261117T084124Z,,,,,,,,,,,,,,,,NOT_INSTRUMENTED
 lab10,s2-lab10-soc-20261117T085246Z,,,,,,,,,,,,,,,,NOT_INSTRUMENTED
 lab10,s2-lab10-unit-20261117T105200Z,,,,,,,,,,,,,,,,NOT_INSTRUMENTED

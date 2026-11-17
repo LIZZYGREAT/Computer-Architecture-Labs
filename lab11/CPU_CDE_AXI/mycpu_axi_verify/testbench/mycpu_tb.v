@@ -162,18 +162,18 @@ always @(posedge soc_clk) begin
         bus_axi_fault_seen = 1'b0;
     end else begin
         bus_pipeline_cycles <= bus_pipeline_cycles + 1;
-        if (soc_lite.cpu_inst_req && soc_lite.cpu_inst_addr_ok) begin
+        if (soc_lite.u_cpu.inst_sram_req && soc_lite.u_cpu.inst_sram_addr_ok) begin
             bus_inst_req_accept <= bus_inst_req_accept + 1;
             if (!bus_first_fetch_seen) begin
                 bus_first_fetch_seen = 1'b1;
                 $display("BUS_ANCHOR event=fetch pc=%08x addr=%08x time_ns=%0t",
-                         soc_lite.cpu.if_stage.request_pc, soc_lite.cpu_inst_addr, $time);
+                         soc_lite.u_cpu.if_stage.request_pc, soc_lite.u_cpu.inst_sram_addr, $time);
             end
         end
-        if (soc_lite.cpu_inst_data_ok)
+        if (soc_lite.u_cpu.inst_sram_data_ok)
             bus_inst_data_complete <= bus_inst_data_complete + 1;
-        if (soc_lite.cpu_data_req && soc_lite.cpu_data_addr_ok) begin
-            if (soc_lite.cpu_data_wr) begin
+        if (soc_lite.u_cpu.data_sram_req && soc_lite.u_cpu.data_sram_addr_ok) begin
+            if (soc_lite.u_cpu.data_sram_wr) begin
                 bus_store_req_accept <= bus_store_req_accept + 1;
                 if (bus_store_pending)
                     bus_duplicate_store_count <= bus_duplicate_store_count + 1;
@@ -182,40 +182,40 @@ always @(posedge soc_clk) begin
                 if (!bus_first_store_seen) begin
                     bus_first_store_seen = 1'b1;
                     $display("BUS_ANCHOR event=store pc=%08x addr=%08x size=%0d wstrb=%x wdata=%08x time_ns=%0t",
-                             soc_lite.cpu.mem_stage.ms_pc, soc_lite.cpu_data_addr,
-                             soc_lite.cpu_data_size, soc_lite.cpu_data_wstrb,
-                             soc_lite.cpu_data_wdata, $time);
+                             soc_lite.u_cpu.mem_stage.ms_pc, soc_lite.u_cpu.data_sram_addr,
+                             soc_lite.u_cpu.data_sram_size, soc_lite.u_cpu.data_sram_wstrb,
+                             soc_lite.u_cpu.data_sram_wdata, $time);
                 end
             end else begin
                 bus_load_req_accept <= bus_load_req_accept + 1;
                 if (!bus_first_load_seen) begin
                     bus_first_load_seen = 1'b1;
                     $display("BUS_ANCHOR event=load pc=%08x addr=%08x size=%0d time_ns=%0t",
-                             soc_lite.cpu.mem_stage.ms_pc, soc_lite.cpu_data_addr,
-                             soc_lite.cpu_data_size, $time);
+                             soc_lite.u_cpu.mem_stage.ms_pc, soc_lite.u_cpu.data_sram_addr,
+                             soc_lite.u_cpu.data_sram_size, $time);
                 end
             end
         end
-        if (soc_lite.cpu_data_data_ok) begin
-            if (soc_lite.cpu_data_wr) begin
+        if (soc_lite.u_cpu.data_sram_data_ok) begin
+            if (soc_lite.u_cpu.data_sram_wr) begin
                 bus_store_data_complete <= bus_store_data_complete + 1;
                 bus_store_pending = 1'b0;
             end else begin
                 bus_load_data_complete <= bus_load_data_complete + 1;
             end
         end
-        if (soc_lite.cpu.if_stage.stale_response && soc_lite.cpu_inst_data_ok) begin
+        if (soc_lite.u_cpu.if_stage.stale_response && soc_lite.u_cpu.inst_sram_data_ok) begin
             bus_stale_fetch_drops <= bus_stale_fetch_drops + 1;
             if (!bus_first_stale_drop_seen) begin
                 bus_first_stale_drop_seen = 1'b1;
                 $display("BUS_ANCHOR event=stale_drop pc=%08x target=%08x time_ns=%0t",
-                         soc_lite.cpu.if_stage.request_pc, soc_lite.cpu.if_stage.restart_pc, $time);
+                         soc_lite.u_cpu.if_stage.request_pc, soc_lite.u_cpu.if_stage.restart_pc, $time);
             end
         end
-        if ((soc_lite.cpu.trap_commit || soc_lite.cpu.eret_commit) && !bus_first_redirect_seen) begin
+        if ((soc_lite.u_cpu.trap_commit || soc_lite.u_cpu.eret_commit) && !bus_first_redirect_seen) begin
             bus_first_redirect_seen = 1'b1;
             $display("BUS_ANCHOR event=redirect pc=%08x target=%08x time_ns=%0t",
-                     soc_lite.cpu.mem_stage.ms_pc, soc_lite.cpu.if_stage.redirect_pc, $time);
+                     soc_lite.u_cpu.mem_stage.ms_pc, soc_lite.u_cpu.if_stage.redirect_pc, $time);
         end
         if (soc_lite.cpu_arvalid && soc_lite.cpu_arready) begin
             bus_ar_handshakes <= bus_ar_handshakes + 1;
@@ -233,7 +233,7 @@ always @(posedge soc_clk) begin
             bus_w_handshakes <= bus_w_handshakes + 1;
         if (soc_lite.cpu_bvalid && soc_lite.cpu_bready)
             bus_b_handshakes <= bus_b_handshakes + 1;
-        if (soc_lite.cpu.axi_fault && !bus_axi_fault_seen) begin
+        if (soc_lite.u_cpu.axi_fault && !bus_axi_fault_seen) begin
             bus_axi_fault_seen = 1'b1;
             bus_protocol_faults <= bus_protocol_faults + 1;
         end

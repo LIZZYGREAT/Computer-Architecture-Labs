@@ -254,6 +254,15 @@ def theme_rows(case: str) -> list[dict[str, object]]:
     for theme in themes:
         theme["signals"] = ["tb_top/clk~bin" if signal == "clk~bin" else signal
                             for signal in theme["signals"]]
+        theme["signal"] = str(theme.get("signal", "")).replace("soc_lite/cpu/", "soc_lite/u_cpu/")
+        mapped_signals = []
+        for signal in theme["signals"]:
+            signal = signal.replace("soc_lite/cpu/", "soc_lite/u_cpu/")
+            signal = signal.replace("soc_lite/cpu_inst_data_ok", "soc_lite/u_cpu/inst_sram_data_ok")
+            signal = signal.replace("soc_lite/cpu_data_data_ok", "soc_lite/u_cpu/data_sram_data_ok")
+            signal = signal.replace("debug_wb_pc", "tb_top/debug_wb_pc")
+            mapped_signals.append(signal)
+        theme["signals"] = mapped_signals
     return themes
 
 
@@ -321,7 +330,8 @@ def get_pc_event(case: str, theme: dict[str, object], anchors: dict[str, dict[st
         if re.fullmatch(r"[0-9a-fA-F]{8}", value):
             value = f"0x{value.lower()}"
         context = redirect.get("raw", "")
-        suffix = "soc_lite/cpu/if_stage/redirect_pc[31:0]"
+        cpu_scope = "soc_lite/u_cpu" if case == "lab11" else "soc_lite/cpu"
+        suffix = f"{cpu_scope}/if_stage/redirect_pc[31:0]"
     if event == "ar":
         suffix = "soc_lite/cpu_araddr[31:0]"
     return suffix, value, context
@@ -576,7 +586,9 @@ def make_wave_rows_for_run(root: Path, case: str, run_dir: Path, info: dict[str,
         if theme["event"] == "backpressure":
             target_pc = ""
             selected_anchor = next((value for key, value in anchors.items() if key.startswith("backpressure_")), {})
-            search_value = selected_anchor.get("addr") or selected_anchor.get("data") or selected_anchor.get("id") or "1"
+            # search_signal is the channel VALID wire; the channel payload and
+            # transaction ID remain available in search_context from BUS_ANCHOR.
+            search_value = "1"
             target_instruction = ""
             channel = selected_anchor.get("channel", "")
             if channel:
