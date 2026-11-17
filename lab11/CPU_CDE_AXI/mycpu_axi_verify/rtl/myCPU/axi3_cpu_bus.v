@@ -165,14 +165,15 @@ always @(posedge aclk) begin
         rd_id_q       <= IF_ID;
         rd_addr_q     <= 32'b0;
         rd_size_q     <= 2'd2;
-        rd_prot_q     <= 3'b010;
+        // AXI AxPROT[2]=1 marks instruction; AxPROT[1]=1 is non-secure.
+        rd_prot_q     <= 3'b110;
         wr_state      <= WR_IDLE;
         wr_id_q       <= DATA_ID;
         wr_addr_q     <= 32'b0;
         wr_size_q     <= 2'd2;
         wr_strb_q     <= 4'b0;
         wr_data_q     <= 32'b0;
-        wr_prot_q     <= 3'b110;
+        wr_prot_q     <= 3'b010;
         wr_aw_done    <= 1'b0;
         wr_w_done     <= 1'b0;
         axi_fault     <= 1'b0;
@@ -186,14 +187,14 @@ always @(posedge aclk) begin
             rd_addr_q     <= (data_size == 2'd2 && data_addr[1:0] != 2'b00) ?
                              {data_addr[31:2], 2'b00} : data_addr;
             rd_size_q     <= data_size;
-            rd_prot_q     <= 3'b110;
+            rd_prot_q     <= 3'b010;
             rd_state      <= RD_ADDR;
         end else if (rd_claim_inst) begin
             rd_owner_data <= 1'b0;
             rd_id_q       <= IF_ID;
             rd_addr_q     <= inst_addr;
             rd_size_q     <= inst_size;
-            rd_prot_q     <= 3'b010;
+            rd_prot_q     <= 3'b110;
             rd_state      <= RD_ADDR;
         end else if (rd_state == RD_ADDR && rd_addr_fire) begin
             rd_state <= RD_DATA;
@@ -221,7 +222,7 @@ always @(posedge aclk) begin
             wr_size_q  <= data_size;
             wr_strb_q  <= data_wstrb;
             wr_data_q  <= data_wdata;
-            wr_prot_q  <= 3'b110;
+            wr_prot_q  <= 3'b010;
             wr_aw_done <= 1'b0;
             wr_w_done  <= 1'b0;
             wr_state   <= WR_SEND;

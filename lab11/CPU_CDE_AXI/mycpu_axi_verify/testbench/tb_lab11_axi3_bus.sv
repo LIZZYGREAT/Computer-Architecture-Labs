@@ -279,6 +279,7 @@ module tb_lab11_axi3_bus;
             held_wstrb = wstrb;
             require(awvalid && wvalid, "AW and W start independently");
             require(awid == 4'h1 && wid == awid, "AXI3 AWID/WID match");
+            require(awprot == 3'b010, "data write protection attributes");
             require(awlen == 0 && awsize == {1'b0, size}, "single-beat AWSIZE/AWLEN");
             require(awaddr == expected_address, "AWADDR alignment and stability");
             require(wdata == payload && wstrb == strobe && wlast, "W payload and WLAST");
@@ -452,7 +453,7 @@ module tb_lab11_axi3_bus;
                 "narrow byte read keeps address and byte size");
         require(arlen == 0 && arburst == 2'b01 && arlock == 0 && arcache == 0,
                 "single-beat AXI3 read attributes");
-        require(arprot == 3'b110, "data read protection attributes");
+        require(arprot == 3'b010, "data read protection attributes");
         begin : ar_stall_check
             reg [31:0] held_addr;
             reg [3:0] held_id;
@@ -513,7 +514,7 @@ module tb_lab11_axi3_bus;
         wait_ar();
         require(arid == 4'h0 && araddr == 32'hbfc0_0000 && arsize == 3'b010,
                 "IF fetch follows Load on shared AR");
-        require(arprot == 3'b010, "instruction read protection attributes");
+        require(arprot == 3'b110, "instruction read protection attributes");
         @(negedge clk);
         trap_redirect = 1'b1;
         trap_vector = 32'h8000_0180;
