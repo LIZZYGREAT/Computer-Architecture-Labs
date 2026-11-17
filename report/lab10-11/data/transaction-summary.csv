@@ -1,5 +1,5 @@
 ﻿case,run_id,inst_req_accept,inst_data_complete,load_req_accept,load_data_complete,store_req_accept,store_data_complete,ar_handshakes,r_handshakes,aw_handshakes,w_handshakes,b_handshakes,stale_fetch_drops,terminal_pending_if,duplicate_store_count,protocol_assertions_failed,assertion_status,deadlock_watchdogs,summary_status
 lab10,s4-directed-authorized-lab10-20261117,4,4,6,6,5,5,N/A,N/A,N/A,N/A,N/A,N/A,0,0,N/A,PASS,,DIRECTED_PASS
 lab10,s5-full-capture-lab10-retry1-20261117,172457,172457,4618,4618,3753,3753,N/A,N/A,N/A,N/A,N/A,128,0,0,N/A,NOT_REPORTED,,PASS
-lab11,lab11-prot-fix-directed-elevated-20261117-01,N/A,N/A,2,2,2,2,2,2,2,2,2,N/A,N/A,0,N/A,PASS,,DIRECTED_PASS
 lab11,lab11-prot-fix-full-20261117-01,172894,172893,4618,4618,3753,3753,177511,177511,3753,3753,3753,693,1,0,0,PASS,,PASS_WITH_PENDING_IF
+lab11,lab11-source-provenance-directed-20261118-03,N/A,N/A,2,2,2,2,2,2,2,2,2,N/A,N/A,0,N/A,PASS,,DIRECTED_PASS

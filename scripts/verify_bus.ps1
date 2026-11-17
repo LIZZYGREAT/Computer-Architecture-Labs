@@ -16,6 +16,12 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+$inputScanStatus = 'NOT_RUN'
+$vivadoPreflightStatus = 'NOT_RUN'
+$sourceIntegrityStatus = 'NOT_RUN'
+$sourceCapturePhase = 'NOT_STARTED'
+$effectiveManifestHash = ''
+$effectiveManifestRelative = 'effective-source-manifest.csv'
 $labRoot = Split-Path -Parent $PSScriptRoot
 $configPath = Join-Path $PSScriptRoot 'cases_bus.json'
 if (-not (Test-Path -LiteralPath $configPath)) {
@@ -149,11 +155,19 @@ function Invoke-VivadoBatch([string]$Name, [string]$TclFile, [string[]]$TclArgs)
 
 try {
     $pythonArgs = @((Join-Path $PSScriptRoot 'check_bus_inputs.py'), '--repo-root', $labRoot,
-                    '--lab-root', $labRoot, '--output-dir', $runDir)
+                    '--lab-root', $labRoot, '--output-dir', $runDir,
+                    '--case', $Case, '--suite', $Suite, '--run-id', $RunId,
+                    '--trace', $tracePath, '--mif', $mifPath)
+    if ($InstMif) { $pythonArgs += '--inst-override' }
     $pythonOutput = & python @pythonArgs 2>&1
     $pythonCode = $LASTEXITCODE
     $pythonOutput | Set-Content -LiteralPath (Join-Path $runDir 'input-check.log') -Encoding UTF8
     if ($pythonCode -ne 0) { throw "input manifest creation failed with exit code $pythonCode" }
+    $inputScanInfo = Get-Content -LiteralPath (Join-Path $runDir 'input-scan.txt') -Raw
+    $scanMatch = [regex]::Match($inputScanInfo, '(?m)^INPUT_SCAN_STATUS=(PASS|FAIL)\s*$')
+    if (-not $scanMatch.Success) { throw 'input-scan.txt did not record INPUT_SCAN_STATUS.' }
+    $inputScanStatus = $scanMatch.Groups[1].Value
+    if ($inputScanStatus -ne 'PASS') { throw 'static input scan failed; see input-scan.txt.' }
 
     $preflightDir = Join-Path $runDir 'preflight'
     New-Item -ItemType Directory -Path $preflightDir | Out-Null
@@ -163,8 +177,20 @@ try {
     $preflightText = if (Test-Path -LiteralPath $preflightReport) {
         Get-Content -LiteralPath $preflightReport -Raw
     } else { '' }
+    $preflightMatch = [regex]::Match($preflightText, '(?m)^PREFLIGHT=(PASS|FAIL)\s*$')
+    $vivadoPreflightStatus = if ($preflightMatch.Success) { $preflightMatch.Groups[1].Value } else { 'FAIL' }
+    $versionForSummary = [regex]::Match($preflightText, '(?m)^VIVADO_VERSION=(.+)$')
+    $ipForSummary = [regex]::Match($preflightText, '(?m)^IP_STATUS=(.+)$')
+    @(
+        "RUN_ID=$RunId", "CASE=$Case", "SUITE=$(if ($PreflightOnly) { 'preflight' } else { $Suite })",
+        "VIVADO_PREFLIGHT_STATUS=$vivadoPreflightStatus",
+        "VIVADO_VERSION=$(if ($versionForSummary.Success) { $versionForSummary.Groups[1].Value.Trim() } else { 'NOT_RECORDED' })",
+        "IP_STATUS=$(if ($ipForSummary.Success) { $ipForSummary.Groups[1].Value.Trim() } else { 'NOT_RECORDED' })",
+        "PROJECT_PREFLIGHT_REPORT=$(Join-Path $preflightDir 'project-preflight.txt')"
+    ) | Set-Content -LiteralPath (Join-Path $runDir 'vivado-preflight-summary.txt') -Encoding UTF8
     if ($preflightCode -ne 0 -or $preflightText -notmatch 'PREFLIGHT=PASS') {
         @("RUN_ID=$RunId", "CASE=$Case", 'SUITE=preflight', 'STATUS=ENVIRONMENT_ERROR',
+          "INPUT_SCAN_STATUS=$inputScanStatus", 'VIVADO_PREFLIGHT_STATUS=FAIL',
           'PREFLIGHT_STATUS=FAIL', 'FUNCTIONAL_STATUS=NOT_RUN', 'TRACE_COMPARE_STATUS=NOT_RUN') |
             Set-Content -LiteralPath (Join-Path $runDir 'result.txt') -Encoding UTF8
         Write-Output "ENVIRONMENT_ERROR: read-only project preflight failed. See $runDir"
@@ -176,6 +202,7 @@ try {
     Set-Content -LiteralPath (Join-Path $runDir 'vivado-version.txt') -Encoding UTF8 -Value $vivadoVersion
     if ($PreflightOnly) {
         @("RUN_ID=$RunId", "CASE=$Case", 'SUITE=preflight', 'STATUS=INCOMPLETE',
+          "INPUT_SCAN_STATUS=$inputScanStatus", "VIVADO_PREFLIGHT_STATUS=$vivadoPreflightStatus",
           'PREFLIGHT_STATUS=PASS', 'FUNCTIONAL_STATUS=NOT_RUN', 'PROTOCOL_STATUS=NOT_RUN',
           'WAVEFORM_STATUS=NOT_REQUESTED', 'TRACE_COMPARE_STATUS=NOT_RUN',
           "VIVADO_VERSION=$vivadoVersion") |
@@ -205,8 +232,23 @@ try {
             $runProjectXpr = $unitXpr
             $tclArgs = @($unitXpr, $runDir)
         } else {
-            $runProjectXpr = Join-Path $runDir 'project/lab11_axi3_directed.xpr'
-            $tclArgs = @($labRoot, $runDir)
+            $unitXpr = Join-Path $runDir 'project/lab11_axi3_directed.xpr'
+            $cpuDir = Join-Path $labRoot $settings.CpuSourceDir
+            $unitBench = Join-Path $labRoot $settings.DirectedTestbench
+            $creator = Join-Path $labRoot 'scripts/create_bus_unit_xpr.py'
+            $unitArgs = @($creator, '--base-xpr', $projectXpr, '--cpu-dir', $cpuDir,
+                          '--design-top', 'if_stage', '--sim-top', 'tb_lab11_axi3_bus',
+                          '--sim-file', $unitBench,
+                          '--design-file', (Join-Path $cpuDir 'mycpu.h'),
+                          '--design-file', (Join-Path $cpuDir 'IF_stage.v'),
+                          '--design-file', (Join-Path $cpuDir 'axi3_cpu_bus.v'),
+                          '--output-xpr', $unitXpr)
+            $created = & python @unitArgs 2>&1
+            $creatorCode = $LASTEXITCODE
+            $created | Set-Content -LiteralPath (Join-Path $runDir 'create-project.log') -Encoding UTF8
+            if ($creatorCode -ne 0) { throw "Lab11 directed XPR creation failed: $creatorCode" }
+            $runProjectXpr = $unitXpr
+            $tclArgs = @($unitXpr, $runDir)
         }
         $runner = Join-Path $labRoot $settings.UnitRunner
     } else {
@@ -220,6 +262,9 @@ try {
             $convert | Set-Content -LiteralPath (Join-Path $runDir 'mif-conversion.log') -Encoding UTF8
             if ($convertCode -ne 0) { throw "instruction MIF conversion failed: $convertCode" }
             $createArgs += @('--inst-coe', $overrideCoe)
+            $coePathForManifest = $overrideCoe
+        } else {
+            $coePathForManifest = Join-Path $labRoot $settings.InstructionCoe
         }
         $created = & python @createArgs 2>&1
         $creatorCode = $LASTEXITCODE
@@ -235,11 +280,50 @@ try {
         $runner = Join-Path $labRoot $settings.SocRunner
     }
 
+    if (-not $coePathForManifest) { $coePathForManifest = Join-Path $labRoot $settings.InstructionCoe }
+    $manifestPath = Join-Path $runDir $effectiveManifestRelative
+    $captureScript = Join-Path $PSScriptRoot 'capture_bus_source_manifest.py'
+    $captureArgs = @($captureScript, '--repo-root', $labRoot, '--case', $Case, '--suite', $Suite,
+                     '--run-id', $RunId, '--xpr', $runProjectXpr,
+                     '--manifest', $manifestPath, '--phase', 'PRE_SIM',
+                     '--coe', $coePathForManifest, '--mif', $mifPath, '--trace', $tracePath)
+    if ($InstMif) { $captureArgs += '--inst-override' }
+    $sourceCapturePhase = 'PRE_SIM'
+    $captureOutput = & python @captureArgs 2>&1
+    $captureCode = $LASTEXITCODE
+    $captureOutput | Set-Content -LiteralPath (Join-Path $runDir 'source-capture-pre.log') -Encoding UTF8
+    if ($captureCode -ne 0) {
+        $sourceIntegrityStatus = 'FAIL'
+        throw "PRE_SIM source manifest capture failed with exit code $captureCode"
+    }
+    $sourceIntegrityStatus = 'PENDING'
+
     $runCode = Invoke-VivadoBatch $Suite $runner $tclArgs
+    $sourceCapturePhase = 'PRE_SIM_AND_POST_SIM'
+    $postCaptureArgs = @($captureScript, '--repo-root', $labRoot, '--case', $Case, '--suite', $Suite,
+                         '--run-id', $RunId, '--xpr', $runProjectXpr,
+                         '--manifest', $manifestPath, '--phase', 'POST_SIM',
+                         '--coe', $coePathForManifest, '--mif', $mifPath, '--trace', $tracePath)
+    if ($InstMif) { $postCaptureArgs += '--inst-override' }
+    $postCaptureOutput = & python @postCaptureArgs 2>&1
+    $postCaptureCode = $LASTEXITCODE
+    $postCaptureOutput | Set-Content -LiteralPath (Join-Path $runDir 'source-capture-post.log') -Encoding UTF8
+    $integrityMatch = [regex]::Match(($postCaptureOutput -join "`n"), '(?m)^SOURCE_INTEGRITY=(PASS|FAIL)$')
+    if ($integrityMatch.Success) { $sourceIntegrityStatus = $integrityMatch.Groups[1].Value }
+    else { $sourceIntegrityStatus = 'FAIL' }
+    if ($postCaptureCode -ne 0 -or $sourceIntegrityStatus -ne 'PASS') {
+        throw "POST_SIM source integrity check failed (exit=$postCaptureCode, status=$sourceIntegrityStatus)."
+    }
+    $effectiveManifestHash = (Get-FileHash -LiteralPath $manifestPath -Algorithm SHA256).Hash
     if ($runCode -ne 0) {
         if (-not (Test-Path -LiteralPath (Join-Path $runDir 'result.txt'))) {
             @("RUN_ID=$RunId", "CASE=$Case", "SUITE=$Suite", 'STATUS=FAIL',
-              "SIM_EXIT_CODE=$runCode", 'PREFLIGHT_STATUS=PASS') |
+              "SIM_EXIT_CODE=$runCode", "INPUT_SCAN_STATUS=$inputScanStatus",
+              "VIVADO_PREFLIGHT_STATUS=$vivadoPreflightStatus", 'PREFLIGHT_STATUS=PASS',
+              "SOURCE_INTEGRITY=$sourceIntegrityStatus",
+              "EFFECTIVE_SOURCE_MANIFEST=$effectiveManifestRelative",
+              "EFFECTIVE_SOURCE_MANIFEST_SHA256=$effectiveManifestHash",
+              "SOURCE_CAPTURE_PHASE=$sourceCapturePhase") |
                 Set-Content -LiteralPath (Join-Path $runDir 'result.txt') -Encoding UTF8
         }
         Write-Output "FAIL: $Suite exited with code $runCode. See $runDir"
@@ -287,8 +371,7 @@ try {
     $inputRows = Import-Csv -LiteralPath (Join-Path $runDir 'input_manifest.csv')
     $caseInputs = $inputRows | Where-Object { $_.case -eq $Case } | Select-Object -First 1
     if (-not $caseInputs) { throw "input manifest has no $Case row." }
-    $coePath = Join-Path $labRoot $settings.InstructionCoe
-    if ($InstMif) { $coePath = Join-Path $runDir 'inst-image-override.coe' }
+    $coePath = $coePathForManifest
     $traceHash = (Get-FileHash -LiteralPath $tracePath -Algorithm SHA256).Hash
     $mifHash = (Get-FileHash -LiteralPath $mifPath -Algorithm SHA256).Hash
     $coeHash = if (Test-Path -LiteralPath $coePath -PathType Leaf) {
@@ -373,10 +456,14 @@ try {
     $resultLines = [System.Collections.Generic.List[string]]::new()
     $resultLines.AddRange([string[]]@(
         "RUN_ID=$RunId", "CASE=$Case", "SUITE=$Suite", 'STATUS=PASS', 'PREFLIGHT_STATUS=PASS',
+        "INPUT_SCAN_STATUS=$inputScanStatus", "VIVADO_PREFLIGHT_STATUS=$vivadoPreflightStatus",
+        "EFFECTIVE_SOURCE_MANIFEST=$effectiveManifestRelative",
+        "EFFECTIVE_SOURCE_MANIFEST_SHA256=$effectiveManifestHash",
+        "SOURCE_INTEGRITY=$sourceIntegrityStatus", "SOURCE_CAPTURE_PHASE=$sourceCapturePhase",
         "FUNCTIONAL_STATUS=$functionalStatus", "PROTOCOL_STATUS=$protocolStatus",
         "SOURCE_COMMIT=$($caseInputs.source_commit)", "SOURCE_DIRTY=$($caseInputs.source_dirty)",
         "SOURCE_DIFF_SHA256=$($caseInputs.source_diff_sha256)",
-        "PROJECT_XPR=$runProjectXpr", 'RTL_MANIFEST=source-manifest.csv',
+        "PROJECT_XPR=$runProjectXpr", "RTL_MANIFEST=$effectiveManifestRelative",
         "INST_COE=$coePath", "INST_COE_SHA256=$coeHash", "INST_MIF=$mifPath", "INST_MIF_SHA256=$mifHash",
         "REFERENCE_TRACE=$tracePath", "TRACE_FILE=$tracePath", "TRACE_SHA256=$traceHash",
         "EXPECTED_FUNCTIONAL_POINTS=$(if ($Suite -eq 'full') { $settings.ExpectedFunctionalPoints } else { 'N/A' })", "ACTUAL_FUNCTIONAL_POINTS=$actualPoints",
@@ -410,7 +497,11 @@ try {
         Copy-Item -LiteralPath $resultPath -Destination $runnerResultPath
     }
     @("RUN_ID=$RunId", "CASE=$Case", "SUITE=$Suite", 'STATUS=ENVIRONMENT_ERROR',
-      'PREFLIGHT_STATUS=PASS', "ERROR_REASON=$($_.Exception.Message)") |
+      "INPUT_SCAN_STATUS=$inputScanStatus", "VIVADO_PREFLIGHT_STATUS=$vivadoPreflightStatus",
+      "SOURCE_INTEGRITY=$sourceIntegrityStatus", "EFFECTIVE_SOURCE_MANIFEST=$effectiveManifestRelative",
+      "EFFECTIVE_SOURCE_MANIFEST_SHA256=$effectiveManifestHash",
+      "SOURCE_CAPTURE_PHASE=$sourceCapturePhase",
+      "PREFLIGHT_STATUS=$vivadoPreflightStatus", "ERROR_REASON=$($_.Exception.Message)") |
         Set-Content -LiteralPath $resultPath -Encoding UTF8
     Write-Output "ENVIRONMENT_ERROR: $($_.Exception.Message)"
     Write-Output "RUN_DIR=$runDir"

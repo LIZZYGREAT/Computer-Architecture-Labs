@@ -1,0 +1,28 @@
+Source compile order for 'simulation' with fileset 'sim_1' in source management mode 'All' and simulation language 'Mixed':
+Index  File Name           Used_In      File_Type  Library         Ngc Wrapper  Full Path Name
+-----  ------------------  -----------  ---------  --------------  -----------  --------------------------------------------------------------------------------------------------------
+1      EXE_stage.v         Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/rtl/myCPU/EXE_stage.v
+2      ID_stage.v          Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/rtl/myCPU/ID_stage.v
+3      IF_stage.v          Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/rtl/myCPU/IF_stage.v
+4      MEM_stage.v         Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/rtl/myCPU/MEM_stage.v
+5      WB_stage.v          Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/rtl/myCPU/WB_stage.v
+6      alu.v               Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/rtl/myCPU/alu.v
+7      axi3_cpu_bus.v      Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/rtl/myCPU/axi3_cpu_bus.v
+8      axi_wrap.v          Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/rtl/axi_wrap/axi_wrap.v
+9      axi_wrap_ram.v      Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/rtl/ram_wrap/axi_wrap_ram.v
+10     confreg.v           Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/rtl/CONFREG/confreg.v
+11     cp0_reg.v           Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/rtl/myCPU/cp0_reg.v
+12     hilo_unit.v         Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/rtl/myCPU/hilo_unit.v
+13     mycpu_top.v         Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/rtl/myCPU/mycpu_top.v
+14     regfile.v           Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/rtl/myCPU/regfile.v
+15     soc_axi_lite_top.v  Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/rtl/soc_axi_lite_top.v
+16     tools.v             Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/rtl/myCPU/tools.v
+17     mycpu_tb.v          Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/testbench/mycpu_tb.v
+
+
+Missing instances for 'simulation' with fileset 'sim_1':
+Index  Instance Path  File Path  Line
+-----  -------------  ---------  ----
+< empty >
+
+

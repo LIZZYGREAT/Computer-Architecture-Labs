@@ -1,0 +1,24 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Wed Nov 18 01:20:10 2026
+# Process ID         : 13748
+# Current directory  : D:/Verilog/2025.2/Vivado/bin
+# Command line       : vivado.exe -mode batch -source C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\check_bus_project.tcl -log C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\lab11\preflight-stage-separation-20261118-02\preflight-vivado.log -journal C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\lab11\preflight-stage-separation-20261118-02\preflight-vivado.jou -tclargs lab11 C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab11\CPU_CDE_AXI\mycpu_axi_verify\run_vivado\mycpu_prj1\mycpu_lab11_bus.xpr C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\lab11\preflight-stage-separation-20261118-02\preflight
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab10_lab11/lab11/preflight-stage-separation-20261118-02/preflight-vivado.log
+# Journal file       : C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\lab11\preflight-stage-separation-20261118-02\preflight-vivado.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 6979 MB
+# Total Virtual      : 30439 MB
+# Available Virtual  : 5027 MB
+#-----------------------------------------------------------
+source {C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\check_bus_project.tcl}

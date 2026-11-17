@@ -15,6 +15,52 @@ import build_bus_evidence as evidence  # noqa: E402
 
 
 class WaveCaptureIdempotencyTests(unittest.TestCase):
+    def test_new_and_legacy_preflight_files_are_read_as_separate_stages(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            run_dir = Path(directory)
+            (run_dir / "preflight.txt").write_text(
+                "OVERALL_STATUS=INCOMPLETE\nVIVADO_VERSION=NOT_RUN\n", encoding="utf-8"
+            )
+            (run_dir / "preflight").mkdir()
+            (run_dir / "preflight/project-preflight.txt").write_text(
+                "PREFLIGHT=PASS\nVIVADO_VERSION=2025.2\n", encoding="utf-8"
+            )
+            input_row, legacy = evidence.run_manifest("lab11", run_dir)
+            self.assertEqual(input_row, {})
+            self.assertEqual(legacy["INPUT_SCAN_STATUS"], "LEGACY_INPUT_SNAPSHOT")
+            self.assertEqual(legacy["VIVADO_PREFLIGHT_STATUS"], "PASS")
+            self.assertNotEqual(legacy["INPUT_SCAN_STATUS"], legacy.get("OVERALL_STATUS"))
+
+            (run_dir / "input-scan.txt").write_text(
+                "STAGE=INPUT_SCAN\nINPUT_SCAN_STATUS=PASS\n", encoding="utf-8"
+            )
+            (run_dir / "vivado-preflight-summary.txt").write_text(
+                "VIVADO_PREFLIGHT_STATUS=PASS\n", encoding="utf-8"
+            )
+            _, current = evidence.run_manifest("lab11", run_dir)
+            self.assertEqual(current["INPUT_SCAN_STATUS"], "PASS")
+            self.assertEqual(current["VIVADO_PREFLIGHT_STATUS"], "PASS")
+
+    def test_lab11_read_themes_show_arprot_and_handshake_expectations(self) -> None:
+        themes = {row["figure"]: row for row in evidence.theme_rows("lab11")}
+        for figure in ("L11-01", "L11-02"):
+            self.assertIn("soc_lite/cpu_arprot[2:0]~bin", themes[figure]["signals"])
+            self.assertIn("cpu_arvalid && cpu_arready", themes[figure]["context"])
+        self.assertIn("ARPROT=110", themes["L11-01"]["expected"])
+        self.assertIn("ARPROT=110", themes["L11-02"]["expected"])
+        self.assertIn("ARPROT=010", themes["L11-02"]["expected"])
+
+    def test_preflight_only_results_do_not_enter_transaction_summary(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            run_dir = Path(directory)
+            (run_dir / "result.txt").write_text(
+                "RUN_ID=preflight-only\nCASE=lab11\nSUITE=preflight\nSTATUS=PASS\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(evidence.build_transaction_rows([
+                ("lab11", run_dir, evidence.read_kv(run_dir / "result.txt"))
+            ]), [])
+
     def test_rebuild_preserves_verified_fields_and_rejects_changed_database(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -59,6 +105,7 @@ class WaveCaptureIdempotencyTests(unittest.TestCase):
             archive_dir = capture_path.parent / "archive"
             with (patch.object(evidence, "make_wcfgs", return_value=([{}], [validation], {})),
                   patch.object(evidence, "make_wave_rows_for_run", return_value=[generated]),
+                  patch.object(evidence, "theme_rows", return_value=[{"figure": "L11-03", "file": "03_axi_write"}]),
                   patch.object(evidence, "build_evidence_rows", return_value=[]),
                   patch.object(evidence, "build_transaction_rows", return_value=[]),
                   redirect_stdout(StringIO())):
@@ -79,6 +126,7 @@ class WaveCaptureIdempotencyTests(unittest.TestCase):
             changed = dict(generated, wdb_sha256="C" * 64)
             with (patch.object(evidence, "make_wcfgs", return_value=([{}], [validation], {})),
                   patch.object(evidence, "make_wave_rows_for_run", return_value=[changed]),
+                  patch.object(evidence, "theme_rows", return_value=[{"figure": "L11-03", "file": "03_axi_write"}]),
                   patch.object(evidence, "build_evidence_rows", return_value=[]),
                   patch.object(evidence, "build_transaction_rows", return_value=[]),
                   redirect_stdout(StringIO())):
