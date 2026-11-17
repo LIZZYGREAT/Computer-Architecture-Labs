@@ -84,6 +84,9 @@ foreach f [get_files -of_objects [get_filesets sources_1]] {
 foreach f [get_files -of_objects [get_filesets sim_1]] {
     puts $active_file "SIM_SOURCE=[get_property NAME $f]"
 }
+if {$case eq "lab11_axi3"} {
+    puts $active_file "SOURCE=[file join $repo lab14 cpu_tlb rtl myCPU mycpu.h]"
+}
 close $active_file
 launch_simulation -mode behavioral -simset sim_1
 set sim_dir [file join $project_dir ${project_name}.sim sim_1 behav xsim]

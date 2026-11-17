@@ -27,6 +27,7 @@ set ip_files [list \
     [file join $cpu_root rtl xilinx_ip axi_crossbar_1x2 axi_crossbar_1x2.xci] \
     [file join $cpu_root rtl xilinx_ip lab6_mult33 lab6_mult33.xci] \
     [file join $cpu_root rtl xilinx_ip lab6_div32 lab6_div32.xci]]
+set coe_file [file join $repo lab14 tlb_func obj inst_ram.coe]
 set ip_source_root [file join $run_dir ip-src]
 file mkdir $ip_source_root
 set staged_ip_files [list]
@@ -36,10 +37,22 @@ foreach source_ip $ip_files {
     file mkdir $staged_ip_dir
     set staged_ip [file join $staged_ip_dir [file tail $source_ip]]
     file copy -force $source_ip $staged_ip
+    if {$ip_name eq "axi_ram"} {
+        set xci_in [open $staged_ip r]
+        set xci_text [read $xci_in]
+        close $xci_in
+        set relative_coe "../../../../tlb_func/obj/inst_ram.coe"
+        if {[string first $relative_coe $xci_text] < 0} {
+            error "Lab14 COE reference not found in staged axi_ram XCI"
+        }
+        set xci_text [string map [list $relative_coe [file normalize $coe_file]] $xci_text]
+        set xci_out [open $staged_ip w]
+        puts -nonewline $xci_out $xci_text
+        close $xci_out
+    }
     lappend staged_ip_files $staged_ip
 }
 set include_header [file join $cpu_root rtl myCPU mycpu.h]
-set coe_file [file join $repo lab14 tlb_func obj inst_ram.coe]
 set tlb_rtl [file join $repo lab13 tlb_verify rtl tlb.v]
 set testbench [file join $cpu_root testbench tb_lab14_tlb.sv]
 
@@ -60,11 +73,6 @@ update_compile_order -fileset sources_1
 update_compile_order -fileset sim_1
 set ip_objects [get_ips -quiet]
 if {[llength $ip_objects] > 0} {
-    set axi_ram_ip [get_ips -quiet axi_ram]
-    if {[llength $axi_ram_ip] != 1} {
-        error "expected one axi_ram IP; observed [llength $axi_ram_ip]"
-    }
-    set_property CONFIG.Coe_File $coe_file $axi_ram_ip
     upgrade_ip -quiet $ip_objects
     generate_target all $ip_objects
     export_ip_user_files -of_objects $ip_objects -no_script -sync -force -quiet
