@@ -19,6 +19,7 @@ Lab10、Lab11 各有一份独立的 `rtl/myCPU/`，分别连接课程 SRAM wrapp
 - 写状态为 `WR_IDLE/WR_SEND/WR_RESP`。AW/W 独立有效并分别锁存完成；B 响应成功后向 MEM 返回完成。
 - 事务采用单拍、INCR、normal unlocked；检查 RID/RRESP/RLAST 与 BID/BRESP，错误锁存到 `axi_fault`。
 - IF 的 stale 响应处理与 Lab10 同样保留；full-run 中 trap/ERET redirect、stale drop 均有日志锚点。
+- AxPROT 使用 unprivileged/non-secure 属性：取指 ARPROT=`110`，Load ARPROT=`010`，Store AWPROT=`010`。按 [Arm AMBA AXI/ACE Protocol Specification，A4.7](https://developer.arm.com/-/media/Arm%20Developer%20Community/PDF/IHI0022H_amba_axi_protocol_spec.pdf)，`AxPROT[2]` 的 1/0 表示 instruction/data，`AxPROT[1]=1` 表示 Non-secure，`AxPROT[0]=0` 表示 unprivileged。
 
 ## 验收结果
 
@@ -26,12 +27,18 @@ Lab10、Lab11 各有一份独立的 `rtl/myCPU/`，分别连接课程 SRAM wrapp
 | --- | --- | --- |
 | Lab10 directed `s4-directed-authorized-lab10-20261117` | PASS | IF 接受/响应 4/4；MEM 11/11；Store 5、Load 6；重复 Store 0 |
 | Lab10 full `s5-full-capture-lab10-retry1-20261117` | PASS | 功能 94/94；trace 111,625；取指、Load、Store 接受/完成均配对；stale fetch 丢弃 128 |
-| Lab11 directed `s4-directed-authorized-lab11-20261117` | PASS | 读 2、写 2；AW-first/W-first 各覆盖；RID/RRESP/RLAST/BID/BRESP 与 IF redirect 用例通过 |
-| Lab11 full `s5-full-capture-lab11-fix1-20261117` | PASS | 功能 94/94；trace 111,625；AR/R 177,511/177,511；AW/W/B 各 3,753；protocol fault 0 |
+| Lab11 directed `lab11-prot-fix-directed-elevated-20261117-01` | PASS | 读 2、写 2；AW-first/W-first 各覆盖；IF、Load、Store PROT 断言及 RID/RRESP/RLAST/BID/BRESP、IF redirect 用例通过 |
+| Lab11 full `lab11-prot-fix-full-20261117-01` | PASS | 功能 94/94；trace 111,625；AR/R 177,511/177,511；AW/W/B 各 3,753；Load 4,618/4,618；Store 3,753/3,753；协议断言失败 0；重复 Store 0 |
 
-Lab10 full-run 的 `protocol_assertions_failed` 字段没有由该 testbench 输出，故摘要表记为 `N/A`；本次实际计数显示 Load/Store 接受与完成平衡、重复 Store=0，Lab10 的显式时序定向检查另有 PASS 结果。Lab11 testbench 输出了 `protocol_assertions_failed=0`。
+修正前 Lab11 full Run `s5-full-capture-lab11-fix1-20261117` 的功能和 trace 结果仍保留作历史对照；它的 AXI PROT 位定义错误，因此不作为最终协议验收证据。新的 PROT directed 与 full Run 单独记录在各自 Run 目录。
 
-Lab11 full-run 结束时 `inst_req_accept=172894`、`inst_data_complete=172893`。CPU 侧接受数比完成数多 1；将 Load 数加上后，AR 与 R 各 177,511 次且完全配对。该差额表示仿真结束时有一笔末尾 IF 请求已进入 adapter、尚未走到外部 AR；它不是一个未返回的 R 响应。Load 与 Store 均无尾项。
+Lab10 full-run 没有输出运行时协议断言计数，因此 transaction summary 中为 `assertion_status=NOT_REPORTED`；Load/Store 计数平衡、重复 Store=0，显式时序 directed 检查另有 PASS。Lab11 full-run 输出 `protocol_assertions_failed=0`。
+
+修正后 Lab11 full-run 结束时 `inst_req_accept=172894`、`inst_data_complete=172893`，故 `terminal_pending_if=1`。这表示仿真终止时一笔末尾 IF 请求已进入 adapter、尚未发出外部 AR；它不是一个未返回的 R 响应。外部 AR/R 各 177,511 次并完全配对，Load 与 Store 也无尾项。
+
+最终 WDB 的 SHA-256 为 `DBA494CF17EDD813F38062B20C4A78C14199997375A85CDB8EE4BEECAC8C0A7F`；大小 981,401,793 字节。本机文件：`results/lab10_lab11/lab11/lab11-prot-fix-full-20261117-01/wave-full.wdb`。Run 的 `source-manifest.csv` SHA-256 为 `D68D3FF789C33851F8FF6AF13FD6A5F8D1363EF5FCE7E02FF9C85F13E4893340`，在 `evidence_index.csv` 中逐 Run 记录。
+
+波形交接有 23 条结构校验记录（原 9 份、9 份版本化可移植副本、修正后 Run 的 5 份）；Vivado 校验均 PASS。L11-03 的活动配置包括 AWPROT、WID、AWSIZE、AWLEN 与 AWBURST，人工波形读值仍待截图后填写。
 
 ## 原 CPU 异常/中断回归复核
 
