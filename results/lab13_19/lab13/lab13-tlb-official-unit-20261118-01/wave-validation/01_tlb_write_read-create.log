@@ -1,0 +1,90 @@
+
+****** Vivado v2025.2 (64-bit)
+  **** SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+  **** IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+  **** SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+  **** Start of session at: Wed Nov 18 02:43:21 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source {C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree\scripts\create_wave_config_from_wdb.tcl}
+# if {[llength $argv] < 3} {
+#     error "usage: create_wave_config_from_wdb.tcl <wdb> <output-wcfg> <relative-signal~radix> ..."
+# }
+# set wdb [file normalize [lindex $argv 0]]
+# set wcfg [file normalize [lindex $argv 1]]
+# if {![file isfile $wdb]} {
+#     error "waveform database is missing: $wdb"
+# }
+# if {[file exists $wcfg]} {
+#     error "refusing to overwrite existing WCFG: $wcfg"
+# }
+# open_wave_database -noautoloadwcfg C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab13/lab13-tlb-official-unit-20261118-01/wave-full.wdb
+# set scopes [get_scopes -r /]
+# if {[llength $scopes] == 0} {
+#     error "waveform database contains no HDL scopes: $wdb"
+# }
+# set config_name [file rootname [file tail $wcfg]]
+# create_wave_config $config_name
+# set wave_count 0
+# set all_objects [get_objects -r -quiet *]
+# foreach spec [lrange $argv 2 end] {
+#     set fields [split $spec ~]
+#     if {[llength $fields] != 2} {
+#         error "invalid signal specification '$spec'; expected relative/path~radix"
+#     }
+#     lassign $fields relative_path radix
+#     if {$radix ni {bin hex dec unsigned}} {
+#         error "unsupported radix '$radix' in '$spec'"
+#     }
+#     # Match names as strings rather than Tcl glob patterns. Bus suffixes such
+#     # as [31:0] have special meaning to glob matching and must remain literal.
+#     # XSim's WDB object names omit packed-vector width selectors such as [31:0].
+#     regsub {\[[0-9]+:[0-9]+\]$} $relative_path {} relative_path
+#     set leaf_name [file tail $relative_path]
+#     set objects {}
+#     set suffix "/$relative_path"
+#     foreach candidate $all_objects {
+#         set candidate_length [string length $candidate]
+#         set suffix_length [string length $suffix]
+#         if {[string equal [file tail $candidate] $leaf_name] &&
+#             $candidate_length >= $suffix_length &&
+#             [string equal [string range $candidate [expr {$candidate_length - $suffix_length}] end] $suffix]} {
+#             lappend objects $candidate
+#         }
+#     }
+#     if {[llength $objects] != 1} {
+#         error "expected one HDL object ending in '$suffix', found [llength $objects]"
+#     }
+#     set added [add_wave -radix $radix [lindex $objects 0]]
+#     puts "WCFG_SIGNAL=[lindex $objects 0]"
+#     incr wave_count
+# }
+WCFG_SIGNAL=/testbench/clk
+WCFG_SIGNAL=/testbench/tlb_top/we
+WCFG_SIGNAL=/testbench/tlb_top/w_index
+WCFG_SIGNAL=/testbench/tlb_top/w_vpn2
+WCFG_SIGNAL=/testbench/tlb_top/w_asid
+WCFG_SIGNAL=/testbench/tlb_top/w_pfn0
+WCFG_SIGNAL=/testbench/tlb_top/w_pfn1
+WCFG_SIGNAL=/testbench/tlb_top/tlb_w_cnt
+WCFG_SIGNAL=/testbench/tlb_top/tlb_w_test_ok
+WCFG_SIGNAL=/testbench/tlb_top/r_index
+WCFG_SIGNAL=/testbench/tlb_top/r_vpn2
+WCFG_SIGNAL=/testbench/tlb_top/r_asid
+WCFG_SIGNAL=/testbench/tlb_top/r_pfn0
+WCFG_SIGNAL=/testbench/tlb_top/r_pfn1
+WCFG_SIGNAL=/testbench/tlb_top/tlb_r_cnt
+WCFG_SIGNAL=/testbench/tlb_top/tlb_r_test_ok
+WCFG_SIGNAL=/testbench/tlb_top/test_error
+# save_wave_config $wcfg
+# if {![file isfile $wcfg] || [file size $wcfg] == 0} {
+#     error "Vivado did not write the requested WCFG: $wcfg"
+# }
+# puts "WDB=$wdb"
+WDB=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab13/lab13-tlb-official-unit-20261118-01/wave-full.wdb
+# puts "WCFG=$wcfg"
+WCFG=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab13/lab13-tlb-official-unit-20261118-01/wave-validation/01_tlb_write_read.raw.wcfg
+# puts "WCFG_WAVE_COUNT=$wave_count"
+WCFG_WAVE_COUNT=17
+INFO: [Common 17-206] Exiting Vivado at Wed Nov 18 02:43:34 2026...

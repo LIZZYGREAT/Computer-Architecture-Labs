@@ -1,0 +1,4 @@
+Time resolution is 1 ps
+DIRECTED_CHECKS=9
+DIRECTED_PASS
+$finish called at time : 58 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab13/tlb_verify/testbench/tb_tlb_directed.sv" Line 177

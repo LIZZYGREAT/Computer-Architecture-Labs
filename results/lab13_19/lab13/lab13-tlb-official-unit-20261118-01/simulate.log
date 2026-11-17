@@ -1,0 +1,8 @@
+Time resolution is 1 ps
+OK!!!write
+OK!!!search
+OK!!!read
+=========================================================
+Test end!
+----PASS!!!
+$finish called at time : 3815 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab13/tlb_verify/testbench/testbench.v" Line 63

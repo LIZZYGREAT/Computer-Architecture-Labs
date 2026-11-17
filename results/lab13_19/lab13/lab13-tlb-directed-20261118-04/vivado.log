@@ -1,0 +1,218 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Wed Nov 18 02:33:04 2026
+# Process ID         : 32236
+# Current directory  : C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab13/lab13-tlb-directed-20261118-04
+# Command line       : vivado.exe -mode batch -source C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree\scripts\tlb_cache\run_unit.tcl -tclargs lab13 directed C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree\results\lab13_19\lab13\lab13-tlb-directed-20261118-04
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab13/lab13-tlb-directed-20261118-04/vivado.log
+# Journal file       : C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab13/lab13-tlb-directed-20261118-04\vivado.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 6979 MB
+# Total Virtual      : 30439 MB
+# Available Virtual  : 5152 MB
+#-----------------------------------------------------------
+source {C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree\scripts\tlb_cache\run_unit.tcl}
+# if {[llength $argv] != 4} {
+#     error "usage: run_unit.tcl <lab13|lab16> <directed|official> <repo-root> <run-dir>"
+# }
+# set case [lindex $argv 0]
+# set suite [lindex $argv 1]
+# set repo [file normalize [lindex $argv 2]]
+# set run_dir [file normalize [lindex $argv 3]]
+# file mkdir $run_dir
+# set project_name ${case}_${suite}
+# set project_dir [file join $run_dir project]
+# create_project -force $project_name $project_dir -part xc7a200tfbg676-1
+INFO: [ProjectBase 1-489] The host OS only allows 260 characters in a normal path. The project is stored in a path with more than 80 characters. If you experience issues with IP, Block Designs, or files not being found, please consider moving the project to a location with a shorter path. Alternately consider using the OS subst command to map part of the path to a drive letter.
+Current project path is 'C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab13/lab13-tlb-directed-20261118-04/project'
+create_project: Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 529.164 ; gain = 222.215
+# set_property target_language Verilog [current_project]
+# set_property simulator_language Mixed [current_project]
+# if {$case eq "lab13"} {
+#     set rtl [file join $repo lab13 tlb_verify rtl tlb.v]
+#     set wrapper [file join $repo lab13 tlb_verify rtl tlb_top.v]
+#     set official_tb [file join $repo lab13 tlb_verify testbench testbench.v]
+#     set directed_tb [file join $repo lab13 tlb_verify testbench tb_tlb_directed.sv]
+# } elseif {$case eq "lab16"} {
+#     set rtl [file join $repo lab16 cache_verify rtl cache.v]
+#     set wrapper [file join $repo lab16 cache_verify rtl cache_top.v]
+#     set official_tb [file join $repo lab16 cache_verify testbench testbench.v]
+#     set directed_tb [file join $repo lab16 cache_verify testbench tb_cache_directed.sv]
+# } else {
+#     error "unsupported unit case: $case"
+# }
+# if {![file isfile $rtl]} {
+#     error "required RTL is missing: $rtl"
+# }
+# if {$suite eq "directed"} {
+#     if {![file isfile $directed_tb]} {
+#         error "directed testbench is missing: $directed_tb"
+#     }
+#     add_files -fileset sources_1 $rtl
+#     add_files -fileset sim_1 $directed_tb
+#     set sim_top [file rootname [file tail $directed_tb]]
+# } elseif {$suite eq "official"} {
+#     add_files -fileset sources_1 [list $rtl $wrapper [file join $repo scripts tlb_cache sim_support clk_pll_stub.v]]
+#     add_files -fileset sim_1 $official_tb
+#     set sim_top testbench
+# } else {
+#     error "unsupported suite: $suite"
+# }
+# set_property top $sim_top [get_filesets sim_1]
+# set_property xsim.simulate.log_all_signals true [get_filesets sim_1]
+# set_property xsim.simulate.runtime 1000000ns [get_filesets sim_1]
+# update_compile_order -fileset sim_1
+# puts "CASE=$case"
+CASE=lab13
+# puts "SUITE=$suite"
+SUITE=directed
+# puts "PROJECT_XPR=[file join $project_dir ${project_name}.xpr]"
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab13/lab13-tlb-directed-20261118-04/project/lab13_directed.xpr
+# puts "SIM_TOP=$sim_top"
+SIM_TOP=tb_tlb_directed
+# puts "RTL=$rtl"
+RTL=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab13/tlb_verify/rtl/tlb.v
+# puts "SIM_FILES=[get_files -of_objects [get_filesets sim_1]]"
+SIM_FILES=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab13/tlb_verify/testbench/tb_tlb_directed.sv
+# set active_path [file join $run_dir active-sources.txt]
+# set active_file [open $active_path w]
+# puts $active_file "PROJECT_XPR=[file join $project_dir ${project_name}.xpr]"
+# foreach f [get_files -of_objects [get_filesets sources_1]] {
+#     puts $active_file "SOURCE=[get_property NAME $f]"
+# }
+# foreach f [get_files -of_objects [get_filesets sim_1]] {
+#     puts $active_file "SIM_SOURCE=[get_property NAME $f]"
+# }
+# close $active_file
+# launch_simulation -mode behavioral -simset sim_1
+Command: launch_simulation  -simset sim_1 -mode behavioral
+INFO: [Vivado 12-25911] Executing simulation for 'XSim' simulator
+INFO: [Vivado 12-28535] Process started - Wed Nov 18 02:33:39 2026
+
+INFO: [Vivado 12-12493] Simulation top is 'tb_tlb_directed'
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab13/lab13-tlb-directed-20261118-04/project/lab13_directed.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-72] Using boost library from 'D:/Verilog/2025.2/Vivado/tps/boost_1_72_0'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_tlb_directed' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab13/lab13-tlb-directed-20261118-04/project/lab13_directed.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -L uvm -prj tb_tlb_directed_vlog.prj"
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab13/tlb_verify/rtl/tlb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tlb
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab13/tlb_verify/testbench/tb_tlb_directed.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_tlb_directed
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab13/lab13-tlb-directed-20261118-04/project/lab13_directed.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [USF-XSim-69] 'compile' step finished in '3' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab13/lab13-tlb-directed-20261118-04/project/lab13_directed.sim/sim_1/behav/xsim'
+"xelab --incr --debug typical --relax --mt 2 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_tlb_directed_behav xil_defaultlib.tb_tlb_directed xil_defaultlib.glbl -log elaborate.log"
+Vivado Simulator v2025.2
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Verilog/2025.2/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_tlb_directed_behav xil_defaultlib.tb_tlb_directed xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.tlb_default
+Compiling module xil_defaultlib.tb_tlb_directed
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot tb_tlb_directed_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:06 . Memory (MB): peak = 535.723 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '7' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in 'C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab13/lab13-tlb-directed-20261118-04/project/lab13_directed.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "tb_tlb_directed_behav -key {Behavioral:sim_1:Functional:tb_tlb_directed} -tclbatch {tb_tlb_directed.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Time resolution is 1 ps
+source tb_tlb_directed.tcl
+## set curr_wave [current_wave_config]
+## if { [string length $curr_wave] == 0 } {
+##   if { [llength [get_objects]] > 0} {
+##     add_wave /
+##     set_property needs_save false [current_wave_config]
+##   } else {
+##      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+##   }
+## }
+## log_wave -r /
+## run 1000000ns
+DIRECTED_CHECKS=9
+DIRECTED_PASS
+$finish called at time : 58 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab13/tlb_verify/testbench/tb_tlb_directed.sv" Line 177
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'tb_tlb_directed_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000000ns
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:17 . Memory (MB): peak = 548.965 ; gain = 19.801
+# set sim_dir [file join $project_dir ${project_name}.sim sim_1 behav xsim]
+# set sim_log [file join $sim_dir simulate.log]
+# if {![file isfile $sim_log]} {
+#     error "simulation log was not produced: $sim_log"
+# }
+# set log_in [open $sim_log r]
+# set sim_text [read $log_in]
+# close $log_in
+# if {[regexp -nocase {WATCHDOG_TIMEOUT|----FAIL!!!|Fatal:|ERROR:|Error:} $sim_text]} {
+#     error "simulation reported a failure; inspect $sim_log"
+# }
+# if {$suite eq "directed"} {
+#     set pass_marker "DIRECTED_PASS"
+# } elseif {$case eq "lab13"} {
+#     set pass_marker "----PASS!!!"
+#     foreach marker {"OK!!!write" "OK!!!read" "OK!!!search" "Test end!"} {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "official Lab13 simulation missed required marker: $marker"
+#         }
+#     }
+# } else {
+#     set pass_marker "----PASS!!!"
+#     if {[string first "Test end!" $sim_text] < 0} {
+#         error "official Lab16 simulation missed Test end!"
+#     }
+# }
+# if {[string first $pass_marker $sim_text] < 0} {
+#     error "simulation missed PASS marker $pass_marker; inspect $sim_log"
+# }
+# foreach filename {compile.log elaborate.log simulate.log} {
+#     set source_path [file join $sim_dir $filename]
+#     if {[file isfile $source_path]} {
+#         file copy -force $source_path [file join $run_dir $filename]
+#     }
+# }
+# set waveform_path [file join $sim_dir ${sim_top}_behav.wdb]
+# if {[file isfile $waveform_path]} {
+#     file copy -force $waveform_path [file join $run_dir wave-full.wdb]
+# }
+# set result_path [file join $run_dir result.txt]
+# set result [open $result_path w]
+# puts $result "RUN_ID=[file tail $run_dir]"
+# puts $result "CASE=$case"
+# puts $result "SUITE=$suite"
+# puts $result "STATUS=PASS"
+# puts $result "SIM_TOP=$sim_top"
+# puts $result "PASS_MARKER=$pass_marker"
+# puts $result "PROJECT_XPR=[file join $project_dir ${project_name}.xpr]"
+# puts $result "WAVEFORM=[expr {[file isfile [file join $run_dir wave-full.wdb]] ? "wave-full.wdb" : "NOT_CAPTURED"}]"
+# close $result
+# close_sim -force
+INFO: [Simtcl 6-16] Simulation closed
+# close_project
+# puts "UNIT_SIMULATION_FINISHED=true"
+UNIT_SIMULATION_FINISHED=true
+INFO: [Common 17-206] Exiting Vivado at Wed Nov 18 02:33:56 2026...

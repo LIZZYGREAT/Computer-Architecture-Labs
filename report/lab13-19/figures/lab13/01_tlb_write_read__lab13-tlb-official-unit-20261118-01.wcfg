@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="../../../../results/lab13_19/lab13/lab13-tlb-official-unit-20261118-01/wave-full.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="testbench" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+   </zoom_setting>
+   <column_width_setting>
+   </column_width_setting>
+   <WVObjectSize size="17" />
+   <wvobject fp_name="/testbench/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/tlb_top/we" type="logic">
+      <obj_property name="ElementShortName">we</obj_property>
+      <obj_property name="ObjectShortName">we</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/tlb_top/w_index" type="array">
+      <obj_property name="ElementShortName">w_index[3:0]</obj_property>
+      <obj_property name="ObjectShortName">w_index[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/tlb_top/w_vpn2" type="array">
+      <obj_property name="ElementShortName">w_vpn2[18:0]</obj_property>
+      <obj_property name="ObjectShortName">w_vpn2[18:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/tlb_top/w_asid" type="array">
+      <obj_property name="ElementShortName">w_asid[7:0]</obj_property>
+      <obj_property name="ObjectShortName">w_asid[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/tlb_top/w_pfn0" type="array">
+      <obj_property name="ElementShortName">w_pfn0[19:0]</obj_property>
+      <obj_property name="ObjectShortName">w_pfn0[19:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/tlb_top/w_pfn1" type="array">
+      <obj_property name="ElementShortName">w_pfn1[19:0]</obj_property>
+      <obj_property name="ObjectShortName">w_pfn1[19:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/tlb_top/tlb_w_cnt" type="array">
+      <obj_property name="ElementShortName">tlb_w_cnt[3:0]</obj_property>
+      <obj_property name="ObjectShortName">tlb_w_cnt[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/tlb_top/tlb_w_test_ok" type="logic">
+      <obj_property name="ElementShortName">tlb_w_test_ok</obj_property>
+      <obj_property name="ObjectShortName">tlb_w_test_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/tlb_top/r_index" type="array">
+      <obj_property name="ElementShortName">r_index[3:0]</obj_property>
+      <obj_property name="ObjectShortName">r_index[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/tlb_top/r_vpn2" type="array">
+      <obj_property name="ElementShortName">r_vpn2[18:0]</obj_property>
+      <obj_property name="ObjectShortName">r_vpn2[18:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/tlb_top/r_asid" type="array">
+      <obj_property name="ElementShortName">r_asid[7:0]</obj_property>
+      <obj_property name="ObjectShortName">r_asid[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/tlb_top/r_pfn0" type="array">
+      <obj_property name="ElementShortName">r_pfn0[19:0]</obj_property>
+      <obj_property name="ObjectShortName">r_pfn0[19:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/tlb_top/r_pfn1" type="array">
+      <obj_property name="ElementShortName">r_pfn1[19:0]</obj_property>
+      <obj_property name="ObjectShortName">r_pfn1[19:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/tlb_top/tlb_r_cnt" type="array">
+      <obj_property name="ElementShortName">tlb_r_cnt[3:0]</obj_property>
+      <obj_property name="ObjectShortName">tlb_r_cnt[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/tlb_top/tlb_r_test_ok" type="logic">
+      <obj_property name="ElementShortName">tlb_r_test_ok</obj_property>
+      <obj_property name="ObjectShortName">tlb_r_test_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/tlb_top/test_error" type="logic">
+      <obj_property name="ElementShortName">test_error</obj_property>
+      <obj_property name="ObjectShortName">test_error</obj_property>
+   </wvobject>
+</wave_config>
