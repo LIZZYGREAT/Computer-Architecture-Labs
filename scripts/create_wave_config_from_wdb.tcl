@@ -22,6 +22,7 @@ if {[llength $scopes] == 0} {
 set config_name [file rootname [file tail $wcfg]]
 create_wave_config $config_name
 set wave_count 0
+set all_objects [get_objects -r -quiet *]
 
 foreach spec [lrange $argv 2 end] {
     set fields [split $spec ~]
@@ -32,15 +33,19 @@ foreach spec [lrange $argv 2 end] {
     if {$radix ni {bin hex dec unsigned}} {
         error "unsupported radix '$radix' in '$spec'"
     }
-    # Use a suffix pattern because generic top names are escaped HDL
-    # identifiers and are not parsed as plain paths by get_objects.
+    # Match names as strings rather than Tcl glob patterns. Bus suffixes such
+    # as [31:0] have special meaning to glob matching and must remain literal.
+    # XSim's WDB object names omit packed-vector width selectors such as [31:0].
+    regsub {\[[0-9]+:[0-9]+\]$} $relative_path {} relative_path
     set leaf_name [file tail $relative_path]
-    set object_pattern "*$leaf_name"
-    set candidates [get_objects -r -quiet $object_pattern]
     set objects {}
     set suffix "/$relative_path"
-    foreach candidate $candidates {
-        if {[string match "*$suffix" $candidate]} {
+    foreach candidate $all_objects {
+        set candidate_length [string length $candidate]
+        set suffix_length [string length $suffix]
+        if {[string equal [file tail $candidate] $leaf_name] &&
+            $candidate_length >= $suffix_length &&
+            [string equal [string range $candidate [expr {$candidate_length - $suffix_length}] end] $suffix]} {
             lappend objects $candidate
         }
     }

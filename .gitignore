@@ -38,6 +38,9 @@ results/lab6_lab7/**/combined.log
 !results/lab6_lab7/lab7-20261028T102942Z/lab7-20261028T102942Z-forwarding.wdb
 !results/lab8_lab9/interrupt-ip2-20261110T/interrupt-ip2.wdb
 *.wcfg
+# Keep the reviewed Lab10/Lab11 Wave configurations; full WDBs remain local.
+!report/lab10-11/figures/lab10/*.wcfg
+!report/lab10-11/figures/lab11/*.wcfg
 # Keep the Wave layouts that accompany the Lab6/Lab7 capture handoff.
 !report/lab6-7/figures/waveforms/**/*.wcfg
 # Keep the Lab8/Lab9 Wave layouts used by the report and capture handoff.
