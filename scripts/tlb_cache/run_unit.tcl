@@ -176,4 +176,15 @@ if {$suite eq "official" && $case eq "lab13"} {
 close $result
 close_sim -force
 close_project
+# Keep the XPR and copied run evidence; remove rebuildable simulator products.
+foreach generated [list \
+    [file join $run_dir .Xil] \
+    [file join $run_dir xsim.dir] \
+    [file join $project_dir ${project_name}.cache] \
+    [file join $project_dir ${project_name}.hw] \
+    [file join $project_dir ${project_name}.ip_user_files] \
+    [file join $project_dir ${project_name}.sim] \
+    [file join $project_dir ${project_name}.gen]] {
+    if {[file isdirectory $generated]} { file delete -force $generated }
+}
 puts "UNIT_SIMULATION_FINISHED=true"
