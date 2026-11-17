@@ -1,18 +1,28 @@
+`include "mycpu.h"
+
 module mycpu_top #(parameter PIPELINE_FORWARDING = 1'b1)(
     input         clk,
     input         resetn,
     input  [ 5:0] hw_int,
-    // inst sram interface
-    output        inst_sram_en,
-    output [ 3:0] inst_sram_wen,
+    // instruction SRAM-like request/response interface
+    output        inst_sram_req,
+    output        inst_sram_wr,
+    output [ 1:0] inst_sram_size,
+    output [ 3:0] inst_sram_wstrb,
     output [31:0] inst_sram_addr,
     output [31:0] inst_sram_wdata,
+    input         inst_sram_addr_ok,
+    input         inst_sram_data_ok,
     input  [31:0] inst_sram_rdata,
-    // data sram interface
-    output        data_sram_en,
-    output [ 3:0] data_sram_wen,
+    // data SRAM-like request/response interface
+    output        data_sram_req,
+    output        data_sram_wr,
+    output [ 1:0] data_sram_size,
+    output [ 3:0] data_sram_wstrb,
     output [31:0] data_sram_addr,
     output [31:0] data_sram_wdata,
+    input         data_sram_addr_ok,
+    input         data_sram_data_ok,
     input  [31:0] data_sram_rdata,
     // trace debug interface
     output [31:0] debug_wb_pc,
@@ -99,10 +109,14 @@ if_stage if_stage(
     .fs_to_ds_valid (fs_to_ds_valid ),
     .fs_to_ds_bus   (fs_to_ds_bus   ),
     // inst sram interface
-    .inst_sram_en   (inst_sram_en   ),
-    .inst_sram_wen  (inst_sram_wen  ),
+    .inst_sram_req  (inst_sram_req  ),
+    .inst_sram_wr   (inst_sram_wr   ),
+    .inst_sram_size (inst_sram_size ),
+    .inst_sram_wstrb(inst_sram_wstrb),
     .inst_sram_addr (inst_sram_addr ),
     .inst_sram_wdata(inst_sram_wdata),
+    .inst_sram_addr_ok(inst_sram_addr_ok),
+    .inst_sram_data_ok(inst_sram_data_ok),
     .inst_sram_rdata(inst_sram_rdata)
 );
 // ID stage
@@ -143,12 +157,7 @@ exe_stage exe_stage(
     .es_to_ms_valid (es_to_ms_valid ),
     .es_to_ms_bus   (es_to_ms_bus   ),
     .es_producer_bus(es_producer_bus),
-    .cp0_serial_busy(es_cp0_serial_busy),
-    // data sram interface
-    .data_sram_en   (data_sram_en   ),
-    .data_sram_wen  (data_sram_wen  ),
-    .data_sram_addr (data_sram_addr ),
-    .data_sram_wdata(data_sram_wdata)
+    .cp0_serial_busy(es_cp0_serial_busy)
 );
 // MEM stage
 mem_stage mem_stage(
@@ -172,12 +181,19 @@ mem_stage mem_stage(
     //from es
     .es_to_ms_valid (es_to_ms_valid ),
     .es_to_ms_bus   (es_to_ms_bus   ),
+    .data_sram_req  (data_sram_req  ),
+    .data_sram_wr   (data_sram_wr   ),
+    .data_sram_size (data_sram_size ),
+    .data_sram_wstrb(data_sram_wstrb),
+    .data_sram_addr (data_sram_addr ),
+    .data_sram_wdata(data_sram_wdata),
+    .data_sram_addr_ok(data_sram_addr_ok),
+    .data_sram_data_ok(data_sram_data_ok),
+    .data_sram_rdata(data_sram_rdata),
     //to ws
     .ms_to_ws_valid (ms_to_ws_valid ),
     .ms_to_ws_bus   (ms_to_ws_bus   ),
-    .ms_producer_bus(ms_producer_bus),
-    //from data-sram
-    .data_sram_rdata(data_sram_rdata)
+    .ms_producer_bus(ms_producer_bus)
 );
 // WB stage
 wb_stage wb_stage(

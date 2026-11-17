@@ -1,0 +1,155 @@
+{
+  "source_commit": "0cd575da5d02098cd86d2f12c13af0ca4b3ac0e2",
+  "source_dirty": true,
+  "source_diff_sha256": "3a59d99029dd32ef539a921128a5bc469daa8423802431193be906d15423355c",
+  "rtl_manifest": [
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/mycpu.h",
+      "sha256": "6eced22ba5a63a7c66d410a08396e66e396217d451e15f27803622a0c592db53"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/EXE_stage.v",
+      "sha256": "61fd8e0f5c819e0bd2205dd067f568418d146a5cb9c9fe9b834e610301d69762"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/ID_stage.v",
+      "sha256": "f2b83a5055daeb628a3b549fc22846202fb82d233bd932f6fc34953dc3daabda"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/IF_stage.v",
+      "sha256": "9db9fb5827e1b3650feee22d7240b7fce2f97db6e4d3f94f10de8b13783c112b"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/MEM_stage.v",
+      "sha256": "faf432188710496c5435f0a2dd8d247cf7325f6a4fe035545b21fa86ac537829"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/WB_stage.v",
+      "sha256": "94c6e9478bbf1b2a6bbae0c14c01926d4b0143401b91268555448c2748fa0a02"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/alu.v",
+      "sha256": "7ab1339aad247769ca7c8c6cdf1b845ac1fb82e0f0bcc35a6f918c161ce9a253"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/cp0_reg.v",
+      "sha256": "8bc143fdc8ba7a08f1417066e70d89178e7f28d47edd35542a0149e79bd750b7"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/hilo_unit.v",
+      "sha256": "215e4d0fb362da7870a656fe72cafaf62710fb1291ea6391a5a144f8b00040fa"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/mycpu_top.v",
+      "sha256": "0c8086eb5d67aa384b8705b87f621c90f9e51343e9e268b780a702323ee55874"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/regfile.v",
+      "sha256": "429d1216a649ea974b82d21e059267de3456e15da24cae0af608df246a45d4fe"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/tools.v",
+      "sha256": "20b52ba586d859c9b8da9124a6fcdb024f70cc8e97ddcfad430549bfe0ec58b4"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/soc_sram_lite_top.v",
+      "sha256": "b12ceabdb94de731f75e007f7938b00e7cc35be5a9b44c6dedf2792044f79127"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/BRIDGE/bridge_1x2.v",
+      "sha256": "e7808711904348feb9846ce19cd3798b7f21e300f8dbab56afd57bc92af02854"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/CONFREG/confreg.v",
+      "sha256": "9dca7a7545c0af3a8ab3e8ca56f221dc336669e0fe658e78c5e43ff44397186f"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/ram_wrap/sram_wrap.v",
+      "sha256": "b5e691d41d2c606f4ece9fdcc6c0417af94d00490c16e6192f8149c43230df08"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/testbench/mycpu_tb.v",
+      "sha256": "61ae14108dca523e730451a1a435021f6e7c7eb722b41c3fc28eb9d1864c1436"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/testbench/tb_lab10_bus.sv",
+      "sha256": "8e9ac881c2aa9d4f6568d651f6e1b7b7eba963ae7a7513554ca53669715587d5"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/xilinx_ip/clk_pll/clk_pll.xci",
+      "sha256": "9984012a4db4ef5cc203ebb9d8e1c861593adbe07c65c154d9ea51dcc5c8acfe"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/xilinx_ip/data_ram/data_ram.xci",
+      "sha256": "d64a473e71ddf3c774e141da1f87192fecc7556777a4e33a571f3f4b0d041047"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/xilinx_ip/inst_ram/inst_ram.xci",
+      "sha256": "14bb64b6e341022c083c7de8b359491678e6af3ee33520f830e2015f9af0629b"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/xilinx_ip/lab6_div32/lab6_div32.xci",
+      "sha256": "fc0ae96e8d16bc63b89f206c67772cd971166c6d8ddc5fccd0cb0141d0d47f83"
+    },
+    {
+      "path": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/xilinx_ip/lab6_mult33/lab6_mult33.xci",
+      "sha256": "dd5e4de0b7a8e6ff6aea6b665fb7cb5010c70c44cdcacae94a6fda77670df0ee"
+    }
+  ],
+  "vivado_version": "2025.2",
+  "input_images": {
+    "inst_ram.coe": {
+      "path": "lab10/CPU_CDE_SRAM/soft/func_lab9/obj/inst_ram.coe",
+      "sha256": "978140ec69d63a6f264fa6a95a2d28210d9d8a50e2ab105766a1429aa1ce888e"
+    },
+    "inst_ram.mif": {
+      "path": "lab10/CPU_CDE_SRAM/soft/func_lab9/obj/inst_ram.mif",
+      "sha256": "392c6386b57f4780536a54f1f5af34e7749e9af61cb2db5703685c4c04cfeb01"
+    }
+  },
+  "case": "lab10_soc_golden_trace",
+  "run_id": "s2-lab10-soc-20261117T085246Z",
+  "project_xpr": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/run_vivado/mycpu_lab10_bus.xpr",
+  "run_xpr": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/run_vivado/mycpu_prj1/mycpu_lab10_soc_directed_s2-lab10-soc-20261117T085246Z.xpr",
+  "command": "vivado.bat -mode batch -source scripts/run_lab10_soc.tcl -tclargs <soc-run.xpr> <run-dir>",
+  "build_status": "PASS",
+  "functional_status": "PASS",
+  "protocol_status": "PASS",
+  "trace_compare_status": "PASS",
+  "functional_points_passed": 94,
+  "trace_records": 111625,
+  "trace_valid_records": 111583,
+  "simulation_finish_ns": 13950835,
+  "requested_runtime": "20ms",
+  "golden_trace": {
+    "path": "lab10/CPU_CDE_SRAM/cpu132_gettrace/golden_trace.txt",
+    "sha256": "8aee862561b79a7020e1753590b25e37dbb4ecc379e9b75b234f9fa6212f30cf"
+  },
+  "ip_actions": {
+    "clk_pll": "Clocking Wizard 6.0 rev4 -> rev17",
+    "data_ram": "Block Memory Generator 8.4 rev4 -> rev12",
+    "inst_ram": "Block Memory Generator 8.4 rev4 -> rev12",
+    "lab6_div32": "Divider Generator 5.1 rev25, unchanged",
+    "lab6_mult33": "Multiplier 12.0 rev24, unchanged",
+    "original_xci_modified": false
+  },
+  "wdb_status": "pending_wave_capture",
+  "artifacts": {
+    "result.txt": {
+      "path": "results/lab10_lab11/s2-lab10-soc-20261117T085246Z/result.txt",
+      "sha256": "f24ec3afef0c86bc140150d59d50e43862ae1c09ee25fc0a99ceca6b8b443a1b"
+    },
+    "simulate.log": {
+      "path": "results/lab10_lab11/s2-lab10-soc-20261117T085246Z/simulate.log",
+      "sha256": "d279445cd370b55c4c762f03466eb9a6155c7cd09c393014be9df86c9a1a31b2"
+    },
+    "vivado-run.log": {
+      "path": "results/lab10_lab11/s2-lab10-soc-20261117T085246Z/vivado-run.log",
+      "sha256": "b45e5ac4bbd8eaadba2072c851b1e9693537cff6bb2bedbcb5a74c0dc1b210da"
+    },
+    "vivado-run.jou": {
+      "path": "results/lab10_lab11/s2-lab10-soc-20261117T085246Z/vivado-run.jou",
+      "sha256": "116321e8b8d653ac13d33390cfb19d63a0560ffb0569a3bf3f0bf4c10debfc9b"
+    }
+  }
+}

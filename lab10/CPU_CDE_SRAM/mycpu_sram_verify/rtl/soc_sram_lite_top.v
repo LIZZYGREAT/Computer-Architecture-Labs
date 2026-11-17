@@ -156,6 +156,7 @@ wire [4 :0] ram_random_mask;
 mycpu_top cpu(
     .clk              (cpu_clk   ),
     .resetn           (cpu_resetn),  //low active
+    .hw_int           (6'b0      ),
 
     .inst_sram_req    (cpu_inst_req    ),
     .inst_sram_wr     (cpu_inst_wr     ),

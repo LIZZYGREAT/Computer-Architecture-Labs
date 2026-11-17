@@ -14,12 +14,7 @@ module exe_stage(
     output                         es_to_ms_valid,
     output [`ES_TO_MS_BUS_WD -1:0] es_to_ms_bus  ,
     output [38:0]                  es_producer_bus,
-    output                         cp0_serial_busy,
-    // data sram interface
-    output        data_sram_en   ,
-    output [ 3:0] data_sram_wen  ,
-    output [31:0] data_sram_addr ,
-    output [31:0] data_sram_wdata
+    output                         cp0_serial_busy
 );
 
 reg         es_valid      ;
@@ -98,9 +93,6 @@ wire [31:0] hilo_hi_value;
 wire [31:0] hilo_lo_value;
 
 wire        es_res_from_mem;
-wire        es_mem_store;
-wire [3:0]  es_store_wen;
-wire [31:0] es_store_data;
 
 assign es_add_overflow = es_overflow_check_add &&
                          (~(es_alu_src1[31] ^ es_alu_src2[31])) &&
@@ -128,7 +120,6 @@ assign es_exception_bad_vaddr = es_pipe_exception_valid ? es_pipe_exception_bad_
                                 es_new_address_error ? es_alu_result : 32'b0;
 
 assign es_res_from_mem = |es_mem_op[6:0];
-assign es_mem_store = |es_mem_op[11:7];
 assign es_producer_bus = {es_valid && !flush && !es_exception_valid &&
                               es_gr_we && (es_dest != 5'd0),
                           es_valid && !flush && !es_exception_valid &&
@@ -225,53 +216,5 @@ alu u_alu(
     .alu_src2   (es_alu_src2  ),
     .alu_result (es_alu_result)
     );
-
-assign data_sram_en    = es_valid && es_ready_go && ms_allowin &&
-                         !flush && !es_exception_valid &&
-                         (es_res_from_mem || es_mem_store);
-assign data_sram_wen   = data_sram_en && es_mem_store ? es_store_wen : 4'h0;
-assign data_sram_addr  = es_alu_result;
-assign data_sram_wdata = es_store_data;
-
-reg [3:0] es_store_wen_r;
-reg [31:0] es_store_data_r;
-assign es_store_wen = es_store_wen_r;
-assign es_store_data = es_store_data_r;
-always @(*) begin
-    es_store_wen_r = 4'b0000;
-    es_store_data_r = es_rt_value;
-    if (es_mem_op[`MEM_OP_SW]) begin
-        es_store_wen_r = 4'b1111;
-    end
-    else if (es_mem_op[`MEM_OP_SB]) begin
-        es_store_wen_r = 4'b0001 << es_alu_result[1:0];
-        es_store_data_r = es_rt_value << {es_alu_result[1:0], 3'b000};
-    end
-    else if (es_mem_op[`MEM_OP_SH]) begin
-        if (es_alu_result[1]) begin
-            es_store_wen_r = 4'b1100;
-            es_store_data_r = es_rt_value << 16;
-        end
-        else begin
-            es_store_wen_r = 4'b0011;
-        end
-    end
-    else if (es_mem_op[`MEM_OP_SWL]) begin
-        case (es_alu_result[1:0])
-            2'd0: begin es_store_wen_r = 4'b0001; es_store_data_r = es_rt_value >> 24; end
-            2'd1: begin es_store_wen_r = 4'b0011; es_store_data_r = es_rt_value >> 16; end
-            2'd2: begin es_store_wen_r = 4'b0111; es_store_data_r = es_rt_value >> 8;  end
-            2'd3: begin es_store_wen_r = 4'b1111; end
-        endcase
-    end
-    else if (es_mem_op[`MEM_OP_SWR]) begin
-        case (es_alu_result[1:0])
-            2'd0: begin es_store_wen_r = 4'b1111; end
-            2'd1: begin es_store_wen_r = 4'b1110; es_store_data_r = es_rt_value << 8;  end
-            2'd2: begin es_store_wen_r = 4'b1100; es_store_data_r = es_rt_value << 16; end
-            2'd3: begin es_store_wen_r = 4'b1000; es_store_data_r = es_rt_value << 24; end
-        endcase
-    end
-end
 
 endmodule
