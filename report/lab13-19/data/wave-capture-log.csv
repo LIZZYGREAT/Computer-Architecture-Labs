@@ -1,0 +1,1 @@
+case,run_id,figure_id,png_filename,wdb_file,wdb_sha256,wcfg_file,wcfg_sha256,signal_group,anchor_event,expected,observed,time_start_ns,time_end_ns,proof_status,remarks

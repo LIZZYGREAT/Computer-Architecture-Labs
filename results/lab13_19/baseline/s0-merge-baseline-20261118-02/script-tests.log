@@ -1,0 +1,19 @@
+test_lab11_read_themes_show_arprot_and_handshake_expectations (test_build_bus_evidence.WaveCaptureIdempotencyTests) ... ok
+test_new_and_legacy_preflight_files_are_read_as_separate_stages (test_build_bus_evidence.WaveCaptureIdempotencyTests) ... ok
+test_portable_wcfg_uses_relative_wdb_reference (test_build_bus_evidence.WaveCaptureIdempotencyTests) ... ok
+test_preflight_only_results_do_not_enter_transaction_summary (test_build_bus_evidence.WaveCaptureIdempotencyTests) ... ok
+test_rebuild_preserves_verified_fields_and_rejects_changed_database (test_build_bus_evidence.WaveCaptureIdempotencyTests) ... ok
+test_transaction_summary_labels_directed_and_terminal_if (test_build_bus_evidence.WaveCaptureIdempotencyTests) ... ok
+test_missing_trace_fails_input_scan (test_check_bus_inputs.InputScanTests) ... ok
+test_scans_declared_and_candidate_files_without_calling_them_effective_sources (test_check_bus_inputs.InputScanTests) ... ok
+test_completed_modules_are_not_reported_as_gaps (test_check_sources.BaselineInventoryTests) ... ok
+test_hash_is_sha256_uppercase (test_check_sources.BaselineInventoryTests) ... ok
+test_known_implementation_gaps_are_explicit_at_baseline (test_check_sources.BaselineInventoryTests) ... ok
+test_actual_xpr_selects_cpu_rtl_header_and_suite_testbench (test_source_provenance.EffectiveSourceManifestTests) ... ok
+test_integrity_ignores_nonactive_hash_changes_and_fails_active_changes (test_source_provenance.EffectiveSourceManifestTests) ... ok
+test_vivado_metadata_changes_are_ignored_but_xpr_source_changes_fail (test_source_provenance.EffectiveSourceManifestTests) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 2.010s
+
+OK

@@ -1,0 +1,24 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Wed Nov 18 02:15:46 2026
+# Process ID         : 31280
+# Current directory  : C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/baseline/s0-merge-baseline-20261118-02
+# Command line       : vivado.exe -mode batch -source C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree\scripts\tlb_cache\check_official_projects.tcl -tclargs C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree\results\lab13_19\baseline\s0-merge-baseline-20261118-02 C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree\lab13\tlb_verify\run_vivado\tlb_verify\tlb_verify.xpr C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree\lab16\cache_verify\run_vivado\cache_verify\cache_verify.xpr
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/baseline/s0-merge-baseline-20261118-02/vivado.log
+# Journal file       : C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/baseline/s0-merge-baseline-20261118-02\vivado.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 6979 MB
+# Total Virtual      : 30439 MB
+# Available Virtual  : 5172 MB
+#-----------------------------------------------------------
+source {C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree\scripts\tlb_cache\check_official_projects.tcl}

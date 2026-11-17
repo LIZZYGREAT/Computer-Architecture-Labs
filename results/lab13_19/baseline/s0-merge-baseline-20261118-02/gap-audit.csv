@@ -1,0 +1,3 @@
+path,role,status
+lab13/tlb_verify/rtl/tlb.v,required_lab13_module,EXPECTED_MISSING_MODULE
+lab16/cache_verify/rtl/cache.v,required_lab16_module,EXPECTED_MISSING_MODULE

@@ -1,0 +1,2 @@
+case,run_id,suite,status,head,artifact_path,notes
+baseline,s0-merge-baseline-20261118-02,s0,BASELINE_CAPTURED,64e2586cbd94856abef57cabb9142d839c56f3bc,results/lab13_19/baseline/s0-merge-baseline-20261118-02,"Read-only Vivado inspection; official clock IP requires private upgrade; tlb.v and cache.v are implementation gaps"
