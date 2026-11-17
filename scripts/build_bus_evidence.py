@@ -7,10 +7,14 @@ import argparse
 import csv
 import datetime as dt
 import hashlib
+import html
+import io
 import json
 import os
 import re
+import shutil
 import subprocess
+import tempfile
 from pathlib import Path
 
 from check_bus_inputs import parse_mif
@@ -18,6 +22,7 @@ from check_bus_inputs import parse_mif
 
 EVIDENCE_FIELDS = [
     "case", "run_id", "suite", "source_commit", "source_dirty", "source_diff_sha256",
+    "source_manifest_sha256",
     "build_status", "functional_status", "protocol_status", "overall_status",
     "expected_points", "actual_points", "trace_compare_status", "trace_records",
     "project_xpr", "rtl_manifest", "inst_mif", "inst_mif_sha256", "inst_coe",
@@ -29,22 +34,33 @@ TRANSACTION_FIELDS = [
     "case", "run_id", "inst_req_accept", "inst_data_complete", "load_req_accept",
     "load_data_complete", "store_req_accept", "store_data_complete", "ar_handshakes",
     "r_handshakes", "aw_handshakes", "w_handshakes", "b_handshakes",
-    "stale_fetch_drops", "duplicate_store_count", "protocol_assertions_failed",
-    "deadlock_watchdogs", "summary_status",
+    "stale_fetch_drops", "terminal_pending_if", "duplicate_store_count",
+    "protocol_assertions_failed", "assertion_status", "deadlock_watchdogs", "summary_status",
 ]
 WAVE_FIELDS = [
     "case", "run_id", "figure_id", "png_filename", "wdb_file", "wdb_sha256",
-    "wcfg_file", "wcfg_validation", "inst_mif", "inst_mif_sha256", "reference_trace",
+    "wcfg_file", "wcfg_sha256", "wcfg_validation", "inst_mif", "inst_mif_sha256", "reference_trace",
     "reference_sha256", "topic", "target_instruction", "target_pc", "search_signal",
     "search_value", "search_context", "required_signals", "expected", "expected_source",
     "observed", "time_start_ns", "time_end_ns", "proof_status", "remarks",
 ]
 WAVE_VALIDATION_FIELDS = [
     "case", "run_id", "wdb_file", "wdb_sha256", "wcfg_file", "wcfg_sha256",
-    "db_ref_matches", "db_opens", "config_opens", "signals_expected", "signals_found",
-    "clock_toggles", "pc_valid", "target_event_found", "simtcl_missing_scope",
-    "validation_status", "validation_log",
+    "db_ref_matches", "db_opens", "config_opens", "test_end_seen", "signals_expected", "signals_found",
+    "clock_signal_present", "anchor_metadata_available", "anchor_marker_found",
+    "target_signal_configured", "simtcl_missing_scope", "structural_validation_status",
+    "manual_waveform_proof_status", "validation_log",
 ]
+
+WAVE_MANUAL_FIELDS = ("observed", "time_start_ns", "time_end_ns", "proof_status", "remarks")
+WAVE_IDENTITY_FIELDS = (
+    "wdb_sha256", "wcfg_sha256", "target_pc", "search_signal", "search_value",
+    "search_context", "expected",
+)
+WAVE_CAPTURED_IDENTITY_FIELDS = (
+    "wdb_file", "wdb_sha256", "wcfg_file", "wcfg_sha256", "target_pc", "search_signal",
+    "search_value", "search_context", "expected", "expected_source",
+)
 
 
 def sha256(path: Path) -> str:
@@ -73,12 +89,129 @@ def csv_rows(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(stream))
 
 
-def write_csv(path: Path, fields: list[str], rows: list[dict[str, object]]) -> None:
+def csv_payload(fields: list[str], rows: list[dict[str, object]]) -> str:
+    buffer = io.StringIO(newline="")
+    writer = csv.DictWriter(buffer, fieldnames=fields, extrasaction="ignore")
+    writer.writeheader()
+    writer.writerows(rows)
+    return buffer.getvalue()
+
+
+def csv_matches(path: Path, payload: str) -> bool:
+    if not path.is_file():
+        return False
+    with path.open("r", newline="", encoding="utf-8-sig", errors="replace") as stream:
+        return stream.read() == payload
+
+
+def csv_would_change(path: Path, fields: list[str], rows: list[dict[str, object]]) -> bool:
+    payload = csv_payload(fields, rows)
+    return not csv_matches(path, payload)
+
+
+def write_csv(path: Path, fields: list[str], rows: list[dict[str, object]]) -> bool:
+    """Write a CSV atomically. Return False when its content is already current."""
+    payload = csv_payload(fields, rows)
+    if csv_matches(path, payload):
+        return False
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", newline="", encoding="utf-8-sig") as stream:
-        writer = csv.DictWriter(stream, fieldnames=fields, extrasaction="ignore")
-        writer.writeheader()
-        writer.writerows(rows)
+    temporary: str | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w", newline="", encoding="utf-8-sig", dir=path.parent,
+            prefix=f".{path.name}.", suffix=".tmp", delete=False,
+        ) as stream:
+            temporary = stream.name
+            stream.write(payload)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, path)
+        return True
+    finally:
+        if temporary and os.path.exists(temporary):
+            os.unlink(temporary)
+
+
+def backup_csv(path: Path) -> Path | None:
+    """Keep a versioned copy before changing a hand-maintained evidence table."""
+    if not path.is_file():
+        return None
+    archive = path.parent / "archive"
+    archive.mkdir(parents=True, exist_ok=True)
+    stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+    destination = archive / f"{path.stem}-{stamp}{path.suffix}"
+    serial = 1
+    while destination.exists():
+        destination = archive / f"{path.stem}-{stamp}-{serial}{path.suffix}"
+        serial += 1
+    shutil.copy2(path, destination)
+    return destination
+
+
+def merge_wave_capture_rows(existing_rows: list[dict[str, str]],
+                            generated_rows: list[dict[str, object]]) -> list[dict[str, object]]:
+    """Keep hand-entered proof fields and reject stale verified captures."""
+    index = {(row.get("case", ""), row.get("run_id", ""), row.get("figure_id", "")): dict(row)
+             for row in existing_rows}
+    generated_keys: set[tuple[str, str, str]] = set()
+    for generated in generated_rows:
+        key = (str(generated.get("case", "")), str(generated.get("run_id", "")),
+               str(generated.get("figure_id", "")))
+        if key in generated_keys:
+            raise ValueError(f"duplicate generated waveform capture key: {key}")
+        generated_keys.add(key)
+        previous = index.get(key)
+        row = dict(generated)
+        if not previous:
+            index[key] = row
+            continue
+        if previous.get("proof_status") == "CAPTURED_VERIFIED":
+            changed = [field for field in WAVE_IDENTITY_FIELDS
+                       if str(previous.get(field, "")) != str(row.get(field, ""))]
+            if changed:
+                values = ", ".join(
+                    f"{field}: {previous.get(field, '')!r} -> {row.get(field, '')!r}"
+                    for field in changed
+                )
+                raise ValueError(
+                    f"verified waveform capture {key} no longer matches generated evidence ({values}); "
+                    "manual proof was not overwritten"
+                )
+            for field in WAVE_CAPTURED_IDENTITY_FIELDS:
+                if field in previous:
+                    row[field] = previous[field]
+        for field in WAVE_MANUAL_FIELDS:
+            if field in previous:
+                row[field] = previous[field]
+        index[key] = row
+    return list(index.values())
+
+
+def normalize_validation_rows(rows: list[dict[str, str]],
+                              capture_rows: list[dict[str, str]] | None = None) -> list[dict[str, str]]:
+    """Migrate historical schema names without claiming signal-value proof."""
+    capture_rows = capture_rows or []
+    normalized: list[dict[str, str]] = []
+    for previous in rows:
+        row = dict(previous)
+        if "structural_validation_status" not in row:
+            row["structural_validation_status"] = row.get("validation_status", "")
+        row.setdefault("clock_signal_present", row.get("clock_toggles", ""))
+        row.setdefault("anchor_metadata_available", row.get("pc_valid", ""))
+        row.setdefault("anchor_marker_found", row.get("target_event_found", ""))
+        row.setdefault("target_signal_configured", row.get("pc_valid", ""))
+        wcfg_name = Path(row.get("wcfg_file", "")).name
+        figure_id = next((str(theme["figure"]) for theme in theme_rows(row.get("case", ""))
+                          if wcfg_name.startswith(f"{theme['file']}__")), "")
+        proof_row = next((item for item in capture_rows
+                          if item.get("case") == row.get("case") and
+                          item.get("run_id") == row.get("run_id") and
+                          item.get("figure_id") == figure_id), {})
+        row["manual_waveform_proof_status"] = (
+            proof_row.get("proof_status") or row.get("manual_waveform_proof_status") or "PENDING_CAPTURE"
+        )
+        normalized.append(row)
+    return normalized
 
 
 def repo_path(root: Path, raw: str | Path | None) -> str:
@@ -252,6 +385,20 @@ def theme_rows(case: str) -> list[dict[str, object]]:
         {"figure": "L11-05", "file": "05_redirect_stale", "topic": "异常期间未完成读与旧响应丢弃", "event": "stale_drop", "signal": "soc_lite/cpu/if_stage/restart_pc[31:0]", "context": "异常/ERET 重定向期间已接受的旧 IF 读继续排空；stale_response 丢弃旧响应并转向 restart_pc。", "expected": "旧读响应不送入 decode；新请求使用异常/ERET 目标 PC。", "expected_source": "Lab11 IF_stage 状态机与本次 full-run BUS_ANCHOR。", "signals": ["clk~bin", "soc_lite/cpu/trap_commit~bin", "soc_lite/cpu/eret_commit~bin", "soc_lite/cpu/if_stage/request_pc[31:0]~hex", "soc_lite/cpu/if_stage/restart_pc[31:0]~hex", "soc_lite/cpu/if_stage/stale_response~bin", "soc_lite/cpu/if_stage/response_valid~bin", "soc_lite/cpu_arvalid~bin", "soc_lite/cpu_arready~bin", "soc_lite/cpu_araddr[31:0]~hex", "soc_lite/cpu_arid[3:0]~hex", "soc_lite/cpu_rvalid~bin", "soc_lite/cpu_rready~bin", "soc_lite/cpu_rid[3:0]~hex", "soc_lite/cpu_inst_data_ok~bin", "debug_wb_pc[31:0]~hex"]},
     ]
     for theme in themes:
+        if theme["figure"] == "L11-03":
+            theme["context"] = (
+                "本次首个已接受 Store；对照 AW/W 独立握手、AWPROT 数据属性、"
+                "AWID/WID、单拍 AWSIZE/AWLEN/AWBURST，最后等待 B 响应。"
+            )
+            theme["expected"] = (
+                "AW 与 W 可分拍；AWPROT=010；WID=AWID；AWLEN=0、AWBURST=INCR、WLAST=1；"
+                "B 响应后事务完成。"
+            )
+            theme["signals"].extend([
+                "soc_lite/cpu_awprot[2:0]~bin", "soc_lite/cpu_awsize[2:0]~bin",
+                "soc_lite/cpu_awlen[7:0]~hex", "soc_lite/cpu_awburst[1:0]~bin",
+                "soc_lite/cpu_wid[3:0]~hex",
+            ])
         theme["signals"] = ["tb_top/clk~bin" if signal == "clk~bin" else signal
                             for signal in theme["signals"]]
         theme["signal"] = str(theme.get("signal", "")).replace("soc_lite/cpu/", "soc_lite/u_cpu/")
@@ -283,6 +430,60 @@ def parse_wcfg_signals(path: Path) -> list[str]:
         return []
     text = path.read_text(encoding="utf-8", errors="replace")
     return re.findall(r'<wvobject fp_name="([^"]+)" type="[^"]+"', text)
+
+
+def wcfg_db_ref(path: Path) -> str:
+    if not path.is_file():
+        return ""
+    text = path.read_text(encoding="utf-8", errors="replace")
+    match = re.search(r'<db_ref\b[^>]*\bpath="([^"]+)"', text)
+    return html.unescape(match.group(1)) if match else ""
+
+
+def resolve_wcfg_db_ref(wcfg: Path) -> Path | None:
+    raw = wcfg_db_ref(wcfg)
+    if not raw:
+        return None
+    reference = Path(raw)
+    if not reference.is_absolute():
+        reference = wcfg.parent / reference
+    return reference.resolve()
+
+
+def make_portable_wcfg(source: Path, target: Path, wdb: Path) -> Path:
+    """Copy a Vivado WCFG with its WDB reference relative to the WCFG file."""
+    if target.exists():
+        raise FileExistsError(f"refusing to overwrite existing portable WCFG: {target}")
+    if not source.is_file() or not wdb.is_file():
+        raise FileNotFoundError(f"WCFG source or WDB is missing: {source} / {wdb}")
+    text = source.read_text(encoding="utf-8", errors="replace")
+    matches = list(re.finditer(r'(<db_ref\b[^>]*\bpath=")([^"]+)(")', text))
+    if len(matches) != 1:
+        raise ValueError(f"expected exactly one db_ref in {source}, found {len(matches)}")
+    relative = Path(os.path.relpath(wdb.resolve(), target.parent.resolve())).as_posix()
+    start, end = matches[0].span(2)
+    output = text[:start] + html.escape(relative, quote=True) + text[end:]
+    target.parent.mkdir(parents=True, exist_ok=True)
+    temporary: str | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", newline="", dir=target.parent,
+            prefix=f".{target.name}.", suffix=".tmp", delete=False,
+        ) as stream:
+            temporary = stream.name
+            stream.write(output)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, target)
+        temporary = None
+    finally:
+        if temporary and os.path.exists(temporary):
+            os.unlink(temporary)
+    resolved = resolve_wcfg_db_ref(target)
+    if resolved is None or os.path.normcase(str(resolved)) != os.path.normcase(str(wdb.resolve())):
+        target.unlink(missing_ok=True)
+        raise ValueError(f"portable WCFG does not resolve to its WDB: {target}")
+    return target
 
 
 def normalize_signal_path(path: str) -> str:
@@ -362,20 +563,24 @@ def make_wcfgs(root: Path, case: str, run_dir: Path, info: dict[str, str],
                                       [str(wdb)], validation_log)
     db_opens = "true" if db_code == 0 and "WDB_VALID=" in db_text else "false"
     missing_scope = "true" if "Simtcl 6-55" in db_text else "false"
+    capture_rows = csv_rows(root / "report" / "lab10-11" / "data" / "wave-capture-log.csv")
     for theme in themes:
         run_id = info.get("RUN_ID", run_dir.name)
         wcfg = fig_dir / f"{theme['file']}__{run_id}{attempt_tag}.wcfg"
         expected_cfgs.append(wcfg)
         if not wcfg.exists():
-            if vivado:
+            raw_wcfg = validation_dir / f"{theme['file']}__{run_id}{attempt_tag}.raw.wcfg"
+            if vivado and not raw_wcfg.exists():
                 create_log = validation_dir / f"{theme['figure']}-create.log"
                 specs = [f"{normalize_signal_path(str(signal).rsplit('~', 1)[0])}~{str(signal).rsplit('~', 1)[1]}"
                          for signal in theme["signals"]]
                 code, _ = run_vivado(vivado, root, root / "scripts" / "create_wave_config_from_wdb.tcl",
-                                     [str(wdb), str(wcfg), *specs], create_log)
+                                     [str(wdb), str(raw_wcfg), *specs], create_log)
                 if code != 0:
                     # Preserve the failed attempt log; never create or overwrite a placeholder WCFG.
                     pass
+            if raw_wcfg.is_file():
+                make_portable_wcfg(raw_wcfg, wcfg, wdb)
         signal_paths = parse_wcfg_signals(wcfg)
         config_log = validation_dir / f"{theme['figure']}-validate.log"
         config_code = 2
@@ -384,7 +589,8 @@ def make_wcfgs(root: Path, case: str, run_dir: Path, info: dict[str, str],
             config_code, config_text = run_vivado(
                 vivado, root, root / "scripts" / "validate_wave_configs.tcl",
                 [str(wdb), str(wcfg)], config_log)
-        db_ref_ok = "true" if wcfg.is_file() and str(wdb).replace("\\", "/") in wcfg.read_text(encoding="utf-8", errors="replace").replace("\\", "/") else "false"
+        resolved_ref = resolve_wcfg_db_ref(wcfg)
+        db_ref_ok = "true" if resolved_ref and os.path.normcase(str(resolved_ref)) == os.path.normcase(str(wdb.resolve())) else "false"
         config_opens = "true" if config_code == 0 and "WAVE_CONFIG_VALIDATION_COMPLETE=1" in config_text else "false"
         target_suffix, target_value, anchor = get_pc_event(case, theme, anchors)
         selected_signal = ""
@@ -398,36 +604,46 @@ def make_wcfgs(root: Path, case: str, run_dir: Path, info: dict[str, str],
         if theme["event"] == "backpressure" and target_suffix:
             selected_signal = next((path.replace("\\", "/") for path in signal_paths
                                     if normalize_signal_path(path).endswith("/" + normalize_signal_path(target_suffix))), "")
-        target_found = "true" if anchor and selected_signal and target_value else "false"
-        completed = bool(read_kv(run_dir / "result.txt").get("TEST_END_SEEN", "").lower() == "true")
-        metrics = parse_metrics(sim_log)
-        cycles = metrics.get("pipeline_cycles", "")
-        if not cycles:
-            # The testbench clock is explicitly counted in BUS_METRICS where available.
-            cycles = ""
+        anchor_metadata_available = "true" if anchor else "false"
+        anchor_marker_found = "true" if anchor and target_value else "false"
+        target_signal_configured = "true" if selected_signal else "false"
+        test_end_seen = "true" if read_kv(run_dir / "result.txt").get("TEST_END_SEEN", "").lower() == "true" else "false"
         has_tb_clock = any(normalize_signal_path(path).endswith("/tb_top/clk") for path in signal_paths)
-        clock_toggles = "true" if db_opens == "true" and has_tb_clock and completed else "false"
-        pc_valid = "true" if target_found == "true" and selected_signal else "false"
-        validation_status = "PASS" if (db_opens == "true" and config_opens == "true" and
-                                         db_ref_ok == "true" and len(signal_paths) == len(theme["signals"]) and
-                                         clock_toggles == "true" and pc_valid == "true" and
-                                         target_found == "true" and missing_scope == "false") else "INCOMPLETE"
+        clock_signal_present = "true" if has_tb_clock else "false"
+        structural_status = "PASS" if (
+            db_opens == "true" and config_opens == "true" and db_ref_ok == "true" and
+            len(signal_paths) == len(theme["signals"]) and clock_signal_present == "true" and
+            test_end_seen == "true" and anchor_metadata_available == "true" and
+            anchor_marker_found == "true" and target_signal_configured == "true" and
+            missing_scope == "false"
+        ) else "INCOMPLETE"
+        proof_row = next((row for row in capture_rows
+                          if row.get("case") == case and row.get("run_id") == run_id and
+                          row.get("figure_id") == theme["figure"]), {})
+        manual_proof_status = proof_row.get("proof_status") or "PENDING_CAPTURE"
         validation_rows.append({
             "case": case, "run_id": run_id, "wdb_file": wdb_rel, "wdb_sha256": wdb_hash,
             "wcfg_file": repo_path(root, wcfg) if wcfg.is_file() else "",
             "wcfg_sha256": sha256(wcfg) if wcfg.is_file() else "",
             "db_ref_matches": db_ref_ok, "db_opens": db_opens, "config_opens": config_opens,
-            "signals_expected": len(theme["signals"]), "signals_found": len(signal_paths),
-            "clock_toggles": clock_toggles, "pc_valid": pc_valid,
-            "target_event_found": target_found, "simtcl_missing_scope": missing_scope,
-            "validation_status": validation_status,
+            "test_end_seen": test_end_seen, "signals_expected": len(theme["signals"]),
+            "signals_found": len(signal_paths), "clock_signal_present": clock_signal_present,
+            "anchor_metadata_available": anchor_metadata_available,
+            "anchor_marker_found": anchor_marker_found,
+            "target_signal_configured": target_signal_configured,
+            "simtcl_missing_scope": missing_scope,
+            "structural_validation_status": structural_status,
+            "manual_waveform_proof_status": manual_proof_status,
             "validation_log": repo_path(root, config_log if config_log.is_file() else validation_log),
         })
     return [], validation_rows, anchors
 
 
-def build_evidence_rows(root: Path, runs, cfg: dict[str, dict]) -> list[dict]:
+def build_evidence_rows(root: Path, runs, cfg: dict[str, dict],
+                        validation_rows_override: list[dict] | None = None) -> list[dict]:
     rows: list[dict] = []
+    validation_rows = (validation_rows_override if validation_rows_override is not None else
+                       csv_rows(root / "report/lab10-11/data/waveform_validation.csv"))
     for case, run_dir, info in runs:
         input_row, baseline = run_manifest(case, run_dir)
         result_status = info.get("STATUS", "INCOMPLETE")
@@ -448,12 +664,14 @@ def build_evidence_rows(root: Path, runs, cfg: dict[str, dict]) -> list[dict]:
         if not xpr:
             xpr = cfg[case].get("ProjectXpr", "")
         selected_wcfgs = {repo_path(root, path) for path in configs}
-        wcfg_statuses = [row.get("validation_status", "")
-                         for row in csv_rows(root / "report/lab10-11/data/waveform_validation.csv")
+        wcfg_statuses = [row.get("structural_validation_status", row.get("validation_status", ""))
+                         for row in validation_rows
                          if row.get("run_id") == run_id and row.get("wcfg_file") in selected_wcfgs]
         waveform_validation = "PASS" if len(wcfg_statuses) == len(theme_rows(case)) and all(
             value == "PASS" for value in wcfg_statuses) else ("INCOMPLETE" if wdb else "NOT_RUN")
         notes = info.get("ERROR_REASON", "")
+        if case == "lab11" and run_id == "s5-full-capture-lab11-fix1-20261117":
+            notes = "Historical functional PASS predating the AxPROT correction; superseded for protocol acceptance."
         if not notes and result_status == "PASS" and not wdb:
             notes = "Functional run passed; WDB not captured for this run."
         rows.append({
@@ -461,6 +679,7 @@ def build_evidence_rows(root: Path, runs, cfg: dict[str, dict]) -> list[dict]:
             "source_commit": info.get("SOURCE_COMMIT", input_row.get("source_commit", baseline.get("SOURCE_COMMIT", ""))),
             "source_dirty": info.get("SOURCE_DIRTY", input_row.get("source_dirty", baseline.get("SOURCE_DIRTY", ""))),
             "source_diff_sha256": info.get("SOURCE_DIFF_SHA256", input_row.get("source_diff_sha256", baseline.get("SOURCE_DIFF_SHA256", ""))),
+            "source_manifest_sha256": sha256(run_source) if run_source.is_file() else "",
             "build_status": "PASS" if result_status == "PASS" and info.get("SIM_EXIT_CODE", "0") == "0" else result_status,
             "functional_status": info.get("FUNCTIONAL_STATUS", result_status),
             "protocol_status": info.get("PROTOCOL_STATUS", "NOT_RECORDED"),
@@ -494,20 +713,71 @@ def build_transaction_rows(runs) -> list[dict]:
         "stale_fetch_drops": "STALE_FETCH_RESPONSES_DROPPED",
     }
     for case, run_dir, info in runs:
+        if info.get("STATUS") != "PASS":
+            continue
+        if case == "lab11" and info.get("RUN_ID", run_dir.name) in {
+            "s4-directed-authorized-lab11-20261117", "s5-full-capture-lab11-fix1-20261117",
+        }:
+            continue
         metrics = parse_metrics(run_dir / "simulate.log")
         record: dict[str, object] = {"case": case, "run_id": info.get("RUN_ID", run_dir.name)}
         for name, result_key in metrics_by_result.items():
             record[name] = metrics.get(name, info.get(result_key, ""))
+        def number(name: str) -> int | None:
+            try:
+                value = str(record.get(name, "")).strip()
+                return int(value) if value else None
+            except ValueError:
+                return None
+
         record["duplicate_store_count"] = info.get("DUPLICATE_STORE_COUNT", "")
         record["protocol_assertions_failed"] = info.get("PROTOCOL_ASSERTS_FAIL", "")
         record["deadlock_watchdogs"] = info.get("DEADLOCK_WATCHDOGS", "")
+        assertion_failures = info.get("PROTOCOL_ASSERTS_FAIL", "").strip()
+        assertion_pass = info.get("PROTOCOL_ASSERTS_PASS", "").strip()
+        if assertion_pass == "PASS" or assertion_failures == "0":
+            record["assertion_status"] = "PASS"
+        elif assertion_failures.isdigit() and int(assertion_failures) > 0:
+            record["assertion_status"] = "FAIL"
+        else:
+            record["assertion_status"] = "NOT_REPORTED"
+
+        inst_accept = number("inst_req_accept")
+        inst_complete = number("inst_data_complete")
+        pending_if = max(0, inst_accept - inst_complete) if inst_accept is not None and inst_complete is not None else None
+        record["terminal_pending_if"] = pending_if if pending_if is not None else "N/A"
         if info.get("STATUS") != "PASS":
             record["summary_status"] = info.get("STATUS", "INCOMPLETE")
-        elif metrics:
-            pairs = (("load_req_accept", "load_data_complete"), ("store_req_accept", "store_data_complete"))
-            record["summary_status"] = "PASS" if all(metrics.get(left) == metrics.get(right) for left, right in pairs) else "MISMATCH"
+        elif info.get("SUITE") == "directed":
+            record["summary_status"] = "DIRECTED_PASS"
         else:
-            record["summary_status"] = "NOT_INSTRUMENTED"
+            pairs = [("load_req_accept", "load_data_complete"),
+                     ("store_req_accept", "store_data_complete")]
+            if case == "lab11":
+                pairs.extend([("ar_handshakes", "r_handshakes"),
+                              ("aw_handshakes", "w_handshakes"),
+                              ("w_handshakes", "b_handshakes")])
+            observed_pairs = [(left, right, number(left), number(right)) for left, right in pairs]
+            required_pairs = [(left, right, left_value, right_value)
+                              for left, right, left_value, right_value in observed_pairs
+                              if left_value is not None and right_value is not None]
+            inst_counts_present = inst_accept is not None and inst_complete is not None
+            inst_counts_valid = (
+                inst_accept >= inst_complete if case == "lab11" and inst_counts_present else
+                inst_accept == inst_complete if inst_counts_present else True
+            )
+            all_required = (bool(required_pairs) or inst_counts_present) and inst_counts_valid and all(
+                left_value == right_value for _, _, left_value, right_value in required_pairs
+            )
+            internal_if_pending = (
+                case == "lab11" and pending_if is not None and pending_if > 0 and
+                inst_accept is not None and inst_complete is not None and inst_accept >= inst_complete
+            )
+            record["summary_status"] = (
+                "PASS_WITH_PENDING_IF" if all_required and internal_if_pending else
+                "PASS" if all_required and pending_if in (None, 0) else
+                "MISMATCH" if required_pairs else "NOT_INSTRUMENTED"
+            )
         rows.append(record)
     return rows
 
@@ -531,25 +801,44 @@ def write_outputs(root: Path, runs, cfg: dict[str, dict], vivado: Path | None,
             validation_rows.extend(made_validation_rows)
             print(f"WDB={find_wave_db(run_dir, info) or ''}")
             print(f"ANCHORS={json.dumps(anchors, ensure_ascii=False, sort_keys=True)}")
-    existing_wave_validation = csv_rows(data_dir / "waveform_validation.csv")
+    capture_path = data_dir / "wave-capture-log.csv"
+    existing_wave = csv_rows(capture_path)
+    existing_wave_validation = normalize_validation_rows(
+        csv_rows(data_dir / "waveform_validation.csv"), existing_wave
+    )
     if validation_rows:
         validation_index = {(row["run_id"], row["wcfg_file"]): row for row in existing_wave_validation}
         for row in validation_rows:
             validation_index[(row["run_id"], row["wcfg_file"])] = row
         existing_wave_validation = list(validation_index.values())
-        write_csv(data_dir / "waveform_validation.csv", WAVE_VALIDATION_FIELDS, existing_wave_validation)
     elif not (data_dir / "waveform_validation.csv").exists():
-        write_csv(data_dir / "waveform_validation.csv", WAVE_VALIDATION_FIELDS, [])
+        existing_wave_validation = []
+
+    for row in existing_wave:
+        if not row.get("wcfg_sha256") and row.get("wcfg_file"):
+            existing_wcfg = root / row["wcfg_file"]
+            if existing_wcfg.is_file():
+                row["wcfg_sha256"] = sha256(existing_wcfg)
+        if not row.get("wdb_sha256") and row.get("wdb_file"):
+            existing_wdb = root / row["wdb_file"]
+            if existing_wdb.is_file():
+                row["wdb_sha256"] = sha256(existing_wdb)
     if wave_rows:
-        existing_wave = csv_rows(data_dir / "wave-capture-log.csv")
-        wave_index = {(row["case"], row["run_id"], row["figure_id"]): row for row in existing_wave}
-        for row in wave_rows:
-            wave_index[(row["case"], row["run_id"], row["figure_id"])] = row
-        write_csv(data_dir / "wave-capture-log.csv", WAVE_FIELDS, list(wave_index.values()))
-    elif not (data_dir / "wave-capture-log.csv").exists():
-        write_csv(data_dir / "wave-capture-log.csv", WAVE_FIELDS, [])
-    write_csv(data_dir / "evidence_index.csv", EVIDENCE_FIELDS, build_evidence_rows(root, runs, cfg))
-    write_csv(data_dir / "transaction-summary.csv", TRANSACTION_FIELDS, build_transaction_rows(runs))
+        existing_wave = merge_wave_capture_rows(existing_wave, wave_rows)
+    evidence_rows = build_evidence_rows(root, runs, cfg, existing_wave_validation)
+    transaction_rows = build_transaction_rows(runs)
+
+    validation_path = data_dir / "waveform_validation.csv"
+    if validation_rows or not validation_path.exists() or csv_would_change(validation_path, WAVE_VALIDATION_FIELDS, existing_wave_validation):
+        write_csv(validation_path, WAVE_VALIDATION_FIELDS, existing_wave_validation)
+    if wave_rows or not capture_path.exists() or csv_would_change(capture_path, WAVE_FIELDS, existing_wave):
+        if csv_would_change(capture_path, WAVE_FIELDS, existing_wave):
+            backup_path = backup_csv(capture_path)
+            if backup_path:
+                print(f"WAVE_CAPTURE_BACKUP={repo_path(root, backup_path)}")
+        write_csv(capture_path, WAVE_FIELDS, existing_wave)
+    write_csv(data_dir / "evidence_index.csv", EVIDENCE_FIELDS, evidence_rows)
+    write_csv(data_dir / "transaction-summary.csv", TRANSACTION_FIELDS, transaction_rows)
     print(f"EVIDENCE_INDEX={data_dir / 'evidence_index.csv'}")
     print(f"TRANSACTION_SUMMARY={data_dir / 'transaction-summary.csv'}")
     print(f"WAVE_CAPTURE_LOG={data_dir / 'wave-capture-log.csv'}")
@@ -601,9 +890,8 @@ def make_wave_rows_for_run(root: Path, case: str, run_dir: Path, info: dict[str,
         search_signal = next((path.replace("\\", "/") for path in signals
                               if target_signal_suffix and normalize_signal_path(path).endswith(
                                   normalize_signal_path(target_signal_suffix))), "")
-        validation_status = validation.get("validation_status", "NOT_RUN")
-        event_found = validation.get("target_event_found") == "true"
-        proof_status = "PENDING_CAPTURE" if validation_status == "PASS" and event_found else "PENDING_CAPTURE"
+        validation_status = validation.get("structural_validation_status", "NOT_RUN")
+        proof_status = validation.get("manual_waveform_proof_status", "PENDING_CAPTURE")
         expected = str(theme["expected"])
         if word is not None and theme["event"] == "fetch":
             expected = f"instruction=0x{word:08x}"
@@ -611,6 +899,7 @@ def make_wave_rows_for_run(root: Path, case: str, run_dir: Path, info: dict[str,
             "case": case, "run_id": run_id, "figure_id": theme["figure"],
             "png_filename": f"{theme['figure']}.png", "wdb_file": repo_path(root, wdb),
             "wdb_sha256": wdb_hash, "wcfg_file": repo_path(root, wcfg) if wcfg.is_file() else "",
+            "wcfg_sha256": sha256(wcfg) if wcfg.is_file() else "",
             "wcfg_validation": validation_status, "inst_mif": repo_path(root, mif),
             "inst_mif_sha256": sha256(mif) if mif.is_file() else "",
             "reference_trace": repo_path(root, trace), "reference_sha256": sha256(trace) if trace.is_file() else "",

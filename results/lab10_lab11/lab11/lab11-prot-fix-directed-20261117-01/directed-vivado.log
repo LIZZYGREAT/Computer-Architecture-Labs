@@ -1,0 +1,56 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Tue Nov 17 22:10:41 2026
+# Process ID         : 30840
+# Current directory  : D:/Verilog/2025.2/Vivado/bin
+# Command line       : vivado.exe -mode batch -source C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\run_lab11_axi3_directed.tcl -log C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\lab11\lab11-prot-fix-directed-20261117-01\directed-vivado.log -journal C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\lab11\lab11-prot-fix-directed-20261117-01\directed-vivado.jou -tclargs C:\Users\lenovo\Desktop\Projects\FPGA\lab C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\lab11\lab11-prot-fix-directed-20261117-01
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab10_lab11/lab11/lab11-prot-fix-directed-20261117-01/directed-vivado.log
+# Journal file       : C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\lab11\lab11-prot-fix-directed-20261117-01\directed-vivado.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : 
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 6979 MB
+# Total Virtual      : 30439 MB
+# Available Virtual  : 6566 MB
+#-----------------------------------------------------------
+ERROR: [Common 17-354] Could not open 'C' for writing.
+ERROR: [Common 17-354] Could not open 'C' for writing.
+ERROR: [Common 17-354] Could not open 'C' for writing.
+source {C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\run_lab11_axi3_directed.tcl}
+# if {[llength $argv] != 2} {
+#     error "usage: run_lab11_axi3_directed.tcl <repo-root> <run-dir>"
+# }
+# set repo_root [file normalize [lindex $argv 0]]
+# set run_dir [file normalize [lindex $argv 1]]
+# set cpu_dir [file join $repo_root lab11 CPU_CDE_AXI mycpu_axi_verify rtl myCPU]
+# set bench_file [file join $repo_root lab11 CPU_CDE_AXI mycpu_axi_verify testbench tb_lab11_axi3_bus.sv]
+# set if_file [file join $cpu_dir IF_stage.v]
+# set bus_file [file join $cpu_dir axi3_cpu_bus.v]
+# set gcc_dir "D:/Verilog/2025.2/Vivado/tps/mingw/10.0.0/win64.o/nt/bin"
+# foreach required [list $if_file $bus_file $bench_file] {
+#     if {![file isfile $required]} {
+#         error "required Lab11 directed source is missing: $required"
+#     }
+# }
+# if {![file isdirectory $run_dir]} {
+#     error "run directory is missing: $run_dir"
+# }
+# set project_dir [file join $run_dir project]
+# set project_name "lab11_axi3_directed"
+# create_project -force $project_name $project_dir -part xc7a200tfbg676-2
+INFO: [ProjectBase 1-489] The host OS only allows 260 characters in a normal path. The project is stored in a path with more than 80 characters. If you experience issues with IP, Block Designs, or files not being found, please consider moving the project to a location with a shorter path. Alternately consider using the OS subst command to map part of the path to a drive letter.
+Current project path is 'C:/Users/lenovo/Desktop/Projects/FPGA/lab/results/lab10_lab11/lab11/lab11-prot-fix-directed-20261117-01/project'
+ERROR: [Common 17-354] Could not open 'C' for writing.
+ERROR: [Common 17-39] 'tclapp::load_apps' failed due to earlier errors.
+create_project: Time (s): cpu = 00:00:16 ; elapsed = 00:00:13 . Memory (MB): peak = 526.434 ; gain = 220.680
+ERROR: [Common 17-69] Command failed: ERROR: [Common 17-39] 'tclapp::load_apps' failed due to earlier errors.
+
+INFO: [Common 17-206] Exiting Vivado at Tue Nov 17 22:11:13 2026...

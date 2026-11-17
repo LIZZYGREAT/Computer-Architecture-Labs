@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="../../../../results/lab10_lab11/lab11/s5-full-capture-lab11-fix1-20261117/wave-full.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_top" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+   </zoom_setting>
+   <column_width_setting>
+   </column_width_setting>
+   <WVObjectSize size="16" />
+   <wvobject fp_name="/tb_top/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/u_cpu/trap_commit" type="logic">
+      <obj_property name="ElementShortName">trap_commit</obj_property>
+      <obj_property name="ObjectShortName">trap_commit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/u_cpu/eret_commit" type="logic">
+      <obj_property name="ElementShortName">eret_commit</obj_property>
+      <obj_property name="ObjectShortName">eret_commit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/u_cpu/if_stage/request_pc" type="array">
+      <obj_property name="ElementShortName">request_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">request_pc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/u_cpu/if_stage/restart_pc" type="array">
+      <obj_property name="ElementShortName">restart_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">restart_pc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/u_cpu/if_stage/stale_response" type="logic">
+      <obj_property name="ElementShortName">stale_response</obj_property>
+      <obj_property name="ObjectShortName">stale_response</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/u_cpu/if_stage/response_valid" type="logic">
+      <obj_property name="ElementShortName">response_valid</obj_property>
+      <obj_property name="ObjectShortName">response_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/cpu_arvalid" type="logic">
+      <obj_property name="ElementShortName">cpu_arvalid</obj_property>
+      <obj_property name="ObjectShortName">cpu_arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/cpu_arready" type="logic">
+      <obj_property name="ElementShortName">cpu_arready</obj_property>
+      <obj_property name="ObjectShortName">cpu_arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/cpu_araddr" type="array">
+      <obj_property name="ElementShortName">cpu_araddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_araddr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/cpu_arid" type="array">
+      <obj_property name="ElementShortName">cpu_arid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_arid[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/cpu_rvalid" type="logic">
+      <obj_property name="ElementShortName">cpu_rvalid</obj_property>
+      <obj_property name="ObjectShortName">cpu_rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/cpu_rready" type="logic">
+      <obj_property name="ElementShortName">cpu_rready</obj_property>
+      <obj_property name="ObjectShortName">cpu_rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/cpu_rid" type="array">
+      <obj_property name="ElementShortName">cpu_rid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_rid[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/u_cpu/inst_sram_data_ok" type="logic">
+      <obj_property name="ElementShortName">inst_sram_data_ok</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_data_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/debug_wb_pc" type="array">
+      <obj_property name="ElementShortName">debug_wb_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">debug_wb_pc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+</wave_config>

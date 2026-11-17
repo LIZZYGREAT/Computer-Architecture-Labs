@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="../../../../results/lab10_lab11/lab10/s5-full-capture-lab10-retry1-20261117/wave-full.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_top" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+   </zoom_setting>
+   <column_width_setting>
+   </column_width_setting>
+   <WVObjectSize size="12" />
+   <wvobject fp_name="/tb_top/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/cpu/mem_stage/ms_pc" type="array">
+      <obj_property name="ElementShortName">ms_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ms_pc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/cpu/mem_stage/ms_valid" type="logic">
+      <obj_property name="ElementShortName">ms_valid</obj_property>
+      <obj_property name="ObjectShortName">ms_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/cpu/mem_stage/ms_allowin" type="logic">
+      <obj_property name="ElementShortName">ms_allowin</obj_property>
+      <obj_property name="ObjectShortName">ms_allowin</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/cpu_data_req" type="logic">
+      <obj_property name="ElementShortName">cpu_data_req</obj_property>
+      <obj_property name="ObjectShortName">cpu_data_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/cpu_data_addr" type="array">
+      <obj_property name="ElementShortName">cpu_data_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_data_addr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/cpu_data_addr_ok" type="logic">
+      <obj_property name="ElementShortName">cpu_data_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">cpu_data_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/cpu_data_data_ok" type="logic">
+      <obj_property name="ElementShortName">cpu_data_data_ok</obj_property>
+      <obj_property name="ObjectShortName">cpu_data_data_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/soc_lite/cpu_data_rdata" type="array">
+      <obj_property name="ElementShortName">cpu_data_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_data_rdata[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/debug_wb_pc" type="array">
+      <obj_property name="ElementShortName">debug_wb_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">debug_wb_pc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/debug_wb_rf_wen" type="array">
+      <obj_property name="ElementShortName">debug_wb_rf_wen[3:0]</obj_property>
+      <obj_property name="ObjectShortName">debug_wb_rf_wen[3:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/debug_wb_rf_wdata" type="array">
+      <obj_property name="ElementShortName">debug_wb_rf_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">debug_wb_rf_wdata[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+</wave_config>

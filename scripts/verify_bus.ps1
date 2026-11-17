@@ -335,10 +335,44 @@ try {
     $protocolStatus = if (($Suite -eq 'full' -and $simText -match 'AXI3_FAULT|COURSE_SOC_FAIL') -or
         ($busFields.ContainsKey('protocol_assertions_failed') -and [int]$busFields['protocol_assertions_failed'] -gt 0) -or
         ($busFields.ContainsKey('duplicate_store_count') -and [int]$busFields['duplicate_store_count'] -gt 0)) { 'FAIL' } else { 'PASS' }
-    $waveStatus = if ($CaptureWaveform) { 'CAPTURE_REQUESTED' } else { 'NOT_CAPTURED' }
+    $waveStatus = 'NOT_CAPTURED'
+    $waveFile = ''
+    $wdbHash = ''
+    if ($Suite -eq 'full') {
+        $socProjectDir = Split-Path -Parent $socXpr
+        $socProjectName = [IO.Path]::GetFileNameWithoutExtension($socXpr)
+        $simDir = Join-Path $socProjectDir "$socProjectName.sim\sim_1\behav\xsim"
+        foreach ($logName in @('compile.log', 'elaborate.log')) {
+            $sourceLog = Join-Path $simDir $logName
+            $destLog = Join-Path $runDir $logName
+            if ((Test-Path -LiteralPath $sourceLog) -and -not (Test-Path -LiteralPath $destLog)) {
+                Copy-Item -LiteralPath $sourceLog -Destination $destLog
+            }
+        }
+        if ($CaptureWaveform) {
+            $wdbSource = Join-Path $simDir 'tb_top_behav.wdb'
+            $wdbTarget = Join-Path $runDir 'wave-full.wdb'
+            if (-not (Test-Path -LiteralPath $wdbSource -PathType Leaf) -or (Get-Item $wdbSource).Length -eq 0) {
+                throw "requested waveform database is missing or empty: $wdbSource"
+            }
+            if (Test-Path -LiteralPath $wdbTarget) {
+                throw "refusing to overwrite an existing waveform database: $wdbTarget"
+            }
+            Copy-Item -LiteralPath $wdbSource -Destination $wdbTarget
+            $wdbHash = (Get-FileHash -LiteralPath $wdbTarget -Algorithm SHA256).Hash
+            $waveStatus = 'CAPTURED'
+            $waveFile = 'wave-full.wdb'
+        }
+    }
+
+    $runnerResultPath = Join-Path $runDir 'runner-result.txt'
+    if (Test-Path -LiteralPath $runnerResultPath) {
+        throw "refusing to overwrite the preserved raw runner result: $runnerResultPath"
+    }
+    Copy-Item -LiteralPath $resultPath -Destination $runnerResultPath
     $resultLines = [System.Collections.Generic.List[string]]::new()
     $resultLines.AddRange([string[]]@(
-        "RUN_ID=$RunId", "CASE=$Case", "SUITE=$Suite", 'PREFLIGHT_STATUS=PASS',
+        "RUN_ID=$RunId", "CASE=$Case", "SUITE=$Suite", 'STATUS=PASS', 'PREFLIGHT_STATUS=PASS',
         "FUNCTIONAL_STATUS=$functionalStatus", "PROTOCOL_STATUS=$protocolStatus",
         "SOURCE_COMMIT=$($caseInputs.source_commit)", "SOURCE_DIRTY=$($caseInputs.source_dirty)",
         "SOURCE_DIFF_SHA256=$($caseInputs.source_diff_sha256)",
@@ -361,50 +395,23 @@ try {
         "B_HANDSHAKES=$(if ($busFields.ContainsKey('b_handshakes')) { $busFields['b_handshakes'] } else { 'N/A' })", "STALE_FETCH_RESPONSES_DROPPED=$(if ($busFields.ContainsKey('stale_fetch_drops')) { $busFields['stale_fetch_drops'] } else { 'N/A' })",
         "PIPELINE_CYCLES=$(if ($busFields.ContainsKey('pipeline_cycles')) { $busFields['pipeline_cycles'] } else { 'N/A' })", 'PIPELINE_STALL_CYCLES=N/A', "SIM_EXIT_CODE=$runCode",
         "TEST_END_SEEN=$($testEndSeen.ToString().ToLowerInvariant())", "WAVEFORM_STATUS=$waveStatus",
-        'WAVEFORM_FILE=', 'WAVEFORM_SHA256=', 'WCFG_VALIDATION=NOT_RUN',
+        "WAVEFORM_FILE=$waveFile", "WAVEFORM_SHA256=$wdbHash", 'WCFG_VALIDATION=NOT_RUN',
         "VIVADO_VERSION=$vivadoVersion"
     ))
-    Add-Content -LiteralPath $resultPath -Encoding UTF8 -Value $resultLines
-
-    if ($Suite -eq 'full') {
-        $socProjectDir = Split-Path -Parent $socXpr
-        $socProjectName = [IO.Path]::GetFileNameWithoutExtension($socXpr)
-        $simDir = Join-Path $socProjectDir "$socProjectName.sim\sim_1\behav\xsim"
-        foreach ($logName in @('compile.log', 'elaborate.log')) {
-            $sourceLog = Join-Path $simDir $logName
-            $destLog = Join-Path $runDir $logName
-            if ((Test-Path -LiteralPath $sourceLog) -and -not (Test-Path -LiteralPath $destLog)) {
-                Copy-Item -LiteralPath $sourceLog -Destination $destLog
-            }
-        }
-        if ($CaptureWaveform) {
-            $wdbSource = Join-Path $simDir 'tb_top_behav.wdb'
-            $wdbTarget = Join-Path $runDir 'wave-full.wdb'
-            if (-not (Test-Path -LiteralPath $wdbSource -PathType Leaf) -or (Get-Item $wdbSource).Length -eq 0) {
-                throw "requested waveform database is missing or empty: $wdbSource"
-            }
-            Copy-Item -LiteralPath $wdbSource -Destination $wdbTarget
-            $wdbHash = (Get-FileHash -LiteralPath $wdbTarget -Algorithm SHA256).Hash
-            Add-Content -LiteralPath $resultPath -Encoding UTF8 -Value @(
-                'WAVEFORM_STATUS=CAPTURED', 'WAVEFORM_FILE=wave-full.wdb', "WAVEFORM_SHA256=$wdbHash"
-            )
-        }
-    }
+    $resultLines | Set-Content -LiteralPath $resultPath -Encoding UTF8
 
     Write-Output 'STATUS=PASS'
     Write-Output "RUN_DIR=$runDir"
     exit 0
 } catch {
     $resultPath = Join-Path $runDir 'result.txt'
-    if (-not (Test-Path -LiteralPath $resultPath)) {
-        @("RUN_ID=$RunId", "CASE=$Case", "SUITE=$Suite", 'STATUS=ENVIRONMENT_ERROR',
-          'PREFLIGHT_STATUS=PASS', "ERROR_REASON=$($_.Exception.Message)") |
-            Set-Content -LiteralPath $resultPath -Encoding UTF8
-    } else {
-        Add-Content -LiteralPath $resultPath -Encoding UTF8 -Value @(
-            'STATUS=ENVIRONMENT_ERROR', "ERROR_REASON=$($_.Exception.Message)"
-        )
+    $runnerResultPath = Join-Path $runDir 'runner-result.txt'
+    if ((Test-Path -LiteralPath $resultPath) -and -not (Test-Path -LiteralPath $runnerResultPath)) {
+        Copy-Item -LiteralPath $resultPath -Destination $runnerResultPath
     }
+    @("RUN_ID=$RunId", "CASE=$Case", "SUITE=$Suite", 'STATUS=ENVIRONMENT_ERROR',
+      'PREFLIGHT_STATUS=PASS', "ERROR_REASON=$($_.Exception.Message)") |
+        Set-Content -LiteralPath $resultPath -Encoding UTF8
     Write-Output "ENVIRONMENT_ERROR: $($_.Exception.Message)"
     Write-Output "RUN_DIR=$runDir"
     exit 2

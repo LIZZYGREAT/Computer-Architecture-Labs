@@ -1,0 +1,6 @@
+RUN_ID=lab11-prot-fix-directed-20261117-01
+CASE=lab11
+SUITE=directed
+STATUS=ENVIRONMENT_ERROR
+PREFLIGHT_STATUS=PASS
+ERROR_REASON=Vivado exited with code 0 but the runner did not produce a validated result.txt. See C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\lab11\lab11-prot-fix-directed-20261117-01

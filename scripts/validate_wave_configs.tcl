@@ -7,7 +7,6 @@ if {[llength $argv] < 2} {
 
 set wdb [file normalize [lindex $argv 0]]
 if {![file isfile $wdb]} { error "waveform database is missing: $wdb" }
-set expected_db [string map {\\ /} $wdb]
 open_wave_database -noautoloadwcfg $wdb
 if {[llength [get_scopes -r /]] == 0} {
     error "waveform database contains no HDL scopes: $wdb"
@@ -21,7 +20,15 @@ foreach wcfg [lrange $argv 1 end] {
     set handle [open $wcfg r]
     set contents [read $handle]
     close $handle
-    if {[string first $expected_db [string map {\\ /} $contents]] < 0} {
+    if {![regexp {<db_ref[[:space:]]+[^>]*path="([^"]+)"} $contents -> db_ref_path]} {
+        error "WCFG has no database reference: $wcfg"
+    }
+    if {[file pathtype $db_ref_path] ne "absolute"} {
+        set db_ref_path [file join [file dirname $wcfg] $db_ref_path]
+    }
+    set resolved_db_ref [string map {\\ /} [file normalize $db_ref_path]]
+    set expected_db [string map {\\ /} $wdb]
+    if {![string equal -nocase $expected_db $resolved_db_ref]} {
         error "WCFG does not reference the requested WDB: $wcfg"
     }
     if {![regexp {<WVObjectSize size="([0-9]+)"} $contents -> expected_wave_count]} {
