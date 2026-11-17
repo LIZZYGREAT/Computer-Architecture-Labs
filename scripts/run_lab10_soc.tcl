@@ -62,7 +62,7 @@ if {$trace_file ne ""} {
         error "reference trace is missing or empty: $trace_file"
     }
     set_property -name XSIM.SIMULATE.XSIM.MORE_OPTIONS \
-        -value [format {--testplusarg "TRACE_REF=%s"} $trace_file] -objects $simset
+        -value [format {-testplusarg "TRACE_REF=%s"} $trace_file] -objects $simset
 }
 cd $run_dir
 launch_simulation -mode behavioral -simset sim_1 -gcc_install_path $gcc_dir
