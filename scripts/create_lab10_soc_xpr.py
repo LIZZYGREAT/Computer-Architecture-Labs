@@ -42,10 +42,15 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", type=Path, required=True)
     parser.add_argument("--run-dir", type=Path, required=True)
+    parser.add_argument("--inst-coe", type=Path)
     args = parser.parse_args()
 
     repo = args.repo_root.resolve()
     run_dir = args.run_dir.resolve()
+    inst_coe = (args.inst_coe.resolve() if args.inst_coe else
+                repo / "lab10/CPU_CDE_SRAM/soft/func_lab9/obj/inst_ram.coe")
+    if not inst_coe.is_file():
+        parser.error(f"instruction COE is missing: {inst_coe}")
     base_xpr = repo / "lab10/CPU_CDE_SRAM/mycpu_sram_verify/run_vivado/mycpu_prj1/mycpu_lab10_bus.xpr"
     project_dir = base_xpr.parent
     output_xpr = project_dir / f"mycpu_lab10_soc_directed_{run_dir.name}.xpr"
@@ -109,10 +114,7 @@ def main() -> int:
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source_path, destination)
         if name == "inst_ram":
-            coe = repo / "lab10/CPU_CDE_SRAM/soft/func_lab9/obj/inst_ram.coe"
-            if not coe.is_file():
-                parser.error(f"instruction image is missing: {coe}")
-            patch_coe_path(destination, coe)
+            patch_coe_path(destination, inst_coe)
         file_nodes[0].set("Path", xpr_path(project_dir, destination))
         xci_map[name] = destination
 

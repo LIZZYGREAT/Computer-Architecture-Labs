@@ -34,6 +34,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", type=Path, required=True)
     parser.add_argument("--run-dir", type=Path, required=True)
+    parser.add_argument("--inst-coe", type=Path)
     args = parser.parse_args()
 
     repo = args.repo_root.resolve()
@@ -42,7 +43,8 @@ def main() -> int:
     project_dir = base_xpr.parent
     output_xpr = project_dir / f"mycpu_lab11_soc_{run_dir.name}.xpr"
     ip_copy_dir = run_dir / "ip_sources"
-    coe_path = repo / "lab11/CPU_CDE_AXI/soft/func_lab9/obj/inst_ram.coe"
+    coe_path = (args.inst_coe.resolve() if args.inst_coe else
+                repo / "lab11/CPU_CDE_AXI/soft/func_lab9/obj/inst_ram.coe")
     if not base_xpr.is_file():
         parser.error(f"base XPR is missing: {base_xpr}")
     if not run_dir.is_dir():

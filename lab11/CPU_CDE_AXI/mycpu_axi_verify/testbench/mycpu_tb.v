@@ -99,24 +99,209 @@ assign debug_wb_rf_wen   = soc_lite.debug_wb_rf_wen;
 assign debug_wb_rf_wnum  = soc_lite.debug_wb_rf_wnum;
 assign debug_wb_rf_wdata = soc_lite.debug_wb_rf_wdata;
 
+integer bus_inst_req_accept;
+integer bus_inst_data_complete;
+integer bus_load_req_accept;
+integer bus_load_data_complete;
+integer bus_store_req_accept;
+integer bus_store_data_complete;
+integer bus_stale_fetch_drops;
+integer bus_pipeline_cycles;
+integer bus_duplicate_store_count;
+integer bus_ar_handshakes;
+integer bus_r_handshakes;
+integer bus_aw_handshakes;
+integer bus_w_handshakes;
+integer bus_b_handshakes;
+integer bus_backpressure_ar_cycles;
+integer bus_backpressure_r_cycles;
+integer bus_backpressure_aw_cycles;
+integer bus_backpressure_w_cycles;
+integer bus_backpressure_b_cycles;
+reg bus_first_fetch_seen;
+reg bus_first_load_seen;
+reg bus_first_store_seen;
+reg bus_first_redirect_seen;
+reg bus_first_stale_drop_seen;
+reg bus_first_backpressure_seen;
+reg bus_store_pending;
+reg bus_first_ar_seen;
+reg bus_axi_fault_seen;
+integer bus_protocol_faults;
+reg debug_wb_err;
+always @(posedge soc_clk) begin
+    if (!resetn) begin
+        bus_inst_req_accept     <= 0;
+        bus_inst_data_complete  <= 0;
+        bus_load_req_accept     <= 0;
+        bus_load_data_complete  <= 0;
+        bus_store_req_accept    <= 0;
+        bus_store_data_complete <= 0;
+        bus_stale_fetch_drops   <= 0;
+        bus_pipeline_cycles     <= 0;
+        bus_duplicate_store_count <= 0;
+        bus_ar_handshakes       <= 0;
+        bus_r_handshakes        <= 0;
+        bus_aw_handshakes       <= 0;
+        bus_w_handshakes        <= 0;
+        bus_b_handshakes        <= 0;
+        bus_backpressure_ar_cycles <= 0;
+        bus_backpressure_r_cycles  <= 0;
+        bus_backpressure_aw_cycles <= 0;
+        bus_backpressure_w_cycles  <= 0;
+        bus_backpressure_b_cycles  <= 0;
+        bus_protocol_faults <= 0;
+        bus_store_pending = 1'b0;
+        bus_first_fetch_seen = 1'b0;
+        bus_first_load_seen = 1'b0;
+        bus_first_store_seen = 1'b0;
+        bus_first_redirect_seen = 1'b0;
+        bus_first_stale_drop_seen = 1'b0;
+        bus_first_backpressure_seen = 1'b0;
+        bus_first_ar_seen = 1'b0;
+        bus_axi_fault_seen = 1'b0;
+    end else begin
+        bus_pipeline_cycles <= bus_pipeline_cycles + 1;
+        if (soc_lite.cpu_inst_req && soc_lite.cpu_inst_addr_ok) begin
+            bus_inst_req_accept <= bus_inst_req_accept + 1;
+            if (!bus_first_fetch_seen) begin
+                bus_first_fetch_seen = 1'b1;
+                $display("BUS_ANCHOR event=fetch pc=%08x addr=%08x time_ns=%0t",
+                         soc_lite.cpu.if_stage.request_pc, soc_lite.cpu_inst_addr, $time);
+            end
+        end
+        if (soc_lite.cpu_inst_data_ok)
+            bus_inst_data_complete <= bus_inst_data_complete + 1;
+        if (soc_lite.cpu_data_req && soc_lite.cpu_data_addr_ok) begin
+            if (soc_lite.cpu_data_wr) begin
+                bus_store_req_accept <= bus_store_req_accept + 1;
+                if (bus_store_pending)
+                    bus_duplicate_store_count <= bus_duplicate_store_count + 1;
+                else
+                    bus_store_pending = 1'b1;
+                if (!bus_first_store_seen) begin
+                    bus_first_store_seen = 1'b1;
+                    $display("BUS_ANCHOR event=store pc=%08x addr=%08x size=%0d wstrb=%x wdata=%08x time_ns=%0t",
+                             soc_lite.cpu.mem_stage.ms_pc, soc_lite.cpu_data_addr,
+                             soc_lite.cpu_data_size, soc_lite.cpu_data_wstrb,
+                             soc_lite.cpu_data_wdata, $time);
+                end
+            end else begin
+                bus_load_req_accept <= bus_load_req_accept + 1;
+                if (!bus_first_load_seen) begin
+                    bus_first_load_seen = 1'b1;
+                    $display("BUS_ANCHOR event=load pc=%08x addr=%08x size=%0d time_ns=%0t",
+                             soc_lite.cpu.mem_stage.ms_pc, soc_lite.cpu_data_addr,
+                             soc_lite.cpu_data_size, $time);
+                end
+            end
+        end
+        if (soc_lite.cpu_data_data_ok) begin
+            if (soc_lite.cpu_data_wr) begin
+                bus_store_data_complete <= bus_store_data_complete + 1;
+                bus_store_pending = 1'b0;
+            end else begin
+                bus_load_data_complete <= bus_load_data_complete + 1;
+            end
+        end
+        if (soc_lite.cpu.if_stage.stale_response && soc_lite.cpu_inst_data_ok) begin
+            bus_stale_fetch_drops <= bus_stale_fetch_drops + 1;
+            if (!bus_first_stale_drop_seen) begin
+                bus_first_stale_drop_seen = 1'b1;
+                $display("BUS_ANCHOR event=stale_drop pc=%08x target=%08x time_ns=%0t",
+                         soc_lite.cpu.if_stage.request_pc, soc_lite.cpu.if_stage.restart_pc, $time);
+            end
+        end
+        if ((soc_lite.cpu.trap_commit || soc_lite.cpu.eret_commit) && !bus_first_redirect_seen) begin
+            bus_first_redirect_seen = 1'b1;
+            $display("BUS_ANCHOR event=redirect pc=%08x target=%08x time_ns=%0t",
+                     soc_lite.cpu.mem_stage.ms_pc, soc_lite.cpu.if_stage.redirect_pc, $time);
+        end
+        if (soc_lite.cpu_arvalid && soc_lite.cpu_arready) begin
+            bus_ar_handshakes <= bus_ar_handshakes + 1;
+            if (!bus_first_ar_seen) begin
+                bus_first_ar_seen = 1'b1;
+                $display("BUS_ANCHOR event=ar addr=%08x id=%x time_ns=%0t",
+                         soc_lite.cpu_araddr, soc_lite.cpu_arid, $time);
+            end
+        end
+        if (soc_lite.cpu_rvalid && soc_lite.cpu_rready)
+            bus_r_handshakes <= bus_r_handshakes + 1;
+        if (soc_lite.cpu_awvalid && soc_lite.cpu_awready)
+            bus_aw_handshakes <= bus_aw_handshakes + 1;
+        if (soc_lite.cpu_wvalid && soc_lite.cpu_wready)
+            bus_w_handshakes <= bus_w_handshakes + 1;
+        if (soc_lite.cpu_bvalid && soc_lite.cpu_bready)
+            bus_b_handshakes <= bus_b_handshakes + 1;
+        if (soc_lite.cpu.axi_fault && !bus_axi_fault_seen) begin
+            bus_axi_fault_seen = 1'b1;
+            bus_protocol_faults <= bus_protocol_faults + 1;
+        end
+        if (soc_lite.cpu_arvalid && !soc_lite.cpu_arready) begin
+            bus_backpressure_ar_cycles <= bus_backpressure_ar_cycles + 1;
+            if (!bus_first_backpressure_seen) begin
+                bus_first_backpressure_seen = 1'b1;
+                $display("BUS_ANCHOR event=backpressure channel=AR addr=%08x id=%x time_ns=%0t",
+                         soc_lite.cpu_araddr, soc_lite.cpu_arid, $time);
+            end
+        end
+        if (soc_lite.cpu_rvalid && !soc_lite.cpu_rready) begin
+            bus_backpressure_r_cycles <= bus_backpressure_r_cycles + 1;
+            if (!bus_first_backpressure_seen) begin
+                bus_first_backpressure_seen = 1'b1;
+                $display("BUS_ANCHOR event=backpressure channel=R data=%08x id=%x time_ns=%0t",
+                         soc_lite.cpu_rdata, soc_lite.cpu_rid, $time);
+            end
+        end
+        if (soc_lite.cpu_awvalid && !soc_lite.cpu_awready) begin
+            bus_backpressure_aw_cycles <= bus_backpressure_aw_cycles + 1;
+            if (!bus_first_backpressure_seen) begin
+                bus_first_backpressure_seen = 1'b1;
+                $display("BUS_ANCHOR event=backpressure channel=AW addr=%08x id=%x time_ns=%0t",
+                         soc_lite.cpu_awaddr, soc_lite.cpu_awid, $time);
+            end
+        end
+        if (soc_lite.cpu_wvalid && !soc_lite.cpu_wready) begin
+            bus_backpressure_w_cycles <= bus_backpressure_w_cycles + 1;
+            if (!bus_first_backpressure_seen) begin
+                bus_first_backpressure_seen = 1'b1;
+                $display("BUS_ANCHOR event=backpressure channel=W data=%08x strb=%x time_ns=%0t",
+                         soc_lite.cpu_wdata, soc_lite.cpu_wstrb, $time);
+            end
+        end
+        if (soc_lite.cpu_bvalid && !soc_lite.cpu_bready) begin
+            bus_backpressure_b_cycles <= bus_backpressure_b_cycles + 1;
+            if (!bus_first_backpressure_seen) begin
+                bus_first_backpressure_seen = 1'b1;
+                $display("BUS_ANCHOR event=backpressure channel=B resp=%x id=%x time_ns=%0t",
+                         soc_lite.cpu_bresp, soc_lite.cpu_bid, $time);
+            end
+        end
+    end
+end
+
 // open the trace file;
 integer trace_ref;
 integer trace_records_read;
 integer trace_valid_records_read;
 integer trace_trailing_valid;
 integer trace_valid_flag;
+integer trace_override;
+reg [1023:0] trace_file_path;
 reg trace_read_failed;
 initial begin
-    trace_ref = $fopen(`TRACE_REF_FILE, "r");
+    trace_file_path = `TRACE_REF_FILE;
+    trace_override = $value$plusargs("TRACE_REF=%s", trace_file_path);
+    trace_ref = $fopen(trace_file_path, "r");
     trace_records_read = 0;
     trace_valid_records_read = 0;
     trace_trailing_valid = 0;
     trace_read_failed = 1'b0;
     if (trace_ref == 0) begin
-        $display("COURSE_SOC_FAIL=trace_open_failed path=%s", `TRACE_REF_FILE);
+        $display("COURSE_SOC_FAIL=trace_open_failed path=%s", trace_file_path);
         $finish;
     end
-    $display("TRACE_OPEN_PASS path=%s", `TRACE_REF_FILE);
+    $display("TRACE_OPEN_PASS path=%s", trace_file_path);
 end
 
 //get reference result in falling edge
@@ -215,7 +400,6 @@ assign   ref_wb_rf_wdata_v[7 : 0] =   ref_wb_rf_wdata[7 : 0] & {8{debug_wb_rf_we
 
 
 //compare result in rsing edge 
-reg debug_wb_err;
 always @(posedge soc_clk)
 begin
     #2;
@@ -307,7 +491,7 @@ begin
     begin
         if(uart_data==8'hff)
         begin
-            ;//$finish;
+            //$finish;
         end
         else
         begin
@@ -334,6 +518,17 @@ begin
         if (trace_ref != 0) begin
             check_trace_exhaustion;
         end
+        $display("BUS_METRICS pipeline_cycles=%0d inst_req_accept=%0d inst_data_complete=%0d load_req_accept=%0d load_data_complete=%0d store_req_accept=%0d store_data_complete=%0d duplicate_store_count=%0d protocol_assertions_failed=%0d stale_fetch_drops=%0d ar_handshakes=%0d r_handshakes=%0d aw_handshakes=%0d w_handshakes=%0d b_handshakes=%0d backpressure_ar_cycles=%0d backpressure_r_cycles=%0d backpressure_aw_cycles=%0d backpressure_w_cycles=%0d backpressure_b_cycles=%0d",
+                 bus_pipeline_cycles,
+                 bus_inst_req_accept, bus_inst_data_complete,
+                 bus_load_req_accept, bus_load_data_complete,
+                 bus_store_req_accept, bus_store_data_complete,
+                 bus_duplicate_store_count, bus_protocol_faults,
+                 bus_stale_fetch_drops, bus_ar_handshakes, bus_r_handshakes,
+                 bus_aw_handshakes, bus_w_handshakes, bus_b_handshakes,
+                 bus_backpressure_ar_cycles, bus_backpressure_r_cycles,
+                 bus_backpressure_aw_cycles, bus_backpressure_w_cycles,
+                 bus_backpressure_b_cycles);
         if (global_err || trace_read_failed || (trace_trailing_valid != 0))
         begin
             $display("Fail!!!Total %d errors!",err_count);

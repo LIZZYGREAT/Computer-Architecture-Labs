@@ -1,0 +1,33 @@
+{
+  "lab10": {
+    "ProjectXpr": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/run_vivado/mycpu_prj1/mycpu_lab10_bus.xpr",
+    "BaseSocXpr": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/run_vivado/mycpu_prj1/mycpu_lab10_bus.xpr",
+    "SocCreator": "scripts/create_lab10_soc_xpr.py",
+    "SocRunner": "scripts/run_lab10_soc.tcl",
+    "UnitCreator": "scripts/create_bus_unit_xpr.py",
+    "UnitRunner": "scripts/run_lab10_directed.tcl",
+    "CpuSourceDir": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU",
+    "DirectedTestbench": "lab10/CPU_CDE_SRAM/mycpu_sram_verify/testbench/tb_lab10_bus.sv",
+    "InstructionCoe": "lab10/CPU_CDE_SRAM/soft/func_lab9/obj/inst_ram.coe",
+    "InstructionMif": "lab10/CPU_CDE_SRAM/soft/func_lab9/obj/inst_ram.mif",
+    "ReferenceTrace": "lab10/CPU_CDE_SRAM/cpu132_gettrace/golden_trace.txt",
+    "ExpectedFunctionalPoints": 94,
+    "ExpectedTraceRecords": 111625,
+    "ResultRoot": "results/lab10_lab11/lab10"
+  },
+  "lab11": {
+    "ProjectXpr": "lab11/CPU_CDE_AXI/mycpu_axi_verify/run_vivado/mycpu_prj1/mycpu_lab11_bus.xpr",
+    "BaseSocXpr": "lab11/CPU_CDE_AXI/mycpu_axi_verify/run_vivado/mycpu_prj1/mycpu_lab11_bus.xpr",
+    "SocCreator": "scripts/create_lab11_soc_xpr.py",
+    "SocRunner": "scripts/run_lab11_soc.tcl",
+    "UnitRunner": "scripts/run_lab11_axi3_directed.tcl",
+    "CpuSourceDir": "lab11/CPU_CDE_AXI/mycpu_axi_verify/rtl/myCPU",
+    "DirectedTestbench": "lab11/CPU_CDE_AXI/mycpu_axi_verify/testbench/tb_lab11_axi3_bus.sv",
+    "InstructionCoe": "lab11/CPU_CDE_AXI/soft/func_lab9/obj/inst_ram.coe",
+    "InstructionMif": "lab11/CPU_CDE_AXI/soft/func_lab9/obj/inst_ram.mif",
+    "ReferenceTrace": "lab11/CPU_CDE_AXI/cpu132_gettrace/golden_trace.txt",
+    "ExpectedFunctionalPoints": 94,
+    "ExpectedTraceRecords": 111625,
+    "ResultRoot": "results/lab10_lab11/lab11"
+  }
+}
