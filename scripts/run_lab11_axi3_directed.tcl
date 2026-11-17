@@ -1,37 +1,27 @@
-# Build the isolated AXI3 bus and IF-stage test without the course SoC IP.
-# Usage: vivado -mode batch -source scripts/run_lab11_axi3_directed.tcl -tclargs <repo-root> <run-dir>
+# Run the generated isolated AXI3 bus and IF-stage project without course SoC IP.
+# Usage: vivado -mode batch -source scripts/run_lab11_axi3_directed.tcl -tclargs <run-project.xpr> <run-dir>
 if {[llength $argv] != 2} {
-    error "usage: run_lab11_axi3_directed.tcl <repo-root> <run-dir>"
+    error "usage: run_lab11_axi3_directed.tcl <run-project.xpr> <run-dir>"
 }
 
-set repo_root [file normalize [lindex $argv 0]]
+set run_xpr [file normalize [lindex $argv 0]]
 set run_dir [file normalize [lindex $argv 1]]
-set cpu_dir [file join $repo_root lab11 CPU_CDE_AXI mycpu_axi_verify rtl myCPU]
-set bench_file [file join $repo_root lab11 CPU_CDE_AXI mycpu_axi_verify testbench tb_lab11_axi3_bus.sv]
-set if_file [file join $cpu_dir IF_stage.v]
-set bus_file [file join $cpu_dir axi3_cpu_bus.v]
 set gcc_dir "D:/Verilog/2025.2/Vivado/tps/mingw/10.0.0/win64.o/nt/bin"
 
-foreach required [list $if_file $bus_file $bench_file] {
-    if {![file isfile $required]} {
-        error "required Lab11 directed source is missing: $required"
-    }
+if {![file isfile $run_xpr]} {
+    error "generated Lab11 directed XPR is missing: $run_xpr"
 }
 if {![file isdirectory $run_dir]} {
     error "run directory is missing: $run_dir"
 }
 
-set project_dir [file join $run_dir project]
-set project_name "lab11_axi3_directed"
-create_project -force $project_name $project_dir -part xc7a200tfbg676-2
-set_property target_language Verilog [current_project]
-add_files -norecurse [list $if_file $bus_file]
-set_property include_dirs [list $cpu_dir] [get_filesets sources_1]
-add_files -fileset sim_1 -norecurse $bench_file
-set_property include_dirs [list $cpu_dir] [get_filesets sim_1]
+open_project -quiet $run_xpr
+set project_dir [get_property DIRECTORY [current_project]]
+set project_name [get_property NAME [current_project]]
 set simset [get_filesets sim_1]
-set_property top tb_lab11_axi3_bus $simset
-set_property top_auto_set 0 $simset
+if {[get_property TOP $simset] ne "tb_lab11_axi3_bus"} {
+    error "generated Lab11 directed XPR has unexpected sim top: [get_property TOP $simset]"
+}
 update_compile_order -fileset sim_1
 puts "CASE=lab11_axi3_directed"
 puts "PROJECT_XPR=[get_property DIRECTORY [current_project]]/[get_property NAME [current_project]].xpr"

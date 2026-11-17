@@ -22,7 +22,9 @@ from check_bus_inputs import parse_mif
 
 EVIDENCE_FIELDS = [
     "case", "run_id", "suite", "source_commit", "source_dirty", "source_diff_sha256",
-    "source_manifest_sha256",
+    "source_manifest_sha256", "input_scan_status", "vivado_preflight_status",
+    "effective_source_manifest", "effective_source_manifest_sha256", "source_integrity",
+    "source_capture_phase",
     "build_status", "functional_status", "protocol_status", "overall_status",
     "expected_points", "actual_points", "trace_compare_status", "trace_records",
     "project_xpr", "rtl_manifest", "inst_mif", "inst_mif_sha256", "inst_coe",
@@ -148,6 +150,16 @@ def backup_csv(path: Path) -> Path | None:
     return destination
 
 
+def write_csv_with_archive(path: Path, fields: list[str], rows: list[dict[str, object]]) -> bool:
+    """Archive an existing evidence table before replacing its content."""
+    if not csv_would_change(path, fields, rows):
+        return False
+    backup_path = backup_csv(path)
+    if backup_path:
+        print(f"CSV_BACKUP={backup_path}")
+    return write_csv(path, fields, rows)
+
+
 def merge_wave_capture_rows(existing_rows: list[dict[str, str]],
                             generated_rows: list[dict[str, object]]) -> list[dict[str, object]]:
     """Keep hand-entered proof fields and reject stale verified captures."""
@@ -253,7 +265,22 @@ def find_runs(root: Path, result_root: Path) -> list[tuple[str, Path, dict[str, 
 def run_manifest(case: str, run_dir: Path) -> tuple[dict[str, str], dict[str, str]]:
     input_rows = csv_rows(run_dir / "input_manifest.csv") or csv_rows(run_dir / "input-manifest.csv")
     input_row = next((row for row in input_rows if row.get("case") == case), {})
-    return input_row, read_kv(run_dir / "preflight.txt")
+    legacy = read_kv(run_dir / "preflight.txt")
+    scan = read_kv(run_dir / "input-scan.txt")
+    project = read_kv(run_dir / "preflight" / "project-preflight.txt")
+    summary = read_kv(run_dir / "vivado-preflight-summary.txt")
+    merged = {**legacy, **project, **scan, **summary}
+    if not scan and legacy:
+        # Legacy preflight.txt is only the input scanner's early snapshot.
+        merged["INPUT_SCAN_STATUS"] = "LEGACY_INPUT_SNAPSHOT"
+    if "VIVADO_PREFLIGHT_STATUS" not in merged:
+        if project.get("PREFLIGHT") in {"PASS", "FAIL"}:
+            merged["VIVADO_PREFLIGHT_STATUS"] = project["PREFLIGHT"]
+        elif legacy.get("PREFLIGHT_STATUS") in {"PASS", "FAIL"}:
+            merged["VIVADO_PREFLIGHT_STATUS"] = legacy["PREFLIGHT_STATUS"]
+        else:
+            merged["VIVADO_PREFLIGHT_STATUS"] = "NOT_RECORDED"
+    return input_row, merged
 
 
 def find_wave_db(run_dir: Path, info: dict[str, str]) -> Path | None:
@@ -378,8 +405,8 @@ def theme_rows(case: str) -> list[dict[str, object]]:
                                 for signal in theme["signals"]]
         return themes
     themes = [
-        {"figure": "L11-01", "file": "01_axi_read", "topic": "AXI3 单拍读事务", "event": "ar", "signal": "soc_lite/cpu_araddr[31:0]", "context": "本次 full-run 首个 AR 握手地址；随后以同一读事务的 RVALID && RREADY 完成返回。", "expected": "ARLEN=0；读响应 RID/RRESP/RLAST 与单拍事务相符。", "expected_source": "AXI3 adapter 参数与本次 full-run BUS_ANCHOR/握手监视。", "signals": ["tb_top/clk~bin", "soc_lite/cpu_arvalid~bin", "soc_lite/cpu_arready~bin", "soc_lite/cpu_araddr[31:0]~hex", "soc_lite/cpu_arid[3:0]~hex", "soc_lite/cpu_arlen[7:0]~hex", "soc_lite/cpu_rvalid~bin", "soc_lite/cpu_rready~bin", "soc_lite/cpu_rdata[31:0]~hex", "soc_lite/cpu_rid[3:0]~hex", "soc_lite/cpu_rlast~bin", "soc_lite/cpu_rresp[1:0]~bin"]},
-        {"figure": "L11-02", "file": "02_read_arbitration", "topic": "IF/Load 共用读通道仲裁", "event": "load", "signal": "soc_lite/cpu/mem_stage/ms_pc[31:0]", "context": "首个实际 Load 的 CPU MEM PC 对应 adapter rd_owner_data=1；对照 IF owner、AR ID 和 R 响应归属。", "expected": "IF=ID 0、Load=ID 1；响应按锁存 owner 返回正确 CPU 请求端。", "expected_source": "Lab11 axi3_cpu_bus.v ID/owner 设计与本次 full-run BUS_ANCHOR。", "signals": ["clk~bin", "soc_lite/cpu/if_stage/request_pc[31:0]~hex", "soc_lite/cpu/mem_stage/ms_pc[31:0]~hex", "soc_lite/cpu/axi3_cpu_bus/rd_owner_data~bin", "soc_lite/cpu/axi3_cpu_bus/rd_state[1:0]~bin", "soc_lite/cpu/axi3_cpu_bus/rd_claim_inst~bin", "soc_lite/cpu/axi3_cpu_bus/rd_claim_data~bin", "soc_lite/cpu_arvalid~bin", "soc_lite/cpu_arready~bin", "soc_lite/cpu_araddr[31:0]~hex", "soc_lite/cpu_arid[3:0]~hex", "soc_lite/cpu_rvalid~bin", "soc_lite/cpu_rready~bin", "soc_lite/cpu_rid[3:0]~hex", "soc_lite/cpu_inst_data_ok~bin", "soc_lite/cpu_data_data_ok~bin"]},
+        {"figure": "L11-01", "file": "01_axi_read", "topic": "AXI3 单拍读事务", "event": "ar", "signal": "soc_lite/cpu_araddr[31:0]", "context": "仅在 cpu_arvalid && cpu_arready 的接受时刻读取 ARADDR/ARID/ARPROT；同次读响应由 RVALID && RREADY 完成。", "expected": "取指 AR 握手时 ARPROT=110、ARLEN=0；读响应 RID/RRESP/RLAST 与单拍事务相符。", "expected_source": "AXI3 adapter 的 IF 属性定义与本次 full-run BUS_ANCHOR/握手监视。", "signals": ["tb_top/clk~bin", "soc_lite/cpu_arvalid~bin", "soc_lite/cpu_arready~bin", "soc_lite/cpu_araddr[31:0]~hex", "soc_lite/cpu_arid[3:0]~hex", "soc_lite/cpu_arprot[2:0]~bin", "soc_lite/cpu_arlen[7:0]~hex", "soc_lite/cpu_rvalid~bin", "soc_lite/cpu_rready~bin", "soc_lite/cpu_rdata[31:0]~hex", "soc_lite/cpu_rid[3:0]~hex", "soc_lite/cpu_rlast~bin", "soc_lite/cpu_rresp[1:0]~bin"]},
+        {"figure": "L11-02", "file": "02_read_arbitration", "topic": "IF/Load 共用读通道仲裁", "event": "load", "signal": "soc_lite/cpu/mem_stage/ms_pc[31:0]", "context": "在 cpu_arvalid && cpu_arready 接受时刻比较 IF 与 Load 的 ARID/ARADDR/ARPROT，并结合锁存 owner 检查响应归属；空闲时保留值不作事务证据。", "expected": "IF AR 握手时 ARPROT=110；Load AR 握手时 ARPROT=010；IF=ID 0、Load=ID 1。", "expected_source": "Lab11 axi3_cpu_bus.v ID/owner 与 ARPROT 定义、本次 full-run BUS_ANCHOR。", "signals": ["clk~bin", "soc_lite/cpu/if_stage/request_pc[31:0]~hex", "soc_lite/cpu/mem_stage/ms_pc[31:0]~hex", "soc_lite/cpu/axi3_cpu_bus/rd_owner_data~bin", "soc_lite/cpu/axi3_cpu_bus/rd_state[1:0]~bin", "soc_lite/cpu/axi3_cpu_bus/rd_claim_inst~bin", "soc_lite/cpu/axi3_cpu_bus/rd_claim_data~bin", "soc_lite/cpu_arvalid~bin", "soc_lite/cpu_arready~bin", "soc_lite/cpu_araddr[31:0]~hex", "soc_lite/cpu_arid[3:0]~hex", "soc_lite/cpu_arprot[2:0]~bin", "soc_lite/cpu_rvalid~bin", "soc_lite/cpu_rready~bin", "soc_lite/cpu_rid[3:0]~hex", "soc_lite/cpu_inst_data_ok~bin", "soc_lite/cpu_data_data_ok~bin"]},
         {"figure": "L11-03", "file": "03_axi_write", "topic": "AXI3 写事务 AW/W/B", "event": "store", "signal": "soc_lite/cpu/mem_stage/ms_pc[31:0]", "context": "本次首个已接受 Store；对照 AW 与 W 独立握手，最后 B 响应后 MEM 完成。", "expected": "AW 与 W 可分拍；WID 对应 AWID；WLAST=1；B 响应后事务完成。", "expected_source": "Lab11 AXI3 adapter 与本次 full-run BUS_ANCHOR/握手监视。", "signals": ["clk~bin", "soc_lite/cpu/mem_stage/ms_pc[31:0]~hex", "soc_lite/cpu_awvalid~bin", "soc_lite/cpu_awready~bin", "soc_lite/cpu_awaddr[31:0]~hex", "soc_lite/cpu_awid[3:0]~hex", "soc_lite/cpu_wvalid~bin", "soc_lite/cpu_wready~bin", "soc_lite/cpu_wdata[31:0]~hex", "soc_lite/cpu_wstrb[3:0]~bin", "soc_lite/cpu_wlast~bin", "soc_lite/cpu_bvalid~bin", "soc_lite/cpu_bready~bin", "soc_lite/cpu_bid[3:0]~hex", "soc_lite/cpu_bresp[1:0]~bin", "soc_lite/cpu_data_data_ok~bin"]},
         {"figure": "L11-04", "file": "04_axi_backpressure", "topic": "AXI3 READY 反压", "event": "backpressure", "signal": "", "context": "定位本次 full-run 首个 VALID=1、READY=0 的真实 AXI 通道事件，检查 VALID 与 payload 稳定至握手。", "expected": "READY=0 时 VALID 保持且 payload 不变；READY 恢复后单次握手。", "expected_source": "AXI VALID/READY 规则及本次 full-run BUS_ANCHOR。", "signals": ["clk~bin", "soc_lite/cpu_arvalid~bin", "soc_lite/cpu_arready~bin", "soc_lite/cpu_araddr[31:0]~hex", "soc_lite/cpu_rvalid~bin", "soc_lite/cpu_rready~bin", "soc_lite/cpu_rdata[31:0]~hex", "soc_lite/cpu_awvalid~bin", "soc_lite/cpu_awready~bin", "soc_lite/cpu_awaddr[31:0]~hex", "soc_lite/cpu_wvalid~bin", "soc_lite/cpu_wready~bin", "soc_lite/cpu_wdata[31:0]~hex", "soc_lite/cpu_wstrb[3:0]~bin", "soc_lite/cpu_bvalid~bin", "soc_lite/cpu_bready~bin"]},
         {"figure": "L11-05", "file": "05_redirect_stale", "topic": "异常期间未完成读与旧响应丢弃", "event": "stale_drop", "signal": "soc_lite/cpu/if_stage/restart_pc[31:0]", "context": "异常/ERET 重定向期间已接受的旧 IF 读继续排空；stale_response 丢弃旧响应并转向 restart_pc。", "expected": "旧读响应不送入 decode；新请求使用异常/ERET 目标 PC。", "expected_source": "Lab11 IF_stage 状态机与本次 full-run BUS_ANCHOR。", "signals": ["clk~bin", "soc_lite/cpu/trap_commit~bin", "soc_lite/cpu/eret_commit~bin", "soc_lite/cpu/if_stage/request_pc[31:0]~hex", "soc_lite/cpu/if_stage/restart_pc[31:0]~hex", "soc_lite/cpu/if_stage/stale_response~bin", "soc_lite/cpu/if_stage/response_valid~bin", "soc_lite/cpu_arvalid~bin", "soc_lite/cpu_arready~bin", "soc_lite/cpu_araddr[31:0]~hex", "soc_lite/cpu_arid[3:0]~hex", "soc_lite/cpu_rvalid~bin", "soc_lite/cpu_rready~bin", "soc_lite/cpu_rid[3:0]~hex", "soc_lite/cpu_inst_data_ok~bin", "debug_wb_pc[31:0]~hex"]},
@@ -623,7 +650,7 @@ def make_wcfgs(root: Path, case: str, run_dir: Path, info: dict[str, str],
         manual_proof_status = proof_row.get("proof_status") or "PENDING_CAPTURE"
         validation_rows.append({
             "case": case, "run_id": run_id, "wdb_file": wdb_rel, "wdb_sha256": wdb_hash,
-            "wcfg_file": repo_path(root, wcfg) if wcfg.is_file() else "",
+            "wcfg_file": repo_path(root, wcfg),
             "wcfg_sha256": sha256(wcfg) if wcfg.is_file() else "",
             "db_ref_matches": db_ref_ok, "db_opens": db_opens, "config_opens": config_opens,
             "test_end_seen": test_end_seen, "signals_expected": len(theme["signals"]),
@@ -634,7 +661,10 @@ def make_wcfgs(root: Path, case: str, run_dir: Path, info: dict[str, str],
             "simtcl_missing_scope": missing_scope,
             "structural_validation_status": structural_status,
             "manual_waveform_proof_status": manual_proof_status,
-            "validation_log": repo_path(root, config_log if config_log.is_file() else validation_log),
+            "validation_log": repo_path(
+                root, config_log if config_log.is_file() else
+                (create_log if create_log.is_file() else validation_log)
+            ),
         })
     return [], validation_rows, anchors
 
@@ -659,7 +689,15 @@ def build_evidence_rows(root: Path, runs, cfg: dict[str, dict],
         configs = run_wcfgs(case_fig_dir, run_id)
         trace_records = info.get("TRACE_RECORDS_COMPARED") or info.get("TRACE_RECORDS", "")
         sim_log = run_dir / "simulate.log"
-        run_source = run_dir / "source-manifest.csv"
+        source_name = info.get("EFFECTIVE_SOURCE_MANIFEST", "effective-source-manifest.csv")
+        source_candidate = Path(source_name)
+        if not source_candidate.is_absolute():
+            source_candidate = run_dir / source_candidate
+        run_source = source_candidate if source_candidate.is_file() else run_dir / "source-manifest.csv"
+        source_manifest_digest = sha256(run_source) if run_source.is_file() else ""
+        effective_source_digest = (
+            source_manifest_digest if run_source.name == "effective-source-manifest.csv" else ""
+        )
         xpr = info.get("PROJECT_XPR", cfg[case].get("ProjectXpr", ""))
         if not xpr:
             xpr = cfg[case].get("ProjectXpr", "")
@@ -679,7 +717,13 @@ def build_evidence_rows(root: Path, runs, cfg: dict[str, dict],
             "source_commit": info.get("SOURCE_COMMIT", input_row.get("source_commit", baseline.get("SOURCE_COMMIT", ""))),
             "source_dirty": info.get("SOURCE_DIRTY", input_row.get("source_dirty", baseline.get("SOURCE_DIRTY", ""))),
             "source_diff_sha256": info.get("SOURCE_DIFF_SHA256", input_row.get("source_diff_sha256", baseline.get("SOURCE_DIFF_SHA256", ""))),
-            "source_manifest_sha256": sha256(run_source) if run_source.is_file() else "",
+            "source_manifest_sha256": source_manifest_digest,
+            "input_scan_status": info.get("INPUT_SCAN_STATUS", baseline.get("INPUT_SCAN_STATUS", "NOT_RECORDED")),
+            "vivado_preflight_status": info.get("VIVADO_PREFLIGHT_STATUS", baseline.get("VIVADO_PREFLIGHT_STATUS", "NOT_RECORDED")),
+            "effective_source_manifest": repo_path(root, run_source) if effective_source_digest else "",
+            "effective_source_manifest_sha256": effective_source_digest,
+            "source_integrity": info.get("SOURCE_INTEGRITY", "NOT_CAPTURED_HISTORICAL"),
+            "source_capture_phase": info.get("SOURCE_CAPTURE_PHASE", "NOT_CAPTURED_HISTORICAL"),
             "build_status": "PASS" if result_status == "PASS" and info.get("SIM_EXIT_CODE", "0") == "0" else result_status,
             "functional_status": info.get("FUNCTIONAL_STATUS", result_status),
             "protocol_status": info.get("PROTOCOL_STATUS", "NOT_RECORDED"),
@@ -713,6 +757,8 @@ def build_transaction_rows(runs) -> list[dict]:
         "stale_fetch_drops": "STALE_FETCH_RESPONSES_DROPPED",
     }
     for case, run_dir, info in runs:
+        if info.get("SUITE", "").lower() == "preflight":
+            continue
         if info.get("STATUS") != "PASS":
             continue
         if case == "lab11" and info.get("RUN_ID", run_dir.name) in {
@@ -824,21 +870,28 @@ def write_outputs(root: Path, runs, cfg: dict[str, dict], vivado: Path | None,
             if existing_wdb.is_file():
                 row["wdb_sha256"] = sha256(existing_wdb)
     if wave_rows:
-        existing_wave = merge_wave_capture_rows(existing_wave, wave_rows)
+        expected_wave_rows = len(theme_rows(target_case)) if target_case else len(wave_rows)
+        if len(wave_rows) == expected_wave_rows:
+            existing_wave = merge_wave_capture_rows(existing_wave, wave_rows)
+        else:
+            print(
+                f"WAVE_CAPTURE_UPDATE_SKIPPED=generated {len(wave_rows)} of "
+                f"{expected_wave_rows} required configs; existing handoff rows were preserved"
+            )
     evidence_rows = build_evidence_rows(root, runs, cfg, existing_wave_validation)
     transaction_rows = build_transaction_rows(runs)
 
     validation_path = data_dir / "waveform_validation.csv"
     if validation_rows or not validation_path.exists() or csv_would_change(validation_path, WAVE_VALIDATION_FIELDS, existing_wave_validation):
-        write_csv(validation_path, WAVE_VALIDATION_FIELDS, existing_wave_validation)
+        write_csv_with_archive(validation_path, WAVE_VALIDATION_FIELDS, existing_wave_validation)
     if wave_rows or not capture_path.exists() or csv_would_change(capture_path, WAVE_FIELDS, existing_wave):
         if csv_would_change(capture_path, WAVE_FIELDS, existing_wave):
             backup_path = backup_csv(capture_path)
             if backup_path:
                 print(f"WAVE_CAPTURE_BACKUP={repo_path(root, backup_path)}")
         write_csv(capture_path, WAVE_FIELDS, existing_wave)
-    write_csv(data_dir / "evidence_index.csv", EVIDENCE_FIELDS, evidence_rows)
-    write_csv(data_dir / "transaction-summary.csv", TRANSACTION_FIELDS, transaction_rows)
+    write_csv_with_archive(data_dir / "evidence_index.csv", EVIDENCE_FIELDS, evidence_rows)
+    write_csv_with_archive(data_dir / "transaction-summary.csv", TRANSACTION_FIELDS, transaction_rows)
     print(f"EVIDENCE_INDEX={data_dir / 'evidence_index.csv'}")
     print(f"TRANSACTION_SUMMARY={data_dir / 'transaction-summary.csv'}")
     print(f"WAVE_CAPTURE_LOG={data_dir / 'wave-capture-log.csv'}")
@@ -892,6 +945,8 @@ def make_wave_rows_for_run(root: Path, case: str, run_dir: Path, info: dict[str,
                                   normalize_signal_path(target_signal_suffix))), "")
         validation_status = validation.get("structural_validation_status", "NOT_RUN")
         proof_status = validation.get("manual_waveform_proof_status", "PENDING_CAPTURE")
+        if not wcfg.is_file() or validation_status != "PASS":
+            continue
         expected = str(theme["expected"])
         if word is not None and theme["event"] == "fetch":
             expected = f"instruction=0x{word:08x}"
