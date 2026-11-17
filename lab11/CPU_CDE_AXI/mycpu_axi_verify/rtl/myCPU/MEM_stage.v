@@ -22,12 +22,20 @@ module mem_stage(
     output                         trap_bd,
     output [31:0]                  trap_bad_vaddr,
     output                         eret_commit,
+    // request/response data SRAM interface
+    output                         data_sram_req,
+    output                         data_sram_wr,
+    output [1:0]                   data_sram_size,
+    output [3:0]                   data_sram_wstrb,
+    output [31:0]                  data_sram_addr,
+    output [31:0]                  data_sram_wdata,
+    input                          data_sram_addr_ok,
+    input                          data_sram_data_ok,
+    input  [31:0]                  data_sram_rdata,
     //to ws
     output                         ms_to_ws_valid,
     output [`MS_TO_WS_BUS_WD -1:0] ms_to_ws_bus  ,
-    output [38:0]                  ms_producer_bus,
-    //from data-sram
-    input  [31                 :0] data_sram_rdata
+    output [38:0]                  ms_producer_bus
 );
 
 reg         ms_valid;
@@ -43,11 +51,19 @@ wire [31:0] ms_bad_vaddr;
 wire        ms_is_delay_slot;
 wire [`MEM_OP_WD-1:0] ms_mem_op;
 wire        ms_res_from_mem;
+wire        ms_mem_store;
+wire        ms_mem_access;
 wire        ms_gr_we;
 wire [ 4:0] ms_dest;
 wire [31:0] ms_alu_result;
 wire [31:0] ms_rt_value;
 wire [31:0] ms_pc;
+wire [31:0] current_data_rdata;
+reg         ms_addr_accepted;
+reg         ms_data_valid;
+reg [31:0]  ms_data_rdata;
+reg [3:0]   store_wstrb;
+reg [31:0]  store_wdata;
 assign {ms_cp0_op,
         ms_cp0_addr,
         ms_cp0_write_data,
@@ -64,6 +80,21 @@ assign {ms_cp0_op,
        } = es_to_ms_bus_r;
 
 assign ms_res_from_mem = |ms_mem_op[6:0];
+assign ms_mem_store = |ms_mem_op[11:7];
+assign ms_mem_access = ms_res_from_mem || ms_mem_store;
+assign current_data_rdata = ms_data_valid ? ms_data_rdata : data_sram_rdata;
+
+assign data_sram_req = ms_valid && ms_mem_access && !ms_exception_valid &&
+                       !ms_addr_accepted && !ms_data_valid;
+assign data_sram_wr = ms_valid && ms_mem_store && !ms_exception_valid;
+assign data_sram_size = (ms_mem_op[`MEM_OP_LB] || ms_mem_op[`MEM_OP_LBU] ||
+                         ms_mem_op[`MEM_OP_SB]) ? 2'd0 :
+                        (ms_mem_op[`MEM_OP_LH] || ms_mem_op[`MEM_OP_LHU] ||
+                         ms_mem_op[`MEM_OP_SH]) ? 2'd1 : 2'd2;
+assign data_sram_wstrb = (ms_valid && ms_mem_store && !ms_exception_valid) ?
+                         store_wstrb : 4'b0000;
+assign data_sram_addr = ms_alu_result;
+assign data_sram_wdata = store_wdata;
 
 reg [31:0] mem_result;
 wire [31:0] ms_final_result;
@@ -78,11 +109,11 @@ assign ms_producer_bus = {ms_valid && !ms_exception_valid &&
                               ms_gr_we && (ms_dest != 5'd0),
                           ms_valid && !ms_exception_valid &&
                               (ms_cp0_op != `CP0_OP_ERET) &&
-                              ms_gr_we && (ms_dest != 5'd0),
+                              ms_gr_we && (ms_dest != 5'd0) && ms_ready_go,
                           ms_dest,
                           ms_final_result};
 
-assign ms_ready_go    = 1'b1;
+assign ms_ready_go    = !ms_mem_access || ms_exception_valid || ms_data_valid;
 assign ms_allowin     = !ms_valid || ms_ready_go && ws_allowin;
 assign ms_to_ws_valid = ms_valid && ms_ready_go &&
                         !ms_exception_valid && (ms_cp0_op != `CP0_OP_ERET);
@@ -103,62 +134,109 @@ assign trap_bd = ms_is_delay_slot;
 assign trap_bad_vaddr = ms_bad_vaddr;
 always @(posedge clk) begin
     if (reset) begin
-        ms_valid <= 1'b0;
-    end
-    else if (trap_commit || eret_commit) begin
-        ms_valid <= 1'b0;
-    end
-    else if (ms_allowin) begin
-        ms_valid <= es_to_ms_valid;
-    end
-
-    if (!reset && !trap_commit && !eret_commit && es_to_ms_valid && ms_allowin) begin
-        es_to_ms_bus_r  <= es_to_ms_bus;
+        ms_valid         <= 1'b0;
+        ms_addr_accepted <= 1'b0;
+        ms_data_valid    <= 1'b0;
+        ms_data_rdata    <= 32'b0;
+    end else if (trap_commit || eret_commit) begin
+        ms_valid         <= 1'b0;
+        ms_addr_accepted <= 1'b0;
+        ms_data_valid    <= 1'b0;
+    end else if (ms_allowin) begin
+        ms_valid         <= es_to_ms_valid;
+        ms_addr_accepted <= 1'b0;
+        ms_data_valid    <= 1'b0;
+        if (es_to_ms_valid) begin
+            es_to_ms_bus_r <= es_to_ms_bus;
+        end
+    end else begin
+        if (data_sram_req && data_sram_addr_ok) begin
+            ms_addr_accepted <= 1'b1;
+            if (data_sram_data_ok) begin
+                ms_data_valid <= 1'b1;
+                ms_data_rdata <= data_sram_rdata;
+            end
+        end else if (ms_addr_accepted && data_sram_data_ok) begin
+            ms_data_valid <= 1'b1;
+            ms_data_rdata <= data_sram_rdata;
+        end
     end
 end
 
 always @(*) begin
-    mem_result = data_sram_rdata;
+    mem_result = current_data_rdata;
     if (ms_mem_op[`MEM_OP_LB]) begin
         case (ms_alu_result[1:0])
-            2'd0: mem_result = {{24{data_sram_rdata[7]}},  data_sram_rdata[7:0]};
-            2'd1: mem_result = {{24{data_sram_rdata[15]}}, data_sram_rdata[15:8]};
-            2'd2: mem_result = {{24{data_sram_rdata[23]}}, data_sram_rdata[23:16]};
-            2'd3: mem_result = {{24{data_sram_rdata[31]}}, data_sram_rdata[31:24]};
+            2'd0: mem_result = {{24{current_data_rdata[7]}},  current_data_rdata[7:0]};
+            2'd1: mem_result = {{24{current_data_rdata[15]}}, current_data_rdata[15:8]};
+            2'd2: mem_result = {{24{current_data_rdata[23]}}, current_data_rdata[23:16]};
+            2'd3: mem_result = {{24{current_data_rdata[31]}}, current_data_rdata[31:24]};
         endcase
     end
     else if (ms_mem_op[`MEM_OP_LBU]) begin
         case (ms_alu_result[1:0])
-            2'd0: mem_result = {24'b0, data_sram_rdata[7:0]};
-            2'd1: mem_result = {24'b0, data_sram_rdata[15:8]};
-            2'd2: mem_result = {24'b0, data_sram_rdata[23:16]};
-            2'd3: mem_result = {24'b0, data_sram_rdata[31:24]};
+            2'd0: mem_result = {24'b0, current_data_rdata[7:0]};
+            2'd1: mem_result = {24'b0, current_data_rdata[15:8]};
+            2'd2: mem_result = {24'b0, current_data_rdata[23:16]};
+            2'd3: mem_result = {24'b0, current_data_rdata[31:24]};
         endcase
     end
     else if (ms_mem_op[`MEM_OP_LH]) begin
         if (ms_alu_result[1])
-            mem_result = {{16{data_sram_rdata[31]}}, data_sram_rdata[31:16]};
+            mem_result = {{16{current_data_rdata[31]}}, current_data_rdata[31:16]};
         else
-            mem_result = {{16{data_sram_rdata[15]}}, data_sram_rdata[15:0]};
+            mem_result = {{16{current_data_rdata[15]}}, current_data_rdata[15:0]};
     end
     else if (ms_mem_op[`MEM_OP_LHU]) begin
-        mem_result = ms_alu_result[1] ? {16'b0, data_sram_rdata[31:16]} :
-                                        {16'b0, data_sram_rdata[15:0]};
+        mem_result = ms_alu_result[1] ? {16'b0, current_data_rdata[31:16]} :
+                                        {16'b0, current_data_rdata[15:0]};
     end
     else if (ms_mem_op[`MEM_OP_LWL]) begin
         case (ms_alu_result[1:0])
-            2'd0: mem_result = {data_sram_rdata[7:0],  ms_rt_value[23:0]};
-            2'd1: mem_result = {data_sram_rdata[15:0], ms_rt_value[15:0]};
-            2'd2: mem_result = {data_sram_rdata[23:0], ms_rt_value[7:0]};
-            2'd3: mem_result = data_sram_rdata;
+            2'd0: mem_result = {current_data_rdata[7:0],  ms_rt_value[23:0]};
+            2'd1: mem_result = {current_data_rdata[15:0], ms_rt_value[15:0]};
+            2'd2: mem_result = {current_data_rdata[23:0], ms_rt_value[7:0]};
+            2'd3: mem_result = current_data_rdata;
         endcase
     end
     else if (ms_mem_op[`MEM_OP_LWR]) begin
         case (ms_alu_result[1:0])
-            2'd0: mem_result = data_sram_rdata;
-            2'd1: mem_result = {ms_rt_value[31:24], data_sram_rdata[31:8]};
-            2'd2: mem_result = {ms_rt_value[31:16], data_sram_rdata[31:16]};
-            2'd3: mem_result = {ms_rt_value[31:8],  data_sram_rdata[31:24]};
+            2'd0: mem_result = current_data_rdata;
+            2'd1: mem_result = {ms_rt_value[31:24], current_data_rdata[31:8]};
+            2'd2: mem_result = {ms_rt_value[31:16], current_data_rdata[31:16]};
+            2'd3: mem_result = {ms_rt_value[31:8],  current_data_rdata[31:24]};
+        endcase
+    end
+end
+
+always @(*) begin
+    store_wstrb = 4'b0000;
+    store_wdata = ms_rt_value;
+    if (ms_mem_op[`MEM_OP_SW]) begin
+        store_wstrb = 4'b1111;
+    end else if (ms_mem_op[`MEM_OP_SB]) begin
+        store_wstrb = 4'b0001 << ms_alu_result[1:0];
+        store_wdata = ms_rt_value << {ms_alu_result[1:0], 3'b000};
+    end else if (ms_mem_op[`MEM_OP_SH]) begin
+        if (ms_alu_result[1]) begin
+            store_wstrb = 4'b1100;
+            store_wdata = ms_rt_value << 16;
+        end else begin
+            store_wstrb = 4'b0011;
+        end
+    end else if (ms_mem_op[`MEM_OP_SWL]) begin
+        case (ms_alu_result[1:0])
+            2'd0: begin store_wstrb = 4'b0001; store_wdata = ms_rt_value >> 24; end
+            2'd1: begin store_wstrb = 4'b0011; store_wdata = ms_rt_value >> 16; end
+            2'd2: begin store_wstrb = 4'b0111; store_wdata = ms_rt_value >> 8;  end
+            2'd3: begin store_wstrb = 4'b1111; end
+        endcase
+    end else if (ms_mem_op[`MEM_OP_SWR]) begin
+        case (ms_alu_result[1:0])
+            2'd0: begin store_wstrb = 4'b1111; end
+            2'd1: begin store_wstrb = 4'b1110; store_wdata = ms_rt_value << 8;  end
+            2'd2: begin store_wstrb = 4'b1100; store_wdata = ms_rt_value << 16; end
+            2'd3: begin store_wstrb = 4'b1000; store_wdata = ms_rt_value << 24; end
         endcase
     end
 end

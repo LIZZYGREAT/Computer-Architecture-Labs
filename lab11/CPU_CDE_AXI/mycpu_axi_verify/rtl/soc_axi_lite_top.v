@@ -266,7 +266,7 @@ wire [4 :0] ram_random_mask;
 //cpu axi
 //debug_*
 mycpu_top u_cpu(
-    .int       (6'd0          ),   //high active
+    .hw_int    (6'd0          ),   //high active
 
     .aclk      (cpu_clk       ),
     .aresetn   (cpu_resetn    ),   //low active
@@ -553,7 +553,7 @@ confreg #(.SIMULATION(SIMULATION)) u_confreg
 
     .arid        (conf_arid    ),
     .araddr      (conf_araddr  ),
-    .arlen       (conf_arlen   ),
+    .arlen       ({4'd0, conf_arlen}),
     .arsize      (conf_arsize  ),
     .arburst     (conf_arburst ),
     .arlock      (conf_arlock  ),
@@ -569,7 +569,7 @@ confreg #(.SIMULATION(SIMULATION)) u_confreg
     .rready      (conf_rready  ),
     .awid        (conf_awid    ),
     .awaddr      (conf_awaddr  ),
-    .awlen       (conf_awlen   ),
+    .awlen       ({4'd0, conf_awlen}),
     .awsize      (conf_awsize  ),
     .awburst     (conf_awburst ),
     .awlock      (conf_awlock  ),

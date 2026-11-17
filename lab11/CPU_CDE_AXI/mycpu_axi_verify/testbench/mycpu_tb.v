@@ -101,8 +101,22 @@ assign debug_wb_rf_wdata = soc_lite.debug_wb_rf_wdata;
 
 // open the trace file;
 integer trace_ref;
+integer trace_records_read;
+integer trace_valid_records_read;
+integer trace_trailing_valid;
+integer trace_valid_flag;
+reg trace_read_failed;
 initial begin
     trace_ref = $fopen(`TRACE_REF_FILE, "r");
+    trace_records_read = 0;
+    trace_valid_records_read = 0;
+    trace_trailing_valid = 0;
+    trace_read_failed = 1'b0;
+    if (trace_ref == 0) begin
+        $display("COURSE_SOC_FAIL=trace_open_failed path=%s", `TRACE_REF_FILE);
+        $finish;
+    end
+    $display("TRACE_OPEN_PASS path=%s", `TRACE_REF_FILE);
 end
 
 //get reference result in falling edge
@@ -113,16 +127,76 @@ reg [31:0] ref_wb_pc;
 reg [4 :0] ref_wb_rf_wnum;
 reg [31:0] ref_wb_rf_wdata;
 
+task read_next_valid_trace;
+    integer scan_status;
+    reg found_valid;
+    begin
+        found_valid = 1'b0;
+        trace_cmp_flag = 1'b0;
+        while (!found_valid && !trace_read_failed) begin
+            scan_status = $fscanf(trace_ref, "%h %h %h %h",
+                                  trace_valid_flag, ref_wb_pc,
+                                  ref_wb_rf_wnum, ref_wb_rf_wdata);
+            if (scan_status != 4) begin
+                trace_read_failed = 1'b1;
+                $display("COURSE_SOC_FAIL=trace_early_eof records=%0d valid=%0d scan=%0d",
+                         trace_records_read, trace_valid_records_read, scan_status);
+            end
+            else if ((trace_valid_flag != 0) && (trace_valid_flag != 1)) begin
+                trace_read_failed = 1'b1;
+                $display("COURSE_SOC_FAIL=trace_invalid_valid_flag record=%0d flag=%0d",
+                         trace_records_read + 1, trace_valid_flag);
+            end
+            else begin
+                trace_cmp_flag = (trace_valid_flag == 1);
+                trace_records_read = trace_records_read + 1;
+                if (trace_cmp_flag === 1'b1) begin
+                    found_valid = 1'b1;
+                    trace_valid_records_read = trace_valid_records_read + 1;
+                end
+            end
+        end
+    end
+endtask
+
+task check_trace_exhaustion;
+    integer scan_status;
+    integer tail_valid;
+    reg [31:0] tail_pc;
+    reg [4:0] tail_wnum;
+    reg [31:0] tail_wdata;
+    begin
+        scan_status = 4;
+        trace_trailing_valid = 0;
+        while (scan_status == 4) begin
+            scan_status = $fscanf(trace_ref, "%h %h %h %h",
+                                  tail_valid, tail_pc, tail_wnum, tail_wdata);
+            if (scan_status == 4) begin
+                trace_records_read = trace_records_read + 1;
+                if (tail_valid == 1) begin
+                    trace_trailing_valid = trace_trailing_valid + 1;
+                end
+                else if (tail_valid != 0) begin
+                    trace_read_failed = 1'b1;
+                end
+            end
+            else if (scan_status != -1) begin
+                trace_read_failed = 1'b1;
+            end
+        end
+    end
+endtask
+
 always @(posedge soc_clk)
 begin 
     #1;
     if(|debug_wb_rf_wen && debug_wb_rf_wnum!=5'd0 && !debug_end && `CONFREG_OPEN_TRACE)
     begin
-        trace_cmp_flag=1'b0;
-        while (!trace_cmp_flag && !($feof(trace_ref)))
-        begin
-            $fscanf(trace_ref, "%h %h %h %h", trace_cmp_flag,
-                    ref_wb_pc, ref_wb_rf_wnum, ref_wb_rf_wdata);
+        read_next_valid_trace;
+        if (trace_read_failed) begin
+            debug_wb_err <= 1'b1;
+            #40;
+            $finish;
         end
     end
 end
@@ -149,7 +223,8 @@ begin
     begin
         debug_wb_err <= 1'b0;
     end
-    else if(|debug_wb_rf_wen && debug_wb_rf_wnum!=5'd0 && !debug_end && `CONFREG_OPEN_TRACE)
+    else if(|debug_wb_rf_wen && debug_wb_rf_wnum!=5'd0 && !debug_end &&
+            !trace_read_failed && `CONFREG_OPEN_TRACE)
     begin
         if (  (debug_wb_pc!==ref_wb_pc) || (debug_wb_rf_wnum!==ref_wb_rf_wnum)
             ||(debug_wb_rf_wdata_v!==ref_wb_rf_wdata_v) )
@@ -161,6 +236,7 @@ begin
             $display("    mycpu    : PC = 0x%8h, wb_rf_wnum = 0x%2h, wb_rf_wdata = 0x%8h",
                       debug_wb_pc, debug_wb_rf_wnum, debug_wb_rf_wdata_v);
             $display("--------------------------------------------------------------");
+            $display("COURSE_SOC_FAIL=trace_mismatch");
             debug_wb_err <= 1'b1;
             #40;
             $finish;
@@ -255,15 +331,31 @@ begin
         $display("==============================================================");
         $display("Test end!");
         #40;
-        $fclose(trace_ref);
-        if (global_err)
+        if (trace_ref != 0) begin
+            check_trace_exhaustion;
+        end
+        if (global_err || trace_read_failed || (trace_trailing_valid != 0))
         begin
             $display("Fail!!!Total %d errors!",err_count);
+            if (trace_read_failed) begin
+                $display("COURSE_SOC_FAIL=trace_read_or_format_error");
+            end
+            else if (trace_trailing_valid != 0) begin
+                $display("COURSE_SOC_FAIL=unconsumed_valid_trace_records count=%0d",
+                         trace_trailing_valid);
+            end
+            else begin
+                $display("COURSE_SOC_FAIL=course_test_error count=%0d",err_count);
+            end
         end
         else
         begin
             $display("----PASS!!!");
+            $display("TRACE_EXHAUSTION_PASS records=%0d valid=%0d",
+                     trace_records_read, trace_valid_records_read);
+            $display("COURSE_SOC_PASS");
         end
+        $fclose(trace_ref);
 	    $finish;
 	end
 end

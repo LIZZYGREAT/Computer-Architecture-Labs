@@ -1,0 +1,16 @@
+Time resolution is 1 ps
+LAB11_AXI3_IF_REDIRECT_STALLED_AR_PASS
+LAB11_AXI3_IF_REDIRECT_ACCEPTED_AR_PASS
+LAB11_AXI3_HANDSHAKE_PASS reads=2 stores=2 AW_first=1 W_first=1
+AXI3_FAULT R_ID expected=1 actual=0
+LAB11_AXI3_RID_CHECK_PASS
+AXI3_FAULT R_RESP value=10
+LAB11_AXI3_RRESP_CHECK_PASS
+AXI3_FAULT R_LAST missing
+LAB11_AXI3_RLAST_CHECK_PASS
+AXI3_FAULT B_ID expected=1 actual=0
+LAB11_AXI3_BID_CHECK_PASS
+AXI3_FAULT B_RESP value=10
+LAB11_AXI3_BRESP_CHECK_PASS
+LAB11_AXI3_BUS_PASS
+$finish called at time : 966 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/testbench/tb_lab11_axi3_bus.sv" Line 582
