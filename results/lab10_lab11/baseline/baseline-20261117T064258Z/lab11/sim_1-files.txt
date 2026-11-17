@@ -1,0 +1,1 @@
+C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab11/CPU_CDE_AXI/mycpu_axi_verify/testbench/mycpu_tb.v

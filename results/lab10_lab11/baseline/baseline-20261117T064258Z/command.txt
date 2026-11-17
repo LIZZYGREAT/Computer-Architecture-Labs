@@ -1,0 +1,12 @@
+# Commands executed from C:\Users\lenovo\Desktop\Projects\FPGA (PowerShell)
+git -C lab branch --show-current
+git -C lab rev-parse HEAD
+git -C lab status --short --untracked-files=all
+python lab/scripts/check_bus_inputs.py --repo-root C:\Users\lenovo\Desktop\Projects\FPGA\lab --lab-root C:\Users\lenovo\Desktop\Projects\FPGA\lab --output-dir C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\baseline\baseline-20261117T064258Z --vivado-version "Vivado v2025.2 (64-bit)" --ip-status "READ_ONLY_REVISION_CHANGE; COMPILE_ORDER_EMPTY"
+
+# Both commands below ran serially after Push-Location D:\Verilog\2025.2\Vivado\bin
+vivado.bat -mode batch -log C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\baseline\baseline-20261117T064258Z\lab10\vivado.log -journal C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\baseline\baseline-20261117T064258Z\lab10\vivado.jou -source C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\check_bus_project.tcl -tclargs lab10 C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab10\CPU_CDE_SRAM\mycpu_sram_verify\run_vivado\mycpu_prj1\mycpu.xpr C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\baseline\baseline-20261117T064258Z\lab10
+vivado.bat -mode batch -log C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\baseline\baseline-20261117T064258Z\lab11\vivado.log -journal C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\baseline\baseline-20261117T064258Z\lab11\vivado.jou -source C:\Users\lenovo\Desktop\Projects\FPGA\lab\scripts\check_bus_project.tcl -tclargs lab11 C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab11\CPU_CDE_AXI\mycpu_axi_verify\run_vivado\mycpu_prj1\mycpu.xpr C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\baseline\baseline-20261117T064258Z\lab11
+
+# Separate version probe from the same Vivado bin directory
+vivado.bat -version

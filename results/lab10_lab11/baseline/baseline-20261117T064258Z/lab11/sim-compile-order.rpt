@@ -1,0 +1,10 @@
+Source compile order for 'simulation' with fileset 'sim_1' in source management mode 'All' and simulation language 'Mixed':
+Index  File Name  Used_In  File_Type  Library  Ngc Wrapper  Full Path Name
+-----  ---------  -------  ---------  -------  -----------  --------------
+< empty >
+
+
+Missing instances for 'simulation' with fileset 'sim_1':
+Index  Instance Path  File Path  Line
+-----  -------------  ---------  ----
+< empty >

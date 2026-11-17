@@ -1,0 +1,5 @@
+C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/BRIDGE/bridge_1x2.v
+C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/CONFREG/confreg.v
+C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/ram_wrap/sram_wrap.v
+C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/soc_sram_lite_top.v
+C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/soft/func_lab9/obj/inst_ram.coe

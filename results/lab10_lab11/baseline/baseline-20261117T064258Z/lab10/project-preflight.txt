@@ -1,0 +1,9 @@
+CASE=lab10
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/run_vivado/mycpu_prj1/mycpu.xpr
+VIVADO_VERSION=2025.2
+OPEN_MODE=READ_ONLY
+PROJECT_STATUS=OPENED
+DESIGN_TOP=soc_sram_lite_top
+SIM_TOP=tb_top
+IP_STATUS=REPORTED
+COMPILE_ORDER_STATUS=REPORTED
