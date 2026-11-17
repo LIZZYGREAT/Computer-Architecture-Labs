@@ -1,0 +1,6 @@
+RUN_ID=s5-full-capture-lab11-20261117
+CASE=lab11
+SUITE=full
+STATUS=ENVIRONMENT_ERROR
+PREFLIGHT_STATUS=PASS
+ERROR_REASON=Vivado exited with code 0 but the runner did not produce a validated result.txt. See C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\lab11\s5-full-capture-lab11-20261117

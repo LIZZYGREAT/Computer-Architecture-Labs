@@ -1,5 +1,0 @@
-Time resolution is 1 ps
-LAB10_IF_PASS accepts=4 responses=4
-LAB10_MEM_PASS accepts=11 responses=11 stores=5 loads=6
-LAB10_BUS_PASS
-$finish called at time : 840 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/testbench/tb_lab10_bus.sv" Line 483

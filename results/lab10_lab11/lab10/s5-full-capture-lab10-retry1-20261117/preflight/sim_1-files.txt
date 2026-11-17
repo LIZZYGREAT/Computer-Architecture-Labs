@@ -1,0 +1,1 @@
+C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/testbench/mycpu_tb.v

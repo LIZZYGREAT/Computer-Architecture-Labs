@@ -1,0 +1,11 @@
+RUN_ID=s4-directed-authorized-lab10-20261117
+CASE=lab10
+SUITE=directed
+VIVADO=D:\Verilog\2025.2\Vivado\bin\vivado.bat
+PROJECT_XPR=C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab10\CPU_CDE_SRAM\mycpu_sram_verify\run_vivado\mycpu_prj1\mycpu_lab10_bus.xpr
+REFERENCE_TRACE=C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab10\CPU_CDE_SRAM\cpu132_gettrace\golden_trace.txt
+INST_MIF=C:\Users\lenovo\Desktop\Projects\FPGA\lab\lab10\CPU_CDE_SRAM\soft\func_lab9\obj\inst_ram.mif
+MAX_SIMULATION_NS=20000000
+TIMEOUT_SECONDS=3600
+CAPTURE_WAVEFORM=False
+COMMAND=verify_bus.ps1 -Case lab10 -Suite directed -RunId s4-directed-authorized-lab10-20261117

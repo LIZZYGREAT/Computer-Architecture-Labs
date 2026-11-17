@@ -13,6 +13,12 @@
 *.jou
 *.pb
 dfx_runtime.txt
+
+# Generated per-run Lab10/Lab11 XPR snapshots; base project XPRs remain tracked.
+/lab10/CPU_CDE_SRAM/mycpu_sram_verify/run_vivado/mycpu_prj1/mycpu_lab10_directed_*.xpr
+/lab10/CPU_CDE_SRAM/mycpu_sram_verify/run_vivado/mycpu_prj1/mycpu_lab10_soc_directed_*.xpr
+/lab11/CPU_CDE_AXI/mycpu_axi_verify/run_vivado/mycpu_prj1/mycpu_lab11_soc_*.xpr
+results/lab10_lab11/**/project/*.xpr
 results/**/ip-probe/**/generated/
 results/**/*.cmd
 results/**/*.err

@@ -1,0 +1,25 @@
+Source compile order for 'simulation' with fileset 'sim_1' in source management mode 'All' and simulation language 'Mixed':
+Index  File Name            Used_In      File_Type  Library         Ngc Wrapper  Full Path Name
+-----  -------------------  -----------  ---------  --------------  -----------  -------------------------------------------------------------------------------------------------------
+1      EXE_stage.v          Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/EXE_stage.v
+2      ID_stage.v           Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/ID_stage.v
+3      IF_stage.v           Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/IF_stage.v
+4      MEM_stage.v          Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/MEM_stage.v
+5      WB_stage.v           Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/WB_stage.v
+6      alu.v                Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/alu.v
+7      bridge_1x2.v         Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/BRIDGE/bridge_1x2.v
+8      confreg.v            Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/CONFREG/confreg.v
+9      cp0_reg.v            Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/cp0_reg.v
+10     hilo_unit.v          Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/hilo_unit.v
+11     mycpu_top.v          Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/mycpu_top.v
+12     regfile.v            Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/regfile.v
+13     soc_sram_lite_top.v  Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/soc_sram_lite_top.v
+14     sram_wrap.v          Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/ram_wrap/sram_wrap.v
+15     tools.v              Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/rtl/myCPU/tools.v
+16     mycpu_tb.v           Synth & Sim  Verilog    xil_defaultlib  No           C:/Users/lenovo/Desktop/Projects/FPGA/lab/lab10/CPU_CDE_SRAM/mycpu_sram_verify/testbench/mycpu_tb.v
+
+
+Missing instances for 'simulation' with fileset 'sim_1':
+Index  Instance Path  File Path  Line
+-----  -------------  ---------  ----
+< empty >

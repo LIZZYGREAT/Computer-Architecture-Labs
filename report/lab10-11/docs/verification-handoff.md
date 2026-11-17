@@ -34,7 +34,13 @@ Full-run 的输入 COE/MIF/trace 哈希以及源提交、dirty diff 哈希记录
 - 较早的 Lab10 full Run `s5-full-capture-lab10-20261117` 保留为 `ENVIRONMENT_ERROR`：XSim trace plusarg 使用了双连字符，修为 `-testplusarg` 后新 Run PASS。
 - 较早的 Lab11 full Run `s5-full-capture-lab11-20261117` 保留为 `ENVIRONMENT_ERROR`：testbench telemetry 沿用 Lab10 的层级名，展开时找不到 `soc_lite.cpu_*`；改为 AXI 工程真实的 `soc_lite.u_cpu.*` 层级后，新 Run PASS。
 - 早期两次 `s4-directed-telemetry-*` 结果也保留为 `ENVIRONMENT_ERROR`。入口随后加强了 `result.txt`、`simulate.log` 与 PASS 标记核验，避免仅因 Vivado 返回码 0 就误报通过。
-- Lab10 WCFG 初次尝试的失败日志保留在 full-run 的 `wave-validation/`、`wave-validation-v2/`；完整有效版本用 `-v3.wcfg`。Lab11 五份 WCFG 均在第一次成功，路径、信号与 run 均由 Vivado 校验。
+- Lab10 的早期 WCFG 探索配置已清理；仅保留经 Vivado 校验的四份 `-v3.wcfg`。Lab11 五份 WCFG 均通过 Vivado 校验。
+
+## 记录整理
+
+- 保留 S0 输入基线、两套最终 directed PASS、两套最终 full PASS，以及直接促成修复的四条失败记录：两次 telemetry 启动失败和两次首次 full-run 失败。运行记录保留命令、输入/源码清单、结果摘要与诊断日志，不保留重复工程副本和编译缓存。
+- `evidence_index.csv` 只列上述 8 个验收相关运行；`transaction-summary.csv` 只列最终 4 个 PASS；`waveform_validation.csv` 只列当前交接的 9 份有效 WCFG。
+- 已移除重复的中间 S2/S3 PASS、无结果的路径/解析/编译探测、冗余 preflight 重试，以及已被 v3 取代的 Lab10 v1/v2 波形配置和校验记录。保留的完整 WDB 仍在本机 `results/`。
 
 ## 最终文件与手工截图
 

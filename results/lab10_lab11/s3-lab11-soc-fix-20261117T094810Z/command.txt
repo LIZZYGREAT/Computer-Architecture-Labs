@@ -1,2 +1,0 @@
-python scripts/create_lab11_soc_xpr.py --repo-root C:\Users\lenovo\Desktop\Projects\FPGA\lab --run-dir C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\s3-lab11-soc-fix-20261117T094810Z
-D:\Verilog\2025.2\Vivado\bin\vivado.bat -mode batch -source scripts/run_lab11_soc.tcl -tclargs lab11/CPU_CDE_AXI/mycpu_axi_verify/run_vivado/mycpu_prj1/mycpu_lab11_soc_s3-lab11-soc-fix-20261117T094810Z.xpr results/lab10_lab11/s3-lab11-soc-fix-20261117T094810Z
