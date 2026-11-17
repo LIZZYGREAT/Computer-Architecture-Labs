@@ -1,6 +1,12 @@
 \documentclass[UTF8,a4paper,zihao=5]{ctexart}
 
-\usepackage[left=2.6cm,right=2.6cm,top=2.3cm,bottom=2.3cm]{geometry}
+% 放置目录：Computer-Architecture-Labs/report/lab8-9/main.tex
+% 图片路径：同级 figures/，数据及采集说明在同级 data/、docs/。
+% 本文对照 lab8-lab9 分支截至 6b2e8fc4 的 RTL、课程回归和定向测试记录撰写。
+% 注意：提供的 06_fetch_adel.png 与 09_software_irq.png 实际内容对调。
+% 为保证本文与现有 report.zip 不改名即可编译，下面两张图按真实内容交叉引用。
+% 用户重新命名后，只需修改 \figfetch、\figsoft 两个宏。
+\usepackage[left=2.7cm,right=2.7cm,top=2.4cm,bottom=2.4cm]{geometry}
 \usepackage{array,booktabs,tabularx}
 \usepackage{graphicx}
 \usepackage{listings}
@@ -12,14 +18,15 @@
 \usepackage{float}
 \hypersetup{hidelinks}
 \setlength{\parindent}{2em}
-\setlength{\parskip}{0.22em}
+\setlength{\parskip}{0.16em}
 \setlength{\emergencystretch}{4em}
 \setlength{\tabcolsep}{4.5pt}
-\renewcommand{\arraystretch}{1.2}
+\renewcommand{\arraystretch}{1.22}
 \pagestyle{plain}
 \setlist{nosep,leftmargin=2em}
 \captionsetup{font=small,labelfont=bf}
 \lstset{
+  language=Verilog,
   basicstyle=\ttfamily\footnotesize,
   columns=fullflexible,
   keepspaces=true,
@@ -27,141 +34,478 @@
   showstringspaces=false,
   frame=single,
   rulecolor=\color{black!25},
-  aboveskip=0.4em,
-  belowskip=0.4em
+  aboveskip=0.32em,
+  belowskip=0.32em
 }
 \newcolumntype{C}{>{\centering\arraybackslash}X}
 \newcommand{\reportsection}[1]{%
-  \par\addvspace{0.75\baselineskip}%
+  \par\addvspace{0.65\baselineskip}%
   \noindent{\heiti\zihao{-4}#1\par}%
-  \vspace{0.18\baselineskip}}
+  \vspace{0.15\baselineskip}}
 \newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\figfetch}{06_fetch_adel.png}
+\newcommand{\figsoft}{09_software_irq.png}
 \newcommand{\reportfig}[3]{%
-  \IfFileExists{figures/#1}{%
-    \begin{figure}[H]
-      \centering\includegraphics[width=#2\linewidth]{figures/#1}
-      \caption{#3}
-    \end{figure}%
-  }{}%
-}
+  \begin{figure}[H]
+    \centering
+    \IfFileExists{figures/#1}{%
+      \includegraphics[width=#2\linewidth]{figures/#1}%
+    }{\fbox{\parbox{.9\linewidth}{\centering 待补图片：\texttt{\detokenize{#1}}}}}%
+    \caption{#3}
+  \end{figure}}
+\newcommand{\wavepair}[4]{%
+  \begin{figure}[H]
+    \centering
+    \IfFileExists{figures/#1}{\includegraphics[width=0.98\linewidth]{figures/#1}}%
+      {\fbox{缺少主波形：\texttt{\detokenize{#1}}}}
+    \par\vspace{0.3em}
+    \IfFileExists{figures/#2}{\includegraphics[width=0.98\linewidth]{figures/#2}}%
+      {\fbox{缺少补充波形：\texttt{\detokenize{#2}}}}
+    \caption{#3（上：#4；下：补充信号及写回数据）}
+  \end{figure}}
 
 \begin{document}
 \begin{center}
-  {\bfseries\zihao{3} Lab8 / Lab9 CPU 例外与中断支持实验报告\par}
-  \vspace{0.35em}
-  {\zihao{-4} 五级流水线中的 CP0、精确例外和中断处理}
+  {\bfseries\zihao{3} 计算机组成原理实验课程第 8—9 次实验报告\par}
 \end{center}
-
-\reportsection{一、实验目标与环境}
-
-本实验在已有 MIPS 五级流水线 CPU 上加入 CP0、同步例外和可屏蔽中断。实现范围包括 \code{syscall}、\code{break}、保留指令、算术溢出、访存及取指地址错误、\code{mfc0/mtc0/eret}、Count/Compare 定时器、Cause 软件中断和 IP2-IP7 外部硬件中断。验证重点是异常提交时按程序顺序保留较老指令的结果，并阻止故障指令与年轻指令造成额外副作用。
-
-实验使用 Windows、Vivado 2025.2 和 XSim，工程沿用 \code{lab3/CPU_CDE/mycpu_verify}。课程 Lab8 与 Lab9 使用原始课程 MIF，分别通过 69 点和 94 点累计测试，并与 CPU132 参考模型的 GPR trace 比较。CPU 仍使用 IF、ID、EX、MEM、WB 五级结构；异常、访存和 HI/LO 控制在原有级间总线上扩展。
-
-\reportsection{二、CP0 和异常提交通路}
-
-CP0 实现 BadVAddr、Count、Compare、Status、Cause 和 EPC。Status 的 IE、EXL、IM、BEV 字段用于控制全局中断、异常嵌套、请求屏蔽及异常向量；Cause 保存 BD、ExcCode、软件中断、定时器和外部中断状态。仅支持本实验使用的 \code{sel=0} 寄存器选择，其它选择读零且写忽略。
-
-异常信息随指令在流水线中前进。IF 标记取指地址错误，ID 译码 syscall、break、RI 并维护分支延迟槽属性，EX 检查有符号运算溢出和数据对齐。MEM 作为统一提交点，选中最老的有效异常或 ERET，再向 IF 重定向 PC 并清除较年轻的流水线内容。同步异常按 Cause.ExcCode 更新 CP0；延迟槽异常把分支 PC 写入 EPC 并置 BD。BEV 置位时进入课程向量 \code{0xBFC00380}。
-
+\vspace{0.3em}
 \begin{center}
-\fbox{IF 取指/AdEL}
-\quad$\longrightarrow$\quad
-\fbox{ID 译码/延迟槽/中断边界}
-\quad$\longrightarrow$\quad
-\fbox{EX 溢出/地址检查}
-\quad$\longrightarrow$\quad
-\fbox{MEM trap/CP0/ERET 提交}
-\quad$\longrightarrow$\quad
-\fbox{WB GPR 写回}
+\begin{tabularx}{\textwidth}{|*{6}{C|}}
+\hline
+实验名称 & \multicolumn{3}{c|}{五级流水线 CPU 例外与中断支持} & 班级 & 0965 \\
+\hline
+学生姓名 & 甘文杰 & 学号 & 2412700 & 指导老师 & 董前琨 \\
+\hline
+实验地点 & \multicolumn{2}{c|}{实验楼 A 304} & 实验时间 & \multicolumn{2}{c|}{2026 年 11 月 9 日} \\
+\hline
+\end{tabularx}
 \end{center}
 
-普通分支仍执行一个延迟槽；异常和 ERET 的 PC 更新优先于普通分支。\code{mfc0} 在 MEM 读取 CP0 并像普通结果一样送入写回；\code{mtc0} 只在有效指令到达提交边界时更新寄存器。对 CP0 写和 ERET 建立串行停顿，避免 ID 用尚未提交的旧 Status/Cause 状态决定是否注入中断。
+\reportsection{一、实验目的}
+这次实验是在前面已经完成基本指令、数据前递、乘除法和访存扩展的五级流水线 CPU 上，继续加入例外和中断处理。原来的 CPU 可以按顺序取指、执行和写回，但如果遇到 \code{syscall}、算术溢出、非法指令或地址错误，还需要能够暂时转去执行处理程序，处理完成后再从指定位置继续运行。Lab8 主要完成 CP0 和 \code{syscall} 异常支持；Lab9 进一步补充其他同步例外，以及定时器、软件和外部硬件中断。
 
-\reportsection{三、精确例外与副作用控制}
+这次实现主要解决三个问题。首先，要让不同流水级发现的异常都能正确传递到统一处理位置；其次，异常发生时需要保留较老指令已经完成的结果，同时阻止异常指令和较年轻指令产生多余写回或访存；最后，还要在 CP0 中保存异常原因、出错 PC 和中断状态，使处理程序能够用 \code{mfc0/mtc0/eret} 完成检查、清除请求和返回。完成代码后，我使用课程累计测试、独立 CPU132 的写回记录、CPU 级定向测试和 Vivado 波形来检查执行结果。
 
-有符号溢出检查只作用于 \code{add/addi/sub}；无符号算术不产生 OV。字和半字访存分别检查 4 字节和 2 字节对齐，BadVAddr 保留原始字节地址。发生地址错误时，EX 关闭本条 load/store 的 SRAM 请求；MEM 提交更老异常时，也会抑制同拍较年轻 EX 指令的访存。
+\reportsection{二、实验环境与 CPU 总体设计}
+实验使用 Windows、Vivado 2025.2 和 XSim 行为仿真，目标器件仍为 \code{xc7a200tfbg676-2}。CPU 工程沿用 \code{lab3/CPU_CDE/mycpu_verify}，RTL 在 \code{rtl/myCPU/} 中继续修改。设计顶层为 \code{soc_lite_top}，课程功能测试的仿真顶层为 \code{tb_top}。Lab8、Lab9 的原始课程程序分别保存在 \code{lab8/func_lab8} 和 \code{lab9/func_lab9}，没有修改课程的 COE/MIF 输入。
 
-乘除法单元接收异常 flush 的 cancel 信号。被杀掉的除法请求停止并丢弃未完成结果，已提交的 HI/LO 值保留。独立 HI/LO 测试观察到 3 次乘法接收、5 次除法接收和 6 次结果提交，其中一项在运算中取消，没有错误提交。
-
-课程 Lab9 包含 break、OV、load/store AdEL/AdES、取指 AdEL、RI 和延迟槽例外。对应实际 PC、EPC、BD、BadVAddr 和控制信号配置在静态 WDB 的 Vivado Wave 视图中；本报告中的统计值来自 run 结果记录和 reference trace，不把 expected 值写成波形实测时间或数值。
-
-\reportsection{四、定时器、软件和外部中断}
-
-Count 每两个 CPU 时钟递增一次。Count 与 Compare 相等会锁存 TI，并作为 Cause.IP7 \mbox{请求}；写 Compare 清除 TI。Cause 软件写入只更新 IP0/IP1，不覆盖硬件维护的 ExcCode、BD 或 TI。外部输入 \code{hw\_int[5:0]} 映射到 IP2-IP7，IP7 同时可由 timer 和外部 IP7 置位。
-
-CPU 在 ID 的可发射边界注入可屏蔽中断，使选中的指令不执行其原有副作用。IE、EXL 和对应 IM 位决定请求是否受理。异常处理期间 EXL 阻止嵌套进入；处理程序清除请求并用 ERET 恢复 EPC。SoC 硬件模式从已有约束的 \code{switch[5:0]} 取外部输入，经两级寄存器同步至 CPU 时钟。仿真模式固定中断源为零，避免课程 testbench 的开关常值影响原回归。
-
-CP0 单元通过 62 条断言，覆盖位域、EPC/BD/EXL、定时器、软件 IP0/IP1、外部 IP2-IP7、屏蔽和 IP7 双源合并。另用 CPU 级独立用例逐路测试 IP2-IP7：每路先保持屏蔽，再开启对应 IM 位，检查向量、清除请求、ERET 继续执行和 store 只提交一次。六路用例均通过。
-
-\reportsection{五、课程回归与实测统计}
-
-六份 forwarding 课程程序均达到预期功能点，并与各自 reference GPR trace 全量匹配。Lab8 和 Lab9 同时生成了静态 WDB，Vivado 已打开对应 WCFG 并核对信号对象数。
+原有流水线仍分为 IF、ID、EX、MEM、WB 五级。这次没有重新设计整个 CPU，而是在各级增加异常元数据和控制信号，并新增 \code{cp0_reg.v}。实际处理顺序为：IF 检查取指 PC 是否对齐，ID 识别系统指令和中断，EX 检查运算溢出及访存地址，MEM 对最老的有效异常进行提交，CP0 保存异常状态并让 IF 跳转到异常入口，WB 则只接收允许写回的指令。
 
 \begin{center}
 \small
-\begin{tabular}{lrrrrl}
-\toprule
-用例 & 功能点 & 周期 & 停顿周期 & trace & 结果 \\
-\midrule
-Lab3 & 23/23 & 172,599 & 0 & 全量匹配 & PASS \\
-Lab4 & 23/23 & 114,577 & 50 & 全量匹配 & PASS \\
-Lab6 & 42/42 & 109,439 & 89 & 全量匹配 & PASS \\
-Lab7 & 68/68 & 166,330 & 926 & 全量匹配 & PASS \\
-Lab8 & 69/69 & 166,850 & 986 & 全量匹配 & PASS \\
-Lab9 & 94/94 & 195,004 & 3,910 & 全量匹配 & PASS \\
-\bottomrule
-\end{tabular}
+\fbox{IF：取指/取指 AdEL}\ $\longrightarrow$\
+\fbox{ID：指令译码/中断/延迟槽}\ $\longrightarrow$\
+\fbox{EX：运算/溢出/地址检查}\par\vspace{0.35em}
+$\longrightarrow$\ \fbox{MEM：异常提交/CP0/ERET}\ $\longrightarrow$\ \fbox{WB：通用寄存器写回}
 \end{center}
 
-\reportfig{regression_metrics.png}{0.98}{最终课程回归的功能点、流水周期和停顿统计。课程程序长度不同，周期数只作为各自运行记录，不作性能比较。}
-
-Lab8/Lab9 的输入 MIF、reference trace 和 WDB 的 SHA-256，以及各次运行的 ID、功能点、周期和停顿数据，都列在随附的 evidence index 中。
-
-\clearpage
-\begin{samepage}
-\reportsection{六、波形视图和结论}
-
-WDB 保存周期级内部信号，WCFG 将 PC、异常元数据、CP0 字段、访存使能、冲刷和返回控制按场景分组。最终准备了 syscall、break、overflow、load/store AdEL/AdES、取指 AdEL、延迟槽、timer、software 和 CPU 级 IP2 视图。图表统计与 Vivado 周期级波形属于不同证据类型；PNG 截图和波形实测时间仍待按交接表从 Vivado 保存。
+在这一过程中，异常本身不必立刻改变 PC。较早的流水级先把异常标志、类型和地址传下去，等指令到 MEM 再决定是否提交。这样，流水线中已经走在前面的较老指令可以正常完成，后面的指令则根据统一的 \code{pipeline_flush} 被取消。
 
 \begin{center}
 \small
-\begin{tabularx}{\linewidth}{@{}c l l X@{}}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.15cm}X@{}}
 \toprule
-视图 & 场景 & WDB & 搜索锚点（信号 = 值） \\
+主要文件 & 本次实现的内容 \\
 \midrule
-01 & Lab8 syscall & Lab8 & \code{ds\_pc[31:0]} = \code{0xBFC1DDFC} \\
-02 & Lab9 break & Lab9 & \code{es\_pc[31:0]} = \code{0xBFC864EC} \\
-03 & 有符号溢出 & Lab9 & \code{es\_pc[31:0]} = \code{0xBFC3BA4C} \\
-04 & Load AdEL & Lab9 & \code{es\_pc[31:0]} = \code{0xBFC68E4C} \\
-05 & Store AdES & Lab9 & \code{es\_pc[31:0]} = \code{0xBFC7E348} \\
-06 & 取指 AdEL & Lab9 & \code{bad\_vaddr[31:0]} = \code{0xB27F9789} \\
-07 & 延迟槽 syscall & Lab9 & \code{epc[31:0]} = \code{0xBFC97F3C} \\
-08 & 定时器中断 & Lab9 & \code{epc[31:0]} = \code{0xBFC5FA8C} \\
-09 & 软件中断 & Lab9 & \code{epc[31:0]} = \code{0xBFC16C54} \\
-10 & 外部 IP2 & IP2 & \code{trap\_pc[31:0]} = \code{0xBFC0001C} \\
+\code{mycpu.h} & 扩展流水级总线宽度，增加例外类型和 CP0 操作定义 \\
+\code{IF_stage.v} & 取指地址检查、异常向量和 ERET 的 PC 重定向 \\
+\code{ID_stage.v} & \code{syscall/break/RI/mfc0/mtc0/eret} 译码、延迟槽标记、中断接收 \\
+\code{EXE_stage.v} & 溢出及地址对齐检测，异常时阻止访存和 HI/LO 副作用 \\
+\code{MEM_stage.v} & 统一提交异常、CP0 读写、ERET 和 GPR 写回门控 \\
+\code{cp0_reg.v} & Status、Cause、EPC、BadVAddr、Count、Compare 寄存器及中断判断 \\
+\code{mycpu_top.v} & 连接 CP0、各级例外总线及流水线 flush 信号 \\
+\code{soc_lite_top.v} & 外部中断与开关输入的连接和同步 \\
 \bottomrule
 \end{tabularx}
 \end{center}
 
-表中 PC 是 Vivado Wave 的搜索定位值，代表目标指令或预期 EPC/BadVAddr，不代表测得的波形时间或信号采样结果。各条目的 WDB/WCFG 路径、哈希和验收预期见 evidence index 与 wave capture log。
-\end{samepage}
+为了在级间传递新增信息，\code{FS_TO_DS}、\code{DS_TO_ES}、\code{ES_TO_MS} 总线宽度分别扩展为 103、237、195 位。除了已有 PC、ALU 控制和寄存器值，还需要携带异常有效位、异常代码、出错地址、延迟槽标记及 CP0 操作信息。统一使用这些字段，可以避免每个流水级分别修改 CP0 所造成的控制混乱。
 
-\reportfig{waveforms/01_syscall.png}{0.98}{Syscall 提交时的 PC、Cause、EPC、EXL 与返回控制波形。}
-\reportfig{waveforms/03_overflow.png}{0.98}{有符号溢出判定、异常提交和 GPR 写回抑制波形。}
-\reportfig{waveforms/07_delay_slot.png}{0.98}{延迟槽异常的 BD 与分支 EPC 更新波形。}
-\reportfig{waveforms/08_timer_irq.png}{0.98}{Count/Compare、TI/IP7、屏蔽和 ERET 波形。}
-\reportfig{waveforms/09_software_irq.png}{0.98}{Cause 软件中断请求、屏蔽、清除及返回波形。}
-\reportfig{waveforms/10_external_interrupt_ip2.png}{0.98}{CPU 级外部 IP2 的屏蔽、受理、撤销和 ERET 返回波形。}
+\reportsection{三、CP0 寄存器与系统指令}
+\textbf{1. CP0 寄存器设计。}
 
-实验结果表明，当前 RTL 能通过 Lab8 69 点和 Lab9 94 点课程程序，并通过 CP0、HI/LO cancel 与 IP2-IP7 独立断言。报告结论只覆盖实际运行的 XSim 用例。同步异常下老 store、故障 store、年轻 store 的三项 RAM 记分板用例以及异常期间取消在途除法的集成 CPU 用例仍需补充；硬件 switch 映射也没有经过 bitstream 或 FPGA 实板验证。
+CP0 负责保存异常、中断处理所需的控制状态。本次主要实现了以下六个寄存器，\code{mfc0} 可以读取这些寄存器，\code{mtc0} 可以修改允许软件写入的字段。
 
-\reportsection{参考资料}
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\centering\arraybackslash}p{1.0cm}X@{}}
+\toprule
+寄存器 & 编号 & 主要用途 \\
+\midrule
+BadVAddr & 8 & 保存取指或访存地址异常时出错的原始字节地址 \\
+Count & 9 & CPU 内部计数器，本工程每两个时钟周期增加一次 \\
+Compare & 11 & 与 Count 比较，相等时产生定时器请求，写入后清除 TI \\
+Status & 12 & IE 全局中断允许、EXL 例外状态、IM 中断屏蔽、BEV 向量选择 \\
+Cause & 13 & ExcCode 异常类型、BD 延迟槽标记、IP 中断请求和 TI 定时器标记 \\
+EPC & 14 & 保存异常返回所需的 PC，供处理程序修改并由 ERET 使用 \\
+\bottomrule
+\end{tabularx}
+\end{center}
 
-\begin{enumerate}
-  \item 《CPU设计实战》，第 7 章“例外和中断的支持”，重点参考 7.2、7.3。
-  \item 课程仓库 \code{lab8/func_lab8} 与 \code{lab9/func_lab9} 的原始测试程序和处理程序。
-  \item 仓库中的 CPU132 参考模型及与对应课程镜像生成的 GPR trace。
-\end{enumerate}
+以 Status 为例，IE 位决定是否允许接收中断，IM[7:0] 用来选择允许哪些中断源，EXL 表示当前正在例外处理过程中。CPU 接收中断的条件可以写成：
+\[
+\texttt{interrupt\_pending}=\texttt{IE}\land\neg\texttt{EXL}
+\land\left(\bigvee_{i=0}^{7}(\texttt{IP}_i\land\texttt{IM}_i)\right).
+\]
+实际 RTL 将 Cause.IP 和 Status.IM 做按位与，只要存在一个未被屏蔽的请求，同时 IE=1、EXL=0，就允许 ID 阶段把该请求送入异常通路：
+
+\begin{lstlisting}
+assign cause_ip = {hw_int[5] | timer_pending,
+                   hw_int[4:0], cause_sw_ip};
+assign interrupt_pending = status_ie && !status_exl &&
+                           (|(cause_ip & status_im));
+\end{lstlisting}
+
+其中软件中断使用 IP0/IP1，外部硬件输入映射到 IP2--IP7，内部定时器与外部最高一路共同使用 IP7。这样 CPU 可以通过同一套屏蔽和异常处理机制接收三种不同来源的中断。
+
+\textbf{2. CP0 写入、读取和流水线相关。}
+
+\code{mfc0} 的结果在 MEM 阶段从 CP0 读出，再经过普通写回通路送到寄存器堆；\code{mtc0} 携带来自 \code{rt} 的数据，在 MEM 的有效提交沿更新指定 CP0 寄存器。因为后续指令可能立即读取刚修改的 Status 或 EPC，代码还对在途 \code{mtc0} 和 \code{eret} 设置串行等待，防止 ID 使用尚未提交的旧状态。
+
+ID 译码时还会检查 CP0 指令的保留位。本次修订把 \code{mfc0/mtc0} 的指令位 [10:3] 也纳入合法性判断；这些位不符合编码规则时，就按照保留指令 RI 处理，而不会错误执行 CP0 访问。
+
+\begin{lstlisting}
+assign cp0_reserved_bits_valid =
+                            (ds_inst[10:3] == 8'b0);
+assign inst_mfc0 = op_d[6'h10] & rs_d[5'h00] &
+                   cp0_reserved_bits_valid &
+                   (ds_inst[2:0] == 3'b000);
+assign inst_mtc0 = op_d[6'h10] & rs_d[5'h04] &
+                   cp0_reserved_bits_valid &
+                   (ds_inst[2:0] == 3'b000);
+assign inst_eret = (ds_inst == 32'h4200_0018);
+\end{lstlisting}
+
+\reportsection{四、例外识别、提交与返回过程}
+\textbf{1. 不同阶段怎样发现例外。}
+
+本实验的例外来源分布在几个流水级。ID 能直接根据指令编码发现 \code{syscall}、\code{break} 和 RI；EX 在算出实际操作数后检查 \code{add/addi/sub} 是否产生有符号溢出，并检查访存地址是否符合字或半字对齐；IF 则负责标记未按 4 字节对齐的取指地址。中断同样由 ID 在指令可以发射的边界接收，代码为 0。
+
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+类别 & ExcCode & 产生条件 \\
+\midrule
+中断 Int & 0 & 存在已允许且未被屏蔽的中断请求 \\
+取指/加载 AdEL & 4 & 取指或 load 地址未按要求对齐 \\
+存储 AdES & 5 & store 地址未按要求对齐 \\
+系统调用 Sys & 8 & 执行 \code{syscall} \\
+断点 Bp & 9 & 执行 \code{break} \\
+保留指令 RI & 10 & 指令编码不属于当前支持的合法集合 \\
+算术溢出 Ov & 12 & 有符号 \code{add/addi/sub} 超出 32 位有符号范围 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+例如，ID 阶段先判断该指令有没有取指异常，然后再判断 \code{syscall/break/RI}，最后检查是否可以接收中断。同步异常优先保留原有的异常原因，避免一条已经出错的指令被改记成普通中断。
+
+\begin{lstlisting}
+assign ds_sync_exception_valid = ds_valid &&
+    (ds_fetch_exception_valid || inst_syscall ||
+     inst_break || !inst_known);
+assign ds_interrupt_exception = interrupt_pending &&
+    ds_valid && !ds_sync_exception_valid &&
+    !cp0_serial_busy && ds_ready_go && es_allowin && !flush;
+assign exception_valid =
+    ds_sync_exception_valid || ds_interrupt_exception;
+\end{lstlisting}
+
+\textbf{2. MEM 统一提交并冲刷流水线。}
+
+异常信息随指令流动到 MEM 后，只有该级的有效异常才能产生 \code{trap_commit}。普通 \code{eret} 同样在 MEM 形成 \code{eret_commit}，两个信号决定新的取指地址，并通过 \code{pipeline_flush} 清除较年轻的流水级内容。
+
+\begin{lstlisting}
+assign trap_commit = ms_valid && ms_ready_go &&
+                     ws_allowin && ms_exception_valid;
+assign eret_commit = ms_valid && ms_ready_go &&
+                     ws_allowin && !ms_exception_valid &&
+                     (ms_cp0_op == `CP0_OP_ERET);
+assign ms_to_ws_valid = ms_valid && ms_ready_go &&
+                        !ms_exception_valid &&
+                        (ms_cp0_op != `CP0_OP_ERET);
+\end{lstlisting}
+
+当异常提交时，CP0 将 Status.EXL 置 1，并更新 Cause.ExcCode。如果进入异常之前 EXL=0，EPC 保存故障 PC；若故障发生在分支延迟槽，则保存分支指令的 PC，同时置位 Cause.BD。处理程序根据 EPC 和 Cause 决定从哪里继续执行，在执行 \code{eret} 时清除 EXL，再跳回 EPC。
+
+\begin{lstlisting}
+if (exc_commit) begin
+    status_exl     <= 1'b1;
+    cause_exc_code <= exc_code;
+    if (!status_exl) begin
+        cause_bd <= exc_bd;
+        epc <= exc_bd ? (exc_pc - 32'd4) : exc_pc;
+    end
+    if ((exc_code == 5'd4) || (exc_code == 5'd5))
+        bad_vaddr <= exc_bad_vaddr;
+end
+else if (eret_commit) begin
+    status_exl <= 1'b0;
+end
+\end{lstlisting}
+
+IF 的 PC 选择按异常入口、ERET 返回、普通分支、顺序 PC 排列。当前课程程序运行时 BEV=1，统一异常入口为 \code{0xBFC00380}；若 BEV=0，则使用 \code{0x80000180}。
+
+\begin{lstlisting}
+assign pipeline_flush = trap_commit || eret_commit;
+assign exception_vector = cp0_bev ?
+                          32'hbfc0_0380 : 32'h8000_0180;
+assign nextpc = trap_redirect ? trap_vector :
+                eret_redirect ? eret_target :
+                br_taken      ? br_target : seq_pc;
+\end{lstlisting}
+
+整体可以理解为：当前流水级先检查有没有异常，异常信息随指令到达 MEM，MEM 提交后 CP0 记录原因和返回位置，IF 跳到异常处理入口，最后处理程序通过 ERET 返回。实现过程中只需由统一提交点决定是否清除流水线，既能处理不同来源的异常，也更方便检查有无错误的写回。
+
+\reportsection{五、Lab8/Lab9 同步例外及波形分析}
+\textbf{1. Syscall 与 Break。}
+
+\code{syscall} 是 Lab8 的核心要求。ID 识别该指令后给出异常代码 8，流水线将它送到 MEM 提交。发生异常时，这条指令不写普通寄存器；CP0 保存 EPC 和 ExcCode，取指地址转到异常处理入口。
+
+\reportfig{01_syscall.png}{0.98}{Syscall 异常：ID/EX/MEM 异常标志、EPC、EXL 和流水线冲刷波形}
+
+在这张截图中，可以看到 \code{es_pc=BFC1DDFC} 对应的异常代码为 \code{08}，随后 \code{ms_exception_valid} 有效，\code{trap_commit} 和 \code{pipeline_flush} 拉高。CP0 的 \code{epc} 更新为 \code{BFC1DDFC}、\code{cause_exc_code} 更新为 8，\code{status_exl} 置 1。接下来 PC 进入 \code{BFC00380} 附近的处理程序。图中这些变化按流水线先后出现，和预期的 syscall 异常进入过程一致。
+
+Lab9 在此基础上加入 \code{break}。处理方式与 syscall 共用异常通路，只是 Cause.ExcCode 记录为 9，这样处理程序可以区分异常来源。
+
+\reportfig{02_break.png}{0.98}{Break 异常：异常代码 9、MEM 提交及跳转到处理入口}
+
+在 \code{break} 的波形中，故障指令 PC 为 \code{BFC864EC}，随后异常代码 \code{09} 进入 MEM，产生 \code{trap_commit}，并让取指地址转向异常向量。由于这条指令自身没有需要提交的通用寄存器结果，正常写回被抑制。两张图一起说明 syscall 和 break 已经接入相同的 CP0 例外处理流程。
+
+\textbf{2. 有符号算术溢出。}
+
+有符号加法如果两个操作数符号相同、结果符号却发生变化，就说明发生了溢出；减法则检查两个操作数符号不同而结果符号与被减数不同的情况。只有需要产生有符号溢出例外的 \code{add/addi/sub} 才启用这个判断；\code{addu/addiu/subu} 不采用这一异常检查。RTL 中的核心判断为：
+
+\begin{lstlisting}
+assign es_add_overflow = es_overflow_check_add &&
+    (~(es_alu_src1[31] ^ es_alu_src2[31])) &&
+    (es_alu_src1[31] ^ es_alu_result[31]);
+assign es_sub_overflow = es_overflow_check_sub &&
+    (es_alu_src1[31] ^ es_alu_src2[31]) &&
+    (es_alu_src1[31] ^ es_alu_result[31]);
+\end{lstlisting}
+
+\wavepair{03_overflow-1.png}{03_overflow-2.png}{有符号 ADD 溢出异常和后续通用寄存器写回}{上部展示异常识别与 CP0 更新}
+
+截图中 \code{es_pc=BFC3BA4C}，ALU 输入为 \code{90A5F39C} 和 \code{D42179E0}，所得 32 位结果为 \code{64C76D7C}。两个输入的最高位都为 1，结果最高位为 0，因此 \code{es_add_overflow=1}，异常代码变成十六进制 \code{0C}（即十进制 12）。随后可以看到 MEM 级提交异常、EPC 保存这条指令的 PC，并发生冲刷。下方补充的是写回相关信号，便于与异常指令没有正常提交目的寄存器结果这一要求对应检查。
+
+\textbf{3. 访存对齐检查与 BadVAddr。}
+
+访存地址先在 EX 通过基址和偏移量计算出来。普通 \code{lw/sw} 要求地址低两位为 0，\code{lh/lhu/sh} 要求最低位为 0；如果地址不符合条件，就分别产生加载 AdEL 或存储 AdES，并把原始字节地址写入 BadVAddr。
+
+\begin{lstlisting}
+assign es_word_align_error =
+    (es_mem_op[`MEM_OP_LW] || es_mem_op[`MEM_OP_SW]) &&
+    (es_alu_result[1:0] != 2'b00);
+assign es_half_align_error =
+    (es_mem_op[`MEM_OP_LH] || es_mem_op[`MEM_OP_LHU] ||
+     es_mem_op[`MEM_OP_SH]) && es_alu_result[0];
+assign es_exception_bad_vaddr =
+    es_pipe_exception_valid ? es_pipe_exception_bad_vaddr :
+    es_new_address_error ? es_alu_result : 32'b0;
+\end{lstlisting}
+
+\reportfig{04_load_adel.png}{0.98}{LW 地址未对齐时的 AdEL、BadVAddr 与 SRAM 访问抑制波形}
+
+在加载异常波形中，触发指令 PC 为 \code{BFC68E4C}，异常类型为 4，出错地址为 \code{800CFDE1}。这个地址最低两位不为 0，所以不满足 LW 的四字节对齐要求。异常有效期间，EX 没有向数据 RAM 发出该条错误加载请求，随后 CP0 记录 BadVAddr，MEM 提交异常并转到异常处理入口。
+
+\wavepair{05_store_ades-1.png}{05_store_ades-2.png}{SW 地址未对齐时的 AdES 和写使能控制}{上部展示异常信息在流水线中的传递}
+
+存储异常对应指令 PC 为 \code{BFC7E348}，错误地址为 \code{800DF545}，异常代码为 5。图中可以结合 \code{es_exception_valid}、\code{trap_commit}、\code{data_sram_en} 和 \code{data_sram_wen} 观察：错误存储产生异常后，其 RAM 写使能被关闭。这样处理程序能够得到故障地址，同时避免不合法的存储已经改变内存内容。
+
+\textbf{4. 取指地址错误与保留指令。}
+
+对于取指地址，IF 直接检查新 PC 的低两位。如果目标地址没有按 4 字节对齐，就给当前取指结果附上 AdEL 标志和 BadVAddr；即使指令 RAM 在这个地址返回了其他位模式，后续流水级仍优先使用取指异常信息，不把它当作正常指令执行。
+
+\begin{lstlisting}
+fs_exception_valid <= (nextpc[1:0] != 2'b00);
+fs_exception_code  <= (nextpc[1:0] != 2'b00) ?
+                      `EXC_ADEL : 5'b0;
+fs_bad_vaddr       <= nextpc;
+\end{lstlisting}
+
+\reportfig{\figfetch}{0.98}{取指地址 AdEL：错误 PC、异常代码 4、BadVAddr 和异常入口波形}
+
+实际截图中，\code{fs_pc/ds_pc} 出现 \code{B27F9789}，\code{fs_exception_valid}、\code{ds_fetch_exception_valid} 拉高，异常代码为 \code{04}。异常随后传到 EX、MEM，\code{trap_commit} 置位，EPC 保留故障取指位置，取指 PC 转到 \code{BFC00380}。这张截图目前在提供的文件中名为 \code{09_software_irq.png}，这里按它真正展示的取指 AdEL 内容引用。
+
+保留指令 RI 的检测同样在 ID 完成。译码器把支持的合法指令汇总到 \code{inst_known}，其余编码通过 RI=10 进入异常通路。除了课程 Lab9 的 RI 测试，本次还使用 CPU 级 \code{cp0_decode_tb} 专门检查 CP0 保留位错误的四种编码，确认不会被当成有效的 \code{mfc0/mtc0} 执行。
+
+\reportsection{六、精确例外、延迟槽与流水线副作用}
+\textbf{1. 延迟槽的 EPC/BD 处理。}
+
+本 CPU 沿用 MIPS 分支延迟槽：转移指令后面的一条指令仍需执行。因此，异常信息除了故障指令 PC，还要带着它是否属于延迟槽的标志。如果故障发生在普通指令中，EPC 保存该指令 PC；若发生在延迟槽中，EPC 保存前一条分支 PC，同时把 Cause.BD 置 1，使处理程序知道故障位置与分支有关。
+
+\[
+\mathrm{EPC}=\begin{cases}
+\mathrm{exc\_pc}-4, & \mathrm{BD}=1,\\
+\mathrm{exc\_pc}, & \mathrm{BD}=0.
+\end{cases}
+\]
+
+ID 会给跳转、条件分支后的下一条指令标记延迟槽，之后这个标志和指令一起向后传递。这样即使流水线出现停顿，MEM 仍能根据随指令携带的标志来保存正确的 EPC。
+
+\reportfig{07_delay_slot.png}{0.98}{分支延迟槽中的 Syscall：Cause.BD 与 EPC 保存分支 PC}
+
+波形显示，\code{BFC97F40} 处的 syscall 产生异常代码 8，\code{ms_is_delay_slot=1}。这时写入的 EPC 是 \code{BFC97F3C}，比实际异常指令 PC 小 4；与此同时 \code{cause_bd=1}、\code{status_exl=1}。这说明 CPU 不只记录了 syscall 异常，还正确识别了它处在分支延迟槽中的情况。处理程序读取 EPC/BD 后，可以根据原有测试程序的规则调整返回位置。
+
+\textbf{2. 阻止故障指令和年轻指令产生副作用。}
+
+精确例外要求已经完成的较老指令结果保留，发生异常的指令和其后的年轻指令不能产生错误的架构状态。本工程的 load/store 请求在 EX 发出，因此需要同时检查本条指令是否有异常，以及 MEM 是否已经提交了更老的异常。关键门控如下：
+
+\begin{lstlisting}
+assign data_sram_en = es_valid && es_ready_go && ms_allowin &&
+                      !flush && !es_exception_valid &&
+                      (es_res_from_mem || es_mem_store);
+assign data_sram_wen = data_sram_en && es_mem_store ?
+                       es_store_wen : 4'h0;
+\end{lstlisting}
+
+当 EX 自己检测到地址错误时，\code{es_exception_valid} 使 RAM 使能关闭；当 MEM 中更早的指令提交异常时，\code{flush} 则取消 EX 中年轻指令可能产生的访问。这样既保留了此前已完成的存储，也能够阻止故障 store 和后续 store 提前写入。
+
+为了进一步检查这件事，我使用独立 CPU 级 \code{precise_exception_tb} 做了一个顺序明确的小测试：先执行一条正常 store，再执行地址不对齐的故障 store，最后安排一条年轻 store。结果分别是老 store 写入 1 次、故障 store 写入 0 次、年轻 store 在 ERET 返回后写入 1 次；同时读到 ExcCode=5、EPC=\code{BFC0000C} 和 BadVAddr=2，6 条断言通过。
+
+\textbf{3. 乘除法与异常冲刷的配合。}
+
+前面的 Lab6 已经使用 HI/LO 和多周期乘除法 IP。加入例外后，还需要处理异常发生时 EX 正在进行乘除法的情况。\code{hilo_unit.v} 增加 \code{cancel} 输入，用来取消未完成的计算；以前已经写入的 HI/LO 保持不变。
+
+\begin{lstlisting}
+hilo_unit u_hilo_unit(
+    .clk    (clk),
+    .resetn (~reset),
+    .cancel (flush || es_exception_valid),
+    .start  (es_hilo_start),
+    // other operand and result connections
+);
+\end{lstlisting}
+
+独立 HI/LO 单元测试验证了在途除法取消后不会多提交结果。新增的 CPU 级 \code{hilo_order_tb} 还验证了两种顺序：较老 syscall 提交时，年轻 DIV 被取消，HI/LO 旧值保留；DIV 已在 EX 忙碌时，外部 IP2 请求到达，CPU 先让较老的 DIV 完成，再接收中断。该测试通过 8 条断言，说明异常和多周期操作可以按流水线先后顺序配合。
+
+\reportsection{七、Lab9：时钟、软件和硬件中断}
+\textbf{1. Count/Compare 时钟中断。}
+
+定时器中断由 CP0 内部产生。\code{Count} 每两个 CPU 时钟增加 1，\code{Compare} 保存软件设定的比较值；当两个寄存器的值相等时，\code{timer_pending} 被置 1，同时 Cause.TI 和 IP7 反映定时器请求。软件通过 \code{mtc0} 重新写 Compare 可以清除这一请求。
+
+\begin{lstlisting}
+count_add_en <= ~count_add_en;
+if (cp0_write_count)
+    count <= cp0_wdata;
+else if (count_add_en)
+    count <= count + 32'd1;
+
+if (cp0_write_compare) begin
+    compare <= cp0_wdata;
+    timer_pending <= 1'b0;
+end
+else if (count == compare)
+    timer_pending <= 1'b1;
+\end{lstlisting}
+
+\reportfig{08_timer_irq.png}{0.98}{Count/Compare 定时器中断：TI、IP7、EPC、EXL 和异常提交}
+
+这段波形中 \code{Count} 逐次增加，\code{Compare} 保持在 \code{45DF0200}，截图位置附近 \code{Count=45DF0202}、\code{timer_pending=1}、\code{cause_ip=80}。此前已经触发中断，EPC 保存为 \code{BFC5FA8C}，EXL 变成 1，因此 \code{interrupt_pending} 暂时为 0，避免处理期间再次受理。这里既能看到定时器达到比较条件后的请求，也能看到中断进入处理程序后的状态。Compare 写入清除请求及 ERET 返回由课程测试和独立 CPU 定向测试继续验证。
+
+\textbf{2. Cause 软件中断。}
+
+软件中断由程序通过 \code{mtc0} 修改 Cause 的 IP0/IP1 位发起。软件写 Cause 时只更新这两个请求位，不直接覆盖硬件维护的 ExcCode、BD 或 TI。请求能否被受理，仍由 Status 中的 IE、EXL 和对应 IM 位共同决定。处理程序清除 Cause 中的软件请求后，执行 \code{eret} 返回。
+
+\begin{lstlisting}
+if (cp0_write_cause)
+    cause_sw_ip <= cp0_wdata[9:8];
+\end{lstlisting}
+
+\reportfig{\figsoft}{0.98}{Cause 软件中断：软件 IP 请求、屏蔽位、异常入口和 EPC 更新}
+
+提供的这张截图中，\code{cause_sw_ip=2}、\code{cause_ip=02}，说明软件 IP1 请求处于置位状态；处理程序期间 \code{status_exl=1}，此时 \code{interrupt_pending=0}。图中还能看到异常代码 0、EPC 保存为 \code{BFC16C54}，以及 PC 转到 \code{BFC00380} 入口的过程。原文件名为 \code{06_fetch_adel.png}，这里按实际软件中断波形引用。独立 \code{software_timer_irq_tb} 分别测试了 IP0、IP1 和 Timer/IP7，三个请求均能先屏蔽、再开启、被受理一次并在处理后清除，合计 13 条断言通过。
+
+\textbf{3. 外部硬件中断与板级连接。}
+
+外部硬件中断使用 \code{hw_int[5:0]}，对应 Cause.IP2--IP7。考虑到原来的 SoC 顶层已经提供开关输入，本次在硬件模式下把 \code{switch[5:0]} 经过两级寄存器同步后送到 CPU，中断输入变化就可以映射到对应 IP 位。课程仿真模式下将这组外部输入固定为 0，避免测试环境默认开关值影响 Lab3--Lab9 的累计程序。
+
+\begin{lstlisting}
+generate if (SIMULATION) begin: simulation_interrupt_source
+    assign ext_int = 6'b0;
+end
+else begin: hardware_interrupt_source
+    reg [5:0] ext_int_meta;
+    reg [5:0] ext_int_sync;
+    always @(posedge cpu_clk) begin
+        if (!cpu_resetn) begin
+            ext_int_meta <= 6'b0;
+            ext_int_sync <= 6'b0;
+        end
+        else begin
+            ext_int_meta <= switch[5:0];
+            ext_int_sync <= ext_int_meta;
+        end
+    end
+    assign ext_int = ext_int_sync;
+end
+endgenerate
+\end{lstlisting}
+
+为验证每一路请求，\code{interrupt_tb.v} 设置 \code{IRQ_INDEX=0..5}，分别对 IP2--IP7 运行测试。测试首先让硬件请求有效、但保持对应 IM 位关闭，确认 CPU 不接收；然后打开 IM，观察异常进入、处理程序清除请求和 ERET 返回，同时检查被打断指令没有写回、返回后的 store 恰好执行一次。
+
+\reportfig{10_external_interrupt_ip2.png.png}{0.98}{外部 IP2 中断：请求屏蔽解除、Trap 受理与流水线冲刷}
+
+IP2 截图中，\code{hw_int=01}，Cause.IP 显示 \code{84}，其中 IP2 对应的 \code{04} 已经置位。约在 175 ns，Status.IM 从 \code{00} 变为 \code{04} 后，\code{interrupt_pending} 拉高；195 ns 附近 \code{trap_commit=1}、\code{trap_code=0}、\code{trap_pc=BFC0001C}，并产生 \code{pipeline_flush}。随后硬件请求被撤销，CP0 保存 EPC，取指地址跳向异常处理入口。截图覆盖的是中断接收过程；本次测试的同轮 VCD 还记录了约 295 ns 的 ERET 和 325 ns 的后继 store 写使能，说明处理完成后程序能够继续执行。这些事件由独立测试用例的 10 条断言验证。
+
+IP7 与内部定时器共用 Cause.IP7。为了避免两种来源混在一起，外部 IP7 的独立测试会先写 Compare 清除定时器 TI，再开启外部 IP7 对应屏蔽位。最终六路硬件请求都完成了屏蔽、受理、清除和返回检查，且每路只有一次 trap、一次 ERET、一次恢复后的 store。
+
+\reportsection{八、功能测试、定向验证与结果}
+\textbf{1. 课程累计测试。}
+
+课程用例采用独立 CPU132 参考模型生成 GPR 写回记录，再与本次 CPU 的实际写回 PC、寄存器编号和结果逐项比较。测试同时检查功能点计数、运行结束标记、零号寄存器写回尝试，以及课程指令映像和参考文件是否一致。改动完成后，我重新运行了 Lab3、Lab4、Lab6、Lab7、Lab8 和 Lab9，确认新增异常处理没有影响此前已经实现的指令。
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}CCCC@{}}
+\toprule
+课程用例 & 功能点 & 执行周期 & ID 停顿周期 & 结果 \\
+\midrule
+Lab3 & 23/23 & 172,599 & 0 & PASS \\
+Lab4 & 23/23 & 114,577 & 50 & PASS \\
+Lab6 & 42/42 & 109,439 & 89 & PASS \\
+Lab7 & 68/68 & 166,330 & 926 & PASS \\
+Lab8 & 69/69 & 166,850 & 986 & PASS \\
+Lab9 & 94/94 & 195,004 & 3,910 & PASS \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+上述数据取自修改 CP0 保留位译码并补充专项测试之后的课程回归，六组均与对应 CPU132 reference GPR trace 全量匹配。其中 Lab8 的 69 个累计功能点通过，Lab9 的 94 个累计功能点也全部通过。各组程序的指令数量不同，执行周期和停顿周期只用于记录这次测试的运行情况，不能直接作为两组 CPU 性能高低的比较。
+
+\reportfig{regression_metrics.png}{0.98}{Lab3--Lab9 课程回归：功能点、执行周期和流水线停顿统计}
+
+\textbf{2. 对异常边界和中断的专项检查。}
+
+课程功能点能够说明完整程序的执行结果，但像故障存储不能修改 RAM、被中断指令不能多次写回、多周期除法不能在 flush 后继续错误提交等问题，还需要通过较短的定向测试检查。我额外设计并运行了下面的测试：
+
+\begin{center}
+\scriptsize
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.3cm}X>{\centering\arraybackslash}p{1.0cm}@{}}
+\toprule
+测试 & 主要检查及记录结果 & 状态 \\
+\midrule
+CP0 单元 & 复位、寄存器掩码、EPC/BD/EXL、Count/Compare 和各中断位；62 条断言 & PASS \\
+CP0 非法编码 & 4 种非法 MFC0/MTC0 保留位编码进入 RI，24 条断言 & PASS \\
+精确存储例外 & 老 store / 故障 store / 返回后年轻 store 写入次数为 1/0/1；6 条断言 & PASS \\
+HI/LO 与例外顺序 & 旧 HI/LO 保留、年轻 DIV 取消、DIV 完成后再受理 IP2；8 条断言 & PASS \\
+HI/LO 单元取消 & 未完成除法取消后不额外提交结果；单元测试通过 & PASS \\
+软件与定时器 & IP0、IP1、Timer/IP7 分别屏蔽后受理，3 次 trap/ERET；13 条断言 & PASS \\
+外部 IP2--IP7 & 每路 10 条断言，均为 1 次 trap、1 次 ERET、1 次返回后 store & PASS \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+外部 IP2 的单独仿真还保留了同一轮的 WDB 和 VCD。VCD 检查确认时钟间隔为 5 ns 的翻转，\code{interrupt_pending} 在 175 ns 出现，中断提交在 195 ns，ERET 在 295 ns，恢复后的 store 写使能在 325 ns。它与截图中的中断进入信号对应，可以进一步说明硬件中断处理结束后，程序能够继续往下运行。
+
+\textbf{3. 测试结果的整体判断。}
+
+从课程测试来看，Lab8 和 Lab9 分别达到 69/69 与 94/94，旧实验的功能点和写回记录也保持匹配。结合专项测试，可以看到 CP0 状态更新、异常进入、EPC/ERET、对齐异常、精确 store、HI/LO 取消以及三类中断路径均符合本次行为仿真的预期。报告中的波形主要用于展示这些控制信号实际在什么周期发生变化，最终功能是否通过则由课程 trace 和测试台断言共同检查。
+
+\clearpage
+\reportsection{九、实验总结}
+这次实验在已有五级流水线 CPU 上补充了 CP0、例外和中断处理。实现过程中比较关键的是把异常与原有执行流水线联系起来：IF、ID、EX 可以在不同位置发现问题，但最终都由 MEM 决定是否提交；提交后 CP0 保存原因和 EPC，IF 转到异常入口，较年轻的操作被冲刷，处理程序再通过 ERET 返回。这样一条统一的控制路径可以处理 syscall、break、溢出、地址异常和中断，也避免异常发生时数据 RAM 或寄存器被错误修改。
+
 
 \end{document}
