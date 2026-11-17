@@ -46,6 +46,7 @@ def capture_run_manifest(
     run_dir: Path,
     active_source_file: Path | None = None,
     input_files: Iterable[Path] = (),
+    reference_files: Iterable[Path] = (),
 ) -> bool:
     active_source_file = active_source_file or (run_dir / "active-sources.txt")
     sources = parse_active_sources(active_source_file) if active_source_file.is_file() else []
@@ -76,7 +77,9 @@ def capture_run_manifest(
     _write_csv(run_dir / "source-manifest.csv", rows, ["path", "role", "size_bytes", "sha256"])
 
     input_rows: List[dict] = []
-    for raw_path in input_files:
+    tagged_inputs = [(raw_path, "program_image") for raw_path in input_files]
+    tagged_inputs.extend((raw_path, "reference_trace") for raw_path in reference_files)
+    for raw_path, input_role in tagged_inputs:
         path = raw_path if raw_path.is_absolute() else (repo_root / raw_path)
         path = path.resolve()
         if not path.is_file():
@@ -88,7 +91,7 @@ def capture_run_manifest(
             relative = str(path).replace("\\", "/")
         input_rows.append({
             "path": relative,
-            "role": "program_image",
+            "role": input_role,
             "size_bytes": path.stat().st_size,
             "sha256": sha256_file(path),
             "status": "RECORDED",
@@ -134,8 +137,15 @@ def main() -> int:
     parser.add_argument("--run-dir", type=Path, required=True)
     parser.add_argument("--active-source-file", type=Path)
     parser.add_argument("--input-file", type=Path, action="append", default=[])
+    parser.add_argument("--reference-file", type=Path, action="append", default=[])
     args = parser.parse_args()
-    ok = capture_run_manifest(args.repo_root.resolve(), args.run_dir.resolve(), args.active_source_file, args.input_file)
+    ok = capture_run_manifest(
+        args.repo_root.resolve(),
+        args.run_dir.resolve(),
+        args.active_source_file,
+        args.input_file,
+        args.reference_file,
+    )
     print(f"SOURCE_INTEGRITY={'PASS' if ok else 'FAIL'}")
     return 0 if ok else 1
 
