@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="wave-full.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_lab19_cache" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+   </zoom_setting>
+   <column_width_setting>
+   </column_width_setting>
+   <WVObjectSize size="37" />
+   <wvobject fp_name="/tb_lab19_cache/resetn" type="logic">
+      <obj_property name="ElementShortName">resetn</obj_property>
+      <obj_property name="ObjectShortName">resetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/led" type="array">
+      <obj_property name="ElementShortName">led[15:0]</obj_property>
+      <obj_property name="ObjectShortName">led[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/led_rg0" type="array">
+      <obj_property name="ElementShortName">led_rg0[1:0]</obj_property>
+      <obj_property name="ObjectShortName">led_rg0[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/led_rg1" type="array">
+      <obj_property name="ElementShortName">led_rg1[1:0]</obj_property>
+      <obj_property name="ObjectShortName">led_rg1[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/num_csn" type="array">
+      <obj_property name="ElementShortName">num_csn[7:0]</obj_property>
+      <obj_property name="ObjectShortName">num_csn[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/num_a_g" type="array">
+      <obj_property name="ElementShortName">num_a_g[6:0]</obj_property>
+      <obj_property name="ObjectShortName">num_a_g[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/switch" type="array">
+      <obj_property name="ElementShortName">switch[7:0]</obj_property>
+      <obj_property name="ObjectShortName">switch[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/btn_key_row" type="array">
+      <obj_property name="ElementShortName">btn_key_row[3:0]</obj_property>
+      <obj_property name="ObjectShortName">btn_key_row[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/btn_step" type="array">
+      <obj_property name="ElementShortName">btn_step[1:0]</obj_property>
+      <obj_property name="ObjectShortName">btn_step[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/btn_key_col" type="array">
+      <obj_property name="ElementShortName">btn_key_col[3:0]</obj_property>
+      <obj_property name="ObjectShortName">btn_key_col[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/cycles" type="array">
+      <obj_property name="ElementShortName">cycles[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cycles[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/score_points" type="array">
+      <obj_property name="ElementShortName">score_points[31:0]</obj_property>
+      <obj_property name="ObjectShortName">score_points[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/retired_instructions" type="array">
+      <obj_property name="ElementShortName">retired_instructions[31:0]</obj_property>
+      <obj_property name="ObjectShortName">retired_instructions[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/accepted_data" type="array">
+      <obj_property name="ElementShortName">accepted_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">accepted_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/completed_data" type="array">
+      <obj_property name="ElementShortName">completed_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">completed_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/accepted_stores" type="array">
+      <obj_property name="ElementShortName">accepted_stores[31:0]</obj_property>
+      <obj_property name="ObjectShortName">accepted_stores[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/completed_stores" type="array">
+      <obj_property name="ElementShortName">completed_stores[31:0]</obj_property>
+      <obj_property name="ObjectShortName">completed_stores[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/pending_data" type="array">
+      <obj_property name="ElementShortName">pending_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pending_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/pending_store" type="array">
+      <obj_property name="ElementShortName">pending_store[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pending_store[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/cache_ops" type="array">
+      <obj_property name="ElementShortName">cache_ops[0:31][31:0]</obj_property>
+      <obj_property name="ObjectShortName">cache_ops[0:31][31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/last_num_data" type="array">
+      <obj_property name="ElementShortName">last_num_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">last_num_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/i" type="array">
+      <obj_property name="ElementShortName">i[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/resetn" type="logic">
+      <obj_property name="ElementShortName">resetn</obj_property>
+      <obj_property name="ObjectShortName">resetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/soc_lite/u_cpu/cache_maint_op" type="array">
+      <obj_property name="ElementShortName">cache_maint_op[4:0]</obj_property>
+      <obj_property name="ObjectShortName">cache_maint_op[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/soc_lite/u_cpu/cache_maint_vaddr" type="array">
+      <obj_property name="ElementShortName">cache_maint_vaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cache_maint_vaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/soc_lite/u_cpu/cache_maint_commit" type="logic">
+      <obj_property name="ElementShortName">cache_maint_commit</obj_property>
+      <obj_property name="ObjectShortName">cache_maint_commit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/soc_lite/u_cpu/icache_maint_done" type="logic">
+      <obj_property name="ElementShortName">icache_maint_done</obj_property>
+      <obj_property name="ObjectShortName">icache_maint_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/soc_lite/u_cpu/dcache_maint_done" type="logic">
+      <obj_property name="ElementShortName">dcache_maint_done</obj_property>
+      <obj_property name="ObjectShortName">dcache_maint_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/soc_lite/u_cpu/u_icache/state" type="array">
+      <obj_property name="ElementShortName">state[3:0]</obj_property>
+      <obj_property name="ObjectShortName">state[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/soc_lite/u_cpu/u_icache/stat_miss" type="array">
+      <obj_property name="ElementShortName">stat_miss[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_miss[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/soc_lite/u_cpu/u_icache/stat_refill" type="array">
+      <obj_property name="ElementShortName">stat_refill[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_refill[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/soc_lite/u_cpu/u_dcache/state" type="array">
+      <obj_property name="ElementShortName">state[3:0]</obj_property>
+      <obj_property name="ObjectShortName">state[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/soc_lite/u_cpu/u_dcache/stat_writeback" type="array">
+      <obj_property name="ElementShortName">stat_writeback[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_writeback[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/soc_lite/u_cpu/u_cache_axi3_bridge/rd_state" type="array">
+      <obj_property name="ElementShortName">rd_state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_state[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_cache/soc_lite/u_cpu/u_cache_axi3_bridge/wr_state" type="array">
+      <obj_property name="ElementShortName">wr_state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_state[1:0]</obj_property>
+   </wvobject>
+</wave_config>
