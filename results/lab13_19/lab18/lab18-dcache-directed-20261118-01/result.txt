@@ -1,0 +1,14 @@
+RUN_ID=lab18-dcache-directed-20261118-01
+CASE=lab18
+SUITE=directed
+STATUS=PASS
+SIM_TOP=tb_lab18_dcache_directed
+PASS_MARKER=DCache_DIRECTED_PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab18/lab18-dcache-directed-20261118-01/project/lab18_directed.xpr
+WAVEFORM=wave-full.wdb
+DIRECTED_CHECKS=9
+DCACHE_STATS=hit=8 miss=5 refill=5 writeback=1 uncache=2
+SOURCE_INTEGRITY=PASS
+SOURCE_MANIFEST=source-manifest.csv
+INPUT_MANIFEST=input_manifest.csv
+GIT_HEAD=c1cfd9387fc75430c051d2d9375f3019d70869e3

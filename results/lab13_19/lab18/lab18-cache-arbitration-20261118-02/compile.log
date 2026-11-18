@@ -1,0 +1,10 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab18/cpu_dcache/rtl/myCPU/cache_axi3_bridge.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cache_axi3_bridge
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab18/cpu_dcache/rtl/myCPU/dcache.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module dcache
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab18/cpu_dcache/rtl/myCPU/icache.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module icache
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab18/cpu_dcache/testbench/tb_lab18_cache_arbitration.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_lab18_cache_arbitration
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab18/lab18-cache-arbitration-20261118-02/project/lab18_arb_directed.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl

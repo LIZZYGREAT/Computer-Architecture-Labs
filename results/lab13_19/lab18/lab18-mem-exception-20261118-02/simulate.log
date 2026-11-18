@@ -1,0 +1,5 @@
+Time resolution is 1 ps
+D09_EXCEPTION_PASS trap_no_store=1 pc=80001234
+D09_COMMITTED_STORE_PASS accepted=1 completed=1 stable_payload=1
+D09_MEM_PASS
+$finish called at time : 107 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab18/cpu_dcache/testbench/tb_lab18_mem_exception.sv" Line 124

@@ -1,0 +1,12 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  -i "../../../../../../../../../lab18/cpu_dcache/rtl/myCPU" --include "D:/Verilog/2025.2/Vivado/data/rsb/busdef" \
+"../../../../../../../../../lab18/cpu_dcache/rtl/myCPU/MEM_stage.v" \
+
+sv xil_defaultlib  -i "../../../../../../../../../lab18/cpu_dcache/rtl/myCPU" --include "D:/Verilog/2025.2/Vivado/data/rsb/busdef" \
+"../../../../../../../../../lab18/cpu_dcache/testbench/tb_lab18_mem_exception.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

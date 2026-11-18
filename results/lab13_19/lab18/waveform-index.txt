@@ -1,0 +1,22 @@
+Lab18 final waveform index
+
+Run: lab18-dcache-directed-20261118-01
+File: lab18-dcache-directed-20261118-01/wave-full.wdb
+Bytes: 93766
+SHA256: D7DF0ED280305E70055D92F00DACE12A5DFBD76DC074D72832B8299A11873CCE
+Anchors: D01 first 8-beat miss/refill; D02 same-line hit; D03-D05 store/byte-lane merge; D06 dirty victim AW/W/B must finish before refill; D07-D08 Uncache bypass with held request payload.
+
+Run: lab18-cache-arbitration-20261118-02
+File: lab18-cache-arbitration-20261118-02/wave-full.wdb
+Bytes: 170790
+SHA256: D4EC42AB10763333E03F2BD70BEF2ED5A6696EC4D02389109679D6D2A6ADA61E
+Anchors: ICache and DCache miss together; AXI AR owner/ID 0 then 1; 8 R beats returned to each cache.
+
+Run: lab18-mem-exception-20261118-02
+File: lab18-mem-exception-20261118-02/wave-full.wdb
+Bytes: 33518
+SHA256: C904B37FB8E009DB773CDCE6414DF43E0CE2EC4B8EB1EC41627481EB75445464
+Anchors: D09 exception store blocked before request; committed SW payload held stable, accepted once, and completed once.
+
+Long 94-point CPU run omits WDB; use the compact directed waveforms above for signal inspection.
+Screenshot/WCFG review is pending manual capture in Vivado.

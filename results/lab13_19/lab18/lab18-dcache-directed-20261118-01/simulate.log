@@ -1,0 +1,14 @@
+Time resolution is 1 ps
+D01_PASS first_miss=1 refill_beats=8
+D02_PASS same_line_hit ar=1
+D03_PASS store_then_load dirty=1
+D04_PASS byte_halfword_lanes word=3344aa11
+D05_PASS swl_swr_lane_merge
+D06_PASS dirty_victim_writeback_before_refill addr=00000040
+D07_PASS uncache_bypass peripheral_write_once
+D08_PASS refill_uncache_backpressure_payload_stable
+D09_PASS request_completion_accounting accepted=15 completed=15
+DCache_STATS hit=8 miss=5 refill=5 writeback=1 uncache=2
+DIRECTED_CHECKS=9
+DCache_DIRECTED_PASS checks=9
+$finish called at time : 2440 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab18/cpu_dcache/testbench/tb_lab18_dcache_directed.sv" Line 338

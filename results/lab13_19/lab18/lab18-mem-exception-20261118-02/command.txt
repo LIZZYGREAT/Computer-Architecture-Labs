@@ -1,0 +1,16 @@
+RUN_ID=lab18-mem-exception-20261118-02
+CASE=lab18
+SUITE=mem-exception
+VIVADO=D:\Verilog\2025.2\Vivado\bin\vivado.bat
+TCL_SCRIPT=C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree\scripts\tlb_cache\run_unit.tcl
+ARGUMENTS_BEGIN
+ARG[0]=-mode
+ARG[1]=batch
+ARG[2]=-source
+ARG[3]=C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree\scripts\tlb_cache\run_unit.tcl
+ARG[4]=-tclargs
+ARG[5]=lab18_mem
+ARG[6]=directed
+ARG[7]=C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree
+ARG[8]=C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree\results\lab13_19\lab18\lab18-mem-exception-20261118-02
+ARGUMENTS_END

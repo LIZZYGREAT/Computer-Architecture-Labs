@@ -1,0 +1,12 @@
+RUN_ID=lab18-cache-arbitration-20261118-02
+CASE=lab18_arb
+SUITE=directed
+STATUS=PASS
+SIM_TOP=tb_lab18_cache_arbitration
+PASS_MARKER=LAB18_ARBITRATION_PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab18/lab18-cache-arbitration-20261118-02/project/lab18_arb_directed.xpr
+WAVEFORM=wave-full.wdb
+SOURCE_INTEGRITY=PASS
+SOURCE_MANIFEST=source-manifest.csv
+INPUT_MANIFEST=input_manifest.csv
+GIT_HEAD=c1cfd9387fc75430c051d2d9375f3019d70869e3

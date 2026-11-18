@@ -1,0 +1,4 @@
+Time resolution is 1 ps
+LAB18_SIMULTANEOUS_MISS_PASS ic_ar=1 dc_ar=1 id_owner_checked=1 r_beats=16
+LAB18_ARBITRATION_PASS
+$finish called at time : 1566 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab18/cpu_dcache/testbench/tb_lab18_cache_arbitration.sv" Line 249

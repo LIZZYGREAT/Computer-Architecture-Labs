@@ -1,0 +1,9 @@
+BRANCH=lab12-lab19
+HEAD=c1cfd9387fc75430c051d2d9375f3019d70869e3
+WORKTREE_STATUS_BEGIN
+M scripts/tlb_cache/run_soc.tcl
+ M scripts/tlb_cache/run_unit.tcl
+ M scripts/tlb_cache/verify.ps1
+?? lab18/
+?? results/lab13_19/lab18/
+WORKTREE_STATUS_END
