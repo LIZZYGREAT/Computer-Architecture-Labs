@@ -1,7 +1,7 @@
 # Create and run an isolated CPU SoC regression project.
-# Usage: vivado -mode batch -source run_soc.tcl -tclargs <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline|lab18|lab19|dhrystone|coremark?
+# Usage: vivado -mode batch -source run_soc.tcl -tclargs <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline|lab18|lab19|lab19_all94|dhrystone|coremark?
 if {[llength $argv] < 2 || [llength $argv] > 3} {
-    error "usage: run_soc.tcl <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline|lab18|lab19|dhrystone|coremark?"
+    error "usage: run_soc.tcl <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline|lab18|lab19|lab19_all94|dhrystone|coremark?"
 }
 
 set repo [file normalize [lindex $argv 0]]
@@ -61,6 +61,13 @@ if {$suite eq "lab14"} {
     set sim_top tb_lab19_cache
     set sim_runtime 250000000ns
     set trace_file ""
+} elseif {$suite eq "lab19_all94"} {
+    set cpu_root [file join $repo lab19 cpu_cache]
+    set coe_file [file join $repo lab17 func_all94 obj inst_ram.coe]
+    set testbench [file join $cpu_root testbench tb_lab19_all94.sv]
+    set sim_top tb_lab19_all94
+    set sim_runtime 250000000ns
+    set trace_file ""
 } elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
     set cpu_root [file join $repo lab19 cpu_cache]
     set coe_file [file join $repo lab19 perf_func obj $suite axi_ram.coe]
@@ -103,7 +110,7 @@ foreach source_ip $ip_files {
         close $xci_in
         if {$suite eq "lab17" || $suite eq "lab17_baseline" || $suite eq "lab18"} {
             set relative_coe "../../../../func_all94/obj/inst_ram.coe"
-        } elseif {$suite eq "lab19"} {
+        } elseif {$suite eq "lab19" || $suite eq "lab19_all94"} {
             set relative_coe "../../../../func_all94/obj/inst_ram.coe"
         } elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
             set relative_coe "../../../../func_all94/obj/inst_ram.coe"
@@ -218,6 +225,8 @@ if {$suite eq "lab14"} {
     puts "CASE=lab18"
 } elseif {$suite eq "lab19"} {
     puts "CASE=lab19"
+} elseif {$suite eq "lab19_all94"} {
+    puts "CASE=lab19"
 } elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
     puts "CASE=lab19_performance"
 } elseif {$suite eq "lab17" || $suite eq "lab17_baseline"} {
@@ -288,6 +297,28 @@ if {$suite eq "lab14"} {
     if {![regexp {AXI_METRICS ar=([0-9]+) r=([0-9]+) aw=([0-9]+) w=([0-9]+) b=([0-9]+)} $sim_text -> ar_count r_count aw_count w_count b_count] ||
         $r_count < $ar_count || $aw_count != $b_count || $w_count < $aw_count} {
         error "Lab18 AXI transaction/beat metrics are inconsistent; inspect $sim_log"
+    }
+} elseif {$suite eq "lab19_all94"} {
+    set case_name lab19
+    set pass_marker "LAB19_ALL94_FUNCTIONAL_PASS score=94/94"
+    if {[regexp -nocase {LAB19_ALL94_FAIL=|Fatal:|ERROR:|Error:} $sim_text]} {
+        error "Lab19 all94 functional regression reported a failure; inspect $sim_log"
+    }
+    if {[regexp -all {LAB19_ALL94_TESTPOINT=} $sim_text] != 94} {
+        error "Lab19 all94 functional regression expected 94 ordered score points; inspect $sim_log"
+    }
+    foreach marker [list $pass_marker "CACHE_STATS " "DCACHE_STATS " "AXI_METRICS " "STORE_COUNTS accepted=" "PERIPHERAL_NUM_WRITES accepted=95 completed=95 initial_clear=1 score_writes=94 duplicate_store=0"] {
+        if {[string first $marker $sim_text] < 0} {
+            error "Lab19 all94 regression missed required marker $marker; inspect $sim_log"
+        }
+    }
+    if {![regexp {STORE_COUNTS accepted=([0-9]+) completed=([0-9]+) duplicate_store=0} $sim_text -> accepted_stores completed_stores] ||
+        $accepted_stores != $completed_stores} {
+        error "Lab19 all94 Store completion accounting is inconsistent; inspect $sim_log"
+    }
+    if {![regexp {AXI_METRICS ar=([0-9]+) r=([0-9]+) aw=([0-9]+) w=([0-9]+) b=([0-9]+)} $sim_text -> ar_count r_count aw_count w_count b_count] ||
+        $r_count < $ar_count || $aw_count != $b_count || $w_count < $aw_count} {
+        error "Lab19 all94 AXI transaction/beat metrics are inconsistent; inspect $sim_log"
     }
 } elseif {$suite eq "lab19"} {
     set case_name lab19
@@ -403,7 +434,7 @@ if {$suite eq "lab14"} {
     if {[regexp {BUS_METRICS ([^\r\n]+)} $sim_text -> bus_metrics]} {
         puts $result "BUS_METRICS=$bus_metrics"
     }
-} elseif {$suite eq "lab18"} {
+} elseif {$suite eq "lab18" || $suite eq "lab19_all94"} {
     puts $result "TESTPOINTS=94"
     if {[regexp {CACHE_STATS ([^\r\n]+)} $sim_text -> cache_metrics]} {
         puts $result "CACHE_STATS=$cache_metrics"
