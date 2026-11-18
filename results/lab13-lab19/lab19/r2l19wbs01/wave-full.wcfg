@@ -1,0 +1,830 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="wave-full.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_lab19_dcache_writeback_scoreboard" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+   </zoom_setting>
+   <column_width_setting>
+   </column_width_setting>
+   <WVObjectSize size="203" />
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/resetn" type="logic">
+      <obj_property name="ElementShortName">resetn</obj_property>
+      <obj_property name="ObjectShortName">resetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_req" type="logic">
+      <obj_property name="ElementShortName">cpu_req</obj_property>
+      <obj_property name="ObjectShortName">cpu_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_cacheable" type="logic">
+      <obj_property name="ElementShortName">cpu_cacheable</obj_property>
+      <obj_property name="ObjectShortName">cpu_cacheable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_wr" type="logic">
+      <obj_property name="ElementShortName">cpu_wr</obj_property>
+      <obj_property name="ObjectShortName">cpu_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_size" type="array">
+      <obj_property name="ElementShortName">cpu_size[1:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_size[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_wstrb" type="array">
+      <obj_property name="ElementShortName">cpu_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_addr" type="array">
+      <obj_property name="ElementShortName">cpu_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_wdata" type="array">
+      <obj_property name="ElementShortName">cpu_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_addr_ok" type="logic">
+      <obj_property name="ElementShortName">cpu_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">cpu_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_data_ok" type="logic">
+      <obj_property name="ElementShortName">cpu_data_ok</obj_property>
+      <obj_property name="ObjectShortName">cpu_data_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_rdata" type="array">
+      <obj_property name="ElementShortName">cpu_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_req" type="logic">
+      <obj_property name="ElementShortName">maint_req</obj_property>
+      <obj_property name="ObjectShortName">maint_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_op" type="array">
+      <obj_property name="ElementShortName">maint_op[4:0]</obj_property>
+      <obj_property name="ObjectShortName">maint_op[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_vaddr" type="array">
+      <obj_property name="ElementShortName">maint_vaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">maint_vaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_paddr" type="array">
+      <obj_property name="ElementShortName">maint_paddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">maint_paddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_taglo" type="array">
+      <obj_property name="ElementShortName">maint_taglo[31:0]</obj_property>
+      <obj_property name="ObjectShortName">maint_taglo[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_addr_ok" type="logic">
+      <obj_property name="ElementShortName">maint_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">maint_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_done" type="logic">
+      <obj_property name="ElementShortName">maint_done</obj_property>
+      <obj_property name="ObjectShortName">maint_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/refill_req" type="logic">
+      <obj_property name="ElementShortName">refill_req</obj_property>
+      <obj_property name="ObjectShortName">refill_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/refill_addr" type="array">
+      <obj_property name="ElementShortName">refill_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">refill_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/refill_addr_ok" type="logic">
+      <obj_property name="ElementShortName">refill_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">refill_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/refill_data_valid" type="logic">
+      <obj_property name="ElementShortName">refill_data_valid</obj_property>
+      <obj_property name="ObjectShortName">refill_data_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/refill_data_last" type="logic">
+      <obj_property name="ElementShortName">refill_data_last</obj_property>
+      <obj_property name="ObjectShortName">refill_data_last</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/refill_data" type="array">
+      <obj_property name="ElementShortName">refill_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">refill_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/writeback_req" type="logic">
+      <obj_property name="ElementShortName">writeback_req</obj_property>
+      <obj_property name="ObjectShortName">writeback_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/writeback_addr" type="array">
+      <obj_property name="ElementShortName">writeback_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">writeback_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/writeback_data" type="array">
+      <obj_property name="ElementShortName">writeback_data[255:0]</obj_property>
+      <obj_property name="ObjectShortName">writeback_data[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/writeback_addr_ok" type="logic">
+      <obj_property name="ElementShortName">writeback_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">writeback_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/writeback_done" type="logic">
+      <obj_property name="ElementShortName">writeback_done</obj_property>
+      <obj_property name="ObjectShortName">writeback_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/uncache_req" type="logic">
+      <obj_property name="ElementShortName">uncache_req</obj_property>
+      <obj_property name="ObjectShortName">uncache_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/uncache_wr" type="logic">
+      <obj_property name="ElementShortName">uncache_wr</obj_property>
+      <obj_property name="ObjectShortName">uncache_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/uncache_size" type="array">
+      <obj_property name="ElementShortName">uncache_size[1:0]</obj_property>
+      <obj_property name="ObjectShortName">uncache_size[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/uncache_wstrb" type="array">
+      <obj_property name="ElementShortName">uncache_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">uncache_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/uncache_addr" type="array">
+      <obj_property name="ElementShortName">uncache_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">uncache_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/uncache_wdata" type="array">
+      <obj_property name="ElementShortName">uncache_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">uncache_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/axi_fault" type="logic">
+      <obj_property name="ElementShortName">axi_fault</obj_property>
+      <obj_property name="ObjectShortName">axi_fault</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_hit" type="array">
+      <obj_property name="ElementShortName">stat_hit[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_hit[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_miss" type="array">
+      <obj_property name="ElementShortName">stat_miss[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_miss[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_writeback" type="array">
+      <obj_property name="ElementShortName">stat_writeback[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_writeback[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_uncache" type="array">
+      <obj_property name="ElementShortName">stat_uncache[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_uncache[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cache_fault" type="logic">
+      <obj_property name="ElementShortName">cache_fault</obj_property>
+      <obj_property name="ObjectShortName">cache_fault</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/arready" type="logic">
+      <obj_property name="ElementShortName">arready</obj_property>
+      <obj_property name="ObjectShortName">arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/arid" type="array">
+      <obj_property name="ElementShortName">arid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">arid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/araddr" type="array">
+      <obj_property name="ElementShortName">araddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">araddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/arlen" type="array">
+      <obj_property name="ElementShortName">arlen[7:0]</obj_property>
+      <obj_property name="ObjectShortName">arlen[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/arsize" type="array">
+      <obj_property name="ElementShortName">arsize[2:0]</obj_property>
+      <obj_property name="ObjectShortName">arsize[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/arburst" type="array">
+      <obj_property name="ElementShortName">arburst[1:0]</obj_property>
+      <obj_property name="ObjectShortName">arburst[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/arvalid" type="logic">
+      <obj_property name="ElementShortName">arvalid</obj_property>
+      <obj_property name="ObjectShortName">arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/rid" type="array">
+      <obj_property name="ElementShortName">rid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">rid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/rdata" type="array">
+      <obj_property name="ElementShortName">rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/rresp" type="array">
+      <obj_property name="ElementShortName">rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/rlast" type="logic">
+      <obj_property name="ElementShortName">rlast</obj_property>
+      <obj_property name="ObjectShortName">rlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/rvalid" type="logic">
+      <obj_property name="ElementShortName">rvalid</obj_property>
+      <obj_property name="ObjectShortName">rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/rready" type="logic">
+      <obj_property name="ElementShortName">rready</obj_property>
+      <obj_property name="ObjectShortName">rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/awready" type="logic">
+      <obj_property name="ElementShortName">awready</obj_property>
+      <obj_property name="ObjectShortName">awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/awid" type="array">
+      <obj_property name="ElementShortName">awid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">awid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/awaddr" type="array">
+      <obj_property name="ElementShortName">awaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">awaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/awlen" type="array">
+      <obj_property name="ElementShortName">awlen[7:0]</obj_property>
+      <obj_property name="ObjectShortName">awlen[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/awsize" type="array">
+      <obj_property name="ElementShortName">awsize[2:0]</obj_property>
+      <obj_property name="ObjectShortName">awsize[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/awburst" type="array">
+      <obj_property name="ElementShortName">awburst[1:0]</obj_property>
+      <obj_property name="ObjectShortName">awburst[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/awvalid" type="logic">
+      <obj_property name="ElementShortName">awvalid</obj_property>
+      <obj_property name="ObjectShortName">awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/wid" type="array">
+      <obj_property name="ElementShortName">wid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">wid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/wdata" type="array">
+      <obj_property name="ElementShortName">wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/wstrb" type="array">
+      <obj_property name="ElementShortName">wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/wlast" type="logic">
+      <obj_property name="ElementShortName">wlast</obj_property>
+      <obj_property name="ObjectShortName">wlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/wvalid" type="logic">
+      <obj_property name="ElementShortName">wvalid</obj_property>
+      <obj_property name="ObjectShortName">wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/wready" type="logic">
+      <obj_property name="ElementShortName">wready</obj_property>
+      <obj_property name="ObjectShortName">wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/bid" type="array">
+      <obj_property name="ElementShortName">bid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">bid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/bresp" type="array">
+      <obj_property name="ElementShortName">bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/bvalid" type="logic">
+      <obj_property name="ElementShortName">bvalid</obj_property>
+      <obj_property name="ObjectShortName">bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/bready" type="logic">
+      <obj_property name="ElementShortName">bready</obj_property>
+      <obj_property name="ObjectShortName">bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_ar_transactions" type="array">
+      <obj_property name="ElementShortName">stat_ar_transactions[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_ar_transactions[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_r_beats" type="array">
+      <obj_property name="ElementShortName">stat_r_beats[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_r_beats[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_aw_transactions" type="array">
+      <obj_property name="ElementShortName">stat_aw_transactions[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_aw_transactions[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_w_beats" type="array">
+      <obj_property name="ElementShortName">stat_w_beats[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_w_beats[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_b_responses" type="array">
+      <obj_property name="ElementShortName">stat_b_responses[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_b_responses[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/reference_memory" type="array">
+      <obj_property name="ElementShortName">reference_memory[0:31][31:0]</obj_property>
+      <obj_property name="ObjectShortName">reference_memory[0:31][31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/timeout_count" type="array">
+      <obj_property name="ElementShortName">timeout_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">timeout_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/refill_count" type="array">
+      <obj_property name="ElementShortName">refill_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">refill_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/store_count" type="array">
+      <obj_property name="ElementShortName">store_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">store_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_count" type="array">
+      <obj_property name="ElementShortName">maint_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">maint_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/way" type="array">
+      <obj_property name="ElementShortName">way[31:0]</obj_property>
+      <obj_property name="ObjectShortName">way[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/beat" type="array">
+      <obj_property name="ElementShortName">beat[31:0]</obj_property>
+      <obj_property name="ObjectShortName">beat[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/word_index" type="array">
+      <obj_property name="ElementShortName">word_index[31:0]</obj_property>
+      <obj_property name="ObjectShortName">word_index[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/tag_value" type="array">
+      <obj_property name="ElementShortName">tag_value[19:0]</obj_property>
+      <obj_property name="ObjectShortName">tag_value[19:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/store_addr" type="array">
+      <obj_property name="ElementShortName">store_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">store_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/store_value" type="array">
+      <obj_property name="ElementShortName">store_value[31:0]</obj_property>
+      <obj_property name="ObjectShortName">store_value[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/expected_line" type="array">
+      <obj_property name="ElementShortName">expected_line[255:0]</obj_property>
+      <obj_property name="ObjectShortName">expected_line[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/TEST_SET" type="array">
+      <obj_property name="ElementShortName">TEST_SET[6:0]</obj_property>
+      <obj_property name="ObjectShortName">TEST_SET[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/resetn" type="logic">
+      <obj_property name="ElementShortName">resetn</obj_property>
+      <obj_property name="ObjectShortName">resetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_req" type="logic">
+      <obj_property name="ElementShortName">cpu_req</obj_property>
+      <obj_property name="ObjectShortName">cpu_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_cacheable" type="logic">
+      <obj_property name="ElementShortName">cpu_cacheable</obj_property>
+      <obj_property name="ObjectShortName">cpu_cacheable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_wr" type="logic">
+      <obj_property name="ElementShortName">cpu_wr</obj_property>
+      <obj_property name="ObjectShortName">cpu_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_size" type="array">
+      <obj_property name="ElementShortName">cpu_size[1:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_size[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_wstrb" type="array">
+      <obj_property name="ElementShortName">cpu_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_addr" type="array">
+      <obj_property name="ElementShortName">cpu_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_wdata" type="array">
+      <obj_property name="ElementShortName">cpu_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_addr_ok" type="logic">
+      <obj_property name="ElementShortName">cpu_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">cpu_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_data_ok" type="logic">
+      <obj_property name="ElementShortName">cpu_data_ok</obj_property>
+      <obj_property name="ObjectShortName">cpu_data_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_rdata" type="array">
+      <obj_property name="ElementShortName">cpu_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_req" type="logic">
+      <obj_property name="ElementShortName">maint_req</obj_property>
+      <obj_property name="ObjectShortName">maint_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_op" type="array">
+      <obj_property name="ElementShortName">maint_op[4:0]</obj_property>
+      <obj_property name="ObjectShortName">maint_op[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_vaddr" type="array">
+      <obj_property name="ElementShortName">maint_vaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">maint_vaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_paddr" type="array">
+      <obj_property name="ElementShortName">maint_paddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">maint_paddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_taglo" type="array">
+      <obj_property name="ElementShortName">maint_taglo[31:0]</obj_property>
+      <obj_property name="ObjectShortName">maint_taglo[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_addr_ok" type="logic">
+      <obj_property name="ElementShortName">maint_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">maint_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_done" type="logic">
+      <obj_property name="ElementShortName">maint_done</obj_property>
+      <obj_property name="ObjectShortName">maint_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/refill_req" type="logic">
+      <obj_property name="ElementShortName">refill_req</obj_property>
+      <obj_property name="ObjectShortName">refill_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/refill_addr" type="array">
+      <obj_property name="ElementShortName">refill_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">refill_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/refill_addr_ok" type="logic">
+      <obj_property name="ElementShortName">refill_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">refill_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/refill_data_valid" type="logic">
+      <obj_property name="ElementShortName">refill_data_valid</obj_property>
+      <obj_property name="ObjectShortName">refill_data_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/refill_data_last" type="logic">
+      <obj_property name="ElementShortName">refill_data_last</obj_property>
+      <obj_property name="ObjectShortName">refill_data_last</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/refill_data" type="array">
+      <obj_property name="ElementShortName">refill_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">refill_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/writeback_req" type="logic">
+      <obj_property name="ElementShortName">writeback_req</obj_property>
+      <obj_property name="ObjectShortName">writeback_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/writeback_addr" type="array">
+      <obj_property name="ElementShortName">writeback_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">writeback_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/writeback_data" type="array">
+      <obj_property name="ElementShortName">writeback_data[255:0]</obj_property>
+      <obj_property name="ObjectShortName">writeback_data[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/writeback_addr_ok" type="logic">
+      <obj_property name="ElementShortName">writeback_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">writeback_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/writeback_done" type="logic">
+      <obj_property name="ElementShortName">writeback_done</obj_property>
+      <obj_property name="ObjectShortName">writeback_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/uncache_req" type="logic">
+      <obj_property name="ElementShortName">uncache_req</obj_property>
+      <obj_property name="ObjectShortName">uncache_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/uncache_wr" type="logic">
+      <obj_property name="ElementShortName">uncache_wr</obj_property>
+      <obj_property name="ObjectShortName">uncache_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/uncache_size" type="array">
+      <obj_property name="ElementShortName">uncache_size[1:0]</obj_property>
+      <obj_property name="ObjectShortName">uncache_size[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/uncache_wstrb" type="array">
+      <obj_property name="ElementShortName">uncache_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">uncache_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/uncache_addr" type="array">
+      <obj_property name="ElementShortName">uncache_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">uncache_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/uncache_wdata" type="array">
+      <obj_property name="ElementShortName">uncache_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">uncache_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/axi_fault" type="logic">
+      <obj_property name="ElementShortName">axi_fault</obj_property>
+      <obj_property name="ObjectShortName">axi_fault</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_hit" type="array">
+      <obj_property name="ElementShortName">stat_hit[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_hit[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_miss" type="array">
+      <obj_property name="ElementShortName">stat_miss[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_miss[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_writeback" type="array">
+      <obj_property name="ElementShortName">stat_writeback[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_writeback[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_uncache" type="array">
+      <obj_property name="ElementShortName">stat_uncache[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_uncache[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cache_fault" type="logic">
+      <obj_property name="ElementShortName">cache_fault</obj_property>
+      <obj_property name="ObjectShortName">cache_fault</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/arready" type="logic">
+      <obj_property name="ElementShortName">arready</obj_property>
+      <obj_property name="ObjectShortName">arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/arid" type="array">
+      <obj_property name="ElementShortName">arid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">arid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/araddr" type="array">
+      <obj_property name="ElementShortName">araddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">araddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/arlen" type="array">
+      <obj_property name="ElementShortName">arlen[7:0]</obj_property>
+      <obj_property name="ObjectShortName">arlen[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/arsize" type="array">
+      <obj_property name="ElementShortName">arsize[2:0]</obj_property>
+      <obj_property name="ObjectShortName">arsize[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/arburst" type="array">
+      <obj_property name="ElementShortName">arburst[1:0]</obj_property>
+      <obj_property name="ObjectShortName">arburst[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/arvalid" type="logic">
+      <obj_property name="ElementShortName">arvalid</obj_property>
+      <obj_property name="ObjectShortName">arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/rid" type="array">
+      <obj_property name="ElementShortName">rid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">rid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/rdata" type="array">
+      <obj_property name="ElementShortName">rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/rresp" type="array">
+      <obj_property name="ElementShortName">rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/rlast" type="logic">
+      <obj_property name="ElementShortName">rlast</obj_property>
+      <obj_property name="ObjectShortName">rlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/rvalid" type="logic">
+      <obj_property name="ElementShortName">rvalid</obj_property>
+      <obj_property name="ObjectShortName">rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/rready" type="logic">
+      <obj_property name="ElementShortName">rready</obj_property>
+      <obj_property name="ObjectShortName">rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/awready" type="logic">
+      <obj_property name="ElementShortName">awready</obj_property>
+      <obj_property name="ObjectShortName">awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/awid" type="array">
+      <obj_property name="ElementShortName">awid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">awid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/awaddr" type="array">
+      <obj_property name="ElementShortName">awaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">awaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/awlen" type="array">
+      <obj_property name="ElementShortName">awlen[7:0]</obj_property>
+      <obj_property name="ObjectShortName">awlen[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/awsize" type="array">
+      <obj_property name="ElementShortName">awsize[2:0]</obj_property>
+      <obj_property name="ObjectShortName">awsize[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/awburst" type="array">
+      <obj_property name="ElementShortName">awburst[1:0]</obj_property>
+      <obj_property name="ObjectShortName">awburst[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/awvalid" type="logic">
+      <obj_property name="ElementShortName">awvalid</obj_property>
+      <obj_property name="ObjectShortName">awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/wid" type="array">
+      <obj_property name="ElementShortName">wid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">wid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/wdata" type="array">
+      <obj_property name="ElementShortName">wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/wstrb" type="array">
+      <obj_property name="ElementShortName">wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/wlast" type="logic">
+      <obj_property name="ElementShortName">wlast</obj_property>
+      <obj_property name="ObjectShortName">wlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/wvalid" type="logic">
+      <obj_property name="ElementShortName">wvalid</obj_property>
+      <obj_property name="ObjectShortName">wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/wready" type="logic">
+      <obj_property name="ElementShortName">wready</obj_property>
+      <obj_property name="ObjectShortName">wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/bid" type="array">
+      <obj_property name="ElementShortName">bid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">bid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/bresp" type="array">
+      <obj_property name="ElementShortName">bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/bvalid" type="logic">
+      <obj_property name="ElementShortName">bvalid</obj_property>
+      <obj_property name="ObjectShortName">bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/bready" type="logic">
+      <obj_property name="ElementShortName">bready</obj_property>
+      <obj_property name="ObjectShortName">bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_ar_transactions" type="array">
+      <obj_property name="ElementShortName">stat_ar_transactions[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_ar_transactions[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_r_beats" type="array">
+      <obj_property name="ElementShortName">stat_r_beats[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_r_beats[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_aw_transactions" type="array">
+      <obj_property name="ElementShortName">stat_aw_transactions[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_aw_transactions[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_w_beats" type="array">
+      <obj_property name="ElementShortName">stat_w_beats[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_w_beats[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/stat_b_responses" type="array">
+      <obj_property name="ElementShortName">stat_b_responses[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_b_responses[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/reference_memory" type="array">
+      <obj_property name="ElementShortName">reference_memory[0:31][31:0]</obj_property>
+      <obj_property name="ObjectShortName">reference_memory[0:31][31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/timeout_count" type="array">
+      <obj_property name="ElementShortName">timeout_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">timeout_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/refill_count" type="array">
+      <obj_property name="ElementShortName">refill_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">refill_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/store_count" type="array">
+      <obj_property name="ElementShortName">store_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">store_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_count" type="array">
+      <obj_property name="ElementShortName">maint_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">maint_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/way" type="array">
+      <obj_property name="ElementShortName">way[31:0]</obj_property>
+      <obj_property name="ObjectShortName">way[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/beat" type="array">
+      <obj_property name="ElementShortName">beat[31:0]</obj_property>
+      <obj_property name="ObjectShortName">beat[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/word_index" type="array">
+      <obj_property name="ElementShortName">word_index[31:0]</obj_property>
+      <obj_property name="ObjectShortName">word_index[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/tag_value" type="array">
+      <obj_property name="ElementShortName">tag_value[19:0]</obj_property>
+      <obj_property name="ObjectShortName">tag_value[19:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/store_addr" type="array">
+      <obj_property name="ElementShortName">store_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">store_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/store_value" type="array">
+      <obj_property name="ElementShortName">store_value[31:0]</obj_property>
+      <obj_property name="ObjectShortName">store_value[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/expected_line" type="array">
+      <obj_property name="ElementShortName">expected_line[255:0]</obj_property>
+      <obj_property name="ObjectShortName">expected_line[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/TEST_SET" type="array">
+      <obj_property name="ElementShortName">TEST_SET[6:0]</obj_property>
+      <obj_property name="ObjectShortName">TEST_SET[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/u_dcache/state" type="array">
+      <obj_property name="ElementShortName">state[3:0]</obj_property>
+      <obj_property name="ObjectShortName">state[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/u_dcache/req_addr" type="array">
+      <obj_property name="ElementShortName">req_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">req_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/u_dcache/victim_way" type="array">
+      <obj_property name="ElementShortName">victim_way[1:0]</obj_property>
+      <obj_property name="ObjectShortName">victim_way[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/u_dcache/maint_index" type="array">
+      <obj_property name="ElementShortName">maint_index[6:0]</obj_property>
+      <obj_property name="ObjectShortName">maint_index[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/u_dcache/maint_way" type="array">
+      <obj_property name="ElementShortName">maint_way[1:0]</obj_property>
+      <obj_property name="ObjectShortName">maint_way[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_req" type="logic">
+      <obj_property name="ElementShortName">cpu_req</obj_property>
+      <obj_property name="ObjectShortName">cpu_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_addr" type="array">
+      <obj_property name="ElementShortName">cpu_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/cpu_data_ok" type="logic">
+      <obj_property name="ElementShortName">cpu_data_ok</obj_property>
+      <obj_property name="ObjectShortName">cpu_data_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/refill_addr" type="array">
+      <obj_property name="ElementShortName">refill_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">refill_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/refill_data_valid" type="logic">
+      <obj_property name="ElementShortName">refill_data_valid</obj_property>
+      <obj_property name="ObjectShortName">refill_data_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/refill_data" type="array">
+      <obj_property name="ElementShortName">refill_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">refill_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_req" type="logic">
+      <obj_property name="ElementShortName">maint_req</obj_property>
+      <obj_property name="ObjectShortName">maint_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/maint_done" type="logic">
+      <obj_property name="ElementShortName">maint_done</obj_property>
+      <obj_property name="ObjectShortName">maint_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/awaddr" type="array">
+      <obj_property name="ElementShortName">awaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">awaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/awvalid" type="logic">
+      <obj_property name="ElementShortName">awvalid</obj_property>
+      <obj_property name="ObjectShortName">awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/awready" type="logic">
+      <obj_property name="ElementShortName">awready</obj_property>
+      <obj_property name="ObjectShortName">awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/wdata" type="array">
+      <obj_property name="ElementShortName">wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/wstrb" type="array">
+      <obj_property name="ElementShortName">wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/wvalid" type="logic">
+      <obj_property name="ElementShortName">wvalid</obj_property>
+      <obj_property name="ObjectShortName">wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/wready" type="logic">
+      <obj_property name="ElementShortName">wready</obj_property>
+      <obj_property name="ObjectShortName">wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/wlast" type="logic">
+      <obj_property name="ElementShortName">wlast</obj_property>
+      <obj_property name="ObjectShortName">wlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/bvalid" type="logic">
+      <obj_property name="ElementShortName">bvalid</obj_property>
+      <obj_property name="ObjectShortName">bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_dcache_writeback_scoreboard/bready" type="logic">
+      <obj_property name="ElementShortName">bready</obj_property>
+      <obj_property name="ObjectShortName">bready</obj_property>
+   </wvobject>
+</wave_config>
