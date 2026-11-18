@@ -120,6 +120,9 @@ switch ($Case) {
         } elseif ($Suite -eq 'index-contract') {
             $tclScript = Join-Path $PSScriptRoot 'run_unit.tcl'
             $tclArgs = @('lab19_index_contract', 'directed', $repoRoot, $runDir)
+        } elseif ($Suite -eq 'writeback-scoreboard') {
+            $tclScript = Join-Path $PSScriptRoot 'run_unit.tcl'
+            $tclArgs = @('lab19_writeback_scoreboard', 'directed', $repoRoot, $runDir)
         } elseif ($Suite -eq 'directed') {
             $tclScript = Join-Path $PSScriptRoot 'run_unit.tcl'
             $tclArgs = @('lab19_maint', 'directed', $repoRoot, $runDir)
@@ -136,7 +139,7 @@ switch ($Case) {
             $tclArgs = @($repoRoot, $runDir, 'coremark')
             $inputFiles = @((Join-Path $repoRoot 'lab19/perf_func/obj/coremark/axi_ram.coe'))
         } else {
-            throw "Lab19 supports Suite 'tlb-replay', 'redirect', 'index-contract', 'directed', 'cache', 'dhrystone', or 'coremark'."
+            throw "Lab19 supports Suite 'tlb-replay', 'redirect', 'index-contract', 'writeback-scoreboard', 'directed', 'cache', 'dhrystone', or 'coremark'."
         }
         if ($CaptureWaveform -and $Suite -ne 'cache') {
             Write-Host 'Lab19 performance images are long runs; waveform capture is retained for the compact seven-test CACHE run only.'

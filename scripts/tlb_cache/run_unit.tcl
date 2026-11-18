@@ -2,7 +2,7 @@
 # untouched; their legacy PLL is replaced only for cycle-based unit benches.
 # Usage: vivado -mode batch -source run_unit.tcl -tclargs <case> <suite> <repo-root> <run-dir>
 if {[llength $argv] != 4} {
-    error "usage: run_unit.tcl <lab13|lab16|lab17|lab18|lab18_fault|lab18_arb|lab18_mem|lab19_maint|lab19_index_contract|lab19_if_redirect|lab19_tlb_redirect> <directed|official> <repo-root> <run-dir>"
+    error "usage: run_unit.tcl <lab13|lab16|lab17|lab18|lab18_fault|lab18_arb|lab18_mem|lab19_maint|lab19_index_contract|lab19_writeback_scoreboard|lab19_if_redirect|lab19_tlb_redirect> <directed|official> <repo-root> <run-dir>"
 }
 set case [lindex $argv 0]
 set suite [lindex $argv 1]
@@ -66,6 +66,11 @@ if {$case eq "lab13"} {
         [glob [file join $repo lab19 cpu_cache rtl myCPU *.v]] \
         [list [file join $repo lab13 tlb_verify rtl tlb.v]]]
     set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_index_maint_contract.sv]
+} elseif {$case eq "lab19_writeback_scoreboard"} {
+    set rtl [list \
+        [file join $repo lab19 cpu_cache rtl myCPU dcache.v] \
+        [file join $repo lab19 cpu_cache rtl myCPU cache_axi3_bridge.v]]
+    set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_dcache_writeback_scoreboard.sv]
 } elseif {$case eq "lab19_if_redirect"} {
     set rtl [file join $repo lab19 cpu_cache rtl myCPU IF_stage.v]
     set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_if_redirect_directed.sv]
@@ -77,7 +82,7 @@ if {$case eq "lab13"} {
 } else {
     error "unsupported unit case: $case"
 }
-if {($case eq "lab17" || $case eq "lab18" || $case eq "lab18_fault" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect") && $suite ne "directed"} {
+if {($case eq "lab17" || $case eq "lab18" || $case eq "lab18_fault" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_writeback_scoreboard" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect") && $suite ne "directed"} {
     error "$case currently supports only its directed cache suite"
 }
 
@@ -115,7 +120,7 @@ if {$case eq "lab11_axi3" || $case eq "lab18_mem" || $case eq "lab19_index_contr
 }
 set_property xsim.simulate.log_all_signals true [get_filesets sim_1]
 set_property xsim.simulate.runtime 1000000ns [get_filesets sim_1]
-if {$case eq "lab17" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect"} {
+if {$case eq "lab17" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_writeback_scoreboard" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect"} {
     set wave_config_file [file join $run_dir wave-full.wcfg]
     set wave_hook_file [file join $run_dir wave-config-hook.tcl]
     set wave_log_file [file join $run_dir wave-config-hook.log]
@@ -143,6 +148,31 @@ if {$case eq "lab17" || $case eq "lab19_maint" || $case eq "lab19_index_contract
         /tb_lab19_maint_directed/u_dcache/dirty_way2 \
         /tb_lab19_maint_directed/u_dcache/dirty_way3 \
         /tb_lab19_maint_directed/u_dcache/maint_selected_dirty]
+    } elseif {$case eq "lab19_writeback_scoreboard"} {
+        set wave_objects [list \
+            /tb_lab19_dcache_writeback_scoreboard/u_dcache/state \
+            /tb_lab19_dcache_writeback_scoreboard/u_dcache/req_addr \
+            /tb_lab19_dcache_writeback_scoreboard/u_dcache/victim_way \
+            /tb_lab19_dcache_writeback_scoreboard/u_dcache/maint_index \
+            /tb_lab19_dcache_writeback_scoreboard/u_dcache/maint_way \
+            /tb_lab19_dcache_writeback_scoreboard/cpu_req \
+            /tb_lab19_dcache_writeback_scoreboard/cpu_addr \
+            /tb_lab19_dcache_writeback_scoreboard/cpu_data_ok \
+            /tb_lab19_dcache_writeback_scoreboard/refill_addr \
+            /tb_lab19_dcache_writeback_scoreboard/refill_data_valid \
+            /tb_lab19_dcache_writeback_scoreboard/refill_data \
+            /tb_lab19_dcache_writeback_scoreboard/maint_req \
+            /tb_lab19_dcache_writeback_scoreboard/maint_done \
+            /tb_lab19_dcache_writeback_scoreboard/awaddr \
+            /tb_lab19_dcache_writeback_scoreboard/awvalid \
+            /tb_lab19_dcache_writeback_scoreboard/awready \
+            /tb_lab19_dcache_writeback_scoreboard/wdata \
+            /tb_lab19_dcache_writeback_scoreboard/wstrb \
+            /tb_lab19_dcache_writeback_scoreboard/wvalid \
+            /tb_lab19_dcache_writeback_scoreboard/wready \
+            /tb_lab19_dcache_writeback_scoreboard/wlast \
+            /tb_lab19_dcache_writeback_scoreboard/bvalid \
+            /tb_lab19_dcache_writeback_scoreboard/bready]
     } elseif {$case eq "lab19_tlb_redirect"} {
         set wave_objects [list \
             /tb_lab19_tlb_redirect_contract/dut/tlb_write_enable \
@@ -284,6 +314,8 @@ if {$suite eq "directed"} {
         set pass_marker "LAB19_MAINT_DIRECTED_PASS"
     } elseif {$case eq "lab19_index_contract"} {
         set pass_marker "LAB19_INDEX_CONTRACT_PASS"
+} elseif {$case eq "lab19_writeback_scoreboard"} {
+    set pass_marker "LAB19_DCache_WRITEBACK_SCOREBOARD_PASS"
     } elseif {$case eq "lab19_if_redirect"} {
         set pass_marker "LAB19_IF_REDIRECT_PASS"
     } elseif {$case eq "lab19_tlb_redirect"} {
@@ -425,6 +457,23 @@ if {$case eq "lab19_index_contract"} {
     } {
         if {[string first $marker $sim_text] < 0} {
             error "Lab19 index-maintenance contract test missed required marker: $marker"
+        }
+    }
+}
+if {$case eq "lab19_writeback_scoreboard"} {
+    foreach marker {
+        "CPU_STORE_WAY_PASS way=0"
+        "CPU_STORE_WAY_PASS way=1"
+        "CPU_STORE_WAY_PASS way=2"
+        "CPU_STORE_WAY_PASS way=3"
+        "WRITEBACK_WAY_PASS way=0"
+        "WRITEBACK_WAY_PASS way=1"
+        "WRITEBACK_WAY_PASS way=2"
+        "WRITEBACK_WAY_PASS way=3"
+        "LAB19_DCache_WRITEBACK_SCOREBOARD_PASS ways=4 cpu_stores=4 refills=4 AW=4 W=32 B=4 full_data_compare=1 backpressure=stable"
+    } {
+        if {[string first $marker $sim_text] < 0} {
+            error "Lab19 DCache writeback scoreboard missed required marker: $marker"
         }
     }
 }
