@@ -1,0 +1,19 @@
+RUN_ID=lab17-baseline-functional-20261118-01
+CASE=lab17
+SUITE=lab17_baseline
+STATUS=PASS
+SIM_TOP=tb_lab17_baseline
+PASS_MARKER=LAB17_BASELINE_FUNCTIONAL_PASS score=94/94
+TESTPOINTS=94
+CACHE_STATS=ic_hit=0 ic_miss=0 ic_refill=0 ic_uncache_read=172900
+AXI_METRICS=ar=177518 r=177518 aw=3752 w=3752 b=3752
+STORE_COUNTS=accepted=3752 completed=3752 duplicate_store=0
+FUNCTIONAL_CYCLES=1402080
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab17/lab17-baseline-functional-20261118-01/project/lab17_baseline_soc.xpr
+PROGRAM_IMAGE=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab17/func_all94/obj/inst_ram.coe
+WAVEFORM=OMITTED_FUNCTIONAL_RUN_USE_DIRECTED_WAVEFORM
+SIMULATOR_CPU_MS=251999
+SOURCE_INTEGRITY=PASS
+SOURCE_MANIFEST=source-manifest.csv
+INPUT_MANIFEST=input_manifest.csv
+GIT_HEAD=e3266752b0867826b137223afbd6e7338108a798

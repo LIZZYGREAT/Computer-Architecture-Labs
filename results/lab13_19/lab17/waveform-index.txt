@@ -1,0 +1,12 @@
+Run: lab17-bridge-directed-20261118-06
+Waveform: lab17-bridge-directed-20261118-06/wave-full.wdb
+Vivado %t values below are printed in ps; nanoseconds are shown for navigation.
+
+1,640,000 ps (1,640 ns)  ICACHE_8_BEAT_REFILL_AND_DATA_ARBITRATION
+1,670,000 ps (1,670 ns)  ICACHE_SAME_LINE_HIT
+1,870,000 ps (1,870 ns)  KSEG1_UNCACHE_SINGLE_BEAT
+2,010,000 ps (2,010 ns)  DIRTY_WRITEBACK_8_BEATS_AND_B
+2,070,000 ps (2,070 ns)  UNCACHE_STORE_AW_W_INDEPENDENT
+2,160,000 ps (2,160 ns)  RID_MISMATCH_STICKY_AXI_FAULT
+
+See the run's simulate.log for exact marker spelling and the accepted/completed counts.

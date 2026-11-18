@@ -1,7 +1,7 @@
-# Create and run an isolated Lab14 or Lab11 CPU SoC regression project.
-# Usage: vivado -mode batch -source run_soc.tcl -tclargs <repo-root> <run-dir> ?lab14|lab11_trace?
+# Create and run an isolated CPU SoC regression project.
+# Usage: vivado -mode batch -source run_soc.tcl -tclargs <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline?
 if {[llength $argv] < 2 || [llength $argv] > 3} {
-    error "usage: run_soc.tcl <repo-root> <run-dir> ?lab14|lab11_trace?"
+    error "usage: run_soc.tcl <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline?"
 }
 
 set repo [file normalize [lindex $argv 0]]
@@ -40,6 +40,13 @@ if {$suite eq "lab14"} {
     set tb_out [open $testbench w]
     puts -nonewline $tb_out $tb_text
     close $tb_out
+} elseif {$suite eq "lab17" || $suite eq "lab17_baseline"} {
+    set cpu_root [file join $repo lab17 cpu_icache]
+    set coe_file [file join $repo lab17 func_all94 obj inst_ram.coe]
+    set testbench [file join $cpu_root testbench tb_lab17_functional.sv]
+    set sim_top [expr {$suite eq "lab17" ? "tb_lab17_icache" : "tb_lab17_baseline"}]
+    set sim_runtime 250000000ns
+    set trace_file ""
 } else {
     error "unsupported SoC regression suite: $suite"
 }
@@ -73,7 +80,11 @@ foreach source_ip $ip_files {
         set xci_in [open $staged_ip r]
         set xci_text [read $xci_in]
         close $xci_in
-        set relative_coe "../../../../tlb_func/obj/inst_ram.coe"
+        if {$suite eq "lab17" || $suite eq "lab17_baseline"} {
+            set relative_coe "../../../../func_all94/obj/inst_ram.coe"
+        } else {
+            set relative_coe "../../../../tlb_func/obj/inst_ram.coe"
+        }
         if {[string first $relative_coe $xci_text] < 0} {
             error "COE reference not found in staged axi_ram XCI"
         }
@@ -115,7 +126,7 @@ set project_xpr [file join $project_dir ${project_name}.xpr]
 set active_path [file join $run_dir active-sources.txt]
 set active_file [open $active_path w]
 puts $active_file "PROJECT_XPR=$project_xpr"
-foreach f [concat $cpu_rtl $common_rtl $ip_files [list $include_header $coe_file $tlb_rtl]] {
+foreach f [concat $cpu_rtl $common_rtl $staged_ip_files [list $include_header $coe_file $tlb_rtl]] {
     puts $active_file "SOURCE=$f"
 }
 if {$suite eq "lab11_trace"} {
@@ -128,6 +139,8 @@ close $active_file
 
 if {$suite eq "lab14"} {
     puts "CASE=lab14"
+} elseif {$suite eq "lab17" || $suite eq "lab17_baseline"} {
+    puts "CASE=lab17"
 } else {
     puts "CASE=lab11"
 }
@@ -158,7 +171,7 @@ if {$suite eq "lab14"} {
     if {[string first $pass_marker $sim_text] < 0} {
         error "Lab14 simulation missed n1-n6 PASS marker; inspect $sim_log"
     }
-} else {
+} elseif {$suite eq "lab11_trace"} {
     set case_name lab11
     set pass_marker "COURSE_SOC_PASS"
     if {[regexp -nocase {COURSE_SOC_FAIL=|Fail!!!Total|Fatal:|ERROR:|Error:} $sim_text]} {
@@ -168,6 +181,32 @@ if {$suite eq "lab14"} {
         if {[string first $marker $sim_text] < 0} {
             error "Lab11 golden-trace regression missed marker $marker; inspect $sim_log"
         }
+    }
+} else {
+    set case_name lab17
+    if {$suite eq "lab17"} {
+        set pass_marker "LAB17_ICACHE_FUNCTIONAL_PASS score=94/94"
+    } else {
+        set pass_marker "LAB17_BASELINE_FUNCTIONAL_PASS score=94/94"
+    }
+    if {[regexp -nocase {LAB17_FAIL=|Fatal:|ERROR:|Error:} $sim_text]} {
+        error "Lab17 functional regression reported a failure; inspect $sim_log"
+    }
+    if {[regexp -all {LAB17_TESTPOINT=} $sim_text] != 94} {
+        error "Lab17 functional regression expected 94 ordered score points; inspect $sim_log"
+    }
+    foreach marker [list $pass_marker "CACHE_STATS " "AXI_METRICS " "STORE_COUNTS accepted="] {
+        if {[string first $marker $sim_text] < 0} {
+            error "Lab17 functional regression missed required marker $marker; inspect $sim_log"
+        }
+    }
+    if {![regexp {STORE_COUNTS accepted=([0-9]+) completed=([0-9]+) duplicate_store=0} $sim_text -> accepted_stores completed_stores] ||
+        $accepted_stores != $completed_stores} {
+        error "Lab17 store completion accounting is inconsistent; inspect $sim_log"
+    }
+    if {![regexp {AXI_METRICS ar=([0-9]+) r=([0-9]+) aw=([0-9]+) w=([0-9]+) b=([0-9]+)} $sim_text -> ar_count r_count aw_count w_count b_count] ||
+        $r_count < $ar_count || $aw_count != $b_count || $aw_count != $w_count} {
+        error "Lab17 AXI transaction/beat metrics are inconsistent; inspect $sim_log"
     }
 }
 
@@ -196,7 +235,7 @@ puts $result "PASS_MARKER=$pass_marker"
 if {$suite eq "lab14"} {
     puts $result "TESTPOINTS=6"
     puts $result "TLB_OP_COMMIT=MEM"
-} else {
+} elseif {$suite eq "lab11_trace"} {
     puts $result "TRACE_REFERENCE=$trace_file"
     set testpoint_count [regexp -all {Functional Test Point PASS!!!} $sim_text]
     puts $result "TESTPOINTS=$testpoint_count"
@@ -207,6 +246,20 @@ if {$suite eq "lab14"} {
     if {[regexp {BUS_METRICS ([^\r\n]+)} $sim_text -> bus_metrics]} {
         puts $result "BUS_METRICS=$bus_metrics"
     }
+} else {
+    puts $result "TESTPOINTS=94"
+    if {[regexp {CACHE_STATS ([^\r\n]+)} $sim_text -> cache_metrics]} {
+        puts $result "CACHE_STATS=$cache_metrics"
+    }
+    if {[regexp {AXI_METRICS ([^\r\n]+)} $sim_text -> axi_metrics]} {
+        puts $result "AXI_METRICS=$axi_metrics"
+    }
+    if {[regexp {STORE_COUNTS ([^\r\n]+)} $sim_text -> store_metrics]} {
+        puts $result "STORE_COUNTS=$store_metrics"
+    }
+    if {[regexp {cycles=([0-9]+)} $sim_text -> functional_cycles]} {
+        puts $result "FUNCTIONAL_CYCLES=$functional_cycles"
+    }
 }
 puts $result "PROJECT_XPR=$project_xpr"
 puts $result "PROGRAM_IMAGE=$coe_file"
@@ -214,6 +267,8 @@ if {$suite eq "lab14" && [file isfile [file join $run_dir wave-full.wdb]]} {
     puts $result "WAVEFORM=wave-full.wdb"
 } elseif {$suite eq "lab11_trace"} {
     puts $result "WAVEFORM=OMITTED_LONG_RUN"
+} elseif {$suite eq "lab17" || $suite eq "lab17_baseline"} {
+    puts $result "WAVEFORM=OMITTED_FUNCTIONAL_RUN_USE_DIRECTED_WAVEFORM"
 } else {
     puts $result "WAVEFORM=NOT_CAPTURED"
 }

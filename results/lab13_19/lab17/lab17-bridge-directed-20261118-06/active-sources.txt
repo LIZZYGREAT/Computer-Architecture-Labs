@@ -1,0 +1,4 @@
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab17/lab17-bridge-directed-20261118-06/project/lab17_directed.xpr
+SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab17/cpu_icache/rtl/myCPU/icache.v
+SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab17/cpu_icache/rtl/myCPU/cache_axi3_bridge.v
+SIM_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab17/cpu_icache/testbench/tb_lab17_icache_directed.sv

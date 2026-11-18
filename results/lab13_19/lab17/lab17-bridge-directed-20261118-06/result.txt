@@ -1,0 +1,15 @@
+RUN_ID=lab17-bridge-directed-20261118-06
+CASE=lab17
+SUITE=directed
+STATUS=PASS
+SIM_TOP=tb_lab17_icache_directed
+PASS_MARKER=DIRECTED_PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab17/lab17-bridge-directed-20261118-06/project/lab17_directed.xpr
+WAVEFORM=wave-full.wdb
+DIRECTED_CHECKS=24
+DIRECTED_COUNTS_VALID=cpu=4/4 data=2/2 writeback=1/1
+DIRECTED_FAULT_INJECTION=RID_MISMATCH accepted=1 completed=0 expected_pending=1 axi_fault=1
+SOURCE_INTEGRITY=PASS
+SOURCE_MANIFEST=source-manifest.csv
+INPUT_MANIFEST=input_manifest.csv
+GIT_HEAD=e3266752b0867826b137223afbd6e7338108a798

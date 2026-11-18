@@ -2,7 +2,7 @@
 # untouched; their legacy PLL is replaced only for cycle-based unit benches.
 # Usage: vivado -mode batch -source run_unit.tcl -tclargs <case> <suite> <repo-root> <run-dir>
 if {[llength $argv] != 4} {
-    error "usage: run_unit.tcl <lab13|lab16> <directed|official> <repo-root> <run-dir>"
+    error "usage: run_unit.tcl <lab13|lab16|lab17> <directed|official> <repo-root> <run-dir>"
 }
 set case [lindex $argv 0]
 set suite [lindex $argv 1]
@@ -36,8 +36,16 @@ if {$case eq "lab13"} {
         [file join $repo lab14 cpu_tlb rtl myCPU IF_stage.v] \
         [file join $repo lab14 cpu_tlb rtl myCPU axi3_cpu_bus.v]]
     set directed_tb [file join $repo lab14 cpu_tlb testbench tb_lab11_axi3_bus.sv]
+} elseif {$case eq "lab17"} {
+    set rtl [list \
+        [file join $repo lab17 cpu_icache rtl myCPU icache.v] \
+        [file join $repo lab17 cpu_icache rtl myCPU cache_axi3_bridge.v]]
+    set directed_tb [file join $repo lab17 cpu_icache testbench tb_lab17_icache_directed.sv]
 } else {
     error "unsupported unit case: $case"
+}
+if {$case eq "lab17" && $suite ne "directed"} {
+    error "Lab17 currently supports only its directed bridge/cache suite"
 }
 
 foreach rtl_file $rtl {
@@ -105,6 +113,8 @@ if {$suite eq "directed"} {
         set pass_marker "LAB14_TRANSLATE_PASS"
     } elseif {$case eq "lab11_axi3"} {
         set pass_marker "LAB11_AXI3_BUS_PASS"
+    } elseif {$case eq "lab17"} {
+        set pass_marker "DIRECTED_PASS"
     } else {
         set pass_marker "DIRECTED_PASS"
     }
@@ -140,6 +150,24 @@ if {$suite eq "directed"} {
     foreach failure_marker {"replace wrong at" "cacheres wrong at"} {
         if {[string first $failure_marker $sim_text] >= 0} {
             error "official Lab16 simulation reported: $failure_marker"
+        }
+    }
+}
+if {$case eq "lab17"} {
+    foreach marker {
+        "DIRECTED_CHECKS=24"
+        "DIRECTED_COUNTS_VALID cpu=4/4 data=2/2 writeback=1/1"
+        "DIRECTED_FAULT_INJECTION=RID_MISMATCH accepted=1 completed=0 expected_pending=1 axi_fault=1"
+        "WAVE_CASE=ICACHE_8_BEAT_REFILL_AND_DATA_ARBITRATION"
+        "WAVE_CASE=ICACHE_SAME_LINE_HIT"
+        "WAVE_CASE=KSEG1_UNCACHE_SINGLE_BEAT"
+        "WAVE_CASE=DIRTY_WRITEBACK_8_BEATS_AND_B"
+        "WAVE_CASE=UNCACHE_STORE_AW_W_INDEPENDENT"
+        "WAVE_CASE=RID_MISMATCH_STICKY_AXI_FAULT"
+        "DIRECTED_PASS"
+    } {
+        if {[string first $marker $sim_text] < 0} {
+            error "Lab17 directed test missed required marker: $marker"
         }
     }
 }
@@ -188,6 +216,12 @@ puts $result "PROJECT_XPR=[file join $project_dir ${project_name}.xpr]"
 puts $result "WAVEFORM=[expr {[file isfile [file join $run_dir wave-full.wdb]] ? "wave-full.wdb" : "NOT_CAPTURED"}]"
 if {$suite eq "directed" && [regexp {DIRECTED_CHECKS=([0-9]+)} $sim_text -> check_count]} {
     puts $result "DIRECTED_CHECKS=$check_count"
+}
+if {$case eq "lab17" && [regexp {DIRECTED_COUNTS_VALID ([^\r\n]+)} $sim_text -> directed_counts]} {
+    puts $result "DIRECTED_COUNTS_VALID=$directed_counts"
+}
+if {$case eq "lab17" && [regexp {DIRECTED_FAULT_INJECTION=([^\r\n]+)} $sim_text -> fault_injection]} {
+    puts $result "DIRECTED_FAULT_INJECTION=$fault_injection"
 }
 if {$suite eq "official" && $case eq "lab13"} {
     puts $result "OFFICIAL_WRITE=PASS"
