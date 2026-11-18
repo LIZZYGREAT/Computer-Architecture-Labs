@@ -1,7 +1,7 @@
 # Create and run an isolated CPU SoC regression project.
-# Usage: vivado -mode batch -source run_soc.tcl -tclargs <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline|lab18|lab19|lab19_all94|dhrystone|coremark?
+# Usage: vivado -mode batch -source run_soc.tcl -tclargs <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline|lab18|lab19|lab19_all94|lab19_tlbwi_e2e|dhrystone|coremark?
 if {[llength $argv] < 2 || [llength $argv] > 3} {
-    error "usage: run_soc.tcl <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline|lab18|lab19|lab19_all94|dhrystone|coremark?"
+    error "usage: run_soc.tcl <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline|lab18|lab19|lab19_all94|lab19_tlbwi_e2e|dhrystone|coremark?"
 }
 
 set repo [file normalize [lindex $argv 0]]
@@ -68,6 +68,13 @@ if {$suite eq "lab14"} {
     set sim_top tb_lab19_all94
     set sim_runtime 250000000ns
     set trace_file ""
+} elseif {$suite eq "lab19_tlbwi_e2e"} {
+    set cpu_root [file join $repo lab19 cpu_cache]
+    set coe_file [file join $cpu_root testbench tlbwi_e2e.coe]
+    set testbench [file join $cpu_root testbench tb_lab19_tlbwi_end_to_end.sv]
+    set sim_top tb_lab19_tlbwi_end_to_end
+    set sim_runtime 5000000ns
+    set trace_file ""
 } elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
     set cpu_root [file join $repo lab19 cpu_cache]
     set coe_file [file join $repo lab19 perf_func obj $suite axi_ram.coe]
@@ -110,7 +117,7 @@ foreach source_ip $ip_files {
         close $xci_in
         if {$suite eq "lab17" || $suite eq "lab17_baseline" || $suite eq "lab18"} {
             set relative_coe "../../../../func_all94/obj/inst_ram.coe"
-        } elseif {$suite eq "lab19" || $suite eq "lab19_all94"} {
+        } elseif {$suite eq "lab19" || $suite eq "lab19_all94" || $suite eq "lab19_tlbwi_e2e"} {
             set relative_coe "../../../../func_all94/obj/inst_ram.coe"
         } elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
             set relative_coe "../../../../func_all94/obj/inst_ram.coe"
@@ -320,6 +327,26 @@ if {$suite eq "lab14"} {
         $r_count < $ar_count || $aw_count != $b_count || $w_count < $aw_count} {
         error "Lab19 all94 AXI transaction/beat metrics are inconsistent; inspect $sim_log"
     }
+} elseif {$suite eq "lab19_tlbwi_e2e"} {
+    set case_name lab19
+    set pass_marker "LAB19_TLBWI_E2E_PASS"
+    if {[regexp -nocase {LAB19_TLBWI_E2E_FAIL=|Fatal:|ERROR:|Error:} $sim_text]} {
+        error "Lab19 software TLBWI regression reported a failure; inspect $sim_log"
+    }
+    foreach marker [list \
+        "LAB19_TLBWI_ARCH_COMMIT_PASS commits=1 index=0 va=00400000 pfn=00000" \
+        "LAB19_TLBWI_MAPPED_FETCH_PASS va=00400100 pa=00000100 target_wb=00400100" \
+        "TLBWI_ARCH_SCOPE=software_mtc0_entryhi_entrylo_index_then_tlbwi_commit_then_translated_if_fetch" \
+        "TLB_REPLAY_SCOPE=stale_outstanding_response_is_separately_checked_by_forced_event_crosscheck" \
+        $pass_marker] {
+        if {[string first $marker $sim_text] < 0} {
+            error "Lab19 software TLBWI regression missed required marker $marker; inspect $sim_log"
+        }
+    }
+    if {[regexp -all {LAB19_TLBWI_COMMIT_OBSERVED} $sim_text] != 1 ||
+        [regexp -all {LAB19_TLBWI_MAPPED_FETCH va=} $sim_text] < 1} {
+        error "Lab19 software TLBWI commit/fetch accounting is inconsistent; inspect $sim_log"
+    }
 } elseif {$suite eq "lab19"} {
     set case_name lab19
     set pass_marker "LAB19_CACHE_FUNCTIONAL_PASS score=7/7"
@@ -475,6 +502,11 @@ if {$suite eq "lab14"} {
     if {[regexp {cycles=([0-9]+)} $sim_text -> functional_cycles]} {
         puts $result "FUNCTIONAL_CYCLES=$functional_cycles"
     }
+} elseif {$suite eq "lab19_tlbwi_e2e"} {
+    puts $result "TLBWI_COMMITS=1"
+    puts $result "MAPPED_FETCH=va=00400100,pa=00000100,target_wb=00400100"
+    puts $result "ARCHITECTURAL_SCOPE=software mtc0 EntryHi/EntryLo/Index + tlbwi commit + translated IF fetch"
+    puts $result "REPLAY_SCOPE=separate forced-event stale-response crosscheck"
 } elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
     puts $result "PROGRAM=$suite"
     if {[regexp {PERF_METRICS ([^\r\n]+)} $sim_text -> perf_metrics]} {

@@ -115,6 +115,10 @@ switch ($Case) {
             $tclScript = Join-Path $PSScriptRoot 'run_soc.tcl'
             $tclArgs = @($repoRoot, $runDir, 'lab19_all94')
             $inputFiles = @((Join-Path $repoRoot 'lab17/func_all94/obj/inst_ram.coe'))
+        } elseif ($Suite -eq 'tlbwi-e2e') {
+            $tclScript = Join-Path $PSScriptRoot 'run_soc.tcl'
+            $tclArgs = @($repoRoot, $runDir, 'lab19_tlbwi_e2e')
+            $inputFiles = @((Join-Path $repoRoot 'lab19/cpu_cache/testbench/tlbwi_e2e.coe'))
         } elseif ($Suite -eq 'tlb-replay') {
             $tclScript = Join-Path $PSScriptRoot 'run_unit.tcl'
             $tclArgs = @('lab19_tlb_redirect', 'directed', $repoRoot, $runDir)
@@ -143,7 +147,7 @@ switch ($Case) {
             $tclArgs = @($repoRoot, $runDir, 'coremark')
             $inputFiles = @((Join-Path $repoRoot 'lab19/perf_func/obj/coremark/axi_ram.coe'))
         } else {
-            throw "Lab19 supports Suite 'all94', 'tlb-replay', 'redirect', 'index-contract', 'writeback-scoreboard', 'directed', 'cache', 'dhrystone', or 'coremark'."
+            throw "Lab19 supports Suite 'all94', 'tlbwi-e2e', 'tlb-replay', 'redirect', 'index-contract', 'writeback-scoreboard', 'directed', 'cache', 'dhrystone', or 'coremark'."
         }
         if ($CaptureWaveform -and $Suite -ne 'cache') {
             Write-Host 'Lab19 performance images are long runs; waveform capture is retained for the compact seven-test CACHE run only.'

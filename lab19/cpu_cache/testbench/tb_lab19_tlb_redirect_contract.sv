@@ -162,6 +162,8 @@ module tb_lab19_tlb_redirect_contract;
             $fatal(1, "TLB_REPLAY_FAIL=new_mapping_not_used");
         $display("IF_TLB_REPLAY_PASS old_pa=%08x new_pa=%08x old_stale_dropped=1 replay_pc=%08x",
                  {OLD_PFN, TEST_VADDR[11:0]}, {NEW_PFN, TEST_VADDR[11:0]}, TEST_VADDR);
+        $display("LAB19_TLB_REPLAY_CROSSCHECK_PASS old_pa=%08x new_pa=%08x force_based=1 old_stale_dropped=1",
+                 {OLD_PFN, TEST_VADDR[11:0]}, {NEW_PFN, TEST_VADDR[11:0]});
         $display("LAB19_TLB_REDIRECT_PASS checks=3");
         $finish;
     end

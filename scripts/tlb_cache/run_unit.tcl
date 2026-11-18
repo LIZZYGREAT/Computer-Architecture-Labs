@@ -494,6 +494,7 @@ if {$case eq "lab19_if_redirect"} {
 if {$case eq "lab19_tlb_redirect"} {
     foreach marker {
         "IF_TLB_REPLAY_PASS old_pa=abcde100 new_pa=12345100 old_stale_dropped=1 replay_pc=00402100"
+        "LAB19_TLB_REPLAY_CROSSCHECK_PASS old_pa=abcde100 new_pa=12345100 force_based=1 old_stale_dropped=1"
         "LAB19_TLB_REDIRECT_PASS checks=3"
     } {
         if {[string first $marker $sim_text] < 0} {
