@@ -1,0 +1,9 @@
+results/lab13-lab19/lab19/r3l19-synthesis-*/*.log -text -whitespace
+results/lab13-lab19/lab19/r3l19-synthesis-*/**/*.log -text -whitespace
+results/lab13-lab19/lab19/r3l19-synthesis-*/*.jou -text -whitespace
+results/lab13-lab19/lab19/r3l19-synthesis-*/**/*.jou -text -whitespace
+results/lab13-lab19/lab19/r3l19-synthesis-*/*.rpt -text -whitespace
+results/lab13-lab19/lab19/r3l19-synthesis-*/**/*.rpt -text -whitespace
+results/lab13-lab19/lab19/r3l19-synthesis-*/**/*.xci -text -whitespace
+results/lab13-lab19/lab19/r3l19-synthesis-*/**/*.xpr -text -whitespace
+results/lab13-lab19/lab19/r3l19-synthesis-*/**/*.dcp -text -diff

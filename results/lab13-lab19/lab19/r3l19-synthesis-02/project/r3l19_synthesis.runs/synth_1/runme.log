@@ -1,0 +1,778 @@
+
+*** Running vivado
+    with args -log soc_axi_lite_top.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source soc_axi_lite_top.tcl
+
+
+
+****** Vivado v2025.2 (64-bit)
+  **** SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+  **** IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+  **** SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+  **** Start of session at: Thu Nov 19 02:22:06 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source soc_axi_lite_top.tcl -notrace
+create_project: Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 527.297 ; gain = 220.344
+Command: synth_design -top soc_axi_lite_top -part xc7a200tfbg676-2
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a200t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a200t'
+INFO: [Device 21-403] Loading part xc7a200tfbg676-2
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 23832
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1325.543 ; gain = 541.141
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'soc_axi_lite_top' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/soc_axi_lite_top.v:65]
+INFO: [Synth 8-6157] synthesizing module 'clk_pll' [C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/project/r3l19_synthesis.runs/synth_1/.Xil/Vivado-1804-LAPTOP-VTCMVS9N/realtime/clk_pll_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'clk_pll' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/project/r3l19_synthesis.runs/synth_1/.Xil/Vivado-1804-LAPTOP-VTCMVS9N/realtime/clk_pll_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'mycpu_top' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/mycpu_top.v:3]
+	Parameter ICACHE_ENABLE bound to: 1'b1 
+	Parameter DCACHE_ENABLE bound to: 1'b1 
+INFO: [Synth 8-6157] synthesizing module 'addr_translate' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/addr_translate.v:5]
+INFO: [Synth 8-6155] done synthesizing module 'addr_translate' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/addr_translate.v:5]
+INFO: [Synth 8-6157] synthesizing module 'cp0_reg' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cp0_reg.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'cp0_reg' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cp0_reg.v:1]
+INFO: [Synth 8-6157] synthesizing module 'tlb' [C:/Users/lenovo/Desktop/Projects/FPGA/lab13/tlb_verify/rtl/tlb.v:4]
+	Parameter TLBNUM bound to: 16 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'tlb' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab13/tlb_verify/rtl/tlb.v:4]
+INFO: [Synth 8-6157] synthesizing module 'if_stage' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/IF_stage.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'if_stage' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/IF_stage.v:3]
+INFO: [Synth 8-6157] synthesizing module 'id_stage' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/ID_stage.v:3]
+	Parameter PIPELINE_FORWARDING bound to: 1'b1 
+INFO: [Synth 8-6157] synthesizing module 'decoder_6_64' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/tools.v:14]
+INFO: [Synth 8-6155] done synthesizing module 'decoder_6_64' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/tools.v:14]
+INFO: [Synth 8-6157] synthesizing module 'decoder_5_32' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/tools.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'decoder_5_32' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/tools.v:1]
+INFO: [Synth 8-6157] synthesizing module 'regfile' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/regfile.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'regfile' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/regfile.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'id_stage' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/ID_stage.v:3]
+INFO: [Synth 8-6157] synthesizing module 'exe_stage' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/EXE_stage.v:3]
+INFO: [Synth 8-6157] synthesizing module 'hilo_unit' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/hilo_unit.v:3]
+INFO: [Synth 8-6157] synthesizing module 'lab6_mult33' [C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/project/r3l19_synthesis.runs/synth_1/.Xil/Vivado-1804-LAPTOP-VTCMVS9N/realtime/lab6_mult33_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'lab6_mult33' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/project/r3l19_synthesis.runs/synth_1/.Xil/Vivado-1804-LAPTOP-VTCMVS9N/realtime/lab6_mult33_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'lab6_div32' [C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/project/r3l19_synthesis.runs/synth_1/.Xil/Vivado-1804-LAPTOP-VTCMVS9N/realtime/lab6_div32_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'lab6_div32' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/project/r3l19_synthesis.runs/synth_1/.Xil/Vivado-1804-LAPTOP-VTCMVS9N/realtime/lab6_div32_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'hilo_unit' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/hilo_unit.v:3]
+INFO: [Synth 8-6157] synthesizing module 'alu' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/alu.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'alu' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/alu.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'exe_stage' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/EXE_stage.v:3]
+INFO: [Synth 8-6157] synthesizing module 'mem_stage' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/MEM_stage.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'mem_stage' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/MEM_stage.v:3]
+INFO: [Synth 8-6157] synthesizing module 'wb_stage' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/WB_stage.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'wb_stage' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/WB_stage.v:3]
+INFO: [Synth 8-6157] synthesizing module 'icache' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:2]
+WARNING: [Synth 8-589] replacing case/wildcard equality operator !== with logical equality operator != [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:312]
+INFO: [Synth 8-6155] done synthesizing module 'icache' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:2]
+INFO: [Synth 8-6157] synthesizing module 'dcache' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:2]
+WARNING: [Synth 8-589] replacing case/wildcard equality operator !== with logical equality operator != [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:567]
+INFO: [Synth 8-6155] done synthesizing module 'dcache' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:2]
+INFO: [Synth 8-6157] synthesizing module 'cache_axi3_bridge' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cache_axi3_bridge.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'cache_axi3_bridge' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cache_axi3_bridge.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'mycpu_top' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/mycpu_top.v:3]
+INFO: [Synth 8-6157] synthesizing module 'axi_wrap' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/axi_wrap/axi_wrap.v:34]
+INFO: [Synth 8-6155] done synthesizing module 'axi_wrap' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/axi_wrap/axi_wrap.v:34]
+INFO: [Synth 8-6157] synthesizing module 'axi_crossbar_1x2' [C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/project/r3l19_synthesis.runs/synth_1/.Xil/Vivado-1804-LAPTOP-VTCMVS9N/realtime/axi_crossbar_1x2_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'axi_crossbar_1x2' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/project/r3l19_synthesis.runs/synth_1/.Xil/Vivado-1804-LAPTOP-VTCMVS9N/realtime/axi_crossbar_1x2_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'axi_wrap_ram' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/ram_wrap/axi_wrap_ram.v:36]
+INFO: [Synth 8-6157] synthesizing module 'axi_ram' [C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/project/r3l19_synthesis.runs/synth_1/.Xil/Vivado-1804-LAPTOP-VTCMVS9N/realtime/axi_ram_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'axi_ram' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/project/r3l19_synthesis.runs/synth_1/.Xil/Vivado-1804-LAPTOP-VTCMVS9N/realtime/axi_ram_stub.v:6]
+WARNING: [Synth 8-7071] port 'rsta_busy' of module 'axi_ram' is unconnected for instance 'ram' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/ram_wrap/axi_wrap_ram.v:206]
+WARNING: [Synth 8-7071] port 'rstb_busy' of module 'axi_ram' is unconnected for instance 'ram' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/ram_wrap/axi_wrap_ram.v:206]
+WARNING: [Synth 8-7023] instance 'ram' of module 'axi_ram' has 33 connections declared, but only 31 given [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/ram_wrap/axi_wrap_ram.v:206]
+INFO: [Synth 8-6155] done synthesizing module 'axi_wrap_ram' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/ram_wrap/axi_wrap_ram.v:36]
+INFO: [Synth 8-6157] synthesizing module 'confreg' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/CONFREG/confreg.v:73]
+	Parameter SIMULATION bound to: 1'b0 
+INFO: [Synth 8-6155] done synthesizing module 'confreg' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/CONFREG/confreg.v:73]
+INFO: [Synth 8-6155] done synthesizing module 'soc_axi_lite_top' (0#1) [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/soc_axi_lite_top.v:65]
+WARNING: [Synth 8-6014] Unused sequential element maint_selected_valid_reg was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:311]
+WARNING: [Synth 8-6014] Unused sequential element maint_selected_dirty_reg was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:312]
+WARNING: [Synth 8-3936] Found unconnected internal register 'chosen_tag_reg' and it is trimmed from '32' to '20' bits. [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:133]
+WARNING: [Synth 8-6014] Unused sequential element pf_r2r_reg was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/ram_wrap/axi_wrap_ram.v:106]
+WARNING: [Synth 8-6014] Unused sequential element pf_b2b_reg was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/ram_wrap/axi_wrap_ram.v:107]
+WARNING: [Synth 8-6014] Unused sequential element buf_len_reg was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/CONFREG/confreg.v:192]
+WARNING: [Synth 8-6014] Unused sequential element buf_size_reg was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/CONFREG/confreg.v:193]
+WARNING: [Synth 8-7129] Port arlen[7] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlen[6] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlen[5] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlen[4] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlen[3] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlen[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlen[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlen[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arsize[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arsize[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arsize[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arburst[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arburst[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlock[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlock[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arcache[3] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arcache[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arcache[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arcache[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arprot[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arprot[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arprot[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlen[7] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlen[6] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlen[5] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlen[4] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlen[3] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlen[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlen[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlen[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awsize[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awsize[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awsize[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awburst[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awburst[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlock[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlock[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awcache[3] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awcache[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awcache[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awcache[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awprot[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awprot[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awprot[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port wid[3] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port wid[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port wid[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port wid[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port wstrb[3] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port wstrb[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port wstrb[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port wstrb[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arlock[1] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arlock[0] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arcache[3] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arcache[2] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arcache[1] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arcache[0] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arprot[2] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arprot[1] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arprot[0] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awlock[1] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awlock[0] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awcache[3] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awcache[2] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awcache[1] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awcache[0] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awprot[2] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awprot[1] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awprot[0] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_wid[3] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_wid[2] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_wid[1] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_wid[0] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[31] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[30] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[29] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[28] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[27] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[26] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[25] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[24] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[23] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[22] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[21] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[20] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[19] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[18] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[17] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[16] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[15] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[14] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[4] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[3] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[2] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[1] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[0] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_paddr[4] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_paddr[3] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_paddr[2] in module dcache is either unconnected or has no load
+INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:22 ; elapsed = 00:00:23 . Memory (MB): peak = 1571.277 ; gain = 786.875
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:22 ; elapsed = 00:00:24 . Memory (MB): peak = 1571.277 ; gain = 786.875
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:22 ; elapsed = 00:00:24 . Memory (MB): peak = 1571.277 ; gain = 786.875
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 1571.277 ; gain = 0.000
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/ip-src/axi_ram/axi_ram/axi_ram_in_context.xdc] for cell 'u_axi_ram/ram'
+Finished Parsing XDC File [c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/ip-src/axi_ram/axi_ram/axi_ram_in_context.xdc] for cell 'u_axi_ram/ram'
+Parsing XDC File [c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/ip-src/axi_crossbar_1x2/axi_crossbar_1x2/axi_crossbar_1x2_in_context.xdc] for cell 'u_axi_crossbar_1x2'
+Finished Parsing XDC File [c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/ip-src/axi_crossbar_1x2/axi_crossbar_1x2/axi_crossbar_1x2_in_context.xdc] for cell 'u_axi_crossbar_1x2'
+Parsing XDC File [c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/ip-src/lab6_div32/lab6_div32/lab6_div32_in_context.xdc] for cell 'u_cpu/exe_stage/u_hilo_unit/u_div'
+Finished Parsing XDC File [c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/ip-src/lab6_div32/lab6_div32/lab6_div32_in_context.xdc] for cell 'u_cpu/exe_stage/u_hilo_unit/u_div'
+Parsing XDC File [c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/ip-src/clk_pll/clk_pll/clk_pll_in_context.xdc] for cell 'pll.clk_pll'
+Finished Parsing XDC File [c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/ip-src/clk_pll/clk_pll/clk_pll_in_context.xdc] for cell 'pll.clk_pll'
+Parsing XDC File [c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/ip-src/lab6_mult33/lab6_mult33/lab6_mult33_in_context.xdc] for cell 'u_cpu/exe_stage/u_hilo_unit/u_mult'
+Finished Parsing XDC File [c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/ip-src/lab6_mult33/lab6_mult33/lab6_mult33_in_context.xdc] for cell 'u_cpu/exe_stage/u_hilo_unit/u_mult'
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.016 . Memory (MB): peak = 1683.152 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.467 . Memory (MB): peak = 1683.152 ; gain = 0.000
+WARNING: [Timing 38-316] Clock period '100.000' specified during out-of-context synthesis of instance 'u_axi_crossbar_1x2' at clock pin 'aclk' is different from the actual clock period '20.000', this can lead to different synthesis results.
+WARNING: [Timing 38-316] Clock period '1000.000' specified during out-of-context synthesis of instance 'u_cpu/exe_stage/u_hilo_unit/u_div' at clock pin 'aclk' is different from the actual clock period '20.000', this can lead to different synthesis results.
+WARNING: [Timing 38-316] Clock period '100.000' specified during out-of-context synthesis of instance 'u_cpu/exe_stage/u_hilo_unit/u_mult' at clock pin 'CLK' is different from the actual clock period '20.000', this can lead to different synthesis results.
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:59 ; elapsed = 00:01:00 . Memory (MB): peak = 1684.094 ; gain = 899.691
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a200tfbg676-2
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:59 ; elapsed = 00:01:00 . Memory (MB): peak = 1684.094 ; gain = 899.691
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:59 ; elapsed = 00:01:00 . Memory (MB): peak = 1684.094 ; gain = 899.691
+---------------------------------------------------------------------------------
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'if_stage'
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'hilo_unit'
+WARNING: [Synth 8-6014] Unused sequential element hit21 was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:106]
+WARNING: [Synth 8-6014] Unused sequential element hit31 was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:108]
+WARNING: [Synth 8-6014] Unused sequential element choose_way0 was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:147]
+WARNING: [Synth 8-6014] Unused sequential element hit11 was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:104]
+WARNING: [Synth 8-6014] Unused sequential element hit01_rep was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:102]
+WARNING: [Synth 8-6014] Unused sequential element hit01_rep was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:102]
+WARNING: [Synth 8-6014] Unused sequential element hit01_rep was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:102]
+WARNING: [Synth 8-6014] Unused sequential element hit01_rep was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:102]
+WARNING: [Synth 8-6014] Unused sequential element hit31 was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:149]
+WARNING: [Synth 8-6014] Unused sequential element hit21 was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:147]
+WARNING: [Synth 8-6014] Unused sequential element hit11 was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:145]
+WARNING: [Synth 8-6014] Unused sequential element choose_way0 was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:239]
+WARNING: [Synth 8-6014] Unused sequential element hit01_rep was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:143]
+WARNING: [Synth 8-6014] Unused sequential element hit01_rep was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:143]
+WARNING: [Synth 8-6014] Unused sequential element hit01_rep was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:143]
+WARNING: [Synth 8-6014] Unused sequential element hit01_rep was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:143]
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'confreg'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+              IF_REQUEST |                              001 |                               00
+            IF_WAIT_DATA |                              010 |                               01
+                 IF_HOLD |                              100 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'one-hot' in module 'if_stage'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+               HILO_IDLE |                              000 |                              000
+          HILO_MULT_WAIT |                              011 |                              001
+           HILO_DIV_SEND |                              100 |                              010
+           HILO_DIV_WAIT |                              010 |                              011
+               HILO_DONE |                              001 |                              100
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'hilo_unit'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                 iSTATE4 |                           000001 |                              000
+                  iSTATE |                           100000 |                              001
+                 iSTATE0 |                           010000 |                              010
+                 iSTATE1 |                           001000 |                              011
+                 iSTATE2 |                           000100 |                              100
+                 iSTATE3 |                           000010 |                              111
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'one-hot' in module 'confreg'
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:01:08 ; elapsed = 00:01:10 . Memory (MB): peak = 1684.094 ; gain = 899.691
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   3 Input   33 Bit       Adders := 1     
+	   2 Input   32 Bit       Adders := 9     
+	   2 Input    8 Bit       Adders := 1     
+	   2 Input    7 Bit       Adders := 2     
+	   2 Input    4 Bit       Adders := 2     
+	   4 Input    3 Bit       Adders := 2     
+	   2 Input    3 Bit       Adders := 3     
+	   2 Input    2 Bit       Adders := 3     
++---XORs : 
+	   2 Input     32 Bit         XORs := 1     
+	   2 Input      1 Bit         XORs := 12    
++---Registers : 
+	              256 Bit    Registers := 4     
+	              246 Bit    Registers := 1     
+	              204 Bit    Registers := 1     
+	              128 Bit    Registers := 12    
+	              103 Bit    Registers := 1     
+	               70 Bit    Registers := 1     
+	               32 Bit    Registers := 54    
+	               23 Bit    Registers := 1     
+	               20 Bit    Registers := 32    
+	               19 Bit    Registers := 16    
+	               16 Bit    Registers := 2     
+	                8 Bit    Registers := 21    
+	                7 Bit    Registers := 4     
+	                5 Bit    Registers := 2     
+	                4 Bit    Registers := 10    
+	                3 Bit    Registers := 39    
+	                2 Bit    Registers := 11    
+	                1 Bit    Registers := 139   
++---RAMs : 
+	              32K Bit	(128 X 256 bit)          RAMs := 8     
+	               2K Bit	(128 X 20 bit)          RAMs := 8     
+	              256 Bit	(128 X 2 bit)          RAMs := 2     
++---Muxes : 
+	 128 Input  256 Bit        Muxes := 2     
+	   2 Input  256 Bit        Muxes := 7     
+	   4 Input  256 Bit        Muxes := 6     
+	  12 Input  256 Bit        Muxes := 3     
+	   8 Input  256 Bit        Muxes := 1     
+	   4 Input  128 Bit        Muxes := 39    
+	   2 Input  128 Bit        Muxes := 85    
+	  12 Input  128 Bit        Muxes := 5     
+	   8 Input  128 Bit        Muxes := 5     
+	  12 Input   32 Bit        Muxes := 1     
+	   8 Input   32 Bit        Muxes := 5     
+	   4 Input   32 Bit        Muxes := 6     
+	   2 Input   32 Bit        Muxes := 82    
+	   3 Input   32 Bit        Muxes := 4     
+	   5 Input   32 Bit        Muxes := 2     
+	   3 Input   23 Bit        Muxes := 1     
+	   2 Input   23 Bit        Muxes := 1     
+	  12 Input   20 Bit        Muxes := 1     
+	   4 Input   20 Bit        Muxes := 3     
+	   2 Input   20 Bit        Muxes := 37    
+	   8 Input   20 Bit        Muxes := 1     
+	   2 Input   19 Bit        Muxes := 2     
+	   2 Input   16 Bit        Muxes := 16    
+	   5 Input   16 Bit        Muxes := 1     
+	   3 Input   13 Bit        Muxes := 1     
+	   2 Input   12 Bit        Muxes := 2     
+	   4 Input    8 Bit        Muxes := 2     
+	   3 Input    8 Bit        Muxes := 1     
+	   2 Input    8 Bit        Muxes := 5     
+	   8 Input    8 Bit        Muxes := 1     
+	  12 Input    7 Bit        Muxes := 2     
+	   2 Input    7 Bit        Muxes := 2     
+	   8 Input    7 Bit        Muxes := 2     
+	   6 Input    6 Bit        Muxes := 1     
+	   2 Input    6 Bit        Muxes := 6     
+	   2 Input    5 Bit        Muxes := 5     
+	   3 Input    5 Bit        Muxes := 1     
+	   5 Input    5 Bit        Muxes := 1     
+	  12 Input    4 Bit        Muxes := 1     
+	   2 Input    4 Bit        Muxes := 17    
+	   4 Input    4 Bit        Muxes := 1     
+	   5 Input    4 Bit        Muxes := 1     
+	   6 Input    4 Bit        Muxes := 1     
+	   2 Input    3 Bit        Muxes := 63    
+	  12 Input    3 Bit        Muxes := 1     
+	   5 Input    3 Bit        Muxes := 4     
+	   8 Input    3 Bit        Muxes := 1     
+	   3 Input    3 Bit        Muxes := 2     
+	   6 Input    3 Bit        Muxes := 3     
+	   2 Input    2 Bit        Muxes := 41    
+	   4 Input    2 Bit        Muxes := 2     
+	  12 Input    2 Bit        Muxes := 2     
+	   3 Input    2 Bit        Muxes := 3     
+	   5 Input    2 Bit        Muxes := 2     
+	   8 Input    2 Bit        Muxes := 1     
+	  12 Input    1 Bit        Muxes := 24    
+	   5 Input    1 Bit        Muxes := 13    
+	   2 Input    1 Bit        Muxes := 240   
+	   4 Input    1 Bit        Muxes := 20    
+	   3 Input    1 Bit        Muxes := 12    
+	   8 Input    1 Bit        Muxes := 19    
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 740 (col length:100)
+BRAMs: 730 (col length: RAMB18 100 RAMB36 50)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+ERROR: [Common 17-1257] Failed to create directory 'C'.
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+INFO: [Synth 8-3886] merging instance 'hit01__5' (FDRE) to 'req_addr_reg[5]'
+INFO: [Synth 8-3886] merging instance 'hit01__4' (FDRE) to 'req_addr_reg[6]'
+INFO: [Synth 8-3886] merging instance 'hit01__3' (FDRE) to 'req_addr_reg[7]'
+INFO: [Synth 8-3886] merging instance 'hit01__2' (FDRE) to 'req_addr_reg[8]'
+INFO: [Synth 8-3886] merging instance 'hit01__1' (FDRE) to 'req_addr_reg[9]'
+INFO: [Synth 8-3886] merging instance 'hit01__0' (FDRE) to 'req_addr_reg[10]'
+INFO: [Synth 8-3886] merging instance 'refill_addr_reg_reg[0]' (FDRE) to 'refill_addr_reg_reg[1]'
+INFO: [Synth 8-3886] merging instance 'refill_addr_reg_reg[1]' (FDRE) to 'refill_addr_reg_reg[2]'
+INFO: [Synth 8-3886] merging instance 'refill_addr_reg_reg[2]' (FDRE) to 'refill_addr_reg_reg[3]'
+INFO: [Synth 8-3886] merging instance 'refill_addr_reg_reg[3]' (FDRE) to 'refill_addr_reg_reg[4]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\refill_addr_reg_reg[4] )
+INFO: [Synth 8-3886] merging instance 'hit01' (FDRE) to 'req_addr_reg[11]'
+INFO: [Synth 8-3886] merging instance 'if_stage/response_exception_code_reg[0]' (FDRE) to 'if_stage/response_exception_code_reg[1]'
+INFO: [Synth 8-3886] merging instance 'if_stage/response_exception_code_reg[3]' (FDRE) to 'if_stage/response_exception_code_reg[1]'
+INFO: [Synth 8-3886] merging instance 'if_stage/response_exception_code_reg[4]' (FDRE) to 'if_stage/response_exception_code_reg[1]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (if_stage/\response_exception_code_reg[1] )
+INFO: [Synth 8-3886] merging instance 'u_icache/hit01__5' (FDRE) to 'u_icache/req_addr_reg[5]'
+INFO: [Synth 8-3886] merging instance 'u_icache/hit01__4' (FDRE) to 'u_icache/req_addr_reg[6]'
+INFO: [Synth 8-3886] merging instance 'u_icache/hit01__3' (FDRE) to 'u_icache/req_addr_reg[7]'
+INFO: [Synth 8-3886] merging instance 'u_icache/hit01__2' (FDRE) to 'u_icache/req_addr_reg[8]'
+INFO: [Synth 8-3886] merging instance 'u_icache/hit01__1' (FDRE) to 'u_icache/req_addr_reg[9]'
+INFO: [Synth 8-3886] merging instance 'u_icache/hit01__0' (FDRE) to 'u_icache/req_addr_reg[10]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[4]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[5]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[6]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[7]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/entryhi_reg[8]' (FDRE) to 'cp0_reg/entryhi_reg[9]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[8]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/entryhi_reg[9]' (FDRE) to 'cp0_reg/entryhi_reg[10]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[9]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/entryhi_reg[10]' (FDRE) to 'cp0_reg/entryhi_reg[11]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[10]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/entryhi_reg[11]' (FDRE) to 'cp0_reg/entryhi_reg[12]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[11]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\entryhi_reg[12] )
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[12]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[13]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[14]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[15]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[16]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[17]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[18]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[19]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[20]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[21]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[22]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[23]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[24]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[25]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/entrylo1_reg[26]' (FDRE) to 'cp0_reg/entrylo1_reg[27]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/entrylo0_reg[26]' (FDRE) to 'cp0_reg/entrylo0_reg[27]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[26]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/entrylo1_reg[27]' (FDRE) to 'cp0_reg/entrylo1_reg[28]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/entrylo0_reg[27]' (FDRE) to 'cp0_reg/entrylo0_reg[28]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[27]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/entrylo1_reg[28]' (FDRE) to 'cp0_reg/entrylo1_reg[29]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/entrylo0_reg[28]' (FDRE) to 'cp0_reg/entrylo0_reg[29]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[28]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/entrylo1_reg[29]' (FDRE) to 'cp0_reg/entrylo1_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/entrylo0_reg[29]' (FDRE) to 'cp0_reg/entrylo0_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/index_reg[29]' (FDE) to 'cp0_reg/index_reg[30]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/entrylo1_reg[30]' (FDRE) to 'cp0_reg/entrylo1_reg[31]'
+INFO: [Synth 8-3886] merging instance 'cp0_reg/entrylo0_reg[30]' (FDRE) to 'cp0_reg/entrylo0_reg[31]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\index_reg[30] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\entrylo1_reg[31] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\entrylo0_reg[31] )
+INFO: [Synth 8-3886] merging instance 'u_icache/refill_addr_reg_reg[3]' (FDRE) to 'u_icache/refill_addr_reg_reg[0]'
+INFO: [Synth 8-3886] merging instance 'u_icache/refill_addr_reg_reg[4]' (FDRE) to 'u_icache/refill_addr_reg_reg[0]'
+INFO: [Synth 8-3886] merging instance 'u_icache/refill_addr_reg_reg[2]' (FDRE) to 'u_icache/refill_addr_reg_reg[0]'
+INFO: [Synth 8-3886] merging instance 'u_icache/refill_addr_reg_reg[1]' (FDRE) to 'u_icache/refill_addr_reg_reg[0]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_icache/\refill_addr_reg_reg[0] )
+INFO: [Synth 8-3886] merging instance 'u_icache/req_addr_reg[11]' (FDRE) to 'u_icache/hit01'
+INFO: [Synth 8-3886] merging instance 'exe_stage/ds_to_es_bus_r_reg[118]' (FDE) to 'exe_stage/ds_to_es_bus_r_reg[120]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[28]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[24]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[24]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[20]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[20]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[16]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[16]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[12]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[12]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[8]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[8]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[4]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[4]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[29]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[29]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[25]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[25]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[21]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[21]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[17]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[17]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[13]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[13]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[9]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[9]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[5]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[5]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[30]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[30]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[26]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[26]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[22]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[22]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[18]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[18]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[14]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[14]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[10]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[10]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[6]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[6]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[31]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[31]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[27]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[27]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[23]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[23]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[19]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[19]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[15]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[15]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[11]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_strb_q_reg[11]' (FDE) to 'u_cache_axi3_bridge/wr_strb_q_reg[7]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_prot_q_reg[0]' (FDRE) to 'u_cache_axi3_bridge/wr_prot_q_reg[2]'
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (u_cache_axi3_bridge/\wr_prot_q_reg[1] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_cache_axi3_bridge/\wr_prot_q_reg[2] )
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_len_q_reg[0]' (FDRE) to 'u_cache_axi3_bridge/wr_len_q_reg[1]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_len_q_reg[1]' (FDRE) to 'u_cache_axi3_bridge/wr_len_q_reg[2]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_len_q_reg[3]' (FDRE) to 'u_cache_axi3_bridge/wr_len_q_reg[4]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_len_q_reg[4]' (FDRE) to 'u_cache_axi3_bridge/wr_len_q_reg[5]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_len_q_reg[5]' (FDRE) to 'u_cache_axi3_bridge/wr_len_q_reg[6]'
+INFO: [Synth 8-3886] merging instance 'u_cache_axi3_bridge/wr_len_q_reg[6]' (FDRE) to 'u_cache_axi3_bridge/wr_len_q_reg[7]'
+INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_cache_axi3_bridge/\wr_len_q_reg[7] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_cache_axi3_bridge/\rd_prot_q_reg[0] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (u_cache_axi3_bridge/\rd_prot_q_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (u_cache_axi3_bridge/\wr_id_q_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_cache_axi3_bridge/\wr_id_q_reg[2] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[3] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[4] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[5] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[6] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[7] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[8] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[9] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[10] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[11] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[12] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[13] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[14] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[15] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[16] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[17] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[18] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[19] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[20] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[21] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[22] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[23] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[24] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[25] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[26] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[27] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[28] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[29] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[30] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cp0_reg/\config_reg_reg[31] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (id_stage/\fs_to_ds_bus_r_reg[67] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (exe_stage/\ds_to_es_bus_r_reg[193] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (mem_stage/\es_to_ms_bus_r_reg[151] )
+INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (exe_stage/\ds_to_es_bus_r_reg[238] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (mem_stage/\es_to_ms_bus_r_reg[196] )
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:03:57 ; elapsed = 00:04:34 . Memory (MB): peak = 1684.094 ; gain = 899.691
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+Distributed RAM: Preliminary Mapping Report (see note below)
++-----------------+------------------+-----------+----------------------+-------------------------------+
+|Module Name      | RTL Object       | Inference | Size (Depth x Width) | Primitives                    | 
++-----------------+------------------+-----------+----------------------+-------------------------------+
+|soc_axi_lite_top | line_way3_reg    | Implied   | 128 x 256            | RAM128X1D x 256 RAM64M x 172  | 
+|soc_axi_lite_top | line_way0_reg    | Implied   | 128 x 256            | RAM128X1D x 256 RAM64M x 172  | 
+|soc_axi_lite_top | line_way1_reg    | Implied   | 128 x 256            | RAM128X1D x 256 RAM64M x 172  | 
+|soc_axi_lite_top | line_way2_reg    | Implied   | 128 x 256            | RAM128X1D x 256 RAM64M x 172  | 
+|dcache__GB4      | tag_way0_reg     | Implied   | 128 x 20             | RAM64M x 42                   | 
+|dcache__GB4      | tag_way1_reg     | Implied   | 128 x 20             | RAM64M x 42                   | 
+|dcache__GB4      | tag_way2_reg     | Implied   | 128 x 20             | RAM64M x 42                   | 
+|dcache__GB4      | tag_way3_reg     | Implied   | 128 x 20             | RAM64M x 42                   | 
+|dcache__GB4      | replace_way_reg  | Implied   | 128 x 2              | RAM128X1D x 2                 | 
+|u_icache         | replace_way_reg  | Implied   | 128 x 2              | RAM128X1D x 2                 | 
+|u_icache         | tag_way1_reg     | Implied   | 128 x 20             | RAM64M x 28                   | 
+|u_icache         | tag_way2_reg     | Implied   | 128 x 20             | RAM64M x 28                   | 
+|u_icache         | tag_way3_reg     | Implied   | 128 x 20             | RAM64M x 28                   | 
+|u_icache         | tag_way0_reg     | Implied   | 128 x 20             | RAM64M x 28                   | 
+|u_icache         | line_way1_reg    | Implied   | 128 x 256            | RAM128X1S x 256               | 
+|u_icache         | line_way2_reg    | Implied   | 128 x 256            | RAM128X1S x 256               | 
+|u_icache         | line_way3_reg    | Implied   | 128 x 256            | RAM128X1S x 256               | 
+|u_icache         | line_way0_reg    | Implied   | 128 x 256            | RAM128X1S x 256               | 
+|id_stage         | u_regfile/rf_reg | Implied   | 32 x 32              | RAM32M x 12                   | 
++-----------------+------------------+-----------+----------------------+-------------------------------+
+
+Note: The table above is a preliminary report that shows the Distributed RAMs at the current stage of the synthesis flow. Some Distributed RAMs may be reimplemented as non Distributed RAM primitives later in the synthesis flow. Multiple instantiated RAMs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:04:14 ; elapsed = 00:04:52 . Memory (MB): peak = 1734.082 ; gain = 949.680
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:10:01 ; elapsed = 00:10:43 . Memory (MB): peak = 2695.754 ; gain = 1911.352
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+Distributed RAM: Final Mapping Report
++-----------------+------------------+-----------+----------------------+-------------------------------+
+|Module Name      | RTL Object       | Inference | Size (Depth x Width) | Primitives                    | 
++-----------------+------------------+-----------+----------------------+-------------------------------+
+|u_icache         | replace_way_reg  | Implied   | 128 x 2              | RAM128X1D x 2                 | 
+|u_icache         | tag_way1_reg     | Implied   | 128 x 20             | RAM64M x 28                   | 
+|u_icache         | tag_way2_reg     | Implied   | 128 x 20             | RAM64M x 28                   | 
+|u_icache         | tag_way3_reg     | Implied   | 128 x 20             | RAM64M x 28                   | 
+|u_icache         | tag_way0_reg     | Implied   | 128 x 20             | RAM64M x 28                   | 
+|u_icache         | line_way1_reg    | Implied   | 128 x 256            | RAM128X1S x 256               | 
+|u_icache         | line_way2_reg    | Implied   | 128 x 256            | RAM128X1S x 256               | 
+|u_icache         | line_way3_reg    | Implied   | 128 x 256            | RAM128X1S x 256               | 
+|u_icache         | line_way0_reg    | Implied   | 128 x 256            | RAM128X1S x 256               | 
+|dcache__GB4      | tag_way0_reg     | Implied   | 128 x 20             | RAM64M x 42                   | 
+|dcache__GB4      | tag_way1_reg     | Implied   | 128 x 20             | RAM64M x 42                   | 
+|dcache__GB4      | tag_way2_reg     | Implied   | 128 x 20             | RAM64M x 42                   | 
+|dcache__GB4      | tag_way3_reg     | Implied   | 128 x 20             | RAM64M x 42                   | 
+|dcache__GB4      | replace_way_reg  | Implied   | 128 x 2              | RAM128X1D x 2                 | 
+|id_stage         | u_regfile/rf_reg | Implied   | 32 x 32              | RAM32M x 12                   | 
+|soc_axi_lite_top | line_way3_reg    | Implied   | 128 x 256            | RAM128X1D x 256 RAM64M x 172  | 
+|soc_axi_lite_top | line_way0_reg    | Implied   | 128 x 256            | RAM128X1D x 256 RAM64M x 172  | 
+|soc_axi_lite_top | line_way1_reg    | Implied   | 128 x 256            | RAM128X1D x 256 RAM64M x 172  | 
+|soc_axi_lite_top | line_way2_reg    | Implied   | 128 x 256            | RAM128X1D x 256 RAM64M x 172  | 
++-----------------+------------------+-----------+----------------------+-------------------------------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:10:41 ; elapsed = 00:11:40 . Memory (MB): peak = 2695.754 ; gain = 1911.352
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:11:09 ; elapsed = 00:12:10 . Memory (MB): peak = 2695.754 ; gain = 1911.352
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:11:10 ; elapsed = 00:12:11 . Memory (MB): peak = 2695.754 ; gain = 1911.352
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:11:18 ; elapsed = 00:12:19 . Memory (MB): peak = 2695.754 ; gain = 1911.352
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:11:18 ; elapsed = 00:12:19 . Memory (MB): peak = 2695.754 ; gain = 1911.352
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:11:24 ; elapsed = 00:12:25 . Memory (MB): peak = 2695.754 ; gain = 1911.352
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:11:24 ; elapsed = 00:12:25 . Memory (MB): peak = 2695.754 ; gain = 1911.352
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++------+-----------------+----------+
+|      |BlackBox name    |Instances |
++------+-----------------+----------+
+|1     |clk_pll          |         1|
+|2     |axi_crossbar_1x2 |         1|
+|3     |axi_ram          |         1|
+|4     |lab6_mult33      |         1|
+|5     |lab6_div32       |         1|
++------+-----------------+----------+
+
+Report Cell Usage: 
++------+-----------------+------+
+|      |Cell             |Count |
++------+-----------------+------+
+|1     |axi_crossbar_1x2 |     1|
+|2     |axi_ram          |     1|
+|3     |clk_pll          |     1|
+|4     |lab6_div32       |     1|
+|5     |lab6_mult33      |     1|
+|6     |CARRY4           |   211|
+|7     |LUT1             |    82|
+|8     |LUT2             |   931|
+|9     |LUT3             |  1156|
+|10    |LUT4             |  1043|
+|11    |LUT5             |  3594|
+|12    |LUT6             | 13231|
+|13    |MUXF7            |   329|
+|14    |MUXF8            |    96|
+|15    |RAM128X1D        |  1028|
+|16    |RAM128X1S        |  1024|
+|17    |RAM32M           |    10|
+|18    |RAM32X1D         |     4|
+|19    |RAM64M           |   960|
+|20    |RAM64X1D         |     8|
+|21    |FDRE             |  6931|
+|22    |FDSE             |    50|
+|23    |IBUF             |    15|
+|24    |OBUF             |    39|
++------+-----------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:11:24 ; elapsed = 00:12:25 . Memory (MB): peak = 2695.754 ; gain = 1911.352
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 54 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:10:40 ; elapsed = 00:12:06 . Memory (MB): peak = 2695.754 ; gain = 1798.535
+Synthesis Optimization Complete : Time (s): cpu = 00:11:24 ; elapsed = 00:12:27 . Memory (MB): peak = 2695.754 ; gain = 1911.352
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.820 . Memory (MB): peak = 2695.754 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 3670 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 10 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.070 . Memory (MB): peak = 2695.754 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 3034 instances were transformed.
+  RAM128X1D => RAM128X1D (MUXF7(x2), RAMD64E(x4)): 1028 instances
+  RAM128X1S => RAM128X1S (MUXF7, RAMS64E(x2)): 1024 instances
+  RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 10 instances
+  RAM32X1D => RAM32X1D (RAMD32(x2)): 4 instances
+  RAM64M => RAM64M (RAMD64E(x4)): 960 instances
+  RAM64X1D => RAM64X1D (RAMD64E(x2)): 8 instances
+
+Synth Design complete | Checksum: faef5970
+INFO: [Common 17-83] Releasing license: Synthesis
+223 Infos, 131 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:12:06 ; elapsed = 00:13:16 . Memory (MB): peak = 2695.754 ; gain = 2156.602
+Write ShapeDB Complete: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.172 . Memory (MB): peak = 2695.754 ; gain = 0.000
+INFO: [Common 17-1381] The checkpoint 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/project/r3l19_synthesis.runs/synth_1/soc_axi_lite_top.dcp' has been generated.
+write_checkpoint: Time (s): cpu = 00:00:12 ; elapsed = 00:00:12 . Memory (MB): peak = 2695.754 ; gain = 0.000
+INFO: [Vivado 12-24828] Executing command : report_utilization -file soc_axi_lite_top_utilization_synth.rpt -pb soc_axi_lite_top_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Thu Nov 19 02:36:12 2026...

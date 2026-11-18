@@ -1,0 +1,4 @@
+SUMMARY_REGENERATION=PASS
+REASON=Reclassified the raw Vivado Common 17-1257 path diagnostic separately from synth_design counters; no RTL or run inputs were changed.
+SYNTHESIS_GIT_HEAD=4709468f65bac621486685efb06c76a0bc207e40
+SUMMARY_TOOL_COMMIT=9715633

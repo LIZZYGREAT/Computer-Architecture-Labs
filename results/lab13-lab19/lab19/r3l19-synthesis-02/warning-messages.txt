@@ -1,0 +1,131 @@
+WARNING: [Synth 8-589] replacing case/wildcard equality operator !== with logical equality operator != [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:312]
+WARNING: [Synth 8-589] replacing case/wildcard equality operator !== with logical equality operator != [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:567]
+WARNING: [Synth 8-7071] port 'rsta_busy' of module 'axi_ram' is unconnected for instance 'ram' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/ram_wrap/axi_wrap_ram.v:206]
+WARNING: [Synth 8-7071] port 'rstb_busy' of module 'axi_ram' is unconnected for instance 'ram' [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/ram_wrap/axi_wrap_ram.v:206]
+WARNING: [Synth 8-7023] instance 'ram' of module 'axi_ram' has 33 connections declared, but only 31 given [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/ram_wrap/axi_wrap_ram.v:206]
+WARNING: [Synth 8-6014] Unused sequential element maint_selected_valid_reg was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:311]
+WARNING: [Synth 8-6014] Unused sequential element maint_selected_dirty_reg was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:312]
+WARNING: [Synth 8-3936] Found unconnected internal register 'chosen_tag_reg' and it is trimmed from '32' to '20' bits. [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:133]
+WARNING: [Synth 8-6014] Unused sequential element pf_r2r_reg was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/ram_wrap/axi_wrap_ram.v:106]
+WARNING: [Synth 8-6014] Unused sequential element pf_b2b_reg was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/ram_wrap/axi_wrap_ram.v:107]
+WARNING: [Synth 8-6014] Unused sequential element buf_len_reg was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/CONFREG/confreg.v:192]
+WARNING: [Synth 8-6014] Unused sequential element buf_size_reg was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/CONFREG/confreg.v:193]
+WARNING: [Synth 8-7129] Port arlen[7] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlen[6] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlen[5] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlen[4] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlen[3] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlen[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlen[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlen[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arsize[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arsize[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arsize[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arburst[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arburst[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlock[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arlock[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arcache[3] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arcache[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arcache[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arcache[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arprot[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arprot[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port arprot[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlen[7] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlen[6] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlen[5] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlen[4] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlen[3] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlen[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlen[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlen[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awsize[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awsize[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awsize[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awburst[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awburst[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlock[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awlock[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awcache[3] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awcache[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awcache[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awcache[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awprot[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awprot[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port awprot[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port wid[3] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port wid[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port wid[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port wid[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port wstrb[3] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port wstrb[2] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port wstrb[1] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port wstrb[0] in module confreg is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arlock[1] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arlock[0] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arcache[3] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arcache[2] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arcache[1] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arcache[0] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arprot[2] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arprot[1] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_arprot[0] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awlock[1] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awlock[0] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awcache[3] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awcache[2] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awcache[1] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awcache[0] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awprot[2] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awprot[1] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_awprot[0] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_wid[3] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_wid[2] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_wid[1] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port axi_wid[0] in module axi_wrap_ram is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[31] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[30] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[29] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[28] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[27] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[26] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[25] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[24] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[23] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[22] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[21] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[20] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[19] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[18] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[17] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[16] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[15] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[14] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[4] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[3] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[2] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[1] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_vaddr[0] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_paddr[4] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_paddr[3] in module dcache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port maint_paddr[2] in module dcache is either unconnected or has no load
+WARNING: [Timing 38-316] Clock period '100.000' specified during out-of-context synthesis of instance 'u_axi_crossbar_1x2' at clock pin 'aclk' is different from the actual clock period '20.000', this can lead to different synthesis results.
+WARNING: [Timing 38-316] Clock period '1000.000' specified during out-of-context synthesis of instance 'u_cpu/exe_stage/u_hilo_unit/u_div' at clock pin 'aclk' is different from the actual clock period '20.000', this can lead to different synthesis results.
+WARNING: [Timing 38-316] Clock period '100.000' specified during out-of-context synthesis of instance 'u_cpu/exe_stage/u_hilo_unit/u_mult' at clock pin 'CLK' is different from the actual clock period '20.000', this can lead to different synthesis results.
+WARNING: [Synth 8-6014] Unused sequential element hit21 was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:106]
+WARNING: [Synth 8-6014] Unused sequential element hit31 was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:108]
+WARNING: [Synth 8-6014] Unused sequential element choose_way0 was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:147]
+WARNING: [Synth 8-6014] Unused sequential element hit11 was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:104]
+WARNING: [Synth 8-6014] Unused sequential element hit01_rep was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:102]
+WARNING: [Synth 8-6014] Unused sequential element hit01_rep was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:102]
+WARNING: [Synth 8-6014] Unused sequential element hit01_rep was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:102]
+WARNING: [Synth 8-6014] Unused sequential element hit01_rep was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v:102]
+WARNING: [Synth 8-6014] Unused sequential element hit31 was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:149]
+WARNING: [Synth 8-6014] Unused sequential element hit21 was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:147]
+WARNING: [Synth 8-6014] Unused sequential element hit11 was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:145]
+WARNING: [Synth 8-6014] Unused sequential element choose_way0 was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:239]
+WARNING: [Synth 8-6014] Unused sequential element hit01_rep was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:143]
+WARNING: [Synth 8-6014] Unused sequential element hit01_rep was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:143]
+WARNING: [Synth 8-6014] Unused sequential element hit01_rep was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:143]
+WARNING: [Synth 8-6014] Unused sequential element hit01_rep was removed.  [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v:143]

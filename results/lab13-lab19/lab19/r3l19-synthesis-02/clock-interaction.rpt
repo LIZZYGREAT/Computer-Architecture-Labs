@@ -1,0 +1,26 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date         : Thu Nov 19 02:38:03 2026
+| Host         : LAPTOP-VTCMVS9N running 64-bit major release  (build 9200)
+| Command      : report_clock_interaction -file C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-synthesis-02/clock-interaction.rpt
+| Design       : soc_axi_lite_top
+| Device       : 7a200t-fbg676
+| Speed File   : -2  PRODUCTION 1.23 2018-06-13
+| Design State : Synthesized
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Clock Interaction Report
+
+Clock Interaction Table
+-----------------------
+
+                                      WNS                            TNS Failing  TNS Total    WNS Path         Clock-Pair           Inter-Clock  
+From Clock         To Clock           Clock Edges  WNS(ns)  TNS(ns)    Endpoints    Endpoints  Requirement(ns)  Classification       Constraints  
+-----------------  -----------------  -----------  -------  -------  -----------  -----------  ---------------  -------------------  -----------  
+cpu_clk_clk_pll    cpu_clk_clk_pll    rise - rise     4.23     0.00            0       117180            20.00  Clean                Timed        
+cpu_clk_clk_pll    timer_clk_clk_pll  rise - rise     7.38     0.00            0           65            10.00  Clean                Timed        
+timer_clk_clk_pll  cpu_clk_clk_pll    rise - rise     8.73     0.00            0           33            10.00  Clean                Timed        
+timer_clk_clk_pll  timer_clk_clk_pll  rise - rise     7.18     0.00            0           66            10.00  Clean                Timed        
+
+

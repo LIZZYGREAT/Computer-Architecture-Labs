@@ -1,0 +1,8 @@
+INPUT_CHECK_STATUS=PASS
+VIVADO_CHECK_STATUS=PASS
+INPUT_COE=C:\Users\lenovo\Desktop\Projects\FPGA\lab19\cache_func\obj\inst_ram.coe
+RUN_SCRIPT=C:\Users\lenovo\Desktop\Projects\FPGA\scripts\tlb_cache\run_lab19_synthesis.tcl
+BRANCH=lab13-lab19
+GIT_HEAD=4709468f65bac621486685efb06c76a0bc207e40
+TRACKED_WORKTREE_STATUS=CLEAN
+PROJECT_PREFLIGHT_STATUS=PASS

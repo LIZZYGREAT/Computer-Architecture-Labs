@@ -1,0 +1,6 @@
+ERROR: [Common 17-354] Could not open 'C' for writing.
+ERROR: [Common 17-354] Could not open 'C' for writing.
+ERROR: [Common 17-354] Could not open 'C' for writing.
+ERROR: [Common 17-354] Could not open 'C' for writing.
+ERROR: [Common 17-69] Command failed: ERROR: [Common 17-39] 'tclapp::load_apps' failed due to earlier errors.
+

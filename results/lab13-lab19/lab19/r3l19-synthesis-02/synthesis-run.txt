@@ -1,0 +1,7 @@
+SYNTH_TOP=soc_axi_lite_top
+PART=xc7a200tfbg676-2
+VIVADO_VERSION=2025.2
+IP_OBJECTS=axi_crossbar_1x2,axi_ram,clk_pll,lab6_div32,lab6_mult33
+SOURCE_FILE_COUNT=26
+SYNTH_STATUS=synth_design Complete!
+SYNTH_PROGRESS=100%
