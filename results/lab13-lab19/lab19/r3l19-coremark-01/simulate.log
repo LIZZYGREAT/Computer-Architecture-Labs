@@ -1,0 +1,65 @@
+Time resolution is 1 ps
+ Block Memory Generator module loading initial data...
+ Block Memory Generator data initialization complete.
+Block Memory Generator module tb_lab19_coremark.check.soc_lite.u_axi_ram.ram.inst.axi_mem_module.blk_mem_gen_v8_4_12_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
+coremark test begin.
+
+arg : 0, 0, 102, 1, 7, 1, 2000 
+
+test start
+
+computation done 
+
+2K performance run parameters for coremark.
+
+CoreMark Size    : 666
+
+Total ns : 20532540
+
+Iterations/1000Sec : 48704
+
+The CPU Freq you set is 50MHz
+
+So COREMARK/MHZ : 974/1000
+
+COREMARK/MHZ = (1000000.0/CPU_COUNT_PER_US)*NSEC_PER_USEC*results[0].iterations/total_ns
+
+It equals to 1000MHz/CPU_Freq(MHz) * 1000*1000*iteration/total_ns
+
+It also equals to (Iterations/1000Sec)/CPU_Freq(MHz)/1000
+
+In this run, iterate=1, total_ns=20532540
+
+
+
+Total ticks      : 0
+
+Iterations       : 1
+
+Compiler version : GCC4.3.0
+
+Compiler flags   :  -O3 -mno-abicalls -funroll-all-loops -falign-jumps=16 -falign-functions=16 -fgcse-sm -fgcse-las -finline-functions -finline-limit=1000 -msoft-float -EL -march=mips1 -mips1
+
+Memory location  : Please put data memory location here
+
+			(e.g. code in flash, data on heap etc)
+
+seedcrc          : 0xe9f5
+
+[0]crclist       : 0xe714
+
+[0]crcmatrix     : 0x1fd7
+
+[0]crcstate      : 0x8e3a
+
+[0]crcfinal      : 0xe714
+
+Correct operation validated. See readme.txt for run and reporting rules.
+
+coremark PASS!
+
+PERF_DRAIN cycles=7 ic_pending_misses=0 rd_state=0 dcache_state=1 bridge_wr_state=0
+PERF_CACHE_CHECK program=1 ic_hit=260271 ic_miss=508 ic_refill=508 dc_hit=77338 dc_miss=70 dc_writeback=0 dc_uncache=7507
+PERF_METRICS program=1 cycles=2305331 retired_instructions=416073 ic_hit=260271 ic_miss=508 ic_refill=508 dc_hit=77338 dc_miss=70 dc_writeback=0 dc_uncache=7507 axi_ar=162251 axi_r=166297 axi_aw=1130 axi_w=1130 axi_b=1130 simulation_ns=23053310 cpu_frequency_hz=100000000 num_data=01394d3c
+LAB19_PERF_PASS program=coremark
+$finish called at time : 23055307 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/testbench/tb_lab19_perf.sv" Line 109
