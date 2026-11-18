@@ -8,6 +8,7 @@ module if_stage(
     input                          trap_redirect   ,
     input                          eret_redirect   ,
     input                          cache_redirect  ,
+    input                          tlb_redirect    ,
     input                          cache_resume_valid,
     input  [31:0]                  cache_resume_pc,
     input  [31:0]                  trap_vector     ,
@@ -54,10 +55,10 @@ wire        response_fire;
 wire        response_is_delay_slot;
 
 assign {br_taken, br_target, br_delay_slot} = br_bus;
-assign redirect_valid = trap_redirect || eret_redirect || cache_redirect;
+assign redirect_valid = trap_redirect || eret_redirect || cache_redirect || tlb_redirect;
 assign redirect_pc = trap_redirect ? trap_vector :
                      eret_redirect ? eret_target :
-                     (cache_redirect && cache_resume_valid) ? cache_resume_pc :
+                     ((cache_redirect || tlb_redirect) && cache_resume_valid) ? cache_resume_pc :
                      (state == IF_HOLD) ? response_pc : request_pc;
 
 assign response_fire = response_valid && ds_allowin && !redirect_valid;

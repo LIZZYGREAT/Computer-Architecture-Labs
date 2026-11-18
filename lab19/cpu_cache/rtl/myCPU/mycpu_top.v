@@ -222,7 +222,7 @@ wire        tlb_r_v1;
 wire [3:0]  tlb_w_index;
 wire        tlb_write_enable;
 
-assign pipeline_flush = trap_commit || eret_commit || icache_maint_commit;
+assign pipeline_flush = trap_commit || eret_commit || icache_maint_commit || tlb_write_enable;
 assign cp0_serial_busy = es_cp0_serial_busy || ms_cp0_serial_busy;
 
 // Index operations use VA index/way by project convention and do not need a
@@ -375,6 +375,7 @@ if_stage if_stage(
     .trap_redirect     (trap_commit),
     .eret_redirect     (eret_commit),
     .cache_redirect    (icache_maint_commit),
+    .tlb_redirect      (tlb_write_enable),
     .cache_resume_valid(ds_current_valid),
     .cache_resume_pc   (ds_current_pc),
     .trap_vector       (exception_vector),
