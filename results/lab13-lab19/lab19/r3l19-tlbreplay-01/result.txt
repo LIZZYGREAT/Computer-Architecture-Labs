@@ -1,0 +1,16 @@
+RUN_ID=r3l19-tlbreplay-01
+CASE=lab19_tlb_redirect
+SUITE=directed
+SIM_TOP=tb_lab19_tlb_redirect_contract
+PASS_MARKER=LAB19_TLB_REDIRECT_PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-tlbreplay-01/project/lab19_tlb_redirect_directed.xpr
+WAVEFORM=wave-full.wdb
+WAVEFORM_CONFIG=wave-full.wcfg
+STATUS=PASS
+SIMULATION_STATUS=PASS
+SOURCE_INTEGRITY=PASS
+VIVADO_EXIT_CODE=0
+VIVADO_PROCESS_STATUS=PASS
+SOURCE_MANIFEST=source-manifest.csv
+INPUT_MANIFEST=input_manifest.csv
+GIT_HEAD=a73b51f1ec3d51474e7fd824d54e75b537cc9810

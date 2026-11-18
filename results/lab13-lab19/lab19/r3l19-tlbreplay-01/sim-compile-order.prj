@@ -1,0 +1,27 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  -i "../../../../../../../../../lab19/cpu_cache/rtl/myCPU" --include "D:/Verilog/2025.2/Vivado/data/rsb/busdef" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/EXE_stage.v" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/ID_stage.v" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/IF_stage.v" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/MEM_stage.v" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/WB_stage.v" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/addr_translate.v" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/alu.v" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/cache_axi3_bridge.v" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/cp0_reg.v" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/dcache.v" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/hilo_unit.v" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/icache.v" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/mycpu_top.v" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/regfile.v" \
+"../../../../../../../../../lab13/tlb_verify/rtl/tlb.v" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/tools.v" \
+
+sv xil_defaultlib  -i "../../../../../../../../../lab19/cpu_cache/rtl/myCPU" --include "D:/Verilog/2025.2/Vivado/data/rsb/busdef" \
+"../../../../../../../../../lab19/cpu_cache/testbench/tb_lab19_tlb_redirect_contract.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

@@ -1,0 +1,5 @@
+Time resolution is 1 ps
+IF_TLB_REPLAY_PASS old_pa=abcde100 new_pa=12345100 old_stale_dropped=1 replay_pc=00402100
+LAB19_TLB_REPLAY_CROSSCHECK_PASS old_pa=abcde100 new_pa=12345100 force_based=1 old_stale_dropped=1
+LAB19_TLB_REDIRECT_PASS checks=3
+$finish called at time : 1610 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/testbench/tb_lab19_tlb_redirect_contract.sv" Line 168
