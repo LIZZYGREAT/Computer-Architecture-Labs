@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="../../../../results/lab13_19/lab14/lab14-n1-n6-official-20261118-05/wave-full.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_lab14_tlb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+   </zoom_setting>
+   <column_width_setting>
+   </column_width_setting>
+   <WVObjectSize size="13" />
+   <wvobject fp_name="/tb_lab14_tlb/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/debug_wb_pc" type="array">
+      <obj_property name="ElementShortName">debug_wb_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">debug_wb_pc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/cp0_reg/tlbp_commit" type="logic">
+      <obj_property name="ElementShortName">tlbp_commit</obj_property>
+      <obj_property name="ObjectShortName">tlbp_commit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/cp0_reg/tlbp_found" type="logic">
+      <obj_property name="ElementShortName">tlbp_found</obj_property>
+      <obj_property name="ObjectShortName">tlbp_found</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/cp0_reg/tlbp_index" type="array">
+      <obj_property name="ElementShortName">tlbp_index[3:0]</obj_property>
+      <obj_property name="ObjectShortName">tlbp_index[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/cp0_reg/entryhi" type="array">
+      <obj_property name="ElementShortName">entryhi[31:0]</obj_property>
+      <obj_property name="ObjectShortName">entryhi[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/cp0_reg/index" type="array">
+      <obj_property name="ElementShortName">index[31:0]</obj_property>
+      <obj_property name="ObjectShortName">index[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/tlb_s1_found" type="logic">
+      <obj_property name="ElementShortName">tlb_s1_found</obj_property>
+      <obj_property name="ObjectShortName">tlb_s1_found</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/tlb_s1_index" type="array">
+      <obj_property name="ElementShortName">tlb_s1_index[3:0]</obj_property>
+      <obj_property name="ObjectShortName">tlb_s1_index[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/u_inst_translate/paddr" type="array">
+      <obj_property name="ElementShortName">paddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">paddr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/u_inst_translate/cacheable" type="logic">
+      <obj_property name="ElementShortName">cacheable</obj_property>
+      <obj_property name="ObjectShortName">cacheable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/u_data_translate/paddr" type="array">
+      <obj_property name="ElementShortName">paddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">paddr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/u_data_translate/cacheable" type="logic">
+      <obj_property name="ElementShortName">cacheable</obj_property>
+      <obj_property name="ObjectShortName">cacheable</obj_property>
+   </wvobject>
+</wave_config>

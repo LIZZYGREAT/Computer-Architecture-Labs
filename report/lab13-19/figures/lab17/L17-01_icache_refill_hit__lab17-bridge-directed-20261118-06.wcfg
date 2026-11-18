@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="../../../../results/lab13_19/lab17/lab17-bridge-directed-20261118-06/wave-full.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_lab17_icache_directed" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+   </zoom_setting>
+   <column_width_setting>
+   </column_width_setting>
+   <WVObjectSize size="15" />
+   <wvobject fp_name="/tb_lab17_icache_directed/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab17_icache_directed/cpu_req" type="logic">
+      <obj_property name="ElementShortName">cpu_req</obj_property>
+      <obj_property name="ObjectShortName">cpu_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab17_icache_directed/cpu_cacheable" type="logic">
+      <obj_property name="ElementShortName">cpu_cacheable</obj_property>
+      <obj_property name="ObjectShortName">cpu_cacheable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab17_icache_directed/cpu_addr" type="array">
+      <obj_property name="ElementShortName">cpu_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_addr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab17_icache_directed/cpu_addr_ok" type="logic">
+      <obj_property name="ElementShortName">cpu_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">cpu_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab17_icache_directed/cpu_data_ok" type="logic">
+      <obj_property name="ElementShortName">cpu_data_ok</obj_property>
+      <obj_property name="ObjectShortName">cpu_data_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab17_icache_directed/ic_refill_req" type="logic">
+      <obj_property name="ElementShortName">ic_refill_req</obj_property>
+      <obj_property name="ObjectShortName">ic_refill_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab17_icache_directed/ic_refill_addr" type="array">
+      <obj_property name="ElementShortName">ic_refill_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ic_refill_addr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab17_icache_directed/ic_stat_hit" type="array">
+      <obj_property name="ElementShortName">ic_stat_hit[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ic_stat_hit[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab17_icache_directed/ic_stat_miss" type="array">
+      <obj_property name="ElementShortName">ic_stat_miss[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ic_stat_miss[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab17_icache_directed/ic_stat_refill" type="array">
+      <obj_property name="ElementShortName">ic_stat_refill[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ic_stat_refill[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab17_icache_directed/arlen" type="array">
+      <obj_property name="ElementShortName">arlen[7:0]</obj_property>
+      <obj_property name="ObjectShortName">arlen[7:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab17_icache_directed/rvalid" type="logic">
+      <obj_property name="ElementShortName">rvalid</obj_property>
+      <obj_property name="ObjectShortName">rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab17_icache_directed/rlast" type="logic">
+      <obj_property name="ElementShortName">rlast</obj_property>
+      <obj_property name="ObjectShortName">rlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab17_icache_directed/rbeat_index" type="array">
+      <obj_property name="ElementShortName">rbeat_index[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rbeat_index[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+</wave_config>

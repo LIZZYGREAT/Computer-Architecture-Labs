@@ -1,0 +1,101 @@
+
+****** Vivado v2025.2 (64-bit)
+  **** SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+  **** IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+  **** SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+  **** Start of session at: Wed Nov 18 16:12:59 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source {C:\WINDOWS\TEMP\lab13_19_make_wave_configs.tcl}
+# if {[llength $argv] < 2} { error "usage: <wdb> <output#config-name#signal~radix...> ..." }
+# set wdb [file normalize [lindex $argv 0]]
+# if {![file isfile $wdb]} { error "WDB missing: $wdb" }
+# open_wave_database -noautoloadwcfg C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab18/lab18-dcache-directed-20261118-01/wave-full.wdb
+# set all_objects [get_objects -r -quiet *]
+# foreach group [lrange $argv 1 end] {
+#     set fields [split $group #]
+#     if {[llength $fields] < 3} { error "invalid config group: $group" }
+#     set wcfg [file normalize [lindex $fields 0]]
+#     set config_name [lindex $fields 1]
+#     if {[file exists $wcfg]} { error "refusing to overwrite WCFG: $wcfg" }
+#     create_wave_config $config_name
+#     set wave_count 0
+#     foreach spec [lrange $fields 2 end] {
+#         set signal_fields [split $spec ~]
+#         if {[llength $signal_fields] != 2} { error "bad signal spec: $spec" }
+#         lassign $signal_fields relative_path radix
+#         if {$radix ni {bin hex dec unsigned}} { error "bad radix: $radix" }
+#         regsub {\[[0-9]+:[0-9]+\]$} $relative_path {} relative_path
+#         set leaf_name [file tail $relative_path]
+#         set suffix "/$relative_path"
+#         set matches {}
+#         foreach candidate $all_objects {
+#             set n [string length $candidate]
+#             set m [string length $suffix]
+#             if {[string equal [file tail $candidate] $leaf_name] && $n >= $m && [string equal [string range $candidate [expr {$n-$m}] end] $suffix]} { lappend matches $candidate }
+#         }
+#         if {[llength $matches] != 1} { error "expected one signal '$suffix', found [llength $matches]" }
+#         add_wave -radix $radix [lindex $matches 0]
+#         puts "WCFG_SIGNAL=[lindex $matches 0]"
+#         incr wave_count
+#     }
+#     save_wave_config $wcfg
+#     if {![file isfile $wcfg] || [file size $wcfg] == 0} { error "WCFG save failed: $wcfg" }
+#     puts "WCFG=$wcfg"
+#     puts "WCFG_WAVE_COUNT=$wave_count"
+# }
+WCFG_SIGNAL=/tb_lab18_dcache_directed/clk
+WCFG_SIGNAL=/tb_lab18_dcache_directed/cpu_req
+WCFG_SIGNAL=/tb_lab18_dcache_directed/cpu_cacheable
+WCFG_SIGNAL=/tb_lab18_dcache_directed/cpu_wr
+WCFG_SIGNAL=/tb_lab18_dcache_directed/cpu_addr
+WCFG_SIGNAL=/tb_lab18_dcache_directed/cpu_wstrb
+WCFG_SIGNAL=/tb_lab18_dcache_directed/cpu_wdata
+WCFG_SIGNAL=/tb_lab18_dcache_directed/cpu_addr_ok
+WCFG_SIGNAL=/tb_lab18_dcache_directed/cpu_data_ok
+WCFG_SIGNAL=/tb_lab18_dcache_directed/stat_hit
+WCFG_SIGNAL=/tb_lab18_dcache_directed/stat_miss
+WCFG_SIGNAL=/tb_lab18_dcache_directed/dut/state
+WCFG_SIGNAL=/tb_lab18_dcache_directed/dut/hit_way
+WCFG_SIGNAL=/tb_lab18_dcache_directed/dut/dirty_way0
+WCFG_SIGNAL=/tb_lab18_dcache_directed/dut/dirty_way1
+WCFG=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab18/lab18-dcache-directed-20261118-01/wave-validation/L18-01.raw.wcfg
+WCFG_WAVE_COUNT=15
+WCFG_SIGNAL=/tb_lab18_dcache_directed/clk
+WCFG_SIGNAL=/tb_lab18_dcache_directed/dut/state
+WCFG_SIGNAL=/tb_lab18_dcache_directed/dut/victim_way
+WCFG_SIGNAL=/tb_lab18_dcache_directed/dut/dirty_way0
+WCFG_SIGNAL=/tb_lab18_dcache_directed/dut/dirty_way1
+WCFG_SIGNAL=/tb_lab18_dcache_directed/dut/dirty_way2
+WCFG_SIGNAL=/tb_lab18_dcache_directed/dut/dirty_way3
+WCFG_SIGNAL=/tb_lab18_dcache_directed/writeback_req
+WCFG_SIGNAL=/tb_lab18_dcache_directed/writeback_addr
+WCFG_SIGNAL=/tb_lab18_dcache_directed/writeback_addr_ok
+WCFG_SIGNAL=/tb_lab18_dcache_directed/writeback_done
+WCFG_SIGNAL=/tb_lab18_dcache_directed/refill_req
+WCFG_SIGNAL=/tb_lab18_dcache_directed/refill_addr
+WCFG_SIGNAL=/tb_lab18_dcache_directed/refill_data_valid
+WCFG_SIGNAL=/tb_lab18_dcache_directed/refill_data_last
+WCFG_SIGNAL=/tb_lab18_dcache_directed/stat_writeback
+WCFG=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab18/lab18-dcache-directed-20261118-01/wave-validation/L18-02.raw.wcfg
+WCFG_WAVE_COUNT=16
+WCFG_SIGNAL=/tb_lab18_dcache_directed/clk
+WCFG_SIGNAL=/tb_lab18_dcache_directed/cpu_cacheable
+WCFG_SIGNAL=/tb_lab18_dcache_directed/uncache_req
+WCFG_SIGNAL=/tb_lab18_dcache_directed/uncache_wr
+WCFG_SIGNAL=/tb_lab18_dcache_directed/uncache_size
+WCFG_SIGNAL=/tb_lab18_dcache_directed/uncache_wstrb
+WCFG_SIGNAL=/tb_lab18_dcache_directed/uncache_addr
+WCFG_SIGNAL=/tb_lab18_dcache_directed/uncache_wdata
+WCFG_SIGNAL=/tb_lab18_dcache_directed/uncache_addr_ok
+WCFG_SIGNAL=/tb_lab18_dcache_directed/uncache_data_ok
+WCFG_SIGNAL=/tb_lab18_dcache_directed/uncache_writes
+WCFG_SIGNAL=/tb_lab18_dcache_directed/uncache_reads
+WCFG_SIGNAL=/tb_lab18_dcache_directed/stat_uncache
+WCFG_SIGNAL=/tb_lab18_dcache_directed/cache_fault
+WCFG=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab18/lab18-dcache-directed-20261118-01/wave-validation/L18-03.raw.wcfg
+WCFG_WAVE_COUNT=14
+# puts "WCFG_CREATION_COMPLETE=1"
+WCFG_CREATION_COMPLETE=1
+INFO: [Common 17-206] Exiting Vivado at Wed Nov 18 16:13:13 2026...

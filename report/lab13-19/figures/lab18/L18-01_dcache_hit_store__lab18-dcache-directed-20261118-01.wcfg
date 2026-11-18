@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="../../../../results/lab13_19/lab18/lab18-dcache-directed-20261118-01/wave-full.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_lab18_dcache_directed" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+   </zoom_setting>
+   <column_width_setting>
+   </column_width_setting>
+   <WVObjectSize size="15" />
+   <wvobject fp_name="/tb_lab18_dcache_directed/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/cpu_req" type="logic">
+      <obj_property name="ElementShortName">cpu_req</obj_property>
+      <obj_property name="ObjectShortName">cpu_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/cpu_cacheable" type="logic">
+      <obj_property name="ElementShortName">cpu_cacheable</obj_property>
+      <obj_property name="ObjectShortName">cpu_cacheable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/cpu_wr" type="logic">
+      <obj_property name="ElementShortName">cpu_wr</obj_property>
+      <obj_property name="ObjectShortName">cpu_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/cpu_addr" type="array">
+      <obj_property name="ElementShortName">cpu_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_addr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/cpu_wstrb" type="array">
+      <obj_property name="ElementShortName">cpu_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_wstrb[3:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/cpu_wdata" type="array">
+      <obj_property name="ElementShortName">cpu_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_wdata[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/cpu_addr_ok" type="logic">
+      <obj_property name="ElementShortName">cpu_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">cpu_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/cpu_data_ok" type="logic">
+      <obj_property name="ElementShortName">cpu_data_ok</obj_property>
+      <obj_property name="ObjectShortName">cpu_data_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/stat_hit" type="array">
+      <obj_property name="ElementShortName">stat_hit[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_hit[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/stat_miss" type="array">
+      <obj_property name="ElementShortName">stat_miss[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_miss[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/dut/state" type="array">
+      <obj_property name="ElementShortName">state[3:0]</obj_property>
+      <obj_property name="ObjectShortName">state[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/dut/hit_way" type="array">
+      <obj_property name="ElementShortName">hit_way[1:0]</obj_property>
+      <obj_property name="ObjectShortName">hit_way[1:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/dut/dirty_way0" type="array">
+      <obj_property name="ElementShortName">dirty_way0[127:0]</obj_property>
+      <obj_property name="ObjectShortName">dirty_way0[127:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/dut/dirty_way1" type="array">
+      <obj_property name="ElementShortName">dirty_way1[127:0]</obj_property>
+      <obj_property name="ObjectShortName">dirty_way1[127:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+</wave_config>

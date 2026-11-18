@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="../../../../results/lab13_19/lab16/lab16-directed-20261118-02/wave-full.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_cache_directed" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+   </zoom_setting>
+   <column_width_setting>
+   </column_width_setting>
+   <WVObjectSize size="16" />
+   <wvobject fp_name="/tb_cache_directed/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cache_directed/dut/victim_way" type="array">
+      <obj_property name="ElementShortName">victim_way[1:0]</obj_property>
+      <obj_property name="ObjectShortName">victim_way[1:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cache_directed/dut/dirty_way0" type="array">
+      <obj_property name="ElementShortName">dirty_way0[255:0]</obj_property>
+      <obj_property name="ObjectShortName">dirty_way0[255:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cache_directed/dut/dirty_way1" type="array">
+      <obj_property name="ElementShortName">dirty_way1[255:0]</obj_property>
+      <obj_property name="ObjectShortName">dirty_way1[255:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cache_directed/dut/dirty_way2" type="array">
+      <obj_property name="ElementShortName">dirty_way2[255:0]</obj_property>
+      <obj_property name="ObjectShortName">dirty_way2[255:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cache_directed/dut/dirty_way3" type="array">
+      <obj_property name="ElementShortName">dirty_way3[255:0]</obj_property>
+      <obj_property name="ObjectShortName">dirty_way3[255:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cache_directed/wr_req" type="logic">
+      <obj_property name="ElementShortName">wr_req</obj_property>
+      <obj_property name="ObjectShortName">wr_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cache_directed/wr_addr" type="array">
+      <obj_property name="ElementShortName">wr_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_addr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cache_directed/wr_data" type="array">
+      <obj_property name="ElementShortName">wr_data[127:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_data[127:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cache_directed/wr_rdy" type="logic">
+      <obj_property name="ElementShortName">wr_rdy</obj_property>
+      <obj_property name="ObjectShortName">wr_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cache_directed/wr_handshakes" type="array">
+      <obj_property name="ElementShortName">wr_handshakes[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_handshakes[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cache_directed/rd_req" type="logic">
+      <obj_property name="ElementShortName">rd_req</obj_property>
+      <obj_property name="ObjectShortName">rd_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cache_directed/rd_addr" type="array">
+      <obj_property name="ElementShortName">rd_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_addr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cache_directed/ret_valid" type="logic">
+      <obj_property name="ElementShortName">ret_valid</obj_property>
+      <obj_property name="ObjectShortName">ret_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cache_directed/ret_last" type="logic">
+      <obj_property name="ElementShortName">ret_last</obj_property>
+      <obj_property name="ObjectShortName">ret_last</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_cache_directed/dut/state" type="array">
+      <obj_property name="ElementShortName">state[2:0]</obj_property>
+      <obj_property name="ObjectShortName">state[2:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+</wave_config>

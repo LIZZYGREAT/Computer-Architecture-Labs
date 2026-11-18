@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="../../../../results/lab13_19/lab18/lab18-dcache-directed-20261118-01/wave-full.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_lab18_dcache_directed" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+   </zoom_setting>
+   <column_width_setting>
+   </column_width_setting>
+   <WVObjectSize size="16" />
+   <wvobject fp_name="/tb_lab18_dcache_directed/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/dut/state" type="array">
+      <obj_property name="ElementShortName">state[3:0]</obj_property>
+      <obj_property name="ObjectShortName">state[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/dut/victim_way" type="array">
+      <obj_property name="ElementShortName">victim_way[1:0]</obj_property>
+      <obj_property name="ObjectShortName">victim_way[1:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/dut/dirty_way0" type="array">
+      <obj_property name="ElementShortName">dirty_way0[127:0]</obj_property>
+      <obj_property name="ObjectShortName">dirty_way0[127:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/dut/dirty_way1" type="array">
+      <obj_property name="ElementShortName">dirty_way1[127:0]</obj_property>
+      <obj_property name="ObjectShortName">dirty_way1[127:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/dut/dirty_way2" type="array">
+      <obj_property name="ElementShortName">dirty_way2[127:0]</obj_property>
+      <obj_property name="ObjectShortName">dirty_way2[127:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/dut/dirty_way3" type="array">
+      <obj_property name="ElementShortName">dirty_way3[127:0]</obj_property>
+      <obj_property name="ObjectShortName">dirty_way3[127:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/writeback_req" type="logic">
+      <obj_property name="ElementShortName">writeback_req</obj_property>
+      <obj_property name="ObjectShortName">writeback_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/writeback_addr" type="array">
+      <obj_property name="ElementShortName">writeback_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">writeback_addr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/writeback_addr_ok" type="logic">
+      <obj_property name="ElementShortName">writeback_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">writeback_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/writeback_done" type="logic">
+      <obj_property name="ElementShortName">writeback_done</obj_property>
+      <obj_property name="ObjectShortName">writeback_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/refill_req" type="logic">
+      <obj_property name="ElementShortName">refill_req</obj_property>
+      <obj_property name="ObjectShortName">refill_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/refill_addr" type="array">
+      <obj_property name="ElementShortName">refill_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">refill_addr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/refill_data_valid" type="logic">
+      <obj_property name="ElementShortName">refill_data_valid</obj_property>
+      <obj_property name="ObjectShortName">refill_data_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/refill_data_last" type="logic">
+      <obj_property name="ElementShortName">refill_data_last</obj_property>
+      <obj_property name="ObjectShortName">refill_data_last</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab18_dcache_directed/stat_writeback" type="array">
+      <obj_property name="ElementShortName">stat_writeback[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_writeback[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+</wave_config>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="../../../../results/lab13_19/lab14/lab14-n1-n6-official-20261118-05/wave-full.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_lab14_tlb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+   </zoom_setting>
+   <column_width_setting>
+   </column_width_setting>
+   <WVObjectSize size="10" />
+   <wvobject fp_name="/tb_lab14_tlb/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/score_points" type="array">
+      <obj_property name="ElementShortName">score_points[31:0]</obj_property>
+      <obj_property name="ObjectShortName">score_points[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/debug_wb_pc" type="array">
+      <obj_property name="ElementShortName">debug_wb_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">debug_wb_pc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/tlb_commit" type="logic">
+      <obj_property name="ElementShortName">tlb_commit</obj_property>
+      <obj_property name="ObjectShortName">tlb_commit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/tlb_op_commit" type="array">
+      <obj_property name="ElementShortName">tlb_op_commit[2:0]</obj_property>
+      <obj_property name="ObjectShortName">tlb_op_commit[2:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/cp0_entryhi" type="array">
+      <obj_property name="ElementShortName">cp0_entryhi[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cp0_entryhi[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/cp0_entrylo0" type="array">
+      <obj_property name="ElementShortName">cp0_entrylo0[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cp0_entrylo0[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/cp0_entrylo1" type="array">
+      <obj_property name="ElementShortName">cp0_entrylo1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cp0_entrylo1[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/cp0_reg/tlbr_commit" type="logic">
+      <obj_property name="ElementShortName">tlbr_commit</obj_property>
+      <obj_property name="ObjectShortName">tlbr_commit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab14_tlb/soc_lite/u_cpu/tlb_write_enable" type="logic">
+      <obj_property name="ElementShortName">tlb_write_enable</obj_property>
+      <obj_property name="ObjectShortName">tlb_write_enable</obj_property>
+   </wvobject>
+</wave_config>
