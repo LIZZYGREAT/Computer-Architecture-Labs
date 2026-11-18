@@ -110,11 +110,22 @@ if {$case eq "lab11_axi3" || $case eq "lab18_mem" || $case eq "lab19_index_contr
 }
 set_property xsim.simulate.log_all_signals true [get_filesets sim_1]
 set_property xsim.simulate.runtime 1000000ns [get_filesets sim_1]
-if {$case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_if_redirect"} {
+if {$case eq "lab17" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_if_redirect"} {
     set wave_config_file [file join $run_dir wave-full.wcfg]
     set wave_hook_file [file join $run_dir wave-config-hook.tcl]
     set wave_log_file [file join $run_dir wave-config-hook.log]
-    if {$case eq "lab19_maint"} {
+    if {$case eq "lab17"} {
+        set wave_objects [list \
+            /tb_lab17_icache_directed/dut_bridge/axi_fault \
+            /tb_lab17_icache_directed/dut_icache/cache_fault \
+            /tb_lab17_icache_directed/dut_icache/state \
+            /tb_lab17_icache_directed/dut_icache/cpu_data_ok \
+            /tb_lab17_icache_directed/rid \
+            /tb_lab17_icache_directed/rresp \
+            /tb_lab17_icache_directed/rlast \
+            /tb_lab17_icache_directed/rvalid \
+            /tb_lab17_icache_directed/rready]
+    } elseif {$case eq "lab19_maint"} {
         set wave_objects [list \
         /tb_lab19_maint_directed/u_icache/state \
         /tb_lab19_maint_directed/u_icache/valid_way2 \
@@ -453,7 +464,7 @@ if {[file isfile $wave_config_path]} {
     puts -nonewline $wave_config_out $wave_config_text
     close $wave_config_out
 }
-if {($case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_if_redirect") && ![file isfile $wave_config_path]} {
+if {($case eq "lab17" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_if_redirect") && ![file isfile $wave_config_path]} {
     set wave_log_path [file join $run_dir wave-config-hook.log]
     if {[file isfile $wave_log_path]} {
         set wave_log_in [open $wave_log_path r]
@@ -462,7 +473,7 @@ if {($case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab1
     } else {
         set wave_log_text "WCFG_CAPTURE_LOG=MISSING"
     }
-    error "Lab19 directed waveform config was not generated; $wave_log_text"
+    error "$case directed waveform config was not generated; $wave_log_text"
 }
 set result_path [file join $run_dir result.txt]
 set result [open $result_path w]
