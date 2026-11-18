@@ -1,0 +1,493 @@
+\documentclass[UTF8,a4paper,zihao=5]{ctexart}
+\usepackage[left=2.7cm,right=2.7cm,top=2.4cm,bottom=2.4cm]{geometry}
+\usepackage{array,booktabs,tabularx}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\hypersetup{hidelinks}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.16em}
+\setlength{\emergencystretch}{4em}
+\setlength{\tabcolsep}{4.5pt}
+\renewcommand{\arraystretch}{1.22}
+\pagestyle{plain}
+\setlist{nosep,leftmargin=2em}
+\captionsetup{font=small,labelfont=bf}
+\lstset{
+  language=Verilog,
+  basicstyle=\ttfamily\footnotesize,
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  showstringspaces=false,
+  frame=single,
+  rulecolor=\color{black!25},
+  aboveskip=0.32em,
+  belowskip=0.32em
+}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcommand{\reportsection}[1]{%
+  \par\addvspace{0.65\baselineskip}%
+  \noindent{\heiti\zihao{-4}#1\par}%
+  \vspace{0.15\baselineskip}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\reportfig}[3]{%
+  \begin{figure}[H]
+    \centering
+    \IfFileExists{figures/#1}{%
+      \includegraphics[width=#2\linewidth]{figures/#1}%
+    }{\fbox{\parbox{.90\linewidth}{\centering 图片位置：\texttt{\detokenize{figures/#1}}}}}%
+    \caption{#3}
+  \end{figure}}
+\tikzset{
+  reportbox/.style={draw,rounded corners=1pt,align=center,minimum height=8mm,inner sep=4pt,font=\small},
+  reportarr/.style={-{Latex[length=2mm]},line width=.65pt},
+  reportlabel/.style={font=\footnotesize,align=center}
+}
+
+\begin{document}
+\begin{center}
+  {\bfseries\zihao{3} 计算机体系结构 Lab10—Lab11 实验报告\par}
+\end{center}
+\vspace{0.3em}
+\begin{center}
+\begin{tabularx}{\textwidth}{|*{6}{C|}}
+\hline
+实验名称 & \multicolumn{3}{c|}{五级流水线 CPU 类 AXI 与 AXI3 接口设计} & 班级 & 0965 \\
+\hline
+学生姓名 & 甘文杰 & 学号 & 2412700 & 指导老师 & 董前琨 \\
+\hline
+实验地点 & \multicolumn{2}{c|}{实验楼 A 304} & 实验时间 & \multicolumn{2}{c|}{2026 年 11 月 23 日} \\
+\hline
+\end{tabularx}
+\end{center}
+
+\reportsection{一、实验目的}
+前面的实验已经实现了五级流水线 CPU 的基本指令、数据前递、乘除法、访存扩展以及例外和中断支持。不过，原来的存储器接口主要按照固定的 SRAM 时序进行访问：CPU 发出地址后，可以较快得到指令或数据。真正接入带握手的存储器或者总线时，请求不一定立即被接收，数据也不一定在下一周期返回。如果流水线仍按固定周期向前执行，就可能把尚未取到的指令送入译码，或者在 Load 没有完成时提前写回。
+
+这次实验参考《CPU 设计实战》第八章，在已有 CPU 上完成两个接口转换任务。Lab10 使用 \code{CPU_CDE_SRAM} 工程，将取指和数据访存改为带 \code{req/addr_ok/data_ok} 握手的类 AXI SRAM 接口；Lab11 使用 \code{CPU_CDE_AXI} 工程，在 CPU 外部增加 AXI3 总线接口，完成读地址、读数据、写地址、写数据和写响应五个通道的处理。两个实验仍使用原有五级流水线和 Lab9 的指令程序，主要修改数据与存储器交换的方式，而不是重新实现一套 CPU。
+
+实验主要希望解决以下问题：一是让取指和访存等待能够正确控制流水线停顿；二是保证已经接收的请求只执行一次，Load 数据不会提前使用，Store 不会重复写入；三是让 AXI 的不同通道独立握手，并在 IF 与 Load 共用读通道时正确区分响应归属。最后利用课程功能测试、定向测试和 Vivado 波形，检查代码实现与实际时序是否相符。本次完成前两个实践任务，随机延迟压力测试不作为本次报告的完成内容。
+
+\reportsection{二、实验环境与总体结构}
+实验继续使用 Windows、Vivado 2025.2 和 XSim 行为仿真，CPU 保留 IF、ID、EX、MEM、WB 五级流水线。Lab10 的工程目录是 \code{lab10/CPU_CDE_SRAM/mycpu_sram_verify/}，Lab11 是 \code{lab11/CPU_CDE_AXI/mycpu_axi_verify/}。两套工程各自保存一份 \code{rtl/myCPU/}，以此前已经实现 Lab8/Lab9 例外处理的 CPU 为基础，原来的 \code{CPU_CDE} 工程不直接参与本次总线适配。
+
+Lab10 的仿真 SoC 顶层为 \code{soc_sram_lite_top}，由指令 RAM、数据 RAM、\code{bridge_1x2} 和 \code{CONFREG} 组成。Lab11 的 SoC 顶层为 \code{soc_axi_lite_top}，实际 CPU 端采用带 ID、LEN、WID 等信号的 AXI3 接口，通过 \code{axi_wrap}、AXI crossbar 与 RAM/CONFREG 相连。虽然工程名中有 \code{lite}，本次使用的 CPU 端接口并不是只有简单读写寄存器的 AXI4-Lite。
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \node[reportbox,minimum width=1.65cm] (if) at (0,1.35) {IF\\取指};
+  \node[reportbox,minimum width=1.65cm] (id) at (2.4,1.35) {ID\\译码};
+  \node[reportbox,minimum width=1.65cm] (ex) at (4.8,1.35) {EX\\执行/地址};
+  \node[reportbox,minimum width=1.65cm] (mem) at (7.2,1.35) {MEM\\访存等待};
+  \node[reportbox,minimum width=1.65cm] (wb) at (9.6,1.35) {WB\\写回};
+  \draw[reportarr] (if) -- (id);
+  \draw[reportarr] (id) -- (ex);
+  \draw[reportarr] (ex) -- (mem);
+  \draw[reportarr] (mem) -- (wb);
+  \node[reportbox,minimum width=3cm] (inst) at (0,-.45) {指令请求与响应\\IF 状态机};
+  \node[reportbox,minimum width=3cm] (data) at (7.2,-.45) {数据请求与响应\\MEM 状态控制};
+  \draw[reportarr] (if) -- (inst);
+  \draw[reportarr] (mem) -- (data);
+  \node[reportlabel] at (5.0,-.45) {Lab10：SRAM-like\\Lab11：AXI3 适配器};
+\end{tikzpicture}
+\caption{本次改造在五级流水线中的位置：IF 和 MEM 负责等待外部存储器事务}
+\end{figure}
+
+设计上保留原来的指令译码、ALU 和 CP0 异常通路，主要将 IF 和 MEM 改为能够等待响应的结构。EX 仍负责计算访存地址并检查对齐异常；有效访存指令进入 MEM 后，由 MEM 发出外部请求。这样访问尚未结束时，MEM 不允许后面的流水级覆盖当前指令；一旦响应完成，再把读出的结果交给 WB。
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.25cm}X@{}}
+\toprule
+主要文件 & 本次实现的内容 \\
+\midrule
+\code{IF_stage.v} & 取指请求、等待数据、指令缓冲、分支或异常后的过时响应丢弃 \\
+\code{MEM_stage.v} & 请求接受记录、Load/Store 完成等待、读数据处理及字节写掩码 \\
+\code{EXE_stage.v} & 保持地址计算、对齐异常和级间信息传递，配合 MEM 的阻塞 \\
+\code{mycpu_top.v} & 连接五级流水线与类 AXI 接口；Lab11 额外连接 AXI3 适配器 \\
+\code{axi3_cpu_bus.v} & Lab11 新增，负责读仲裁、五通道握手、事务 ID 与响应检查 \\
+\shortstack[l]{\code{sram_wrap.v}\\\code{bridge_1x2.v}} & Lab10 的 SRAM 请求响应转换和数据 RAM/CONFREG 地址分发 \\
+\code{axi_wrap.v}、crossbar & Lab11 的 AXI 通道连接、地址路由以及 RAM/外设访问 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\reportsection{三、存储器接口与握手规则}
+\textbf{1. 类 AXI SRAM 的请求和完成信号。}
+
+Lab10 的指令侧与数据侧分别有一组 \code{req}、\code{wr}、\code{size}、\code{wstrb}、\code{addr}、\code{wdata}、\code{addr_ok}、\code{data_ok} 和 \code{rdata}。其中 \code{req} 表示 CPU 正在请求一次访问，\code{addr_ok} 表示请求地址已被对端接受，\code{data_ok} 表示此次访问已经完成，读操作的 \code{rdata} 在响应有效时使用。
+
+对于每一笔请求，地址接受的条件不是只有 \code{addr_ok=1}，而是：
+\[
+\mathrm{accept}=\mathrm{req}\land\mathrm{addr\_ok}.
+\]
+因此，地址还没有被接受时，要保持请求和地址；接受后就不能因为响应比较慢，再把同一笔 Store 当成新的请求发一次。Load 同样需要等 \code{data_ok} 才能使用返回数据。
+
+\textbf{2. AXI3 的五个通道。}
+
+Lab11 把读写访问进一步拆开。AR 用于发送读地址，R 返回读数据；AW 发送写地址，W 发送写数据，B 负责返回写完成结果。每个通道都有自己的 \code{VALID} 和 \code{READY}，只有在时钟边沿二者都为 1 时，该通道的一次传输才算完成：
+\[
+\mathrm{handshake}_c=\mathrm{VALID}_c\land\mathrm{READY}_c.
+\]
+当 \code{VALID=1} 而 \code{READY=0} 时，发送方需要保持当前有效请求及其地址、数据等信息。对读操作而言，AR 握手之后还要等 R；对写操作而言，即使 AW 和 W 都已接受，仍然必须等待 B 响应后才认为整笔 Store 完成。
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}XX@{}}
+\toprule
+对比项目 & Lab10 类 AXI SRAM & Lab11 AXI3 \\
+\midrule
+读请求 & \code{req} 与 \code{addr_ok} & ARVALID 与 ARREADY \\
+读完成 & \code{data_ok} 与 \code{rdata} & RVALID 与 RREADY，并核对 RID、RRESP、RLAST \\
+写请求 & 同一接口携带地址、数据和掩码 & AW 和 W 两个独立通道 \\
+写完成 & 以 \code{data_ok} 为准 & AW/W 都接受后等待 B 响应 \\
+事务归属 & IF/MEM 各自保存当前请求 & IF 与 Load 共用读通道，记录 owner 与 ID \\
+本次实现范围 & 单次请求等待与数据缓冲 & 单拍、单笔未完成读和写事务，不实现乱序或多拍突发 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+这里还要注意 Lab11 适配器内部有一层请求接收。当 IF 发出 \code{inst_req} 时，适配器可以先用 \code{inst_addr_ok} 告诉 IF“这笔请求已经被我接管”，之后才在 AXI AR 通道等待 \code{ARREADY}。因此 \code{inst_addr_ok} 和真正的 AXI \code{ARVALID \&\& ARREADY} 并不一定出现在同一个周期。这种设计可以让原有 IF/MEM 继续使用 Lab10 的接口，而把较复杂的 AXI 时序集中到适配器内实现。
+
+\reportsection{四、Lab10：类 AXI SRAM 接口设计}
+\textbf{1. IF 取指状态机。}
+
+IF 原本主要根据 PC 从指令存储器取得指令；改成带握手的接口后，要分别记住“地址尚未接收”“已经等待数据”和“数据已返回但 ID 还没接收”这三种情况。因此在 \code{IF_stage.v} 中使用 \code{IF_REQUEST}、\code{IF_WAIT_DATA}、\code{IF_HOLD} 三个状态，\code{request_pc} 保存本次取指 PC，\code{response_pc/response_inst} 缓冲返回的指令。
+
+\begin{center}
+\begin{tikzpicture}[node distance=13mm,>=Latex]
+ \node[reportbox,minimum width=2.65cm] (req) {IF\_REQUEST\\等待地址接受};
+ \node[reportbox,minimum width=2.65cm,right=15mm of req] (wait) {IF\_WAIT\_DATA\\等待数据返回};
+ \node[reportbox,minimum width=2.65cm,right=15mm of wait] (hold) {IF\_HOLD\\保存 PC/指令};
+ \draw[reportarr] (req) -- node[above,reportlabel]{\code{req \&\& addr_ok}} (wait);
+ \draw[reportarr] (wait) -- node[above,reportlabel]{\code{data_ok}} (hold);
+ \draw[reportarr] (hold.south) -- ++(0,-.48) -| node[pos=.24,below,reportlabel]{\code{ds_allowin}，处理下一 PC} (req.south);
+\end{tikzpicture}
+\end{center}
+
+实际 RTL 还处理地址接受与数据返回同周期发生的情况。正常请求以 \code{request_pc} 作为地址，指令端固定为只读；当 \code{req \&\& addr_ok} 成立后，如果 \code{data_ok} 已经有效，就直接缓冲返回结果，否则进入等待状态：
+
+\begin{lstlisting}
+assign inst_sram_req  = (state == IF_REQUEST) && !reset &&
+                        !redirect_valid && (request_pc[1:0] == 2'b00);
+assign inst_sram_wr   = 1'b0;
+assign inst_sram_size = 2'd2;
+assign inst_sram_addr = request_pc;
+
+// IF_REQUEST state:
+if (inst_sram_req && inst_sram_addr_ok) begin
+    if (inst_sram_data_ok) begin
+        response_valid <= 1'b1;
+        response_pc    <= request_pc;
+        response_inst  <= inst_sram_rdata;
+        state          <= IF_HOLD;
+    end else begin
+        state <= IF_WAIT_DATA;
+    end
+end
+\end{lstlisting}
+
+如果 ID 暂时不能接收，IF 就保持 \code{response_valid} 和缓冲的指令，不会在等待过程中继续覆盖它。只有 \code{response_valid \&\& ds_allowin} 成立，才把这条指令交付给 ID 并准备下一个 PC。这部分改动使取指的速度不再被假定为固定一周期，同时保留原有的分支延迟槽逻辑。
+
+\textbf{2. 重定向与过时响应。}
+
+前面的 Lab8/Lab9 已实现异常和 \code{eret} 重定向。如果旧取指地址已经被存储器接受，CPU 就不能假定那笔响应会自动消失。当前 IF 在收到重定向时，清除尚未交给 ID 的指令；若正处于 \code{IF_WAIT_DATA}，便置位 \code{stale_response} 并保存 \code{restart_pc}。旧响应到达后只把它消费掉，不送给 ID，然后才从新的 PC 继续取指。
+
+\begin{lstlisting}
+if (state == IF_WAIT_DATA && !inst_sram_data_ok) begin
+    stale_response <= 1'b1;
+    restart_pc     <= redirect_pc;
+end
+// IF_WAIT_DATA state:
+if (inst_sram_data_ok) begin
+    if (stale_response) begin
+        request_pc     <= restart_pc;
+        stale_response <= 1'b0;
+        state          <= IF_REQUEST;
+    end else begin
+        response_valid <= 1'b1;
+        response_pc    <= request_pc;
+        response_inst  <= inst_sram_rdata;
+        state          <= IF_HOLD;
+    end
+end
+\end{lstlisting}
+
+这种处理的重点是区分已经被接受的外部事务和流水线内部可以取消的指令。旧请求仍按接口规则完成，但它的结果不能成为异常处理入口之后的一条有效指令。
+
+\textbf{3. MEM 访存等待与数据处理。}
+
+EX 继续计算有效地址并检查地址对齐，MEM 接收该指令后才负责实际发送类 AXI 数据请求。MEM 保存 \code{ms_addr_accepted}，避免重复提交已经被接受的 Store；用 \code{ms_data_valid} 标记本笔访问已经完成，并把 Load 返回数据缓存在 \code{ms_data_rdata} 中。
+
+\begin{lstlisting}
+assign data_sram_req = ms_valid && ms_mem_access &&
+                       !ms_exception_valid &&
+                       !ms_addr_accepted && !ms_data_valid;
+assign ms_ready_go = !ms_mem_access ||
+                     ms_exception_valid || ms_data_valid;
+assign ms_allowin = !ms_valid || (ms_ready_go && ws_allowin);
+
+if (data_sram_req && data_sram_addr_ok) begin
+    ms_addr_accepted <= 1'b1;
+    if (data_sram_data_ok) begin
+        ms_data_valid <= 1'b1;
+        ms_data_rdata <= data_sram_rdata;
+    end
+end else if (ms_addr_accepted && data_sram_data_ok) begin
+    ms_data_valid <= 1'b1;
+    ms_data_rdata <= data_sram_rdata;
+end
+\end{lstlisting}
+
+从这几行可以看到，\code{ms_ready_go} 不再对所有指令固定为 1。普通算术指令不需要等待存储器；对 Load/Store，只有响应到达并记录完成后，MEM 才允许当前指令继续向 WB 传递。这样阻塞是由真实访存状态决定的，而不是简单在代码中延迟固定的几个时钟周期。
+
+不同宽度的存储指令仍由原来的 \code{MEM_OP} 类型决定。字写入使用掩码 \code{1111}，字节写入根据地址最低两位只打开一个 byte lane，半字写入按地址选择低两字节或高两字节。例如：
+
+\begin{lstlisting}
+if (ms_mem_op[`MEM_OP_SW]) begin
+    store_wstrb = 4'b1111;
+end else if (ms_mem_op[`MEM_OP_SB]) begin
+    store_wstrb = 4'b0001 << ms_alu_result[1:0];
+    store_wdata = ms_rt_value << {ms_alu_result[1:0], 3'b000};
+end else if (ms_mem_op[`MEM_OP_SH]) begin
+    store_wstrb = ms_alu_result[1] ? 4'b1100 : 4'b0011;
+    store_wdata = ms_alu_result[1] ? (ms_rt_value << 16) : ms_rt_value;
+end
+\end{lstlisting}
+
+上面是原组合逻辑中有关 \code{SW/SB/SH} 的关键分支整理，完整代码还支持 \code{SWL/SWR} 和 \code{LWL/LWR} 等指令。访问异常时 \code{!ms_exception_valid} 会关闭请求，原有 CP0 与异常提交通路继续保留。
+
+\reportsection{五、Lab10：波形与运行结果分析}
+\textbf{1. 取指请求与返回。}
+
+\reportfig{L10-01.png}{0.99}{Lab10 类 AXI 取指：请求地址接受、数据返回与 IF 指令交付}
+
+图中 \code{request_pc} 从 \code{BFC00000} 依次变为 \code{BFC00004}、\code{BFC00008}。\code{cpu_inst_req} 发起取指，随后 \code{cpu_inst_addr_ok} 与请求在有效时钟边沿同时为 1，表示地址已经被接收；再往后出现 \code{cpu_inst_data_ok} 和 \code{cpu_inst_rdata} 的有效返回，能看到 \code{2408FFFF} 等指令内容。\code{fs_to_ds_valid} 随后拉高，\code{debug_wb_pc} 也开始显示有效 PC，说明返回指令经过流水线继续执行。截图前半部分存在复位后的初始值，但有效事务出现在右侧，因此判断依据是请求、接受和返回三个事件的先后对应。
+
+\textbf{2. Load 与流水线等待。}
+
+\reportfig{L10-02.png}{0.99}{Lab10 Load：数据请求等待期间 MEM 阻塞及响应后的写回}
+
+图中以 \code{ms_pc=BFC00D64} 附近的一条 Load 为观察对象。\code{cpu_data_req} 发送数据请求，地址由 \code{cpu_data_addr} 给出，\code{cpu_data_addr_ok} 接受请求之后仍要等待 \code{cpu_data_data_ok}。在等待区间，\code{ms_allowin} 的变化体现了 MEM 对上游指令的阻塞，当前访存不能因为后续流水级空闲而被提前覆盖。随后可见读数据返回，写回调试信号出现相应的 PC、寄存器写使能和结果。这里证明的不只是 RAM 能读出数据，还包括流水线确实等到了数据再推进。
+
+\textbf{3. Store 与字节写使能。}
+
+\reportfig{L10-03.png}{0.99}{Lab10 Store：CPU 数据写请求与 RAM 端写使能对应关系}
+
+这张图展示的是一条 \code{sw}。在 \code{ms_pc=BFC006F4} 对应的事务中，可以看到 \code{cpu_data_wr=1}、\code{cpu_data_addr=BFAFF008}、\code{cpu_data_wstrb=1111}、\code{cpu_data_wdata=00000002}。在请求被接受的同时，RAM 侧的 \code{data_ram_wen} 也显示四个字节 lane 有效，地址与 CPU 发出的写入位置相对应。由于是完整字写入，掩码 \code{1111} 是预期结果；这张图主要说明正常 \code{sw} 的总线传递与写使能，子字节 Store 的其他掩码组合由 MEM 的对应逻辑及课程测试覆盖。
+
+\textbf{4. 异常重定向与旧响应丢弃。}
+
+\reportfig{L10-04.png}{0.99}{Lab10 异常重定向后：旧取指响应排空与异常入口 PC 保存}
+
+截图重点放在重定向后的处理阶段。\code{restart_pc} 已保存 \code{BFC00380}，\code{stale_response} 表示当前还有一笔旧取指不能直接交付。随后旧请求的 \code{cpu_inst_data_ok} 到来时，IF 将这一响应消费掉，\code{response_valid} 没有把过时指令当作正常新指令使用，之后重新向异常入口附近发起取指。它说明遇到异常或 ERET 时，仅改变 PC 还不够，还要正确处理此前已经被存储器接受的请求。
+
+\reportsection{六、Lab11：AXI3 总线适配器设计}
+\textbf{1. 总体连接与读写通路。}
+
+Lab11 没有让 IF 和 MEM 各自去实现一套 AXI 状态机，而是在 \code{mycpu_top.v} 中保留和 Lab10 相同形式的内部指令/数据请求端口，再交给新增的 \code{axi3_cpu_bus.v}。适配器负责把这些请求转换成五个 AXI 通道，并用返回的 \code{inst_addr_ok/inst_data_ok}、\code{data_addr_ok/data_data_ok} 通知原流水线。这种分层能把 CPU 流水线的阻塞规则与 AXI 通道时序分开，便于复用 Lab10 的 IF/MEM 设计。
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \node[reportbox,minimum width=2.15cm] (fi) at (0,1) {IF\\指令读};
+  \node[reportbox,minimum width=2.15cm] (ma) at (0,-1) {MEM\\Load / Store};
+  \node[reportbox,minimum width=2.9cm,minimum height=2.2cm] (ad) at (4,0) {\code{axi3_cpu_bus}\\读仲裁与事务状态机\\AW/W/B 写控制};
+  \node[reportbox,minimum width=2.1cm] (cr) at (8,0) {\code{axi_wrap}\\AXI crossbar};
+  \node[reportbox,minimum width=1.6cm] (rm) at (11,0.85) {AXI RAM};
+  \node[reportbox,minimum width=1.6cm] (cf) at (11,-.85) {CONFREG};
+  \draw[reportarr] (fi.east) -- node[above,reportlabel]{inst 请求} (ad.north west);
+  \draw[reportarr] (ma.east) -- node[below,reportlabel]{data 请求} (ad.south west);
+  \draw[reportarr] (ad) -- node[above,reportlabel]{AR/R\\AW/W/B} (cr);
+  \draw[reportarr] (cr.east) -- (rm.west);
+  \draw[reportarr] (cr.east) -- (cf.west);
+\end{tikzpicture}
+\caption{Lab11 总线结构：CPU 内部请求经过 AXI3 适配器与 crossbar 访问 RAM 和 CONFREG}
+\end{figure}
+
+本次实现采用单拍传输，\code{ARLEN/AWLEN=0}，\code{ARBURST/AWBURST=01} 表示递增突发方式下的单次传输。适配器一次最多维护一笔读事务和一笔写事务，避免在课程功能测试阶段额外处理乱序读写和写数据交错。读、写两边的状态机相互独立，但读通道内部需要对 IF 和 Load 做仲裁。
+
+\textbf{2. IF 与 Load 的读仲裁。}
+
+取指和数据加载都会使用 AR/R。如果两者同时发起请求，本次设计优先接收数据加载请求；如果没有数据读请求，再接收取指请求。适配器用 \code{rd_owner_data} 记住这笔读属于哪一方，并分配固定 ID：IF 为 0，Load 为 1。读状态依次经过 \code{RD_IDLE}、\code{RD_ADDR} 和 \code{RD_DATA}。
+
+\begin{lstlisting}
+assign rd_claim_data = (rd_state == RD_IDLE) && !axi_fault &&
+                       data_req && !data_wr;
+assign rd_claim_inst = (rd_state == RD_IDLE) && !axi_fault &&
+                       !rd_claim_data && inst_req;
+
+assign arvalid = (rd_state == RD_ADDR) && !axi_fault;
+assign rready  = (rd_state == RD_DATA) && !axi_fault;
+assign rd_addr_fire = arvalid && arready;
+assign rd_data_fire = rvalid && rready;
+assign rd_response_good = (rid == rd_id_q) &&
+                          (rresp == 2'b00) && rlast;
+
+assign inst_data_ok = rd_data_fire && rd_response_good &&
+                      !rd_owner_data;
+assign data_rdata = rdata;
+\end{lstlisting}
+
+在 \code{RD_IDLE} 选好来源后，适配器会锁存地址、大小和 ID，进入 \code{RD_ADDR} 后保持 \code{ARVALID}，直到 \code{ARREADY} 接受。随后转入 \code{RD_DATA} 等待数据返回。只有实际的 \code{RVALID \&\& RREADY} 发生，并且 \code{RID}、\code{RRESP}、\code{RLAST} 符合当前单拍读事务要求时，才向原来的 IF 或 MEM 发出完成信号。
+
+上面的逻辑如果按实际执行顺序写成简化伪代码，可以表示为：
+
+\begin{lstlisting}[language={}]
+if read_state == IDLE:
+    if data_req && !data_wr: latch(owner=DATA, addr, id=1)
+    else if inst_req:        latch(owner=IF,   pc,   id=0)
+    if a request was latched: read_state = ADDR
+if read_state == ADDR && arvalid && arready:
+    read_state = DATA
+if read_state == DATA && rvalid && rready:
+    check(rid, rresp, rlast)
+    notify the saved owner if response is valid
+    read_state = IDLE
+\end{lstlisting}
+
+这段伪代码只用来说明状态与事务归属的流动，实际 RTL 还包含复位、\code{axi_fault} 等控制。由于只允许一笔未完成读事务，返回数据只需要送给锁存的 owner，不需要额外实现多笔请求的乱序匹配。
+
+此外，读地址通道的 \code{ARPROT} 区分指令和数据访问。本次采用非安全、非特权访问，取指设置为 \code{3'b110}，Load 设置为 \code{3'b010}。其中 bit2 为 1 表示指令访问，为 0 表示数据访问。这一点也能在 Lab11 的读通道波形中直接观察。
+
+\textbf{3. AW/W 独立握手和 B 写响应。}
+
+写操作与读操作最大的不同，是地址和数据能够在不同周期被接收。如果只在 AWREADY 有效时就认为 Store 已经完成，那么 W 通道还没被接受就可能放行 MEM；反过来，只有 W 握手完成也不能说明写请求全部结束。
+
+本次写状态机为 \code{WR_IDLE}、\code{WR_SEND}、\code{WR_RESP}。进入 \code{WR_SEND} 后分别用 \code{wr_aw_done} 和 \code{wr_w_done} 记录 AW、W 的握手状态，两个条件都满足后再等待 B。实际代码如下：
+
+\begin{lstlisting}
+assign awvalid = (wr_state == WR_SEND) &&
+                 !wr_aw_done && !axi_fault;
+assign wvalid  = (wr_state == WR_SEND) &&
+                 !wr_w_done && !axi_fault;
+assign wr_aw_fire = awvalid && awready;
+assign wr_w_fire  = wvalid  && wready;
+assign wr_all_done = (wr_state == WR_SEND) &&
+                     (wr_aw_done || wr_aw_fire) &&
+                     (wr_w_done  || wr_w_fire);
+assign bready = (wr_state == WR_RESP) && !axi_fault;
+assign data_data_ok =
+    (rd_data_fire && rd_response_good && rd_owner_data) ||
+    (wr_b_fire && wr_response_good);
+\end{lstlisting}
+
+因此，\code{data_addr_ok} 对写操作是在 AW 与 W 均已接收时给出，\code{data_data_ok} 则要等到成功的 B 响应。MEM 根据这两个信号更新地址接受和数据完成状态，直到 Store 真正结束才继续推进。\code{AWID/WID/BID} 用于检查同一写事务的关联关系，\code{WSTRB} 表示实际写入的字节 lane。
+
+\textbf{4. 读写响应检查与异常处理。}
+
+适配器还要防止错误响应被当作正常访存结果。读事务要求返回的 \code{RID} 与锁存 ID 相同，\code{RRESP=00} 且 \code{RLAST=1}；写事务要求 \code{BID} 相符且 \code{BRESP=00}。发现不满足条件的响应时，\code{axi_fault} 被置位，正常事务不会继续被当作成功完成。
+
+\begin{lstlisting}
+assign wr_response_good = (bid == wr_id_q) &&
+                          (bresp == 2'b00);
+if (wr_state == WR_RESP && wr_b_fire) begin
+    wr_state <= WR_IDLE;
+    if (!wr_response_good)
+        axi_fault <= 1'b1;
+end
+\end{lstlisting}
+
+对于分支、例外和 ERET，内部 IF 依然采用前面介绍的 \code{stale_response} 处理。这样即使某次 AR 已经被 AXI 接受，重定向后的 CPU 仍能等待旧 R 返回并丢弃它，再从正确的地址重新取指。
+
+\reportsection{七、Lab11：波形与运行结果分析}
+\textbf{1. AXI3 单拍读事务。}
+
+\reportfig{L11-01.png}{0.99}{Lab11 AXI3 取指读事务：AR 握手、R 返回与单拍属性}
+
+在图中，CPU 首先通过 \code{ARADDR=BFC00000} 发起取指，\code{ARVALID} 拉高后等待 \code{ARREADY} 接受。地址对应的 \code{ARID=0}、\code{ARPROT=110}，说明这是指令读；\code{ARLEN=0} 说明只传输一拍。随后 R 通道返回指令 \code{2408FFFF}，并能看到 \code{RVALID/RREADY}、\code{RID=0}、\code{RLAST=1} 和 \code{RRESP=00}。下一次读地址继续到 \code{BFC00004}，与 CPU 顺序取指相符。这张波形能够把 AXI 的地址阶段和数据阶段清楚地区分开。
+
+\textbf{2. 取指与 Load 的读通道仲裁。}
+
+\reportfig{L11-02.png}{0.99}{Lab11 IF/Load 共享 AR/R：事务 ID、读属性及返回目标的切换}
+
+这张截图连续展示了取指读与数据加载。前面的 IF 请求使用 \code{ARID=0}、\code{ARPROT=110}，地址为 \code{BFC00D60} 等指令地址；随后一笔数据加载使用 \code{ARADDR=BFAFF02C}、\code{ARID=1}、\code{ARPROT=010}。\code{rd_owner_data} 在数据读期间变为 1，返回时 \code{RID=1}，\code{data_sram_data_ok} 有效；普通取指则由 \code{inst_sram_data_ok} 通知 IF。由此可以看到，共用一套 AXI 读通道并不会把 Load 的返回值误交给取指级，原因是适配器在接收请求时就保存了 owner 和 ID。
+
+\textbf{3. AXI3 写地址、写数据和写响应。}
+
+\reportfig{L11-03.png}{0.99}{Lab11 AXI3 Store：AW、W 独立握手和 B 通道完成响应}
+
+图中可以观察到 \code{AWVALID/AWREADY} 与 \code{WVALID/WREADY} 不必在同一个周期同时完成。当前 Store 的地址为 \code{BFAFF008}，写数据 \code{00000002}，\code{WSTRB=1111}；\code{AWID=1} 和 \code{WID=1} 对应同一事务。由于是一次完整的字写入，\code{AWSIZE=010}、\code{AWLEN=0}、\code{AWBURST=01}，并在 W 通道使用 \code{WLAST=1}。地址和数据都被接受后，B 通道才返回有效响应，\code{BID=1}、\code{BRESP=00}，随后 \code{data_sram_data_ok} 使 MEM 结束当前 Store。这张图说明写请求不能只看一个 READY 信号，而要把写地址、写数据和写响应联系起来判断。
+
+\textbf{4. AXI READY 反压与请求保持。}
+
+\reportfig{L11-04.png}{0.99}{Lab11 AXI 读地址反压：ARREADY 未就绪时保持请求并等待握手}
+
+这张图主要观察读地址通道。在 \code{ARADDR=BFC00000} 的请求期间，先出现 \code{ARVALID=1}、\code{ARREADY=0} 的状态，说明从设备当时还没有接收地址。CPU 没有立刻撤销请求或改变地址，而是继续保持，直到 \code{ARREADY} 拉高后才完成握手。之后还可以看到 \code{RVALID/RREADY} 和读回的指令数据 \code{2408FFFF}。截图下半部分的 AW/W/B 信号此时没有活动，是因为当前窗口展示的是读操作，不代表写通道没有实现。这张图主要用于说明 AXI 的反压规则，而不是 Store 流程。
+
+\textbf{5. 异常期间的未完成读与旧响应处理。}
+
+\reportfig{L11-05.png}{0.99}{Lab11 异常重定向：已发出的 AXI 取指继续完成但不送入流水线}
+
+图中出现异常重定向后，\code{restart_pc} 保存为 \code{BFC00380}，\code{stale_response} 标记旧取指响应已经不能继续使用。但 AXI 读通道仍按正常握手接收此前的 R 响应，\code{RID} 与原取指请求对应，之后旧响应被清除，新的取指地址转向异常入口。这与 Lab10 的处理思路相同，只是 Lab11 还需要遵守 AR/R 两个通道的握手约束。因而它说明了总线状态与流水线冲刷之间必须相互配合，不能简单地在异常发生时清空所有已发出的外部访问。
+
+\reportsection{八、功能测试、定向验证与结果}
+\textbf{1. 测试方法。}
+
+本次先对接口进行较短的定向测试，再运行课程累计程序。定向测试可以人为控制 \code{addr_ok/data_ok} 或 AXI READY 的变化，检查地址接受、延迟响应、重复 Store、AW/W 不同先后次序、错误响应及过时取指等情况。课程测试则将 Lab9 的指令映像装入当前 SoC，执行完整程序，并把 CPU 提交的 GPR 写回 PC、目的寄存器和数据与 CPU132 参考轨迹逐项比较。
+
+Lab10 的定向测试采用 \code{tb_lab10_bus}，Lab11 采用 \code{tb_lab11_axi3_bus}。完整功能仿真均使用 \code{tb_top} 与对应的 SoC 验证工程。为了便于复查，运行结果保存在 \code{results/lab10_lab11/}，同时保留日志、事务统计 CSV 和 WDB/WCFG 波形文件；报告中的九张图片均来自对应的最终功能 Run。
+
+\textbf{2. 定向测试结果。}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}X>{\centering\arraybackslash}p{1.05cm}@{}}
+\toprule
+测试 & 主要检查及记录结果 & 状态 \\
+\midrule
+Lab10 IF & 4 次请求接受、4 次响应；检查等待、缓冲与重定向时序 & PASS \\
+Lab10 MEM & 11 次数据请求/完成，其中 Load 6 次、Store 5 次；重复 Store 为 0 & PASS \\
+Lab11 读通道 & 2 笔读事务，取指/Load 归属与 ID、PROT 属性对应；错误响应检查 & PASS \\
+Lab11 写通道 & 2 笔写事务，覆盖 AW 先握手、W 先握手两种情况及 B 响应 & PASS \\
+Lab11 重定向 & 已接收取指被标记为 stale 并等待旧响应完成后丢弃 & PASS \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{3. 课程完整功能测试。}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.5cm}CC@{}}
+\toprule
+检查项目 & Lab10 类 AXI & Lab11 AXI3 \\
+\midrule
+累计功能测试点 & 94/94 & 94/94 \\
+严格参考 trace 匹配 & 111,625 条 & 111,625 条 \\
+数据 Load 接受/完成 & 4,618 / 4,618 & 4,618 / 4,618 \\
+数据 Store 接受/完成 & 3,753 / 3,753 & 3,753 / 3,753 \\
+取指接受/完成 & 172,457 / 172,457 & 172,894 / 172,893 \\
+AXI AR/R 握手 & 不适用 & 177,511 / 177,511 \\
+AXI AW/W/B 握手 & 不适用 & 各 3,753 \\
+重复 Store 次数 & 0 & 0 \\
+过时取指响应丢弃 & 128 & 693 \\
+AXI 协议检查失败数 & 不适用 & 0 \\
+功能仿真结束状态 & PASS & PASS \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Lab10 的请求接受与响应数量完全对应，说明在本次课程程序中，没有因为等待产生重复访存。Lab11 的外部 AXI AR 与 R 均为 177,511 次，AW、W、B 均为 3,753 次，读写通道的请求和完成记录一致。Load、Store 总数与 Lab10 相同，并且两组都没有重复 Store。
+
+Lab11 内部 IF 的接受次数比完成次数多 1，是因为课程测试结束时，适配器已经接收最后一笔内部取指请求，但还没有把它送到外部 AR 通道。外部 AR/R 事务并没有未完成项，数据读写也已经全部结束，因此测试仍为 PASS。这里的接受/完成计数不完全等于程序执行指令数，不能直接把两个实验的请求次数当作性能指标。
+
+课程累计 94 个功能点全部通过，两套 CPU 的严格 GPR 写回轨迹也都与参考模型匹配。Lab10 的完整测试未单独记录运行时协议断言总数，接口时序由定向测试和请求计数继续检查；Lab11 的完整测试记录协议检查失败为 0。这些结果配合前面的九张波形，既说明程序最终执行正确，也能看到接口在真实运行过程中如何完成握手、阻塞和响应处理。
+
+\reportsection{九、实验总结}
+这次实验把已有的五级流水线 CPU 从固定时序的存储器访问，改成了能够等待请求接受和数据返回的总线访问方式。Lab10 的重点是在 IF 和 MEM 中保存请求状态，让流水线真正根据 \code{addr_ok/data_ok} 决定何时继续执行。Lab11 则在此基础上加入 AXI3 适配器，把读地址、读数据、写地址、写数据、写响应分开处理，并通过事务 ID 和 owner 区分 IF 与 Load。
+
+实现过程中比较关键的是区分“请求已经交给总线”和“这条指令已经执行完成”：对于 Load，地址发送成功后还要等读数据；对于 Store，AXI 的 AW/W 都接受以后还必须等 B；对于异常或 ERET，旧取指即使不再属于正确执行路径，已经被接受的响应仍要按协议处理掉。把这些情况与原有流水线的 \code{allowin}、\code{flush} 结合起来，才能避免提前写回、重复写存储器或错误路径指令继续执行。
+
+最终 Lab10、Lab11 的课程功能点都达到 94/94，严格写回轨迹均匹配 111,625 条，定向测试也通过。结合波形可以看到请求接受、访存等待、AXI 五通道握手以及异常重定向后丢弃旧响应的具体过程，本次完成了要求的类 AXI SRAM 接口与 AXI3 接口两部分标。
+
+\end{document}

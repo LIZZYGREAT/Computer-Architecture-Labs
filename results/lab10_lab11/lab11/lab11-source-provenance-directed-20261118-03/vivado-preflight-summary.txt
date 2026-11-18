@@ -1,7 +1,0 @@
-RUN_ID=lab11-source-provenance-directed-20261118-03
-CASE=lab11
-SUITE=directed
-VIVADO_PREFLIGHT_STATUS=PASS
-VIVADO_VERSION=2025.2
-IP_STATUS=REPORTED
-PROJECT_PREFLIGHT_REPORT=C:\Users\lenovo\Desktop\Projects\FPGA\lab\results\lab10_lab11\lab11\lab11-source-provenance-directed-20261118-03\preflight\project-preflight.txt
