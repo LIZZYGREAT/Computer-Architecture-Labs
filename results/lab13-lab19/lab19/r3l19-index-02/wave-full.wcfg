@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="wave-full.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_lab19_index_maint_contract" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+   </zoom_setting>
+   <column_width_setting>
+   </column_width_setting>
+   <WVObjectSize size="82" />
+   <wvobject fp_name="/tb_lab19_index_maint_contract/aclk" type="logic">
+      <obj_property name="ElementShortName">aclk</obj_property>
+      <obj_property name="ObjectShortName">aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/aresetn" type="logic">
+      <obj_property name="ElementShortName">aresetn</obj_property>
+      <obj_property name="ObjectShortName">aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/arready" type="logic">
+      <obj_property name="ElementShortName">arready</obj_property>
+      <obj_property name="ObjectShortName">arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/awready" type="logic">
+      <obj_property name="ElementShortName">awready</obj_property>
+      <obj_property name="ObjectShortName">awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/wready" type="logic">
+      <obj_property name="ElementShortName">wready</obj_property>
+      <obj_property name="ObjectShortName">wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/bvalid" type="logic">
+      <obj_property name="ElementShortName">bvalid</obj_property>
+      <obj_property name="ObjectShortName">bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/bid" type="array">
+      <obj_property name="ElementShortName">bid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">bid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/bresp" type="array">
+      <obj_property name="ElementShortName">bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/force_maint_req" type="logic">
+      <obj_property name="ElementShortName">force_maint_req</obj_property>
+      <obj_property name="ObjectShortName">force_maint_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/force_maint_op" type="array">
+      <obj_property name="ElementShortName">force_maint_op[4:0]</obj_property>
+      <obj_property name="ObjectShortName">force_maint_op[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/force_maint_vaddr" type="array">
+      <obj_property name="ElementShortName">force_maint_vaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">force_maint_vaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/awid" type="array">
+      <obj_property name="ElementShortName">awid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">awid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/awaddr" type="array">
+      <obj_property name="ElementShortName">awaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">awaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/awlen" type="array">
+      <obj_property name="ElementShortName">awlen[7:0]</obj_property>
+      <obj_property name="ObjectShortName">awlen[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/awsize" type="array">
+      <obj_property name="ElementShortName">awsize[2:0]</obj_property>
+      <obj_property name="ObjectShortName">awsize[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/awburst" type="array">
+      <obj_property name="ElementShortName">awburst[1:0]</obj_property>
+      <obj_property name="ObjectShortName">awburst[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/awvalid" type="logic">
+      <obj_property name="ElementShortName">awvalid</obj_property>
+      <obj_property name="ObjectShortName">awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/wid" type="array">
+      <obj_property name="ElementShortName">wid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">wid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/wdata" type="array">
+      <obj_property name="ElementShortName">wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/wstrb" type="array">
+      <obj_property name="ElementShortName">wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/wlast" type="logic">
+      <obj_property name="ElementShortName">wlast</obj_property>
+      <obj_property name="ObjectShortName">wlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/wvalid" type="logic">
+      <obj_property name="ElementShortName">wvalid</obj_property>
+      <obj_property name="ObjectShortName">wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/bready" type="logic">
+      <obj_property name="ElementShortName">bready</obj_property>
+      <obj_property name="ObjectShortName">bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/top_accepts" type="array">
+      <obj_property name="ElementShortName">top_accepts[31:0]</obj_property>
+      <obj_property name="ObjectShortName">top_accepts[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/icache_accepts" type="array">
+      <obj_property name="ElementShortName">icache_accepts[31:0]</obj_property>
+      <obj_property name="ObjectShortName">icache_accepts[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dcache_accepts" type="array">
+      <obj_property name="ElementShortName">dcache_accepts[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dcache_accepts[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/icache_completions" type="array">
+      <obj_property name="ElementShortName">icache_completions[31:0]</obj_property>
+      <obj_property name="ObjectShortName">icache_completions[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dcache_completions" type="array">
+      <obj_property name="ElementShortName">dcache_completions[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dcache_completions[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/timeout_count" type="array">
+      <obj_property name="ElementShortName">timeout_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">timeout_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/beat" type="array">
+      <obj_property name="ElementShortName">beat[31:0]</obj_property>
+      <obj_property name="ObjectShortName">beat[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/expected_word" type="array">
+      <obj_property name="ElementShortName">expected_word[31:0]</obj_property>
+      <obj_property name="ObjectShortName">expected_word[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/expected_line" type="array">
+      <obj_property name="ElementShortName">expected_line[255:0]</obj_property>
+      <obj_property name="ObjectShortName">expected_line[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/sentinel_line" type="array">
+      <obj_property name="ElementShortName">sentinel_line[255:0]</obj_property>
+      <obj_property name="ObjectShortName">sentinel_line[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/aclk" type="logic">
+      <obj_property name="ElementShortName">aclk</obj_property>
+      <obj_property name="ObjectShortName">aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/aresetn" type="logic">
+      <obj_property name="ElementShortName">aresetn</obj_property>
+      <obj_property name="ObjectShortName">aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/arready" type="logic">
+      <obj_property name="ElementShortName">arready</obj_property>
+      <obj_property name="ObjectShortName">arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/awready" type="logic">
+      <obj_property name="ElementShortName">awready</obj_property>
+      <obj_property name="ObjectShortName">awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/wready" type="logic">
+      <obj_property name="ElementShortName">wready</obj_property>
+      <obj_property name="ObjectShortName">wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/bvalid" type="logic">
+      <obj_property name="ElementShortName">bvalid</obj_property>
+      <obj_property name="ObjectShortName">bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/bid" type="array">
+      <obj_property name="ElementShortName">bid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">bid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/bresp" type="array">
+      <obj_property name="ElementShortName">bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/force_maint_req" type="logic">
+      <obj_property name="ElementShortName">force_maint_req</obj_property>
+      <obj_property name="ObjectShortName">force_maint_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/force_maint_op" type="array">
+      <obj_property name="ElementShortName">force_maint_op[4:0]</obj_property>
+      <obj_property name="ObjectShortName">force_maint_op[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/force_maint_vaddr" type="array">
+      <obj_property name="ElementShortName">force_maint_vaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">force_maint_vaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/awid" type="array">
+      <obj_property name="ElementShortName">awid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">awid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/awaddr" type="array">
+      <obj_property name="ElementShortName">awaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">awaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/awlen" type="array">
+      <obj_property name="ElementShortName">awlen[7:0]</obj_property>
+      <obj_property name="ObjectShortName">awlen[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/awsize" type="array">
+      <obj_property name="ElementShortName">awsize[2:0]</obj_property>
+      <obj_property name="ObjectShortName">awsize[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/awburst" type="array">
+      <obj_property name="ElementShortName">awburst[1:0]</obj_property>
+      <obj_property name="ObjectShortName">awburst[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/awvalid" type="logic">
+      <obj_property name="ElementShortName">awvalid</obj_property>
+      <obj_property name="ObjectShortName">awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/wid" type="array">
+      <obj_property name="ElementShortName">wid[3:0]</obj_property>
+      <obj_property name="ObjectShortName">wid[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/wdata" type="array">
+      <obj_property name="ElementShortName">wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/wstrb" type="array">
+      <obj_property name="ElementShortName">wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/wlast" type="logic">
+      <obj_property name="ElementShortName">wlast</obj_property>
+      <obj_property name="ObjectShortName">wlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/wvalid" type="logic">
+      <obj_property name="ElementShortName">wvalid</obj_property>
+      <obj_property name="ObjectShortName">wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/bready" type="logic">
+      <obj_property name="ElementShortName">bready</obj_property>
+      <obj_property name="ObjectShortName">bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/top_accepts" type="array">
+      <obj_property name="ElementShortName">top_accepts[31:0]</obj_property>
+      <obj_property name="ObjectShortName">top_accepts[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/icache_accepts" type="array">
+      <obj_property name="ElementShortName">icache_accepts[31:0]</obj_property>
+      <obj_property name="ObjectShortName">icache_accepts[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dcache_accepts" type="array">
+      <obj_property name="ElementShortName">dcache_accepts[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dcache_accepts[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/icache_completions" type="array">
+      <obj_property name="ElementShortName">icache_completions[31:0]</obj_property>
+      <obj_property name="ObjectShortName">icache_completions[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dcache_completions" type="array">
+      <obj_property name="ElementShortName">dcache_completions[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dcache_completions[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/timeout_count" type="array">
+      <obj_property name="ElementShortName">timeout_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">timeout_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/beat" type="array">
+      <obj_property name="ElementShortName">beat[31:0]</obj_property>
+      <obj_property name="ObjectShortName">beat[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/expected_word" type="array">
+      <obj_property name="ElementShortName">expected_word[31:0]</obj_property>
+      <obj_property name="ObjectShortName">expected_word[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/expected_line" type="array">
+      <obj_property name="ElementShortName">expected_line[255:0]</obj_property>
+      <obj_property name="ObjectShortName">expected_line[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/sentinel_line" type="array">
+      <obj_property name="ElementShortName">sentinel_line[255:0]</obj_property>
+      <obj_property name="ObjectShortName">sentinel_line[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dut/cache_maint_req" type="logic">
+      <obj_property name="ElementShortName">cache_maint_req</obj_property>
+      <obj_property name="ObjectShortName">cache_maint_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dut/cache_maint_op" type="array">
+      <obj_property name="ElementShortName">cache_maint_op[4:0]</obj_property>
+      <obj_property name="ObjectShortName">cache_maint_op[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dut/cache_maint_vaddr" type="array">
+      <obj_property name="ElementShortName">cache_maint_vaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cache_maint_vaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dut/cache_maint_translation_ok" type="logic">
+      <obj_property name="ElementShortName">cache_maint_translation_ok</obj_property>
+      <obj_property name="ObjectShortName">cache_maint_translation_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dut/cache_maint_addr_ok" type="logic">
+      <obj_property name="ElementShortName">cache_maint_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">cache_maint_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dut/cache_maint_done" type="logic">
+      <obj_property name="ElementShortName">cache_maint_done</obj_property>
+      <obj_property name="ObjectShortName">cache_maint_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dut/cache_maint_unsupported" type="logic">
+      <obj_property name="ElementShortName">cache_maint_unsupported</obj_property>
+      <obj_property name="ObjectShortName">cache_maint_unsupported</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dut/u_icache/state" type="array">
+      <obj_property name="ElementShortName">state[3:0]</obj_property>
+      <obj_property name="ObjectShortName">state[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dut/u_dcache/state" type="array">
+      <obj_property name="ElementShortName">state[3:0]</obj_property>
+      <obj_property name="ObjectShortName">state[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dut/awaddr" type="array">
+      <obj_property name="ElementShortName">awaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">awaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dut/awvalid" type="logic">
+      <obj_property name="ElementShortName">awvalid</obj_property>
+      <obj_property name="ObjectShortName">awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dut/wdata" type="array">
+      <obj_property name="ElementShortName">wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dut/wvalid" type="logic">
+      <obj_property name="ElementShortName">wvalid</obj_property>
+      <obj_property name="ObjectShortName">wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dut/wlast" type="logic">
+      <obj_property name="ElementShortName">wlast</obj_property>
+      <obj_property name="ObjectShortName">wlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dut/bvalid" type="logic">
+      <obj_property name="ElementShortName">bvalid</obj_property>
+      <obj_property name="ObjectShortName">bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_index_maint_contract/dut/bready" type="logic">
+      <obj_property name="ElementShortName">bready</obj_property>
+      <obj_property name="ObjectShortName">bready</obj_property>
+   </wvobject>
+</wave_config>

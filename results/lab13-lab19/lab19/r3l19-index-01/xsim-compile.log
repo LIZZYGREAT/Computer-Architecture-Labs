@@ -1,0 +1,39 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/EXE_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module exe_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/ID_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module id_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/IF_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module if_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/MEM_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/WB_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module wb_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/addr_translate.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module addr_translate
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/alu.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module alu
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cache_axi3_bridge.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cache_axi3_bridge
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cp0_reg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cp0_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module dcache
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/hilo_unit.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module hilo_unit
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module icache
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/mycpu_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mycpu_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module regfile
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab13/tlb_verify/rtl/tlb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tlb
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/tools.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module decoder_5_32
+INFO: [VRFC 10-311] analyzing module decoder_6_64
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/testbench/tb_lab19_index_maint_contract.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_lab19_index_maint_contract
+INFO: [VRFC 10-311] analyzing module lab6_mult33
+INFO: [VRFC 10-311] analyzing module lab6_div32
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-index-01/project/lab19_index_contract_directed.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl

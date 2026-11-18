@@ -1,0 +1,5 @@
+RUN_ID=r3l19-index-01
+CASE=lab19_index_contract
+SUITE=index-contract
+STATUS=NOT_RUN
+REASON=XSIM_ELABORATE_LOG_READ

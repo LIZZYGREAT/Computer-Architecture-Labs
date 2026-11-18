@@ -1,0 +1,455 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Thu Nov 19 02:59:42 2026
+# Process ID         : 22416
+# Current directory  : D:/Verilog/2025.2/Vivado/bin
+# Command line       : vivado.exe -mode batch -log C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-index-01\vivado.log -journal C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-index-01\vivado.jou -source C:\Users\lenovo\Desktop\Projects\FPGA\scripts\tlb_cache\run_unit.tcl -tclargs lab19_index_contract directed C:\Users\lenovo\Desktop\Projects\FPGA C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-index-01
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-index-01/vivado.log
+# Journal file       : C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-index-01\vivado.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 6979 MB
+# Total Virtual      : 30439 MB
+# Available Virtual  : 11004 MB
+#-----------------------------------------------------------
+source {C:\Users\lenovo\Desktop\Projects\FPGA\scripts\tlb_cache\run_unit.tcl}
+# if {[llength $argv] != 4} {
+#     error "usage: run_unit.tcl <lab13|lab16|lab17|lab18|lab18_fault|lab18_arb|lab18_mem|lab19_maint|lab19_index_contract|lab19_writeback_scoreboard|lab19_if_redirect|lab19_tlb_redirect> <directed|official> <repo-root> <run-dir>"
+# }
+# set case [lindex $argv 0]
+# set suite [lindex $argv 1]
+# set repo [file normalize [lindex $argv 2]]
+# set run_dir [file normalize [lindex $argv 3]]
+# file mkdir $run_dir
+# set project_name ${case}_${suite}
+# set project_dir [file join $run_dir project]
+# create_project -force $project_name $project_dir -part xc7a200tfbg676-1
+INFO: [ProjectBase 1-489] The host OS only allows 260 characters in a normal path. The project is stored in a path with more than 80 characters. If you experience issues with IP, Block Designs, or files not being found, please consider moving the project to a location with a shorter path. Alternately consider using the OS subst command to map part of the path to a drive letter.
+Current project path is 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-index-01/project'
+create_project: Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 526.098 ; gain = 220.059
+# set_property target_language Verilog [current_project]
+# set_property simulator_language Mixed [current_project]
+# if {$case eq "lab13"} {
+#     set rtl [file join $repo lab13 tlb_verify rtl tlb.v]
+#     set wrapper [file join $repo lab13 tlb_verify rtl tlb_top.v]
+#     set official_tb [file join $repo lab13 tlb_verify testbench testbench.v]
+#     set directed_tb [file join $repo lab13 tlb_verify testbench tb_tlb_directed.sv]
+# } elseif {$case eq "lab16"} {
+#     set rtl [file join $repo lab16 cache_verify rtl cache.v]
+#     set wrapper [file join $repo lab16 cache_verify rtl cache_top.v]
+#     set official_tb [file join $repo lab16 cache_verify testbench testbench.v]
+#     set directed_tb [file join $repo lab16 cache_verify testbench tb_cache_directed.sv]
+# } elseif {$case eq "lab14_translate"} {
+#     set rtl [list \
+#         [file join $repo lab13 tlb_verify rtl tlb.v] \
+#         [file join $repo lab14 cpu_tlb rtl myCPU addr_translate.v]]
+#     set directed_tb [file join $repo lab14 cpu_tlb testbench tb_lab14_translate.sv]
+# } elseif {$case eq "lab11_axi3"} {
+#     set rtl [list \
+#         [file join $repo lab14 cpu_tlb rtl myCPU IF_stage.v] \
+#         [file join $repo lab14 cpu_tlb rtl myCPU axi3_cpu_bus.v]]
+#     set directed_tb [file join $repo lab14 cpu_tlb testbench tb_lab11_axi3_bus.sv]
+# } elseif {$case eq "lab17"} {
+#     set rtl [list \
+#         [file join $repo lab17 cpu_icache rtl myCPU icache.v] \
+#         [file join $repo lab17 cpu_icache rtl myCPU cache_axi3_bridge.v]]
+#     set directed_tb [file join $repo lab17 cpu_icache testbench tb_lab17_icache_directed.sv]
+# } elseif {$case eq "lab18"} {
+#     set rtl [file join $repo lab18 cpu_dcache rtl myCPU dcache.v]
+#     set directed_tb [file join $repo lab18 cpu_dcache testbench tb_lab18_dcache_directed.sv]
+# } elseif {$case eq "lab18_fault"} {
+#     set rtl [file join $repo lab18 cpu_dcache rtl myCPU dcache.v]
+#     set directed_tb [file join $repo lab18 cpu_dcache testbench tb_lab18_dcache_fault_directed.sv]
+# } elseif {$case eq "lab18_arb"} {
+#     set rtl [list \
+#         [file join $repo lab18 cpu_dcache rtl myCPU icache.v] \
+#         [file join $repo lab18 cpu_dcache rtl myCPU dcache.v] \
+#         [file join $repo lab18 cpu_dcache rtl myCPU cache_axi3_bridge.v]]
+#     set directed_tb [file join $repo lab18 cpu_dcache testbench tb_lab18_cache_arbitration.sv]
+# } elseif {$case eq "lab18_mem"} {
+#     set rtl [file join $repo lab18 cpu_dcache rtl myCPU MEM_stage.v]
+#     set directed_tb [file join $repo lab18 cpu_dcache testbench tb_lab18_mem_exception.sv]
+# } elseif {$case eq "lab19_maint"} {
+#     set rtl [list \
+#         [file join $repo lab19 cpu_cache rtl myCPU icache.v] \
+#         [file join $repo lab19 cpu_cache rtl myCPU dcache.v]]
+#     set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_maint_directed.sv]
+# } elseif {$case eq "lab19_index_contract"} {
+#     set rtl [concat \
+#         [glob [file join $repo lab19 cpu_cache rtl myCPU *.v]] \
+#         [list [file join $repo lab13 tlb_verify rtl tlb.v]]]
+#     set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_index_maint_contract.sv]
+# } elseif {$case eq "lab19_writeback_scoreboard"} {
+#     set rtl [list \
+#         [file join $repo lab19 cpu_cache rtl myCPU dcache.v] \
+#         [file join $repo lab19 cpu_cache rtl myCPU cache_axi3_bridge.v]]
+#     set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_dcache_writeback_scoreboard.sv]
+# } elseif {$case eq "lab19_if_redirect"} {
+#     set rtl [file join $repo lab19 cpu_cache rtl myCPU IF_stage.v]
+#     set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_if_redirect_directed.sv]
+# } elseif {$case eq "lab19_tlb_redirect"} {
+#     set rtl [concat \
+#         [glob [file join $repo lab19 cpu_cache rtl myCPU *.v]] \
+#         [list [file join $repo lab13 tlb_verify rtl tlb.v]]]
+#     set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_tlb_redirect_contract.sv]
+# } else {
+#     error "unsupported unit case: $case"
+# }
+# if {($case eq "lab17" || $case eq "lab18" || $case eq "lab18_fault" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_writeback_scoreboard" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect") && $suite ne "directed"} {
+#     error "$case currently supports only its directed cache suite"
+# }
+# foreach rtl_file $rtl {
+#     if {![file isfile $rtl_file]} {
+#         error "required RTL is missing: $rtl_file"
+#     }
+# }
+# if {$suite eq "directed"} {
+#     if {![file isfile $directed_tb]} {
+#         error "directed testbench is missing: $directed_tb"
+#     }
+#     add_files -fileset sources_1 $rtl
+#     add_files -fileset sim_1 $directed_tb
+#     set sim_top [file rootname [file tail $directed_tb]]
+# } elseif {$suite eq "official"} {
+#     add_files -fileset sources_1 [list $rtl $wrapper [file join $repo scripts tlb_cache sim_support clk_pll_stub.v]]
+#     add_files -fileset sim_1 $official_tb
+#     set sim_top testbench
+# } else {
+#     error "unsupported suite: $suite"
+# }
+# set_property top $sim_top [get_filesets sim_1]
+# if {$case eq "lab11_axi3" || $case eq "lab18_mem" || $case eq "lab19_index_contract" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect"} {
+#     if {$case eq "lab18_mem"} {
+#         set cpu_include [file join $repo lab18 cpu_dcache rtl myCPU]
+#     } elseif {$case eq "lab19_index_contract" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect"} {
+#         set cpu_include [file join $repo lab19 cpu_cache rtl myCPU]
+#     } else {
+#         set cpu_include [file join $repo lab14 cpu_tlb rtl myCPU]
+#     }
+#     set_property include_dirs [list $cpu_include] [get_filesets sources_1]
+#     set_property include_dirs [list $cpu_include] [get_filesets sim_1]
+# }
+# set_property xsim.simulate.log_all_signals true [get_filesets sim_1]
+# set_property xsim.simulate.runtime 1000000ns [get_filesets sim_1]
+# if {$case eq "lab17" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_writeback_scoreboard" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect"} {
+#     set wave_config_file [file join $run_dir wave-full.wcfg]
+#     set wave_hook_file [file join $run_dir wave-config-hook.tcl]
+#     set wave_log_file [file join $run_dir wave-config-hook.log]
+#     if {$case eq "lab17"} {
+#         set wave_objects [list \
+#             /tb_lab17_icache_directed/dut_bridge/axi_fault \
+#             /tb_lab17_icache_directed/dut_icache/cache_fault \
+#             /tb_lab17_icache_directed/dut_icache/state \
+#             /tb_lab17_icache_directed/dut_icache/cpu_data_ok \
+#             /tb_lab17_icache_directed/rid \
+#             /tb_lab17_icache_directed/rresp \
+#             /tb_lab17_icache_directed/rlast \
+#             /tb_lab17_icache_directed/rvalid \
+#             /tb_lab17_icache_directed/rready]
+#     } elseif {$case eq "lab19_maint"} {
+#         set wave_objects [list \
+#         /tb_lab19_maint_directed/u_icache/state \
+#         /tb_lab19_maint_directed/u_icache/valid_way2 \
+#         /tb_lab19_maint_directed/u_icache/valid_way3 \
+#         /tb_lab19_maint_directed/u_icache/tag_way2 \
+#         /tb_lab19_maint_directed/u_icache/tag_way3 \
+#         /tb_lab19_maint_directed/u_dcache/state \
+#         /tb_lab19_maint_directed/u_dcache/valid_way2 \
+#         /tb_lab19_maint_directed/u_dcache/valid_way3 \
+#         /tb_lab19_maint_directed/u_dcache/dirty_way2 \
+#         /tb_lab19_maint_directed/u_dcache/dirty_way3 \
+#         /tb_lab19_maint_directed/u_dcache/maint_selected_dirty]
+#     } elseif {$case eq "lab19_writeback_scoreboard"} {
+#         set wave_objects [list \
+#             /tb_lab19_dcache_writeback_scoreboard/u_dcache/state \
+#             /tb_lab19_dcache_writeback_scoreboard/u_dcache/req_addr \
+#             /tb_lab19_dcache_writeback_scoreboard/u_dcache/victim_way \
+#             /tb_lab19_dcache_writeback_scoreboard/u_dcache/maint_index \
+#             /tb_lab19_dcache_writeback_scoreboard/u_dcache/maint_way \
+#             /tb_lab19_dcache_writeback_scoreboard/cpu_req \
+#             /tb_lab19_dcache_writeback_scoreboard/cpu_addr \
+#             /tb_lab19_dcache_writeback_scoreboard/cpu_data_ok \
+#             /tb_lab19_dcache_writeback_scoreboard/refill_addr \
+#             /tb_lab19_dcache_writeback_scoreboard/refill_data_valid \
+#             /tb_lab19_dcache_writeback_scoreboard/refill_data \
+#             /tb_lab19_dcache_writeback_scoreboard/maint_req \
+#             /tb_lab19_dcache_writeback_scoreboard/maint_done \
+#             /tb_lab19_dcache_writeback_scoreboard/awaddr \
+#             /tb_lab19_dcache_writeback_scoreboard/awvalid \
+#             /tb_lab19_dcache_writeback_scoreboard/awready \
+#             /tb_lab19_dcache_writeback_scoreboard/wdata \
+#             /tb_lab19_dcache_writeback_scoreboard/wstrb \
+#             /tb_lab19_dcache_writeback_scoreboard/wvalid \
+#             /tb_lab19_dcache_writeback_scoreboard/wready \
+#             /tb_lab19_dcache_writeback_scoreboard/wlast \
+#             /tb_lab19_dcache_writeback_scoreboard/bvalid \
+#             /tb_lab19_dcache_writeback_scoreboard/bready]
+#     } elseif {$case eq "lab19_tlb_redirect"} {
+#         set wave_objects [list \
+#             /tb_lab19_tlb_redirect_contract/dut/tlb_write_enable \
+#             /tb_lab19_tlb_redirect_contract/dut/pipeline_flush \
+#             /tb_lab19_tlb_redirect_contract/dut/if_stage/state \
+#             /tb_lab19_tlb_redirect_contract/dut/if_stage/request_pc \
+#             /tb_lab19_tlb_redirect_contract/dut/if_stage/stale_response \
+#             /tb_lab19_tlb_redirect_contract/dut/if_stage/restart_pc \
+#             /tb_lab19_tlb_redirect_contract/dut/u_tlb/entry_pfn0 \
+#             /tb_lab19_tlb_redirect_contract/dut/inst_sram_addr \
+#             /tb_lab19_tlb_redirect_contract/araddr \
+#             /tb_lab19_tlb_redirect_contract/arvalid \
+#             /tb_lab19_tlb_redirect_contract/rvalid \
+#             /tb_lab19_tlb_redirect_contract/rlast]
+#     } elseif {$case eq "lab19_index_contract"} {
+#         set wave_objects [list \
+#             /tb_lab19_index_maint_contract/dut/cache_maint_req \
+#             /tb_lab19_index_maint_contract/dut/cache_maint_op \
+#             /tb_lab19_index_maint_contract/dut/cache_maint_vaddr \
+#             /tb_lab19_index_maint_contract/dut/cache_maint_translation_ok \
+#             /tb_lab19_index_maint_contract/dut/cache_maint_addr_ok \
+#             /tb_lab19_index_maint_contract/dut/cache_maint_done \
+#             /tb_lab19_index_maint_contract/dut/cache_maint_unsupported \
+#             /tb_lab19_index_maint_contract/dut/u_icache/state \
+#             /tb_lab19_index_maint_contract/dut/u_dcache/state \
+#             /tb_lab19_index_maint_contract/dut/awaddr \
+#             /tb_lab19_index_maint_contract/dut/awvalid \
+#             /tb_lab19_index_maint_contract/dut/wdata \
+#             /tb_lab19_index_maint_contract/dut/wvalid \
+#             /tb_lab19_index_maint_contract/dut/wlast \
+#             /tb_lab19_index_maint_contract/dut/bvalid \
+#             /tb_lab19_index_maint_contract/dut/bready]
+#     } else {
+#         set wave_objects [list \
+#             /tb_lab19_if_redirect_directed/dut/state \
+#             /tb_lab19_if_redirect_directed/dut/request_pc \
+#             /tb_lab19_if_redirect_directed/dut/stale_response \
+#             /tb_lab19_if_redirect_directed/dut/restart_pc \
+#             /tb_lab19_if_redirect_directed/dut/redirect_valid \
+#             /tb_lab19_if_redirect_directed/dut/redirect_pc \
+#             /tb_lab19_if_redirect_directed/dut/delay_slot_pending \
+#             /tb_lab19_if_redirect_directed/dut/branch_target_pending \
+#             /tb_lab19_if_redirect_directed/cache_redirect \
+#             /tb_lab19_if_redirect_directed/tlb_redirect \
+#             /tb_lab19_if_redirect_directed/inst_sram_addr_ok \
+#             /tb_lab19_if_redirect_directed/inst_sram_data_ok \
+#             /tb_lab19_if_redirect_directed/fs_to_ds_valid]
+#     }
+#     set wave_hook_text [string map [list \
+#         @WAVE_PATH@ [list $wave_config_file] \
+#         @WAVE_LOG@ [list $wave_log_file] \
+#         @WAVE_NAME@ [file tail $wave_config_file] \
+#         @WAVE_OBJECTS@ [list $wave_objects]] {
+# set wave_log [open @WAVE_LOG@ w]
+# if {[catch {
+#     set wave_config [current_wave_config]
+#     if {[string length $wave_config] == 0} { create_wave_config }
+#     add_wave /
+#     set wave_added [list]
+#     foreach wave_object @WAVE_OBJECTS@ {
+#         set wave_matches [get_objects -quiet $wave_object]
+#         if {[llength $wave_matches] > 0} {
+#             add_wave $wave_matches
+#             lappend wave_added $wave_object
+#         }
+#     }
+#     save_wave_config @WAVE_PATH@
+# } wave_error]} {
+#     puts $wave_log "WCFG_CAPTURE_ERROR=$wave_error"
+# } else {
+#     puts $wave_log "WCFG_CAPTURED=@WAVE_NAME@"
+#     puts $wave_log "WAVE_OBJECTS_ADDED=[join $wave_added ,]"
+# }
+# close $wave_log
+# }]
+#     set wave_hook [open $wave_hook_file w]
+#     puts -nonewline $wave_hook $wave_hook_text
+#     close $wave_hook
+#     set_property xsim.simulate.tcl.post $wave_hook_file [get_filesets sim_1]
+# }
+# update_compile_order -fileset sim_1
+# puts "CASE=$case"
+CASE=lab19_index_contract
+# puts "SUITE=$suite"
+SUITE=directed
+# puts "PROJECT_XPR=[file join $project_dir ${project_name}.xpr]"
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-index-01/project/lab19_index_contract_directed.xpr
+# puts "SIM_TOP=$sim_top"
+SIM_TOP=tb_lab19_index_maint_contract
+# puts "RTL=$rtl"
+RTL=C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/addr_translate.v C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/alu.v C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cache_axi3_bridge.v C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cp0_reg.v C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/EXE_stage.v C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/hilo_unit.v C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/ID_stage.v C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/IF_stage.v C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/MEM_stage.v C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/mycpu_top.v C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/regfile.v C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/tools.v C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/WB_stage.v C:/Users/lenovo/Desktop/Projects/FPGA/lab13/tlb_verify/rtl/tlb.v
+# puts "SIM_FILES=[get_files -of_objects [get_filesets sim_1]]"
+SIM_FILES=C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/testbench/tb_lab19_index_maint_contract.sv
+# launch_simulation -mode behavioral -simset sim_1
+Command: launch_simulation  -simset sim_1 -mode behavioral
+INFO: [Vivado 12-25911] Executing simulation for 'XSim' simulator
+INFO: [Vivado 12-28535] Process started - Thu Nov 19 03:00:17 2026
+
+INFO: [Vivado 12-12493] Simulation top is 'tb_lab19_index_maint_contract'
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-index-01/project/lab19_index_contract_directed.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-72] Using boost library from 'D:/Verilog/2025.2/Vivado/tps/boost_1_72_0'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_lab19_index_maint_contract' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-index-01/project/lab19_index_contract_directed.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -L uvm -prj tb_lab19_index_maint_contract_vlog.prj"
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/EXE_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module exe_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/ID_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module id_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/IF_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module if_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/MEM_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/WB_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module wb_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/addr_translate.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module addr_translate
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/alu.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module alu
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cache_axi3_bridge.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cache_axi3_bridge
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cp0_reg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cp0_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module dcache
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/hilo_unit.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module hilo_unit
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module icache
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/mycpu_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mycpu_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module regfile
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab13/tlb_verify/rtl/tlb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tlb
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/tools.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module decoder_5_32
+INFO: [VRFC 10-311] analyzing module decoder_6_64
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/testbench/tb_lab19_index_maint_contract.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_lab19_index_maint_contract
+INFO: [VRFC 10-311] analyzing module lab6_mult33
+INFO: [VRFC 10-311] analyzing module lab6_div32
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-index-01/project/lab19_index_contract_directed.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [USF-XSim-69] 'compile' step finished in '4' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-index-01/project/lab19_index_contract_directed.sim/sim_1/behav/xsim'
+"xelab --incr --debug typical --relax --mt 2 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_lab19_index_maint_contract_behav xil_defaultlib.tb_lab19_index_maint_contract xil_defaultlib.glbl -log elaborate.log"
+Vivado Simulator v2025.2
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Verilog/2025.2/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_lab19_index_maint_contract_behav xil_defaultlib.tb_lab19_index_maint_contract xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/mycpu_top.v" Line 3. Module mycpu_top doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/addr_translate.v" Line 5. Module addr_translate doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/addr_translate.v" Line 5. Module addr_translate doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cp0_reg.v" Line 1. Module cp0_reg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/IF_stage.v" Line 3. Module if_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/ID_stage.v" Line 3. Module id_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/regfile.v" Line 1. Module regfile doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/EXE_stage.v" Line 3. Module exe_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/hilo_unit.v" Line 3. Module hilo_unit doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/alu.v" Line 1. Module alu doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/MEM_stage.v" Line 3. Module mem_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/WB_stage.v" Line 3. Module wb_stage doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v" Line 2. Module icache doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v" Line 2. Module dcache doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cache_axi3_bridge.v" Line 3. Module cache_axi3_bridge doesn't have a timescale but at least one module in design has a timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.addr_translate
+Compiling module xil_defaultlib.cp0_reg
+Compiling module xil_defaultlib.tlb_default
+Compiling module xil_defaultlib.if_stage
+Compiling module xil_defaultlib.decoder_6_64
+Compiling module xil_defaultlib.decoder_5_32
+Compiling module xil_defaultlib.regfile
+Compiling module xil_defaultlib.id_stage
+Compiling module xil_defaultlib.lab6_mult33
+Compiling module xil_defaultlib.lab6_div32
+Compiling module xil_defaultlib.hilo_unit
+Compiling module xil_defaultlib.alu
+Compiling module xil_defaultlib.exe_stage
+Compiling module xil_defaultlib.mem_stage
+Compiling module xil_defaultlib.wb_stage
+Compiling module xil_defaultlib.icache
+Compiling module xil_defaultlib.dcache
+Compiling module xil_defaultlib.cache_axi3_bridge
+Compiling module xil_defaultlib.mycpu_top
+Compiling module xil_defaultlib.tb_lab19_index_maint_contract
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot tb_lab19_index_maint_contract_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:16 . Memory (MB): peak = 532.703 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '15' seconds
+ERROR: [USF-XSIM-95] Failed to open file to read (elaborate.log)
+ERROR: [Common 17-39] 'send_msg_id' failed due to earlier errors.
+
+    while executing
+"send_msg_id USF-XSIM-095 ERROR "Failed to open file to read ($file)\n""
+    invoked from within
+"if {[catch {open $file r} fh]} {
+      send_msg_id USF-XSIM-095 ERROR "Failed to open file to read ($file)\n"
+      return 1
+    }"
+    invoked from within
+"if {[file exists $file]} {
+    if {[catch {open $file r} fh]} {
+      send_msg_id USF-XSIM-095 ERROR "Failed to open file to read ($file)\n"
+      ret..."
+    (procedure "usf_found_errors_in_file" line 10)
+    invoked from within
+"usf_found_errors_in_file $token"
+    invoked from within
+"if { [usf_found_errors_in_file $token] } {
+        set results_log [file normalize [file join $a_sim_vars(s_launch_dir) "${token}.log"]]
+        retur..."
+    ("elaborate" arm line 4)
+    invoked from within
+"switch $step {
+    {compile} {
+      # errors in xvlog?
+      set token "xvlog"
+      if { [usf_found_errors_in_file $token] } {
+        set results_l..."
+    (procedure "usf_check_errors" line 10)
+    invoked from within
+"usf_check_errors $step results_log"
+    invoked from within
+"if { [usf_check_errors $step results_log]} {
+        set faulty_run 1
+      }"
+    ("elaborate" arm line 8)
+    invoked from within
+"switch $step {
+    {compile} -
+    {elaborate} {
+      set start_time [clock seconds]
+      set error_log {}
+      set faulty_run [xcs_exec_script $sc..."
+    (procedure "usf_launch_script" line 37)
+    invoked from within
+"usf_launch_script "xsim" $step"
+    (procedure "tclapp::xilinx::xsim::elaborate" line 13)
+    invoked from within
+"tclapp::xilinx::xsim::elaborate { -simset sim_1 -mode behavioral -run_dir C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-index-..."
+ERROR: [Vivado 12-4473] Detected error while running simulation. Please correct the issue and retry this operation.
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:26 . Memory (MB): peak = 532.703 ; gain = 6.605
+ERROR: [Common 17-39] 'launch_simulation' failed due to earlier errors.
+
+    while executing
+"launch_simulation -mode behavioral -simset sim_1"
+    (file "C:\Users\lenovo\Desktop\Projects\FPGA\scripts\tlb_cache\run_unit.tcl" line 263)
+INFO: [Common 17-206] Exiting Vivado at Thu Nov 19 03:00:42 2026...

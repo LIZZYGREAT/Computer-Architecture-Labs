@@ -1,0 +1,2 @@
+ERROR: [USF-XSIM-95] Failed to open file to read (elaborate.log)
+ERROR: [Vivado 12-4473] Detected error while running simulation. Please correct the issue and retry this operation.

@@ -1,0 +1,16 @@
+RUN_ID=r3l19-index-02
+CASE=lab19_index_contract
+SUITE=directed
+SIM_TOP=tb_lab19_index_maint_contract
+PASS_MARKER=LAB19_INDEX_CONTRACT_PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-index-02/project/lab19_index_contract_directed.xpr
+WAVEFORM=wave-full.wdb
+WAVEFORM_CONFIG=wave-full.wcfg
+STATUS=PASS
+SIMULATION_STATUS=PASS
+SOURCE_INTEGRITY=PASS
+VIVADO_EXIT_CODE=0
+VIVADO_PROCESS_STATUS=PASS
+SOURCE_MANIFEST=source-manifest.csv
+INPUT_MANIFEST=input_manifest.csv
+GIT_HEAD=731041f0ee78d5afa555ca3d9f5a76996766b79a

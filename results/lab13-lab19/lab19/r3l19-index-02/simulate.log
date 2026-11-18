@@ -1,0 +1,7 @@
+Time resolution is 1 ps
+IDX-01_PASS unmapped_va=004006a0 top_accept=1 icache_accept=1 icache_done=1 side_effect=once
+IDX-04_PASS busy_to_ready top_accepts=2 icache_accepts=2 completions=2
+IDX-03_UNSUPPORTED_BY_SCOPE hit_translation_valid=0 downstream_accept=0 done=0
+IDX-02_PASS unmapped_va_set=35 way=3 awaddr=abcde6a0 beats=8 accept=1 done=1 sentinel_set0=preserved
+LAB19_INDEX_CONTRACT_PASS checks=4 unsupported_hit=explicit dcache_accepts=1 dcache_done=1
+$finish called at time : 1670 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/testbench/tb_lab19_index_maint_contract.sv" Line 232

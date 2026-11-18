@@ -1,0 +1,2 @@
+SOURCE_INTEGRITY=NOT_CAPTURED
+REASON=Vivado aborted before active-sources.txt was generated.

@@ -1,0 +1,11 @@
+RUN_ID=r3l19-index-01
+CASE=lab19_index_contract
+SUITE=index-contract
+STATUS=FAIL
+FAILURE_PHASE=XSIM_ELABORATE_LOG_READ
+SIMULATION_STATUS=NOT_RUN
+VIVADO_EXIT_CODE=1
+VIVADO_PROCESS_STATUS=FAIL
+SOURCE_INTEGRITY=NOT_CAPTURED
+REASON=Vivado USF-XSIM-95 failed while opening its generated elaborate.log after building the simulation snapshot; see vivado.log, xsim-elaborate.log, and xsim-usf-tcl-error.log.
+GIT_HEAD=731041f0ee78d5afa555ca3d9f5a76996766b79a
