@@ -1,5 +1,7 @@
 # Lab10 / Lab11 历史源码关联性审计
 
+> 本审计及 CSV 是清理前生成的历史快照。后续清理提交 `c8a6ea9` 删除了 `lab11-source-provenance-directed-20261118-03` 的 Run 目录，因此下表中的 `EFFECTIVE_MANIFEST_RECORDED` 仅描述当时的审计结论；当前 Lab11 回归证据见 [Lab13–19 基线报告](../../lab13-19/docs/baseline.md)。
+
 - 生成时间：`2026-11-17T17:59:13Z`
 - 当前分支：`lab10-lab11`
 - 对照目标：`fdf438ad8fb0b9bc42972ea9436b54c8e47220cc`

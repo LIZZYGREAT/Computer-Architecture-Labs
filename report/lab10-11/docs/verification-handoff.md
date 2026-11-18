@@ -1,5 +1,9 @@
 # Lab10 / Lab11 验收交接
 
+## 当前树状态
+
+本文记录的是 `lab10-lab11` 清理提交 `c8a6ea9` 之前的验收交接快照。该清理提交移除了本文件下文所述的 Lab11 directed Run `lab11-source-provenance-directed-20261118-03` 及若干冗余历史 Run；对应汇总 CSV 中的行保留作历史记录，不代表这些 Run 目录仍存在。当前树保留的 Lab11 回归证据见 [AXI3 directed Run result](../../../results/lab13_19/lab14/lab11-axi3-directed-20261118-02/result.txt) 和 [CPU golden-trace Run result](../../../results/lab13_19/lab14/lab11-cpu-golden-20261118-03/result.txt)。
+
 ## 最终结论
 
 - 分支：`lab10-lab11`；Vivado：2025.2。
@@ -12,7 +16,7 @@
 
 采用 unprivileged、non-secure 策略：取指 `ARPROT=3'b110`；Load `ARPROT=3'b010`；Store `AWPROT=3'b010`。Arm AXI 规范定义 `AxPROT[2]` 为指令/数据、`AxPROT[1]` 为 Secure/Non-secure、`AxPROT[0]` 为 privileged/unprivileged；见 [Arm AMBA AXI/ACE Protocol Specification，A4.7](https://developer.arm.com/-/media/Arm%20Developer%20Community/PDF/IHI0022H_amba_axi_protocol_spec.pdf)。
 
-最终保留的 Lab11 directed Run `lab11-source-provenance-directed-20261118-03` PASS：读 2 笔、写 2 笔；覆盖 AW-first 与 W-first；检查取指、Load、Store PROT，以及 RID/RRESP/RLAST、BID/BRESP 和 IF 重定向，并通过 PRE/POST 源码完整性核对。原 `s4-directed-authorized-lab11-20261117` 作为 S0 基线保留；中间 directed 结果由这个带精确源码清单的最终 Run 替代。
+清理前最终保留的 Lab11 directed Run `lab11-source-provenance-directed-20261118-03` 曾通过验收：读 2 笔、写 2 笔；覆盖 AW-first 与 W-first；检查取指、Load、Store PROT，以及 RID/RRESP/RLAST、BID/BRESP 和 IF 重定向，并通过 PRE/POST 源码完整性核对。该 Run 目录已在后续清理中删除。原 `s4-directed-authorized-lab11-20261117` 当时作为 S0 基线保留；中间 directed 结果由这个带精确源码清单的 Run 替代。
 
 | Run | 功能 | Trace | 事务与协议 | WDB 本机大小 | WDB SHA-256 |
 | --- | ---: | ---: | --- | ---: | --- |
@@ -26,7 +30,7 @@
 
 更新后的 `verify_bus.ps1` 在每个 directed/full 功能 Run 中生成 `effective-source-manifest.csv`，记录本次 XPR 的 `sources_1` / `sim_1` 文件集、实际仿真 top、解析出的 include 文件和验证脚本，并保存 `PRE_SIM` 与 `POST_SIM` 哈希。生成 XPR 的原始哈希也保留；其配置指纹只覆盖有效文件集、top 和实际解析到的 include 文件，排除 Vivado 自动改写的运行元数据。`SOURCE_INTEGRITY=PASS` 表示活动文件集与哈希在运行前后保持一致；`SOURCE_DIRTY` 仍单独表示启动时 Git 工作区状态。
 
-实际闭环 Run `lab11-source-provenance-directed-20261118-03` 为 `STATUS=PASS`、`SOURCE_INTEGRITY=PASS`，包含 directed 测试所需的 PRE/POST 清单，计数为 2 次读、2 次写，R/B 各 2 次；此 Run 未采集 WDB。第一次验证发现 Vivado 会改写生成 XPR 中非仿真相关的 include 元数据；规范化配置指纹和专项回归测试修正后，第三次唯一 RunId 的仿真通过。前两次环境失败目录已清理。
+清理前的闭环 Run `lab11-source-provenance-directed-20261118-03` 为 `STATUS=PASS`、`SOURCE_INTEGRITY=PASS`，包含 directed 测试所需的 PRE/POST 清单，计数为 2 次读、2 次写，R/B 各 2 次；此 Run 未采集 WDB。第一次验证发现 Vivado 会改写生成 XPR 中非仿真相关的 include 元数据；规范化配置指纹和专项回归测试修正后，第三次唯一 RunId 的仿真通过。前两次环境失败目录已清理；该闭环 Run 后续也由分支清理提交移除。
 
 历史 Run 的旧 `source-manifest.csv` 保持原样，不补写当前哈希。其与 Git 的事后关联结果见 [`source-provenance-audit.md`](source-provenance-audit.md) 和 [`source-correlation-audit.csv`](../data/source-correlation-audit.csv)。没有有效清单的旧 `SOURCE_DIRTY=true` Run 仍标为 `HISTORICAL_DIRTY_UNPROVEN`；有 PRE/POST 精确清单且完整性通过的 Run 标为 `EFFECTIVE_MANIFEST_RECORDED`，即使启动时工作区有差异也不会抹掉实际文件哈希证据。
 
@@ -48,6 +52,6 @@
 
 ## 历史记录与截图
 
-结果记录已收敛：删除了 5 个没有有效仿真结果且已有通过替代项的环境失败尝试；删除了旧的 Lab11 directed PASS 中间项，由带 PRE/POST 精确清单的 `lab11-source-provenance-directed-20261118-03` 替代。保留 S0 的 Lab11 directed 基线、Lab10/Lab11 最终 full Run、旧 Lab11 full WDB/WCFG 历史对照和单独的 preflight-only 记录。原始验收 WDB、WCFG 与截图人工字段未改写。
+在本交接快照生成时，结果记录已收敛：删除了 5 个没有有效仿真结果且已有通过替代项的环境失败尝试；删除了旧的 Lab11 directed PASS 中间项，由带 PRE/POST 精确清单的 `lab11-source-provenance-directed-20261118-03` 替代。后续 `lab10-lab11` 清理提交又删除了该 directed Run、部分历史 Run 目录和冗余 WCFG 版本；当前有效 Lab11 回归证据见文首链接。Lab10/Lab11 波形交接表中的人工截图字段未改写。
 
 截图仍待用户在 Vivado Wave 中完成：从同一 Run 的 WDB/WCFG 读取实际值、保存 PNG，再将 `observed`、时间窗与 `proof_status` 更新为 `CAPTURED_VERIFIED`。本次脚本不会清除这些字段。

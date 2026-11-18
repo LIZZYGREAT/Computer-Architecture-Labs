@@ -2,9 +2,9 @@
 
 ## Branch and starting state
 
-The implementation branch is `lab12-lab19`. The branch started at `3ee4fcdc5b512f05000cce47fc2bac658b722a0b` with a clean worktree. The completed `lab10-lab11` branch was merged without conflicts as merge commit `64e2586cbd94856abef57cabb9142d839c56f3bc`; the merge includes Lab10/Lab11 commits `e95923c` and `c6c2920`.
+The implementation branch is `lab12-lab19`. It started at `3ee4fcdc5b512f05000cce47fc2bac658b722a0b` with a clean worktree. The original Lab10/Lab11 integration was merge commit `64e2586cbd94856abef57cabb9142d839c56f3bc`, including commits `e95923c` and `c6c2920`. After the `lab10-lab11` cleanup commit `c8a6ea9a5616f346b20d323bc10c153a20de3567`, that updated branch state was merged here as `ccf9c3f4fc9fad9074af3c3d6b09631687e18c95`.
 
-Vivado 2025.2 is installed and starts in batch mode. The existing Lab11 directed run `lab11-source-provenance-directed-20261118-03` is retained as the bus regression reference; its recorded protocol, input scan, Vivado preflight, and source-integrity checks pass.
+Vivado 2025.2 is installed and starts in batch mode. The Lab10/Lab11 cleanup removed the earlier directed run `lab11-source-provenance-directed-20261118-03`; its remaining CSV entries are historical audit data, not a retained run directory. Current Lab11 regression evidence is retained in the [AXI3 directed run result](../../../results/lab13_19/lab14/lab11-axi3-directed-20261118-02/result.txt) and the [CPU golden-trace run result](../../../results/lab13_19/lab14/lab11-cpu-golden-20261118-03/result.txt).
 
 ## Official unit projects
 
