@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="wave-full.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_lab19_maint_directed" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+   </zoom_setting>
+   <column_width_setting>
+   </column_width_setting>
+   <WVObjectSize size="65" />
+   <wvobject fp_name="/tb_lab19_maint_directed/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/resetn" type="logic">
+      <obj_property name="ElementShortName">resetn</obj_property>
+      <obj_property name="ObjectShortName">resetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/i_maint_req" type="logic">
+      <obj_property name="ElementShortName">i_maint_req</obj_property>
+      <obj_property name="ObjectShortName">i_maint_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/i_maint_op" type="array">
+      <obj_property name="ElementShortName">i_maint_op[4:0]</obj_property>
+      <obj_property name="ObjectShortName">i_maint_op[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/i_maint_vaddr" type="array">
+      <obj_property name="ElementShortName">i_maint_vaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_maint_vaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/i_maint_paddr" type="array">
+      <obj_property name="ElementShortName">i_maint_paddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_maint_paddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/i_taglo" type="array">
+      <obj_property name="ElementShortName">i_taglo[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_taglo[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/i_maint_addr_ok" type="logic">
+      <obj_property name="ElementShortName">i_maint_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">i_maint_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/i_maint_done" type="logic">
+      <obj_property name="ElementShortName">i_maint_done</obj_property>
+      <obj_property name="ObjectShortName">i_maint_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_maint_req" type="logic">
+      <obj_property name="ElementShortName">d_maint_req</obj_property>
+      <obj_property name="ObjectShortName">d_maint_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_maint_op" type="array">
+      <obj_property name="ElementShortName">d_maint_op[4:0]</obj_property>
+      <obj_property name="ObjectShortName">d_maint_op[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_maint_vaddr" type="array">
+      <obj_property name="ElementShortName">d_maint_vaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">d_maint_vaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_maint_paddr" type="array">
+      <obj_property name="ElementShortName">d_maint_paddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">d_maint_paddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_taglo" type="array">
+      <obj_property name="ElementShortName">d_taglo[31:0]</obj_property>
+      <obj_property name="ObjectShortName">d_taglo[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_maint_addr_ok" type="logic">
+      <obj_property name="ElementShortName">d_maint_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">d_maint_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_maint_done" type="logic">
+      <obj_property name="ElementShortName">d_maint_done</obj_property>
+      <obj_property name="ObjectShortName">d_maint_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_writeback_req" type="logic">
+      <obj_property name="ElementShortName">d_writeback_req</obj_property>
+      <obj_property name="ObjectShortName">d_writeback_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_writeback_addr" type="array">
+      <obj_property name="ElementShortName">d_writeback_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">d_writeback_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_writeback_data" type="array">
+      <obj_property name="ElementShortName">d_writeback_data[255:0]</obj_property>
+      <obj_property name="ObjectShortName">d_writeback_data[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_writeback_addr_ok" type="logic">
+      <obj_property name="ElementShortName">d_writeback_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">d_writeback_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_writeback_done" type="logic">
+      <obj_property name="ElementShortName">d_writeback_done</obj_property>
+      <obj_property name="ObjectShortName">d_writeback_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_stat_writeback" type="array">
+      <obj_property name="ElementShortName">d_stat_writeback[31:0]</obj_property>
+      <obj_property name="ObjectShortName">d_stat_writeback[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_cache_fault" type="logic">
+      <obj_property name="ElementShortName">d_cache_fault</obj_property>
+      <obj_property name="ObjectShortName">d_cache_fault</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/checks" type="array">
+      <obj_property name="ElementShortName">checks[31:0]</obj_property>
+      <obj_property name="ObjectShortName">checks[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/timeout_count" type="array">
+      <obj_property name="ElementShortName">timeout_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">timeout_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/expected_index_line" type="array">
+      <obj_property name="ElementShortName">expected_index_line[255:0]</obj_property>
+      <obj_property name="ObjectShortName">expected_index_line[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/saved_sentinel_line" type="array">
+      <obj_property name="ElementShortName">saved_sentinel_line[255:0]</obj_property>
+      <obj_property name="ObjectShortName">saved_sentinel_line[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/resetn" type="logic">
+      <obj_property name="ElementShortName">resetn</obj_property>
+      <obj_property name="ObjectShortName">resetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/i_maint_req" type="logic">
+      <obj_property name="ElementShortName">i_maint_req</obj_property>
+      <obj_property name="ObjectShortName">i_maint_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/i_maint_op" type="array">
+      <obj_property name="ElementShortName">i_maint_op[4:0]</obj_property>
+      <obj_property name="ObjectShortName">i_maint_op[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/i_maint_vaddr" type="array">
+      <obj_property name="ElementShortName">i_maint_vaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_maint_vaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/i_maint_paddr" type="array">
+      <obj_property name="ElementShortName">i_maint_paddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_maint_paddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/i_taglo" type="array">
+      <obj_property name="ElementShortName">i_taglo[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_taglo[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/i_maint_addr_ok" type="logic">
+      <obj_property name="ElementShortName">i_maint_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">i_maint_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/i_maint_done" type="logic">
+      <obj_property name="ElementShortName">i_maint_done</obj_property>
+      <obj_property name="ObjectShortName">i_maint_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_maint_req" type="logic">
+      <obj_property name="ElementShortName">d_maint_req</obj_property>
+      <obj_property name="ObjectShortName">d_maint_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_maint_op" type="array">
+      <obj_property name="ElementShortName">d_maint_op[4:0]</obj_property>
+      <obj_property name="ObjectShortName">d_maint_op[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_maint_vaddr" type="array">
+      <obj_property name="ElementShortName">d_maint_vaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">d_maint_vaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_maint_paddr" type="array">
+      <obj_property name="ElementShortName">d_maint_paddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">d_maint_paddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_taglo" type="array">
+      <obj_property name="ElementShortName">d_taglo[31:0]</obj_property>
+      <obj_property name="ObjectShortName">d_taglo[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_maint_addr_ok" type="logic">
+      <obj_property name="ElementShortName">d_maint_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">d_maint_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_maint_done" type="logic">
+      <obj_property name="ElementShortName">d_maint_done</obj_property>
+      <obj_property name="ObjectShortName">d_maint_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_writeback_req" type="logic">
+      <obj_property name="ElementShortName">d_writeback_req</obj_property>
+      <obj_property name="ObjectShortName">d_writeback_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_writeback_addr" type="array">
+      <obj_property name="ElementShortName">d_writeback_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">d_writeback_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_writeback_data" type="array">
+      <obj_property name="ElementShortName">d_writeback_data[255:0]</obj_property>
+      <obj_property name="ObjectShortName">d_writeback_data[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_writeback_addr_ok" type="logic">
+      <obj_property name="ElementShortName">d_writeback_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">d_writeback_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_writeback_done" type="logic">
+      <obj_property name="ElementShortName">d_writeback_done</obj_property>
+      <obj_property name="ObjectShortName">d_writeback_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_stat_writeback" type="array">
+      <obj_property name="ElementShortName">d_stat_writeback[31:0]</obj_property>
+      <obj_property name="ObjectShortName">d_stat_writeback[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/d_cache_fault" type="logic">
+      <obj_property name="ElementShortName">d_cache_fault</obj_property>
+      <obj_property name="ObjectShortName">d_cache_fault</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/checks" type="array">
+      <obj_property name="ElementShortName">checks[31:0]</obj_property>
+      <obj_property name="ObjectShortName">checks[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/timeout_count" type="array">
+      <obj_property name="ElementShortName">timeout_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">timeout_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/expected_index_line" type="array">
+      <obj_property name="ElementShortName">expected_index_line[255:0]</obj_property>
+      <obj_property name="ObjectShortName">expected_index_line[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/saved_sentinel_line" type="array">
+      <obj_property name="ElementShortName">saved_sentinel_line[255:0]</obj_property>
+      <obj_property name="ObjectShortName">saved_sentinel_line[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/u_icache/state" type="array">
+      <obj_property name="ElementShortName">state[3:0]</obj_property>
+      <obj_property name="ObjectShortName">state[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/u_icache/valid_way2" type="array">
+      <obj_property name="ElementShortName">valid_way2[127:0]</obj_property>
+      <obj_property name="ObjectShortName">valid_way2[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/u_icache/valid_way3" type="array">
+      <obj_property name="ElementShortName">valid_way3[127:0]</obj_property>
+      <obj_property name="ObjectShortName">valid_way3[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/u_icache/tag_way2" type="array">
+      <obj_property name="ElementShortName">tag_way2[0:127][19:0]</obj_property>
+      <obj_property name="ObjectShortName">tag_way2[0:127][19:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/u_icache/tag_way3" type="array">
+      <obj_property name="ElementShortName">tag_way3[0:127][19:0]</obj_property>
+      <obj_property name="ObjectShortName">tag_way3[0:127][19:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/u_dcache/state" type="array">
+      <obj_property name="ElementShortName">state[3:0]</obj_property>
+      <obj_property name="ObjectShortName">state[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/u_dcache/valid_way2" type="array">
+      <obj_property name="ElementShortName">valid_way2[127:0]</obj_property>
+      <obj_property name="ObjectShortName">valid_way2[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/u_dcache/valid_way3" type="array">
+      <obj_property name="ElementShortName">valid_way3[127:0]</obj_property>
+      <obj_property name="ObjectShortName">valid_way3[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/u_dcache/dirty_way2" type="array">
+      <obj_property name="ElementShortName">dirty_way2[127:0]</obj_property>
+      <obj_property name="ObjectShortName">dirty_way2[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/u_dcache/dirty_way3" type="array">
+      <obj_property name="ElementShortName">dirty_way3[127:0]</obj_property>
+      <obj_property name="ObjectShortName">dirty_way3[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_maint_directed/u_dcache/maint_selected_dirty" type="logic">
+      <obj_property name="ElementShortName">maint_selected_dirty</obj_property>
+      <obj_property name="ObjectShortName">maint_selected_dirty</obj_property>
+   </wvobject>
+</wave_config>

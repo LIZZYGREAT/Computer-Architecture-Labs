@@ -1,0 +1,4 @@
+Time resolution is 1 ps
+DIRECTED_CHECKS=10
+LAB19_MAINT_DIRECTED_PASS checks=10 icache_way=2,3 dcache_way=2,3 taglo=valid_dirty hitinv_no_writeback=1 writebacks=3 index_unmapped_set35_way3=8words sentinel_set0=preserved B_wait=1
+$finish called at time : 1586 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/testbench/tb_lab19_maint_directed.sv" Line 276
