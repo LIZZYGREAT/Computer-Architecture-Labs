@@ -1,0 +1,10 @@
+RUN_ID=r2l19maint01
+CASE=lab19_maint
+SUITE=directed
+STATUS=PASS
+SIM_TOP=tb_lab19_maint_directed
+PASS_MARKER=LAB19_MAINT_DIRECTED_PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r2l19maint01/project/lab19_maint_directed.xpr
+WAVEFORM=wave-full.wdb
+WAVEFORM_CONFIG=wave-full.wcfg
+DIRECTED_CHECKS=10

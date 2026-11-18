@@ -1,0 +1,5 @@
+INPUT_CHECK_STATUS=PASS
+VIVADO_CHECK_STATUS=PASS
+INPUT[0]=C:\Users\lenovo\Desktop\Projects\FPGA\lab19\cache_func\obj\inst_ram.coe
+PROJECT_PREFLIGHT_STATUS=PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r2l19cache03/project/lab19_soc.xpr

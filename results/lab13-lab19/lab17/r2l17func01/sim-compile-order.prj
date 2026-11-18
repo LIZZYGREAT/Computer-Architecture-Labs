@@ -1,0 +1,32 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  -i "../../../../../../../../../lab17/cpu_icache/rtl/myCPU" --include "D:/Verilog/2025.2/Vivado/data/rsb/busdef" --include "../../../../lab17_soc.ip_user_files/ipstatic/hdl" --include "../../../../../../../../../lab17/cpu_icache/rtl/myCPU" \
+"../../../../../ip-src/axi_ram/sim/axi_ram.v" \
+"../../../../../ip-src/axi_crossbar_1x2/sim/axi_crossbar_1x2.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/myCPU/EXE_stage.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/myCPU/ID_stage.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/myCPU/IF_stage.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/myCPU/MEM_stage.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/myCPU/WB_stage.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/myCPU/addr_translate.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/myCPU/alu.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/axi_wrap/axi_wrap.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/ram_wrap/axi_wrap_ram.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/myCPU/cache_axi3_bridge.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/CONFREG/confreg.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/myCPU/cp0_reg.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/myCPU/hilo_unit.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/myCPU/icache.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/myCPU/mycpu_top.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/myCPU/regfile.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/soc_axi_lite_top.v" \
+"../../../../../../../../../lab13/tlb_verify/rtl/tlb.v" \
+"../../../../../../../../../lab17/cpu_icache/rtl/myCPU/tools.v" \
+
+sv xil_defaultlib  -i "../../../../../../../../../lab17/cpu_icache/rtl/myCPU" --include "D:/Verilog/2025.2/Vivado/data/rsb/busdef" --include "../../../../lab17_soc.ip_user_files/ipstatic/hdl" --include "../../../../../../../../../lab17/cpu_icache/rtl/myCPU" \
+"../../../../../../../../../lab17/cpu_icache/testbench/tb_lab17_functional.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

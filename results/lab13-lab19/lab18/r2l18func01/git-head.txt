@@ -1,0 +1,17 @@
+BRANCH=lab13-lab19
+HEAD=42ff13b5346ae98110fb571ab8cf35f86bd99ad2
+WORKTREE_STATUS_BEGIN
+?? results/lab13-lab19/lab17/r2l17fault02/
+?? results/lab13-lab19/lab17/r2l17fault03/
+?? results/lab13-lab19/lab18/r2l18arb01/
+?? results/lab13-lab19/lab18/r2l18dcache01/
+?? results/lab13-lab19/lab18/r2l18fault01/
+?? results/lab13-lab19/lab18/r2l18fault02/
+?? results/lab13-lab19/lab18/r2l18fault03/
+?? results/lab13-lab19/lab18/r2l18fault04/
+?? results/lab13-lab19/lab18/r2l18func01/
+?? results/lab13-lab19/lab19/r2l19idx01/
+?? results/lab13-lab19/lab19/r2l19top03/
+?? results/lab13-lab19/lab19/r2l19top05/
+?? results/lab13-lab19/lab19/revision2-l19-maint-p0-03/
+WORKTREE_STATUS_END

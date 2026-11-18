@@ -1,0 +1,15 @@
+RUN_ID=r2l18dcache01
+CASE=lab18
+SUITE=directed
+SIM_TOP=tb_lab18_dcache_directed
+PASS_MARKER=DCache_DIRECTED_PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab18/r2l18dcache01/project/lab18_directed.xpr
+WAVEFORM=wave-full.wdb
+DIRECTED_CHECKS=9
+DCACHE_STATS=hit=8 miss=5 refill=5 writeback=1 uncache=2
+STATUS=PASS
+SIMULATION_STATUS=PASS
+SOURCE_INTEGRITY=PASS
+SOURCE_MANIFEST=source-manifest.csv
+INPUT_MANIFEST=input_manifest.csv
+GIT_HEAD=42ff13b5346ae98110fb571ab8cf35f86bd99ad2

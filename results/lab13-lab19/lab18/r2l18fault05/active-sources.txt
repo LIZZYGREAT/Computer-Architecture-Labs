@@ -1,0 +1,3 @@
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab18/r2l18fault05/project/lab18_fault_directed.xpr
+SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab18/cpu_dcache/rtl/myCPU/dcache.v
+SIM_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab18/cpu_dcache/testbench/tb_lab18_dcache_fault_directed.sv

@@ -132,3 +132,31 @@ lab19_synthesis,lab19-synthesis-20261118-01,setup_tns,0,ns,results/lab13-lab19/l
 lab19_synthesis,lab19-synthesis-20261118-01,hold_whs,-0.087,ns,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
 lab19_synthesis,lab19-synthesis-20261118-01,hold_ths,-5.338,ns,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
 lab19_synthesis,lab19-synthesis-20261118-01,hold_failing_endpoints,66,endpoints,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
+lab17,r2l17func01,functional_points,94,points,results/lab13-lab19/lab17/r2l17func01/result.txt,94/94 software functional points; not a golden trace comparison
+lab17,r2l17func01,functional_cycles,1038101,cycles,results/lab13-lab19/lab17/r2l17func01/result.txt,
+lab17,r2l17func01,stores_accepted,3752,stores,results/lab13-lab19/lab17/r2l17func01/result.txt,
+lab17,r2l17func01,stores_completed,3752,stores,results/lab13-lab19/lab17/r2l17func01/result.txt,
+lab17,r2l17func01,duplicate_stores,0,stores,results/lab13-lab19/lab17/r2l17func01/result.txt,
+lab17,r2l17fault06,directed_checks,28,checks,results/lab13-lab19/lab17/r2l17fault06/simulate.log,Four injected AXI read response fault cases
+lab17,r2l17fault06,read_fault_cases,4,cases,results/lab13-lab19/lab17/r2l17fault06/simulate.log,RID mismatch RRESP SLVERR early RLAST missing RLAST
+lab18,r2l18func01,functional_points,94,points,results/lab13-lab19/lab18/r2l18func01/result.txt,94/94 software functional points; not a golden trace comparison
+lab18,r2l18func01,functional_cycles,1041981,cycles,results/lab13-lab19/lab18/r2l18func01/result.txt,
+lab18,r2l18func01,stores_accepted,3752,stores,results/lab13-lab19/lab18/r2l18func01/result.txt,
+lab18,r2l18func01,stores_completed,3752,stores,results/lab13-lab19/lab18/r2l18func01/result.txt,
+lab18,r2l18func01,duplicate_stores,0,stores,results/lab13-lab19/lab18/r2l18func01/result.txt,
+lab18,r2l18func01,peripheral_writes_accepted,95,writes,results/lab13-lab19/lab18/r2l18func01/result.txt,
+lab18,r2l18func01,peripheral_writes_completed,95,writes,results/lab13-lab19/lab18/r2l18func01/result.txt,
+lab18,r2l18dcache01,directed_checks,9,checks,results/lab13-lab19/lab18/r2l18dcache01/result.txt,
+lab18,r2l18arb01,concurrent_cache_misses,2,misses,results/lab13-lab19/lab18/r2l18arb01/simulate.log,
+lab18,r2l18fault05,fail_stop_states,4,states,results/lab13-lab19/lab18/r2l18fault05/simulate.log,Idle Lookup writeback-wait and refill-data
+lab19,r2l19cache03,cache_instruction_tests,7,tests,results/lab13-lab19/lab19/r2l19cache03/result.txt,
+lab19,r2l19cache03,functional_cycles,2836,cycles,results/lab13-lab19/lab19/r2l19cache03/result.txt,
+lab19,r2l19cache03,stores_accepted,28,stores,results/lab13-lab19/lab19/r2l19cache03/result.txt,
+lab19,r2l19cache03,stores_completed,28,stores,results/lab13-lab19/lab19/r2l19cache03/result.txt,
+lab19,r2l19cache03,duplicate_stores,0,stores,results/lab13-lab19/lab19/r2l19cache03/result.txt,
+lab19,r2l19maint01,maintenance_directed_checks,10,checks,results/lab13-lab19/lab19/r2l19maint01/result.txt,
+lab19,r2l19contract03,index_contract_checks,4,checks,results/lab13-lab19/lab19/r2l19contract03/simulate.log,
+lab19,r2l19contract03,indexwb_write_beats,8,beats,results/lab13-lab19/lab19/r2l19contract03/simulate.log,
+lab19,r2l19redirect03,if_redirect_checks,7,checks,results/lab13-lab19/lab19/r2l19redirect03/simulate.log,
+lab19,r2l19tlbreplay02,tlb_write_replay_checks,3,checks,results/lab13-lab19/lab19/r2l19tlbreplay02/simulate.log,
+lab19,r2l19tlbreplay02,old_instruction_dropped,1,boolean,results/lab13-lab19/lab19/r2l19tlbreplay02/simulate.log,Old physical response not exposed to decode after TLB write

@@ -4,11 +4,36 @@
 - **实现范围：** Lab13、Lab14 n1–n6、Lab16、Lab17、Lab18、Lab19 和 Dhrystone/CoreMark 运行
 **最终功能状态：** 必须完成的功能验收均通过；顶层综合完成并生成资源/时序报告。截图仍按方案交接，综合 hold 时序尚未收敛。
 
+## 修订二（2026-11-18）
+
+本节记录对深度审查执行方案的增量修订。RTL/IF 实现分别在 `42ff13b`、`ac7c99d` 提交；故障波形入口在 `89050b4` 提交；最终门禁在 `92db094` 收口；全 CPU TLB 重放用例在 `38f205d` 提交。当前工作分支为 `lab13-lab19`。每个 Run 都有单独源文件/输入清单，旧历史 Run 仍绑定它们原有的源提交。
+
+### 修复与回归结果
+
+| 主题 | 修改 | 最终证据 |
+| --- | --- | --- |
+| Lab19 CACHE 接受契约与 IndexWBInv | Index op 统一按 VA 选择 set/way 并绕过 TLB；Hit op 无有效翻译时不送入 Cache；MEM、顶层与 Cache 接受一致；DCache 锁存索引、路、旧 Tag/数据，按同一 victim 完成 8-beat 写回并只在 B 后失效 | [Index/Hit 顶层契约](../../../results/lab13-lab19/lab19/r2l19contract03/result.txt)，IDX-01..04 共 4 项；[维护 10/10](../../../results/lab13-lab19/lab19/r2l19maint01/result.txt)；[CACHE 7/7](../../../results/lab13-lab19/lab19/r2l19cache03/result.txt) |
+| Lab17 ICache AXI fault | RID、RRESP SLVERR、提前 RLAST、缺失 RLAST 都在有限周期进入 ICache `ST_FAULT`，不产生 `cpu_data_ok` | [28 项 fault 定向检查](../../../results/lab13-lab19/lab17/r2l17fault06/result.txt)，WDB/WCFG 留存 |
+| Lab18 DCache/ICache fault | DCache 在 Idle、Lookup、WB 等待、Refill 数据四态 fail-stop；脏 victim 在未完成 B 时保留；正常仲裁和功能回归无回退 | [Fault 4 态](../../../results/lab13-lab19/lab18/r2l18fault05/result.txt)、[DCache 9 项](../../../results/lab13-lab19/lab18/r2l18dcache01/result.txt)、[I/D 仲裁](../../../results/lab13-lab19/lab18/r2l18arb01/result.txt) |
+| TLB 写与在途 IF 事务 | TLBWI/TLBWR 提交会冲刷 ID 并通知 IF；已接受的旧映射读返回后丢弃，再从保存的同一 VA 按新 PFN 重发 | [端到端 TLB/AXI 重放](../../../results/lab13-lab19/lab19/r2l19tlbreplay02/result.txt)：旧 PA `ABCDE100`，新 PA `12345100`；旧响应未进入译码 |
+| IF 重放边界 | branch delay slot taken/not-taken、Cache/TLB redirect、旧响应丢弃与异常优先级 | [IF redirect 7 项](../../../results/lab13-lab19/lab19/r2l19redirect03/result.txt) |
+| 正常完整程序 | Lab17 与 Lab18 各 94/94 软件功能点通过；均为功能点/事务计数，不是逐条 debug writeback golden trace | [Lab17](../../../results/lab13-lab19/lab17/r2l17func01/result.txt)：1,038,101 cycles；[Lab18](../../../results/lab13-lab19/lab18/r2l18func01/result.txt)：1,041,981 cycles。两者均为 Store 3,752/3,752、重复 0；Lab18 外设写 95/95 |
+
+最终门禁运行在 [Lab19 CACHE 7/7](../../../results/lab13-lab19/lab19/r2l19cache03/result.txt) 中记录 `SIMULATION_STATUS=PASS`、`SOURCE_INTEGRITY=PASS`、`VIVADO_EXIT_CODE=0`、`VIVADO_PROCESS_STATUS=PASS`。Python 测试共 19/19；门禁单测覆盖源清单失败与 Vivado 非零退出时不能留下最终 PASS。
+
+Lab15 的 TLBL/TLBS/Modified 精确异常仍是 `UNSUPPORTED_BY_SCOPE`；无映射 Hit CACHE 明确被阻止，也不等同于 TLB 异常处理。边界和已有 translation 证据见 [unsupported TLB exceptions](../../../docs/lab13-lab19/unsupported-tlb-exceptions.md)。Lab17/18 的 94/94 不标成 golden trace；旧 Lab11 golden trace 仍是单独历史证据。
+
+### 波形、时序与运行清理
+
+新增 `L19-04`、`L19-05`、`L17-04`、`L19-06` 波形交接行，WDB/WCFG 与 SHA-256 已记录；所有新图仍为 `PENDING_CAPTURE`，没有代填人工观察值或截图状态。修订后未重新综合、布局布线或重跑 Dhrystone/CoreMark；现有综合仍只是旧提交的 `synth_design` 结果，66 个 hold failing endpoints 及未跑 place/route 仍未关闭。性能旧结果也不代表修订后二进制的重新测量。
+
+失败仿真目录与已被最终 Run 替代的非历史尝试已清理。自动审批审查拒绝删除两份成功的早期目录 `revision2-l19-maint-p0-03` 与 `r2l19top03`，理由是它们是成功运行；这两份目录未改动，最终索引使用更新后的维护/顶层 Run。
+
 ## 总结
 
 本分支已完成 Lab10–11 合并和 Lab13–19 的 TLB、Cache 实现与验收。Lab15 的 TLB Refill/Invalid/Modified 异常处理按任务方案标记为 **NOT_REQUIRED**，没有将其算作 PASS。Lab17 的同镜像无 Cache 对比通过；Lab19 Dhrystone 和 CoreMark 正常结束，但没有同条件 Lab19 基线，所以没有声称性能加速。
 
-顶层 `soc_axi_lite_top` 在 Vivado 2025.2 中综合成功，资源报告可用。合成时序估算的 setup WNS 为 3.975 ns；hold 报告仍有 66 个失败端点，且未进行布局布线，因此本报告不代表 FPGA 实际时序签核。GUI 截图和人工读值尚未完成；15 行截图交接表均保留 `PENDING_CAPTURE`，`observed` 和时间窗为空。
+顶层 `soc_axi_lite_top` 在 Vivado 2025.2 中综合成功，资源报告可用。合成时序估算的 setup WNS 为 3.975 ns；hold 报告仍有 66 个失败端点，且未进行布局布线，因此本报告不代表 FPGA 实际时序签核。GUI 截图和人工读值尚未完成；原 15 行及修订新增 4 行截图交接记录均保留 `PENDING_CAPTURE`，`observed` 和时间窗为空。
 
 ## 分阶段实现与验收
 
@@ -54,12 +79,12 @@ Lab19 仿真 CPU 时钟是 100 MHz；固件性能输出按配置的 50 MHz 报�
 
 ## 证据与截图交接
 
-[证据索引](../data/evidence_index.csv)列出 21 份最终/基线 Run；[事务指标表](../data/transaction-metrics.csv)集中记录各阶段关键计数；[截图交接 CSV](../data/wave-capture-log.csv)列出方案中的 15 个图项。截图交接所选的 Lab13–Lab19 WDB 均配有对应 WCFG；Lab14–Lab19 的新增配置已用 Vivado 对应 WDB 打开并校验信号路径。其他非截图运行的 WDB 不一定另存 WCFG。Lab19 两个 WDB/WCFG 的 SHA-256 与信号数见 [Lab19 waveform index](../../../results/lab13-lab19/lab19/waveform-index.txt)。
+[证据索引](../data/evidence_index.csv)列出历史证据及修订后的 Run；[事务指标表](../data/transaction-metrics.csv)集中记录各阶段关键计数；[截图交接 CSV](../data/wave-capture-log.csv)保留原 15 项并新增 4 项待截图主题。截图交接所选的 Lab13–Lab19 WDB 均配有对应 WCFG；新增配置由运行脚本生成并确认信号路径。其他非截图运行的 WDB 不一定另存 WCFG。Lab19 两个历史 WDB/WCFG 的 SHA-256 与信号数见 [Lab19 waveform index](../../../results/lab13-lab19/lab19/waveform-index.txt)。
 
 这次没有生成或代填 PNG 截图、人工 `observed` 值或 `time_start_ns/time_end_ns`。请从交接 CSV 指定的最终 WDB/WCFG 截图并人工读数后，再把对应行改成 `CAPTURED_VERIFIED`。Lab17 的第二张配置展示 directed bridge run 中的 KSEG1 Uncache 与 RID fault；该 WDB 不含 CPU redirect 信号，所以不把它标成 redirect 证明。Dhrystone/CoreMark 长跑没有 WDB，L19-03 只交接真实日志/计数。
 
 ## 运行留存与可复现材料
 
-每个类别只保留一份最终有效 RunId；已删除/未纳入索引的失败尝试和替代结果不作为验收证据。最终目录保留 `result.txt`、Vivado/编译/展开/仿真日志、活动源清单、输入清单、hash 与必要的 WDB/WCFG。Lab19 性能与综合输入均有 hash；综合的 34 项源清单完整匹配 `4ba901c`。
+各验收类别均索引一份最终有效 RunId；失败尝试和被替代的中间运行已清理。自动审批审查拒绝删除两份成功的早期 Run（`revision2-l19-maint-p0-03`、`r2l19top03`），它们未改动且未作为最终证据引用。最终 Run 保留 `result.txt`、原始 `sim-result.txt`、Vivado/编译/展开/仿真日志、活动源清单、输入清单、hash 与必要的 WDB/WCFG。Lab19 性能与综合输入均有 hash；历史综合的 34 项源清单匹配当时的 `4ba901c`，不代表本次修订源码已重新综合。
 
-此前脚本单元测试运行 `python -m unittest discover -s scripts/tests -p 'test_*.py'` 通过 16 项；`verify.ps1` PowerShell AST 解析、Python helper 编译和 `git diff --check` 均通过。Lab19 run 使用各自的 COE/MIF 镜像，Dhrystone/CoreMark 输入没有和 94 点功能镜像混用。
+最终脚本单元测试 `python -m unittest discover -s scripts/tests -p 'test_*.py'` 通过 19 项；`verify.ps1` PowerShell AST 解析和 `git diff --check` 均通过。Lab19 run 使用各自的 COE/MIF 镜像，Dhrystone/CoreMark 输入没有和 94 点功能镜像混用。

@@ -50,7 +50,23 @@ All indexed Run directories have a purpose in the evidence index or the final ve
 
 | Revision commit | Change | Test / result |
 |---|---|---|
-| Pending | P0-01/P0-02 CACHE acceptance and DCache Index target locking | Pending |
-| Pending | P1-03/P1-04 bridge fault termination | Pending |
-| Pending | Verification script status gating and P2 targeted checks | Pending |
+| `42ff13b` | P0-01/P0-02 CACHE acceptance contract; latch DCache maintenance index, way, tag and line; propagate bridge faults into ICache/DCache terminal states; add atomic result finalizer | Lab19 maintenance 10/10 (`r2l19maint01`); full Top index contract (`r2l19contract03`); Lab19 CACHE 7/7 (`r2l19cache03`); Lab17 fault checks 28 (`r2l17fault06`); Lab18 fault states 4 (`r2l18fault05`); Lab17/18 functional 94/94 (`r2l17func01`, `r2l18func01`) |
+| `ac7c99d` | Add TLB-write front-end redirect and stale-response replay; preserve trap/ERET priority | IF redirect checks 7 (`r2l19redirect03`); full Top maintenance contract recompiled and passed (`r2l19contract03`) |
+| `89050b4` | Add dedicated Lab17 AXI fault waveform configuration | Four fault cases rerun with WDB/WCFG (`r2l17fault06`) |
+| `92db094` | Include Vivado process exit code in final acceptance gate; prevent PASS when Vivado exits nonzero after writing a simulation PASS | `python -m unittest discover -s scripts/tests -p 'test_*.py'`: 19/19; final result `r2l19cache03` records simulation PASS, source integrity PASS and Vivado exit 0 |
+| `38f205d` | Add full CPU Top/real TLB/AXI test for a TLB write during an outstanding old-PFN fetch | `r2l19tlbreplay02`: old response dropped; same VA re-read at the new PFN; result and source manifest PASS |
+
+## Revision 2 file-level changes
+
+| File group | Change |
+|---|---|
+| `lab19/cpu_cache/rtl/myCPU/mycpu_top.v` | Classify Index and Hit maintenance; align upstream acceptance with the selected cache; gate untranslated Hit requests; connect bridge faults; flush/replay fetch after TLB writes |
+| `lab19/cpu_cache/rtl/myCPU/dcache.v` | Lock the accepted Index/Hit set, way, old tag and line; form writeback from that snapshot; invalidate the same line only after B; make bridge failure globally terminal |
+| `lab17`, `lab18`, `lab19` ICache copies | Propagate sticky AXI bridge faults into an explicit ICache terminal state without a false instruction completion |
+| `lab18/cpu_dcache/rtl/myCPU/dcache.v` | Give bridge failure global priority and stop new request/completion behavior |
+| `lab19/cpu_cache/rtl/myCPU/IF_stage.v` | Drop outstanding stale fetches and replay from the saved PC on TLB write commit |
+| `scripts/tlb_cache/verify.ps1`, `capture_run_manifest.py`, `finalize_run_result.py` | Keep raw simulator status in `sim-result.txt`; atomically write final result only after simulation exit and source/input integrity checks |
+| New directed testbenches | Cover Index acceptance/writeback payload, four ICache AXI faults, four DCache fault states, branch/stale-response replay and TLB remap with an outstanding read |
+
+All new final Runs retain their own `source-manifest.csv`, `input_manifest.csv`, raw `sim-result.txt` and authoritative `result.txt`. The Lab17 and Lab18 94/94 outputs are software functional-point regressions, not full instruction-by-instruction golden trace comparisons. Lab15 precise TLB exceptions remain outside this revision; see [unsupported TLB exception scope](unsupported-tlb-exceptions.md).
 

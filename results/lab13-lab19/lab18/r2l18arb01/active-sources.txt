@@ -1,0 +1,5 @@
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab18/r2l18arb01/project/lab18_arb_directed.xpr
+SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab18/cpu_dcache/rtl/myCPU/icache.v
+SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab18/cpu_dcache/rtl/myCPU/dcache.v
+SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab18/cpu_dcache/rtl/myCPU/cache_axi3_bridge.v
+SIM_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab18/cpu_dcache/testbench/tb_lab18_cache_arbitration.sv

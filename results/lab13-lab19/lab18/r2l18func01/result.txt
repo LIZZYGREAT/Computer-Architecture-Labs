@@ -1,0 +1,22 @@
+RUN_ID=r2l18func01
+CASE=lab18
+SUITE=lab18
+SIM_TOP=tb_lab18_dcache
+PASS_MARKER=LAB18_DCACHE_FUNCTIONAL_PASS score=94/94
+TESTPOINTS=94
+CACHE_STATS=ic_hit=134525 ic_miss=21571 ic_refill=21571 ic_uncache_read=16920
+DCACHE_STATS=hit=6937 miss=950 writeback=446 uncache=483
+AXI_METRICS=ar=39684 r=197331 aw=685 w=3807 b=685
+STORE_COUNTS=accepted=3752 completed=3752 duplicate_store=0
+PERIPHERAL_NUM_WRITES=accepted=95 completed=95 initial_clear=1 score_writes=94 duplicate_store=0
+FUNCTIONAL_CYCLES=1041981
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab18/r2l18func01/project/lab18_soc.xpr
+PROGRAM_IMAGE=C:/Users/lenovo/Desktop/Projects/FPGA/lab17/func_all94/obj/inst_ram.coe
+WAVEFORM=OMITTED_FUNCTIONAL_RUN_USE_DIRECTED_WAVEFORM
+STATUS=PASS
+SIMULATION_STATUS=PASS
+SOURCE_INTEGRITY=PASS
+SOURCE_MANIFEST=source-manifest.csv
+INPUT_MANIFEST=input_manifest.csv
+GIT_HEAD=42ff13b5346ae98110fb571ab8cf35f86bd99ad2
+SIMULATOR_CPU_MS=139702

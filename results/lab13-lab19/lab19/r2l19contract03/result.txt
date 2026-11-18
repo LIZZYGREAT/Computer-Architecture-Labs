@@ -1,0 +1,14 @@
+RUN_ID=r2l19contract03
+CASE=lab19_index_contract
+SUITE=directed
+SIM_TOP=tb_lab19_index_maint_contract
+PASS_MARKER=LAB19_INDEX_CONTRACT_PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r2l19contract03/project/lab19_index_contract_directed.xpr
+WAVEFORM=wave-full.wdb
+WAVEFORM_CONFIG=wave-full.wcfg
+STATUS=PASS
+SIMULATION_STATUS=PASS
+SOURCE_INTEGRITY=PASS
+SOURCE_MANIFEST=source-manifest.csv
+INPUT_MANIFEST=input_manifest.csv
+GIT_HEAD=ac7c99d99639988153f337e391fa37a8aff5c643

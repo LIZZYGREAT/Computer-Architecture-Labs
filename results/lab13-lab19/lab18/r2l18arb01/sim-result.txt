@@ -1,0 +1,8 @@
+RUN_ID=r2l18arb01
+CASE=lab18_arb
+SUITE=directed
+STATUS=PASS
+SIM_TOP=tb_lab18_cache_arbitration
+PASS_MARKER=LAB18_ARBITRATION_PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab18/r2l18arb01/project/lab18_arb_directed.xpr
+WAVEFORM=wave-full.wdb

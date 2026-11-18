@@ -1,0 +1,12 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  -i "../../../../../../../../../lab19/cpu_cache/rtl/myCPU" --include "D:/Verilog/2025.2/Vivado/data/rsb/busdef" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/IF_stage.v" \
+
+sv xil_defaultlib  -i "../../../../../../../../../lab19/cpu_cache/rtl/myCPU" --include "D:/Verilog/2025.2/Vivado/data/rsb/busdef" \
+"../../../../../../../../../lab19/cpu_cache/testbench/tb_lab19_if_redirect_directed.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

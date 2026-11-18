@@ -1,0 +1,12 @@
+RUN_ID=r2l17fault06
+CASE=lab17
+SUITE=directed
+STATUS=PASS
+SIM_TOP=tb_lab17_icache_directed
+PASS_MARKER=DIRECTED_PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab17/r2l17fault06/project/lab17_directed.xpr
+WAVEFORM=wave-full.wdb
+WAVEFORM_CONFIG=wave-full.wcfg
+DIRECTED_CHECKS=28
+DIRECTED_COUNTS_VALID=cpu=4/4 data=2/2 writeback=1/1
+DIRECTED_FAULT_INJECTION=RID_MISMATCH accepted=1 completed=0 expected_pending=1 axi_fault=1 icache_fault=1 terminal_state=8

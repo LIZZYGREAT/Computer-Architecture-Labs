@@ -1,0 +1,4 @@
+path,role,size_bytes,sha256
+results/lab13-lab19/lab18/r2l18fault05/project/lab18_fault_directed.xpr,vivado_project,12191,7AEDCFA900D1F75A31EBD29739BD58E06AF1C0DD632799063175C44754FE53C9
+lab18/cpu_dcache/rtl/myCPU/dcache.v,design_source,16077,F683FF0533847C80AD1DDEFED4AE569C22685BC9D98D2452E855CE1C9A271269
+lab18/cpu_dcache/testbench/tb_lab18_dcache_fault_directed.sv,simulation_source,6741,1A8E740B83ABAE26CAE448677ECA5137FD5EAF5A850DD595E66F2A53B0882CDF

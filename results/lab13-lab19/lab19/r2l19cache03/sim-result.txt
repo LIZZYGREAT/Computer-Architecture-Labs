@@ -1,0 +1,18 @@
+RUN_ID=r2l19cache03
+CASE=lab19
+SUITE=lab19
+STATUS=PASS
+SIM_TOP=tb_lab19_cache
+PASS_MARKER=LAB19_CACHE_FUNCTIONAL_PASS score=7/7
+TESTPOINTS=7
+CACHE_OPS=ICIndexInv:2,ICIndexStTag:2,ICHitInv:1,DCIndexWBInv:2,DCIndexStTag:2,DCHitInv:1,DCHitWBInv:1
+CACHE_MAINTENANCE_COUNTS=ic_idxinv=2 ic_idxsttag=2 ic_hitinv=1 dc_idxwbinv=2 dc_idxsttag=2 dc_hitinv=1 dc_hitwbinv=1
+CACHE_STATS=ic_hit=397 ic_miss=51 ic_refill=51 ic_uncache_read=19 dc_hit=2 dc_miss=4 dc_writeback=2 dc_uncache=45
+AXI_METRICS=ar=95 r=480 aw=26 w=40 b=26
+STORE_COUNTS=accepted=28 completed=28 duplicate_store=0
+RETIRED_INSTRUCTIONS=458
+FUNCTIONAL_CYCLES=2836
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r2l19cache03/project/lab19_soc.xpr
+PROGRAM_IMAGE=C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cache_func/obj/inst_ram.coe
+WAVEFORM=wave-full.wdb
+WAVEFORM_CONFIG=wave-full.wcfg

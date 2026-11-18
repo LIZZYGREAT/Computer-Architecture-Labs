@@ -20,3 +20,14 @@ lab19,lab19-maint-directed-20261118-06,directed,PASS,4ba901c186567560dea1ca2fdfd
 lab19_perf,lab19-dhrystone-20261118-06,dhrystone,PASS,4ba901c186567560dea1ca2fdfd1a73edf895fc5,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06,Dhrystone PASS; performance counters and UART output retained
 lab19_perf,lab19-coremark-20261118-03,coremark,PASS,4ba901c186567560dea1ca2fdfd1a73edf895fc5,results/lab13-lab19/lab19/lab19-coremark-20261118-03,CoreMark PASS; performance counters and UART output retained
 lab19,lab19-synthesis-20261118-01,synthesis,PASS,4ba901c186567560dea1ca2fdfd1a73edf895fc5,results/lab13-lab19/lab19/lab19-synthesis-20261118-01,Top-level synth_design complete; resource/timing reports; hold closure pending
+lab17,r2l17func01,functional,PASS,42ff13b5346ae98110fb571ab8cf35f86bd99ad2,results/lab13-lab19/lab17/r2l17func01,94/94 functional points; 3752 stores accepted and completed; duplicate stores 0
+lab17,r2l17fault06,directed,PASS,89050b4796b79cdd3949ff54bd27a194a9143560,results/lab13-lab19/lab17/r2l17fault06,"28 checks; RID, RRESP, early RLAST and missing RLAST all terminate without completion; WDB/WCFG retained"
+lab18,r2l18dcache01,directed,PASS,42ff13b5346ae98110fb571ab8cf35f86bd99ad2,results/lab13-lab19/lab18/r2l18dcache01,9 DCache checks PASS
+lab18,r2l18arb01,arbitration,PASS,42ff13b5346ae98110fb571ab8cf35f86bd99ad2,results/lab13-lab19/lab18/r2l18arb01,Concurrent I/D misses PASS
+lab18,r2l18fault05,fault,PASS,42ff13b5346ae98110fb571ab8cf35f86bd99ad2,results/lab13-lab19/lab18/r2l18fault05,"Four fail-stop states PASS; dirty victim preserved while B is pending"
+lab18,r2l18func01,functional,PASS,42ff13b5346ae98110fb571ab8cf35f86bd99ad2,results/lab13-lab19/lab18/r2l18func01,94/94 functional points; 3752 stores and 95 peripheral writes complete once
+lab19,r2l19maint01,directed,PASS,42ff13b5346ae98110fb571ab8cf35f86bd99ad2,results/lab13-lab19/lab19/r2l19maint01,10 maintenance checks PASS; unmapped VA set 35 way 3 writeback and set 0 sentinel
+lab19,r2l19contract03,index-contract,PASS,ac7c99d99639988153f337e391fa37a8aff5c643,results/lab13-lab19/lab19/r2l19contract03,"Full CPU Top Index/Hit contract; unmapped Index accepted once; untranslated Hit blocked; 8 W beats and sentinel preserved"
+lab19,r2l19redirect03,redirect,PASS,ac7c99d99639988153f337e391fa37a8aff5c643,results/lab13-lab19/lab19/r2l19redirect03,"7 IF replay checks; branch delay slot taken/not-taken; stale response dropped; redirect priority PASS"
+lab19,r2l19tlbreplay02,tlb-replay,PASS,38f205dbfa03e822cac37b9d697b18f2713e9398,results/lab13-lab19/lab19/r2l19tlbreplay02,Real TLB write with old IF AXI read outstanding; old instruction dropped and same VA re-read from new PFN
+lab19,r2l19cache03,cache,PASS,92db09471ee2d0c048ef5ac7f954f5aa520dd9fd,results/lab13-lab19/lab19/r2l19cache03,"Official CACHE suite 7/7; 28/28 stores; duplicate stores 0; current verify gate and source integrity PASS"
