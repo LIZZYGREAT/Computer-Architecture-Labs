@@ -195,5 +195,3 @@ endmodule
 module tb_lab19_all94;
     lab19_all94_check #(.ICACHE_ENABLE(1'b1)) check();
 endmodule
-
-\n
