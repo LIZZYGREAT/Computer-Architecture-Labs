@@ -23,10 +23,10 @@ bfc00028:	ad000000 	sw	zero,0(t0)
 /media/sf_book/cpu_book_20200422/lab/lab19/perf_func/start.S:18
 bfc0002c:	3c0a0040 	lui	t2,0x40
 /media/sf_book/cpu_book_20200422/lab/lab19/perf_func/start.S:19
-bfc00030:	3c1dbfc0 	lui	sp,0xbfc0
+bfc00030:	3c1d9fc0 	lui	sp,0x9fc0
 bfc00034:	27bd619c 	addiu	sp,sp,24988
 /media/sf_book/cpu_book_20200422/lab/lab19/perf_func/start.S:20
-bfc00038:	3c1cbfc1 	lui	gp,0xbfc1
+bfc00038:	3c1c9fc1 	lui	gp,0x9fc1
 bfc0003c:	279ca1c0 	addiu	gp,gp,-24128
 /media/sf_book/cpu_book_20200422/lab/lab19/perf_func/start.S:24
 bfc00040:	40088000 	mfc0	t0,$16

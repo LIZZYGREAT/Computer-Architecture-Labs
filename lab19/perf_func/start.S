@@ -19,6 +19,13 @@ start:
 	la	sp, _stack
 	la	gp, _gp
 
+# The performance images are linked in the kseg1 boot alias (0xbfc...).
+# Keep the linked _gp value for GP-relative relocations, but move runtime data
+# accesses to the physically identical, cacheable kseg0 alias (0x9fc...).
+    li    t1, 0x20000000
+    subu  sp, sp, t1
+    subu  gp, gp, t1
+
 # set c0.config.k0 = cached
     .set mips32
     mfc0  t0, c0_config

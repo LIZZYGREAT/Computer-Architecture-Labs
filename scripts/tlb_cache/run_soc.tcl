@@ -1,7 +1,7 @@
 # Create and run an isolated CPU SoC regression project.
-# Usage: vivado -mode batch -source run_soc.tcl -tclargs <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline|lab18?
+# Usage: vivado -mode batch -source run_soc.tcl -tclargs <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline|lab18|lab19|dhrystone|coremark?
 if {[llength $argv] < 2 || [llength $argv] > 3} {
-    error "usage: run_soc.tcl <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline|lab18?"
+    error "usage: run_soc.tcl <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline|lab18|lab19|dhrystone|coremark?"
 }
 
 set repo [file normalize [lindex $argv 0]]
@@ -54,6 +54,20 @@ if {$suite eq "lab14"} {
     set sim_top tb_lab18_dcache
     set sim_runtime 250000000ns
     set trace_file ""
+} elseif {$suite eq "lab19"} {
+    set cpu_root [file join $repo lab19 cpu_cache]
+    set coe_file [file join $repo lab19 cache_func obj inst_ram.coe]
+    set testbench [file join $cpu_root testbench tb_lab19_cache.sv]
+    set sim_top tb_lab19_cache
+    set sim_runtime 250000000ns
+    set trace_file ""
+} elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
+    set cpu_root [file join $repo lab19 cpu_cache]
+    set coe_file [file join $repo lab19 perf_func obj $suite axi_ram.coe]
+    set testbench [file join $cpu_root testbench tb_lab19_perf.sv]
+    set sim_top [expr {$suite eq "dhrystone" ? "tb_lab19_dhrystone" : "tb_lab19_coremark"}]
+    set sim_runtime 2000000000ns
+    set trace_file ""
 } else {
     error "unsupported SoC regression suite: $suite"
 }
@@ -89,6 +103,10 @@ foreach source_ip $ip_files {
         close $xci_in
         if {$suite eq "lab17" || $suite eq "lab17_baseline" || $suite eq "lab18"} {
             set relative_coe "../../../../func_all94/obj/inst_ram.coe"
+        } elseif {$suite eq "lab19"} {
+            set relative_coe "../../../../func_all94/obj/inst_ram.coe"
+        } elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
+            set relative_coe "../../../../func_all94/obj/inst_ram.coe"
         } else {
             set relative_coe "../../../../tlb_func/obj/inst_ram.coe"
         }
@@ -116,9 +134,59 @@ add_files -norecurse -fileset sim_1 $testbench
 set_property include_dirs [list [file join $cpu_root rtl myCPU]] [get_filesets sources_1]
 set_property top soc_axi_lite_top [get_filesets sources_1]
 set_property top $sim_top [get_filesets sim_1]
-set log_all_signals [expr {$suite eq "lab14"}]
+set log_all_signals [expr {$suite eq "lab14" || $suite eq "lab19"}]
 set_property xsim.simulate.log_all_signals $log_all_signals [get_filesets sim_1]
 set_property xsim.simulate.runtime $sim_runtime [get_filesets sim_1]
+if {$suite eq "lab19"} {
+    set wave_config_file [file join $run_dir wave-full.wcfg]
+    set wave_hook_file [file join $run_dir wave-config-hook.tcl]
+    set wave_log_file [file join $run_dir wave-config-hook.log]
+    set wave_objects [list \
+        /tb_lab19_cache/clk \
+        /tb_lab19_cache/resetn \
+        /tb_lab19_cache/soc_lite/u_cpu/cache_maint_op \
+        /tb_lab19_cache/soc_lite/u_cpu/cache_maint_vaddr \
+        /tb_lab19_cache/soc_lite/u_cpu/cache_maint_commit \
+        /tb_lab19_cache/soc_lite/u_cpu/icache_maint_done \
+        /tb_lab19_cache/soc_lite/u_cpu/dcache_maint_done \
+        /tb_lab19_cache/soc_lite/u_cpu/u_icache/state \
+        /tb_lab19_cache/soc_lite/u_cpu/u_icache/stat_miss \
+        /tb_lab19_cache/soc_lite/u_cpu/u_icache/stat_refill \
+        /tb_lab19_cache/soc_lite/u_cpu/u_dcache/state \
+        /tb_lab19_cache/soc_lite/u_cpu/u_dcache/stat_writeback \
+        /tb_lab19_cache/soc_lite/u_cpu/u_cache_axi3_bridge/rd_state \
+        /tb_lab19_cache/soc_lite/u_cpu/u_cache_axi3_bridge/wr_state]
+    set wave_hook_text [string map [list \
+        @WAVE_PATH@ [list $wave_config_file] \
+        @WAVE_LOG@ [list $wave_log_file] \
+        @WAVE_NAME@ [file tail $wave_config_file] \
+        @WAVE_OBJECTS@ [list $wave_objects]] {
+set wave_log [open @WAVE_LOG@ w]
+if {[catch {
+    set wave_config [current_wave_config]
+    if {[string length $wave_config] == 0} { create_wave_config }
+    set wave_added [list]
+    foreach wave_object @WAVE_OBJECTS@ {
+        set wave_matches [get_objects -quiet $wave_object]
+        if {[llength $wave_matches] > 0} {
+            add_wave $wave_matches
+            lappend wave_added $wave_object
+        }
+    }
+    save_wave_config @WAVE_PATH@
+} wave_error]} {
+    puts $wave_log "WCFG_CAPTURE_ERROR=$wave_error"
+} else {
+    puts $wave_log "WCFG_CAPTURED=@WAVE_NAME@"
+    puts $wave_log "WAVE_OBJECTS_ADDED=[join $wave_added ,]"
+}
+close $wave_log
+}]
+    set wave_hook [open $wave_hook_file w]
+    puts -nonewline $wave_hook $wave_hook_text
+    close $wave_hook
+    set_property xsim.simulate.tcl.post $wave_hook_file [get_filesets sim_1]
+}
 update_compile_order -fileset sources_1
 update_compile_order -fileset sim_1
 set ip_objects [get_ips -quiet]
@@ -148,6 +216,10 @@ if {$suite eq "lab14"} {
     puts "CASE=lab14"
 } elseif {$suite eq "lab18"} {
     puts "CASE=lab18"
+} elseif {$suite eq "lab19"} {
+    puts "CASE=lab19"
+} elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
+    puts "CASE=lab19_performance"
 } elseif {$suite eq "lab17" || $suite eq "lab17_baseline"} {
     puts "CASE=lab17"
 } else {
@@ -217,6 +289,35 @@ if {$suite eq "lab14"} {
         $r_count < $ar_count || $aw_count != $b_count || $w_count < $aw_count} {
         error "Lab18 AXI transaction/beat metrics are inconsistent; inspect $sim_log"
     }
+} elseif {$suite eq "lab19"} {
+    set case_name lab19
+    set pass_marker "LAB19_CACHE_FUNCTIONAL_PASS score=7/7"
+    if {[regexp -nocase {LAB19_FAIL=|Fatal:|ERROR:|Error:} $sim_text]} {
+        error "Lab19 CACHE instruction regression reported a failure; inspect $sim_log"
+    }
+    if {[regexp -all {LAB19_TESTPOINT=} $sim_text] != 7} {
+        error "Lab19 CACHE instruction regression expected seven ordered score points; inspect $sim_log"
+    }
+    foreach marker [list $pass_marker "CACHE_MAINTENANCE_COUNTS " "CACHE_STATS " "AXI_METRICS " "STORE_COUNTS " "RETIRED_INSTRUCTIONS="] {
+        if {[string first $marker $sim_text] < 0} {
+            error "Lab19 CACHE instruction regression missed required marker $marker; inspect $sim_log"
+        }
+    }
+} elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
+    set case_name lab19_performance
+    set program_name $suite
+    set pass_marker "LAB19_PERF_PASS program=$program_name"
+    if {[regexp -nocase {LAB19_PERF_FAIL=|Fatal:|ERROR:|Error:} $sim_text]} {
+        error "$program_name performance regression reported a failure; inspect $sim_log"
+    }
+    foreach marker [list $pass_marker "PERF_METRICS program="] {
+        if {[string first $marker $sim_text] < 0} {
+            error "$program_name performance regression missed required marker $marker; inspect $sim_log"
+        }
+    }
+    if {![regexp -nocase "$program_name PASS!" $sim_text]} {
+        error "$program_name program output did not include its success text; inspect $sim_log"
+    }
 } else {
     set case_name lab17
     if {$suite eq "lab17"} {
@@ -256,8 +357,29 @@ if {[file isfile $compile_order_path]} {
     file copy -force $compile_order_path [file join $run_dir sim-compile-order.prj]
 }
 set waveform_path [file join $sim_dir ${sim_top}_behav.wdb]
-if {$suite eq "lab14" && [file isfile $waveform_path]} {
+if {($suite eq "lab14" || $suite eq "lab19") && [file isfile $waveform_path]} {
     file copy -force $waveform_path [file join $run_dir wave-full.wdb]
+}
+set wave_config_path [file join $run_dir wave-full.wcfg]
+if {[file isfile $wave_config_path]} {
+    set wave_config_in [open $wave_config_path r]
+    set wave_config_text [read $wave_config_in]
+    close $wave_config_in
+    set wave_config_text [string map [list "${sim_top}_behav.wdb" "wave-full.wdb"] $wave_config_text]
+    set wave_config_out [open $wave_config_path w]
+    puts -nonewline $wave_config_out $wave_config_text
+    close $wave_config_out
+}
+if {$suite eq "lab19" && ![file isfile $wave_config_path]} {
+    set wave_log_path [file join $run_dir wave-config-hook.log]
+    if {[file isfile $wave_log_path]} {
+        set wave_log_in [open $wave_log_path r]
+        set wave_log_text [read $wave_log_in]
+        close $wave_log_in
+    } else {
+        set wave_log_text "WCFG_CAPTURE_LOG=MISSING"
+    }
+    error "Lab19 functional waveform config was not generated; $wave_log_text"
 }
 
 set result [open [file join $run_dir result.txt] w]
@@ -301,6 +423,35 @@ if {$suite eq "lab14"} {
     if {[regexp {cycles=([0-9]+)} $sim_text -> functional_cycles]} {
         puts $result "FUNCTIONAL_CYCLES=$functional_cycles"
     }
+} elseif {$suite eq "lab19"} {
+    puts $result "TESTPOINTS=7"
+    puts $result "CACHE_OPS=ICIndexInv:2,ICIndexStTag:2,ICHitInv:1,DCIndexWBInv:2,DCIndexStTag:2,DCHitInv:1,DCHitWBInv:1"
+    if {[regexp {CACHE_MAINTENANCE_COUNTS ([^\r\n]+)} $sim_text -> maintenance_metrics]} {
+        puts $result "CACHE_MAINTENANCE_COUNTS=$maintenance_metrics"
+    }
+    if {[regexp {CACHE_STATS ([^\r\n]+)} $sim_text -> cache_metrics]} {
+        puts $result "CACHE_STATS=$cache_metrics"
+    }
+    if {[regexp {AXI_METRICS ([^\r\n]+)} $sim_text -> axi_metrics]} {
+        puts $result "AXI_METRICS=$axi_metrics"
+    }
+    if {[regexp {STORE_COUNTS ([^\r\n]+)} $sim_text -> store_metrics]} {
+        puts $result "STORE_COUNTS=$store_metrics"
+    }
+    if {[regexp {RETIRED_INSTRUCTIONS=([0-9]+)} $sim_text -> retired]} {
+        puts $result "RETIRED_INSTRUCTIONS=$retired"
+    }
+    if {[regexp {cycles=([0-9]+)} $sim_text -> functional_cycles]} {
+        puts $result "FUNCTIONAL_CYCLES=$functional_cycles"
+    }
+} elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
+    puts $result "PROGRAM=$suite"
+    if {[regexp {PERF_METRICS ([^\r\n]+)} $sim_text -> perf_metrics]} {
+        puts $result "PERF_METRICS=$perf_metrics"
+    }
+    if {[regexp -nocase "${suite} PASS!" $sim_text]} {
+        puts $result "PROGRAM_OUTPUT_PASS=PASS"
+    }
 } else {
     puts $result "TESTPOINTS=94"
     if {[regexp {CACHE_STATS ([^\r\n]+)} $sim_text -> cache_metrics]} {
@@ -318,14 +469,21 @@ if {$suite eq "lab14"} {
 }
 puts $result "PROJECT_XPR=$project_xpr"
 puts $result "PROGRAM_IMAGE=$coe_file"
-if {$suite eq "lab14" && [file isfile [file join $run_dir wave-full.wdb]]} {
+if {($suite eq "lab14" || $suite eq "lab19") && [file isfile [file join $run_dir wave-full.wdb]]} {
     puts $result "WAVEFORM=wave-full.wdb"
+} elseif {$suite eq "lab19"} {
+    puts $result "WAVEFORM=NOT_CAPTURED"
 } elseif {$suite eq "lab11_trace"} {
     puts $result "WAVEFORM=OMITTED_LONG_RUN"
+} elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
+    puts $result "WAVEFORM=OMITTED_LONG_RUN_USE_METRICS_AND_UART_OUTPUT"
 } elseif {$suite eq "lab17" || $suite eq "lab17_baseline" || $suite eq "lab18"} {
     puts $result "WAVEFORM=OMITTED_FUNCTIONAL_RUN_USE_DIRECTED_WAVEFORM"
 } else {
     puts $result "WAVEFORM=NOT_CAPTURED"
+}
+if {[file isfile [file join $run_dir wave-full.wcfg]]} {
+    puts $result "WAVEFORM_CONFIG=wave-full.wcfg"
 }
 close $result
 

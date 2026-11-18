@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('lab13', 'lab14', 'lab16', 'lab17', 'lab18')]
+    [ValidateSet('lab13', 'lab14', 'lab16', 'lab17', 'lab18', 'lab19')]
     [string]$Case,
 
     [Parameter(Mandatory = $true)]
@@ -104,6 +104,29 @@ switch ($Case) {
         }
         if ($CaptureWaveform -and $Suite -ne 'directed') {
             Write-Host 'Lab18 functional runs retain the compact DCache directed waveform.'
+        }
+    }
+    'lab19' {
+        if ($Suite -eq 'directed') {
+            $tclScript = Join-Path $PSScriptRoot 'run_unit.tcl'
+            $tclArgs = @('lab19_maint', 'directed', $repoRoot, $runDir)
+        } elseif ($Suite -eq 'cache') {
+            $tclScript = Join-Path $PSScriptRoot 'run_soc.tcl'
+            $tclArgs = @($repoRoot, $runDir, 'lab19')
+            $inputFiles = @((Join-Path $repoRoot 'lab19/cache_func/obj/inst_ram.coe'))
+        } elseif ($Suite -eq 'dhrystone') {
+            $tclScript = Join-Path $PSScriptRoot 'run_soc.tcl'
+            $tclArgs = @($repoRoot, $runDir, 'dhrystone')
+            $inputFiles = @((Join-Path $repoRoot 'lab19/perf_func/obj/dhrystone/axi_ram.coe'))
+        } elseif ($Suite -eq 'coremark') {
+            $tclScript = Join-Path $PSScriptRoot 'run_soc.tcl'
+            $tclArgs = @($repoRoot, $runDir, 'coremark')
+            $inputFiles = @((Join-Path $repoRoot 'lab19/perf_func/obj/coremark/axi_ram.coe'))
+        } else {
+            throw "Lab19 supports Suite 'directed', 'cache', 'dhrystone', or 'coremark'."
+        }
+        if ($CaptureWaveform -and $Suite -ne 'cache') {
+            Write-Host 'Lab19 performance images are long runs; waveform capture is retained for the compact seven-test CACHE run only.'
         }
     }
 }

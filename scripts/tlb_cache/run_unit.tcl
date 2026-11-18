@@ -2,7 +2,7 @@
 # untouched; their legacy PLL is replaced only for cycle-based unit benches.
 # Usage: vivado -mode batch -source run_unit.tcl -tclargs <case> <suite> <repo-root> <run-dir>
 if {[llength $argv] != 4} {
-    error "usage: run_unit.tcl <lab13|lab16|lab17|lab18|lab18_arb|lab18_mem> <directed|official> <repo-root> <run-dir>"
+    error "usage: run_unit.tcl <lab13|lab16|lab17|lab18|lab18_arb|lab18_mem|lab19_maint> <directed|official> <repo-root> <run-dir>"
 }
 set case [lindex $argv 0]
 set suite [lindex $argv 1]
@@ -53,10 +53,15 @@ if {$case eq "lab13"} {
 } elseif {$case eq "lab18_mem"} {
     set rtl [file join $repo lab18 cpu_dcache rtl myCPU MEM_stage.v]
     set directed_tb [file join $repo lab18 cpu_dcache testbench tb_lab18_mem_exception.sv]
+} elseif {$case eq "lab19_maint"} {
+    set rtl [list \
+        [file join $repo lab19 cpu_cache rtl myCPU icache.v] \
+        [file join $repo lab19 cpu_cache rtl myCPU dcache.v]]
+    set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_maint_directed.sv]
 } else {
     error "unsupported unit case: $case"
 }
-if {($case eq "lab17" || $case eq "lab18") && $suite ne "directed"} {
+if {($case eq "lab17" || $case eq "lab18" || $case eq "lab19_maint") && $suite ne "directed"} {
     error "$case currently supports only its directed cache suite"
 }
 
@@ -92,6 +97,54 @@ if {$case eq "lab11_axi3" || $case eq "lab18_mem"} {
 }
 set_property xsim.simulate.log_all_signals true [get_filesets sim_1]
 set_property xsim.simulate.runtime 1000000ns [get_filesets sim_1]
+if {$case eq "lab19_maint"} {
+    set wave_config_file [file join $run_dir wave-full.wcfg]
+    set wave_hook_file [file join $run_dir wave-config-hook.tcl]
+    set wave_log_file [file join $run_dir wave-config-hook.log]
+    set wave_objects [list \
+        /tb_lab19_maint_directed/u_icache/state \
+        /tb_lab19_maint_directed/u_icache/valid_way2 \
+        /tb_lab19_maint_directed/u_icache/valid_way3 \
+        /tb_lab19_maint_directed/u_icache/tag_way2 \
+        /tb_lab19_maint_directed/u_icache/tag_way3 \
+        /tb_lab19_maint_directed/u_dcache/state \
+        /tb_lab19_maint_directed/u_dcache/valid_way2 \
+        /tb_lab19_maint_directed/u_dcache/valid_way3 \
+        /tb_lab19_maint_directed/u_dcache/dirty_way2 \
+        /tb_lab19_maint_directed/u_dcache/dirty_way3 \
+        /tb_lab19_maint_directed/u_dcache/maint_selected_dirty]
+    set wave_hook_text [string map [list \
+        @WAVE_PATH@ [list $wave_config_file] \
+        @WAVE_LOG@ [list $wave_log_file] \
+        @WAVE_NAME@ [file tail $wave_config_file] \
+        @WAVE_OBJECTS@ [list $wave_objects]] {
+set wave_log [open @WAVE_LOG@ w]
+if {[catch {
+    set wave_config [current_wave_config]
+    if {[string length $wave_config] == 0} { create_wave_config }
+    add_wave /
+    set wave_added [list]
+    foreach wave_object @WAVE_OBJECTS@ {
+        set wave_matches [get_objects -quiet $wave_object]
+        if {[llength $wave_matches] > 0} {
+            add_wave $wave_matches
+            lappend wave_added $wave_object
+        }
+    }
+    save_wave_config @WAVE_PATH@
+} wave_error]} {
+    puts $wave_log "WCFG_CAPTURE_ERROR=$wave_error"
+} else {
+    puts $wave_log "WCFG_CAPTURED=@WAVE_NAME@"
+    puts $wave_log "WAVE_OBJECTS_ADDED=[join $wave_added ,]"
+}
+close $wave_log
+}]
+    set wave_hook [open $wave_hook_file w]
+    puts -nonewline $wave_hook $wave_hook_text
+    close $wave_hook
+    set_property xsim.simulate.tcl.post $wave_hook_file [get_filesets sim_1]
+}
 update_compile_order -fileset sim_1
 puts "CASE=$case"
 puts "SUITE=$suite"
@@ -145,6 +198,8 @@ if {$suite eq "directed"} {
         set pass_marker "LAB18_ARBITRATION_PASS"
     } elseif {$case eq "lab18_mem"} {
         set pass_marker "D09_MEM_PASS"
+    } elseif {$case eq "lab19_maint"} {
+        set pass_marker "LAB19_MAINT_DIRECTED_PASS"
     } else {
         set pass_marker "DIRECTED_PASS"
     }
@@ -241,6 +296,19 @@ if {$case eq "lab18_mem"} {
         }
     }
 }
+if {$case eq "lab19_maint"} {
+    foreach marker {
+        "LAB19_MAINT_DIRECTED_PASS checks=9"
+        "icache_way=2,3"
+        "dcache_way=2,3"
+        "hitinv_no_writeback=1"
+        "writebacks=2 B_wait=1"
+    } {
+        if {[string first $marker $sim_text] < 0} {
+            error "Lab19 CACHE maintenance directed test missed required marker: $marker"
+        }
+    }
+}
 if {[string first $pass_marker $sim_text] < 0} {
     error "simulation missed PASS marker $pass_marker; inspect $sim_log"
 }
@@ -274,6 +342,27 @@ set waveform_path [file join $sim_dir ${sim_top}_behav.wdb]
 if {[file isfile $waveform_path]} {
     file copy -force $waveform_path [file join $run_dir wave-full.wdb]
 }
+set wave_config_path [file join $run_dir wave-full.wcfg]
+if {[file isfile $wave_config_path]} {
+    set wave_config_in [open $wave_config_path r]
+    set wave_config_text [read $wave_config_in]
+    close $wave_config_in
+    set wave_config_text [string map [list "${sim_top}_behav.wdb" "wave-full.wdb"] $wave_config_text]
+    set wave_config_out [open $wave_config_path w]
+    puts -nonewline $wave_config_out $wave_config_text
+    close $wave_config_out
+}
+if {$case eq "lab19_maint" && ![file isfile $wave_config_path]} {
+    set wave_log_path [file join $run_dir wave-config-hook.log]
+    if {[file isfile $wave_log_path]} {
+        set wave_log_in [open $wave_log_path r]
+        set wave_log_text [read $wave_log_in]
+        close $wave_log_in
+    } else {
+        set wave_log_text "WCFG_CAPTURE_LOG=MISSING"
+    }
+    error "Lab19 directed waveform config was not generated; $wave_log_text"
+}
 set result_path [file join $run_dir result.txt]
 set result [open $result_path w]
 puts $result "RUN_ID=[file tail $run_dir]"
@@ -284,6 +373,9 @@ puts $result "SIM_TOP=$sim_top"
 puts $result "PASS_MARKER=$pass_marker"
 puts $result "PROJECT_XPR=[file join $project_dir ${project_name}.xpr]"
 puts $result "WAVEFORM=[expr {[file isfile [file join $run_dir wave-full.wdb]] ? "wave-full.wdb" : "NOT_CAPTURED"}]"
+if {[file isfile [file join $run_dir wave-full.wcfg]]} {
+    puts $result "WAVEFORM_CONFIG=wave-full.wcfg"
+}
 if {$suite eq "directed" && [regexp {DIRECTED_CHECKS=([0-9]+)} $sim_text -> check_count]} {
     puts $result "DIRECTED_CHECKS=$check_count"
 }
