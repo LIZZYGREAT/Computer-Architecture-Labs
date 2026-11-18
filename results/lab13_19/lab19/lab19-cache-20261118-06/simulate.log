@@ -1,0 +1,18 @@
+Time resolution is 1 ps
+ Block Memory Generator module loading initial data...
+ Block Memory Generator data initialization complete.
+Block Memory Generator module tb_lab19_cache.soc_lite.u_axi_ram.ram.inst.axi_mem_module.blk_mem_gen_v8_4_12_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
+LAB19_TESTPOINT=1 VALUE=01000001
+LAB19_TESTPOINT=2 VALUE=02000002
+LAB19_TESTPOINT=3 VALUE=03000003
+LAB19_TESTPOINT=4 VALUE=04000004
+LAB19_TESTPOINT=5 VALUE=05000005
+LAB19_TESTPOINT=6 VALUE=06000006
+LAB19_TESTPOINT=7 VALUE=07000007
+CACHE_MAINTENANCE_COUNTS ic_idxinv=2 ic_idxsttag=2 ic_hitinv=1 dc_idxwbinv=2 dc_idxsttag=2 dc_hitinv=1 dc_hitwbinv=1
+CACHE_STATS ic_hit=397 ic_miss=51 ic_refill=51 ic_uncache_read=19 dc_hit=2 dc_miss=4 dc_writeback=2 dc_uncache=45
+AXI_METRICS ar=95 r=480 aw=26 w=40 b=26
+STORE_COUNTS accepted=28 completed=28 duplicate_store=0
+RETIRED_INSTRUCTIONS=458
+LAB19_CACHE_FUNCTIONAL_PASS score=7/7 cycles=2836
+$finish called at time : 30357 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab19/cpu_cache/testbench/tb_lab19_cache.sv" Line 142

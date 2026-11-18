@@ -1,0 +1,138 @@
+Time resolution is 1 ps
+ Block Memory Generator module loading initial data...
+ Block Memory Generator data initialization complete.
+Block Memory Generator module tb_lab19_dhrystone.check.soc_lite.u_axi_ram.ram.inst.axi_mem_module.blk_mem_gen_v8_4_12_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
+dhrystone test begin.
+
+
+Dhrystone Benchmark, Version 2.1 (Language: C)
+
+
+
+Dhrystone Benchmark, Version 2.1 (Language: C)
+
+
+Program compiled without 'register' attribute
+
+
+Execution starts, 10 runs through Dhrystone
+
+Execution ends
+
+
+Final values of the variables used in the benchmark:
+
+
+Int_Glob:            5
+
+        should be:   5
+
+Bool_Glob:           1
+
+        should be:   1
+
+Ch_1_Glob:           A
+
+        should be:   A
+
+Ch_2_Glob:           B
+
+        should be:   B
+
+Arr_1_Glob[8]:       7
+
+        should be:   7
+
+Arr_2_Glob[8][7]:    20
+
+        should be:   20
+
+Ptr_Glob->
+
+  Ptr_Comp:          -1077917424
+
+        should be:   (implementation-dependent)
+
+  Discr:             0
+
+        should be:   0
+
+  Enum_Comp:         2
+
+        should be:   2
+
+  Int_Comp:          17
+
+        should be:   17
+
+  Str_Comp:          DHRYSTONE PROGRAM, SOME STRING
+
+        should be:   DHRYSTONE PROGRAM, SOME STRING
+
+Next_Ptr_Glob->
+
+  Ptr_Comp:          -1077917424
+
+        should be:   (implementation-dependent), same as above
+
+  Discr:             0
+
+        should be:   0
+
+  Enum_Comp:         1
+
+        should be:   1
+
+  Int_Comp:          18
+
+        should be:   18
+
+  Str_Comp:          DHRYSTONE PROGRAM, SOME STRING
+
+        should be:   DHRYSTONE PROGRAM, SOME STRING
+
+Int_1_Loc:           5
+
+        should be:   5
+
+Int_2_Loc:           13
+
+        should be:   13
+
+Int_3_Loc:           7
+
+        should be:   7
+
+Enum_Loc:            1
+
+        should be:   1
+
+Str_1_Loc:           DHRYSTONE PROGRAM, 1'ST STRING
+
+        should be:   DHRYSTONE PROGRAM, 1'ST STRING
+
+Str_2_Loc:           DHRYSTONE PROGRAM, 2'ND STRING
+
+        should be:   DHRYSTONE PROGRAM, 2'ND STRING
+
+
+Begin ns: 219460
+
+End ns: 429440
+
+Total ns: 209980
+
+Dhrystones per Second:                      47846 
+
+
+The CPU Freq you set is 50MHz
+
+So DMIPS/MHZ : 544/1000
+
+dhrystone PASS!
+
+PERF_DRAIN cycles=3 ic_pending_misses=0 rd_state=0 dcache_state=1 bridge_wr_state=0
+PERF_CACHE_CHECK program=0 ic_hit=40789 ic_miss=133 ic_refill=133 dc_hit=6579 dc_miss=13 dc_writeback=0 dc_uncache=4559
+PERF_METRICS program=0 cycles=251834 retired_instructions=51073 ic_hit=40789 ic_miss=133 ic_refill=133 dc_hit=6579 dc_miss=13 dc_writeback=0 dc_uncache=4559 axi_ar=12675 axi_r=13697 axi_aw=2185 axi_w=2185 axi_b=2185 simulation_ns=2518340 cpu_frequency_hz=100000000 num_data=0003343c
+LAB19_PERF_PASS program=dhrystone
+$finish called at time : 2520337 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab19/cpu_cache/testbench/tb_lab19_perf.sv" Line 109

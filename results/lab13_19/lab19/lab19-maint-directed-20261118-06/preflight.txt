@@ -1,0 +1,4 @@
+INPUT_CHECK_STATUS=PASS
+VIVADO_CHECK_STATUS=PASS
+PROJECT_PREFLIGHT_STATUS=PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-maint-directed-20261118-06/project/lab19_maint_directed.xpr

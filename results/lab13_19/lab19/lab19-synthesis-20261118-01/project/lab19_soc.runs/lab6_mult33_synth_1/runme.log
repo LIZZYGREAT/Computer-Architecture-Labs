@@ -1,0 +1,250 @@
+
+*** Running vivado
+    with args -log lab6_mult33.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source lab6_mult33.tcl
+
+
+
+****** Vivado v2025.2 (64-bit)
+  **** SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+  **** IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+  **** SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+  **** Start of session at: Wed Nov 18 15:11:56 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+
+ERROR: [Common 17-354] Could not open 'C' for writing.
+source lab6_mult33.tcl -notrace
+create_project: Time (s): cpu = 00:00:25 ; elapsed = 00:00:36 . Memory (MB): peak = 527.766 ; gain = 220.680
+Command: synth_design -top lab6_mult33 -part xc7a200tfbg676-2 -incremental_mode off -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a200t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a200t'
+INFO: [Device 21-403] Loading part xc7a200tfbg676-2
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 12308
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:20 ; elapsed = 00:00:25 . Memory (MB): peak = 1315.137 ; gain = 542.250
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'lab6_mult33' [c:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/ip-src/lab6_mult33/synth/lab6_mult33.vhd:69]
+WARNING: [Synth 8-5640] Port 'zero_detect' is missing in component declaration [c:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/ip-src/lab6_mult33/synth/lab6_mult33.vhd:72]
+WARNING: [Synth 8-5640] Port 'pcasc' is missing in component declaration [c:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/ip-src/lab6_mult33/synth/lab6_mult33.vhd:72]
+WARNING: [Synth 8-5640] Port 'pcasc_ext' is missing in component declaration [c:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/ip-src/lab6_mult33/synth/lab6_mult33.vhd:72]
+	Parameter C_VERBOSITY bound to: 0 - type: integer 
+	Parameter C_MODEL_TYPE bound to: 0 - type: integer 
+	Parameter C_OPTIMIZE_GOAL bound to: 1 - type: integer 
+	Parameter C_XDEVICEFAMILY bound to: artix7 - type: string 
+	Parameter C_HAS_CE bound to: 1 - type: integer 
+	Parameter C_HAS_SCLR bound to: 0 - type: integer 
+	Parameter C_LATENCY bound to: 1 - type: integer 
+	Parameter C_A_WIDTH bound to: 33 - type: integer 
+	Parameter C_A_TYPE bound to: 0 - type: integer 
+	Parameter C_B_WIDTH bound to: 33 - type: integer 
+	Parameter C_B_TYPE bound to: 0 - type: integer 
+	Parameter C_OUT_HIGH bound to: 65 - type: integer 
+	Parameter C_OUT_LOW bound to: 0 - type: integer 
+	Parameter C_MULT_TYPE bound to: 0 - type: integer 
+	Parameter C_CE_OVERRIDES_SCLR bound to: 0 - type: integer 
+	Parameter C_CCM_IMP bound to: 0 - type: integer 
+	Parameter C_B_VALUE bound to: 10000001 - type: string 
+	Parameter C_HAS_ZERO_DETECT bound to: 0 - type: integer 
+	Parameter C_ROUND_OUTPUT bound to: 0 - type: integer 
+	Parameter C_ROUND_PT bound to: 0 - type: integer 
+INFO: [Synth 8-3491] module 'mult_gen_v12_0_24' declared at 'c:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/ip-src/lab6_mult33/hdl/mult_gen_v12_0_vh_rfs.vhd:21527' bound to instance 'U0' of component 'mult_gen_v12_0_24' [c:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/ip-src/lab6_mult33/synth/lab6_mult33.vhd:129]
+INFO: [Synth 8-256] done synthesizing module 'lab6_mult33' (0#1) [c:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/ip-src/lab6_mult33/synth/lab6_mult33.vhd:69]
+INFO: [Synth 8-7129] Port SCLR in module mult_gen_v12_0_24_viv is either unconnected or has no load
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:43 ; elapsed = 00:01:38 . Memory (MB): peak = 1489.070 ; gain = 716.184
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:44 ; elapsed = 00:01:38 . Memory (MB): peak = 1489.070 ; gain = 716.184
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:44 ; elapsed = 00:01:38 . Memory (MB): peak = 1489.070 ; gain = 716.184
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.126 . Memory (MB): peak = 1489.070 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 1648 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 1 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [c:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/ip-src/lab6_mult33/lab6_mult33_ooc.xdc] for cell 'U0'
+Finished Parsing XDC File [c:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/ip-src/lab6_mult33/lab6_mult33_ooc.xdc] for cell 'U0'
+Parsing XDC File [C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/project/lab19_soc.runs/lab6_mult33_synth_1/dont_touch.xdc]
+Finished Parsing XDC File [C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/project/lab19_soc.runs/lab6_mult33_synth_1/dont_touch.xdc]
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.006 . Memory (MB): peak = 1569.105 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 544 instances were transformed.
+  MULT_AND => LUT2: 544 instances
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.173 . Memory (MB): peak = 1569.105 ; gain = 0.000
+INFO: [Designutils 20-5008] Incremental synthesis strategy off
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:01:13 ; elapsed = 00:02:11 . Memory (MB): peak = 1569.105 ; gain = 796.219
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a200tfbg676-2
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:01:13 ; elapsed = 00:02:11 . Memory (MB): peak = 1569.105 ; gain = 796.219
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:01:13 ; elapsed = 00:02:11 . Memory (MB): peak = 1569.105 ; gain = 796.219
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:01:18 ; elapsed = 00:02:18 . Memory (MB): peak = 1569.105 ; gain = 796.219
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 740 (col length:100)
+BRAMs: 730 (col length: RAMB18 100 RAMB36 50)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+INFO: [Synth 8-7129] Port SCLR in module mult_gen_v12_0_24_viv is either unconnected or has no load
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:01:31 ; elapsed = 00:02:32 . Memory (MB): peak = 1569.105 ; gain = 796.219
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:01:50 ; elapsed = 00:02:53 . Memory (MB): peak = 1648.906 ; gain = 876.020
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:01:50 ; elapsed = 00:02:53 . Memory (MB): peak = 1652.156 ; gain = 879.270
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:01:51 ; elapsed = 00:02:54 . Memory (MB): peak = 1662.543 ; gain = 889.656
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:02:07 ; elapsed = 00:03:12 . Memory (MB): peak = 1903.609 ; gain = 1130.723
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:02:07 ; elapsed = 00:03:12 . Memory (MB): peak = 1903.609 ; gain = 1130.723
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:02:07 ; elapsed = 00:03:12 . Memory (MB): peak = 1903.609 ; gain = 1130.723
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:02:08 ; elapsed = 00:03:12 . Memory (MB): peak = 1903.609 ; gain = 1130.723
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:02:08 ; elapsed = 00:03:12 . Memory (MB): peak = 1903.609 ; gain = 1130.723
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:02:08 ; elapsed = 00:03:12 . Memory (MB): peak = 1903.609 ; gain = 1130.723
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+---------+------+
+|      |Cell     |Count |
++------+---------+------+
+|1     |CARRY4   |   156|
+|2     |LUT1     |    12|
+|3     |LUT2     |   580|
+|4     |LUT3     |    66|
+|5     |LUT4     |   512|
+|6     |MULT_AND |   544|
+|7     |MUXCY    |   544|
+|8     |XORCY    |   560|
+|9     |FDRE     |    66|
++------+---------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:02:08 ; elapsed = 00:03:13 . Memory (MB): peak = 1903.609 ; gain = 1130.723
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 0 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:01:14 ; elapsed = 00:03:01 . Memory (MB): peak = 1903.609 ; gain = 1050.688
+Synthesis Optimization Complete : Time (s): cpu = 00:02:08 ; elapsed = 00:03:13 . Memory (MB): peak = 1903.609 ; gain = 1130.723
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.089 . Memory (MB): peak = 1903.609 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 1804 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+WARNING: [Netlist 29-101] Netlist 'lab6_mult33' is not ideal for floorplanning, since the cellview 'luts' contains a large number of primitives.  Please consider enabling hierarchy in synthesis if you want to do floorplanning.
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.005 . Memory (MB): peak = 1919.078 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 688 instances were transformed.
+  (MUXCY,XORCY) => CARRY4: 144 instances
+  MULT_AND => LUT2: 544 instances
+
+Synth Design complete | Checksum: d50516e3
+INFO: [Common 17-83] Releasing license: Synthesis
+22 Infos, 4 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:02:30 ; elapsed = 00:04:18 . Memory (MB): peak = 1919.078 ; gain = 1382.016
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.027 . Memory (MB): peak = 1919.078 ; gain = 0.000
+INFO: [Common 17-1381] The checkpoint 'C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/project/lab19_soc.runs/lab6_mult33_synth_1/lab6_mult33.dcp' has been generated.
+INFO: [Coretcl 2-1648] Added synthesis output to IP cache for IP lab6_mult33, cache-ID = 7880601ea0e216ab
+INFO: [Coretcl 2-1174] Renamed 3 cell refs.
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.033 . Memory (MB): peak = 1919.078 ; gain = 0.000
+INFO: [Common 17-1381] The checkpoint 'C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/project/lab19_soc.runs/lab6_mult33_synth_1/lab6_mult33.dcp' has been generated.
+INFO: [Vivado 12-24828] Executing command : report_utilization -file lab6_mult33_utilization_synth.rpt -pb lab6_mult33_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Wed Nov 18 15:17:26 2026...

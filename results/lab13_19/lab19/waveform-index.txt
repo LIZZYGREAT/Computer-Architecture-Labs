@@ -1,0 +1,11 @@
+Lab19 final waveform index
+Source head: 4ba901c186567560dea1ca2fdfd1a73edf895fc5
+
+| Purpose | Run | WDB | WDB SHA-256 | WCFG | WCFG SHA-256 |
+| --- | --- | --- | --- | --- | --- |
+| Official CACHE instruction program, 7/7 | lab19-cache-20261118-06 | wave-full.wdb (6,288,968 bytes) | 75A47936D1CBC38C8DA32FD2DFD4722500387A878078FCBF2D5BDE05D73338B8 | wave-full.wcfg (9,299 bytes) | BB23B0944582ABC7DF6EA3D1657CC8B815403E291720E90A61E6C2D75EC1CE98 |
+| Maintenance directed checks, 9/9 | lab19-maint-directed-20261118-06 | wave-full.wdb (130,476 bytes) | F83738CB0B4CF52F1F0CAF66896981AFCA9237C6F19BDC13CB5874F6692932F0 | wave-full.wcfg (15,425 bytes) | 39C0299DC455EE35DB6CED8462D54480C841BC2DBFD3CC3B9E74E5E313C89C06 |
+
+The official configuration includes the CACHE operation, commit/done signals, I/D cache states and counters, bridge state, and testbench metrics. The directed configuration includes maintenance/writeback handshakes and valid/tag/dirty signals for ways 2 and 3. Both WCFG files reference their adjacent WDB and were structurally parsed; their logs record the selected signals.
+
+Dhrystone and CoreMark are long performance runs and intentionally have no full-run WDB/WCFG. Their result.txt, simulate.log, UART output, and transaction-metrics.csv are the evidence for L19-03. GUI screenshots, manual observed values, and screenshot time windows remain pending in report/lab13-19/data/wave-capture-log.csv.

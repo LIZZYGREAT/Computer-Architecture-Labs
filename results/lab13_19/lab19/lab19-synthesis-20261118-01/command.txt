@@ -1,0 +1,8 @@
+RUN_ID=lab19-synthesis-20261118-01
+BRANCH=lab12-lab19
+VIVADO=D:\Verilog\2025.2\Vivado\bin\vivado.bat
+MODE=batch
+SOURCE=run_synth.tcl
+ARG[0]=project/lab19_soc.xpr
+ARG[1]=.
+ARG[2]=ip-src/clk_pll/clk_pll.xci

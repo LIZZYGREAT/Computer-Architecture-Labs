@@ -1,0 +1,9 @@
+WCFG_PARSE=PASS
+WCFG_OBJECTS=61
+WCFG_DBREF=wave-full.wdb
+WDB_EXISTS=PASS
+WDB_BYTES=130476
+WDB_SHA256=F83738CB0B4CF52F1F0CAF66896981AFCA9237C6F19BDC13CB5874F6692932F0
+WCFG_BYTES=15425
+WCFG_SHA256=39C0299DC455EE35DB6CED8462D54480C841BC2DBFD3CC3B9E74E5E313C89C06
+SIGNALS=clk,resetn,maintenance request/op/address/taglo/done,writeback request/address/data/address_ok/done,icache state/valid_way2/3/tag_way2/3,dcache state/valid_way2/3/dirty_way2/3/maint_selected_dirty

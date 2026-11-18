@@ -1,0 +1,13 @@
+WARNING_COUNT=131
+CRITICAL_WARNING_COUNT=0
+ERROR_COUNT=0
+WARNING_CLASSES:
+- Unused or unconnected module port bits: maintenance address/tag fields and unused peripheral AXI attributes; Vivado trims the unused bits.
+- Unused sequential elements: replacement helpers/unused queue bookkeeping are removed during synthesis optimization.
+- OOC IP clock constraints differ from propagated top clocks: AXI crossbar 100 ns vs 20 ns; divider 1000 ns vs 20 ns; multiplier 100 ns vs 20 ns.
+- AXI RAM busy output pins are unconnected; the generated IP reports 33 ports while the wrapper uses 31.
+- Clock wizard XCI originates from 2019.2 and is a different catalog revision in 2025.2; the run-local copied XCI generated and synthesized successfully.
+TIMING_LIMITS:
+- Synthesized timing summary reports setup WNS 3.975 ns and TNS 0 ns.
+- Hold summary reports WHS -0.087 ns and THS -5.338 ns across 66 endpoints, primarily paths between related CPU/timer clocks.
+- This is synthesis timing only; no placement/routing was run. No input/output delay constraints are present for the 15/39 external input/output ports noted by the timing report.

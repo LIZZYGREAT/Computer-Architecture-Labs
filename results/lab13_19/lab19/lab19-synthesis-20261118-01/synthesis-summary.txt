@@ -1,0 +1,48 @@
+SYNTHESIS=PASS
+TOP=soc_axi_lite_top
+PART=xc7a200tfbg676-2
+VIVADO=2025.2
+SOURCE_HEAD=4ba901c186567560dea1ca2fdfd1a73edf895fc5
+SOURCE_INTEGRITY=PASS (34/34)
+SYNTH_ERRORS=0
+SYNTH_WARNINGS=131
+SYNTH_CRITICAL_WARNINGS=0
+
+RESOURCE UTILIZATION
+LUT=25278/134600 (18.78%)
+LUT_AS_MEMORY=5574/46200 (12.06%)
+REGISTERS=11112/269200 (4.13%)
+BRAM_TILES=256/365 (70.14%)
+DSP=0/740 (0%)
+IOB=55/400 (13.75%)
+PLLE2_ADV=1/10
+BUFGCTRL=3/32
+
+SYNTHESIS TIMING SUMMARY
+SETUP_WNS_NS=3.975
+SETUP_TNS_NS=0.000
+HOLD_WHS_NS=-0.087
+HOLD_THS_NS=-5.338
+HOLD_FAILING_ENDPOINTS=66
+PLACEMENT_ROUTING=NOT_RUN
+EXTERNAL_INPUT_OUTPUT_DELAYS=NOT_CONSTRAINED
+
+INTERPRETATION
+The top-level synth_design completed and generated the utilization and timing reports. Setup timing is positive in the synthesis estimate. The timing report still has 66 hold-failing endpoints, primarily between related cpu_clk and timer_clk paths, and the design has not been placed or routed. This is not a timing-closed hardware signoff.
+
+WARNINGS
+131 warnings; no critical warnings or errors. The warning summary groups unused/unconnected port bits and trimmed sequential elements, OOC clock-period mismatches, unconnected AXI RAM busy pins, and the legacy 2019.2 Clocking Wizard regenerated in a local 2025.2 project copy. See warnings-summary.txt and timing-summary.rpt.
+
+ARTIFACTS
+utilization.rpt
+timing-summary.rpt
+project/lab19_soc.runs/synth_1/soc_axi_lite_top.dcp
+run_synth.tcl
+launcher.log
+source-manifest.csv
+input_manifest.csv
+source-integrity.txt
+
+
+SNAPSHOT CLEANUP
+The result keeps the project XPR, five customized IP XCI files, final top-level and OOC DCP checkpoints, run Tcl, reports, and logs. Regenerable Vivado .Xil/.cache data and generated IP HDL/netlists were removed; XCI inputs remain available for IP regeneration.

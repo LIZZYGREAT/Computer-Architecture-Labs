@@ -1,0 +1,17 @@
+RUN_ID=lab19-coremark-20261118-03
+CASE=lab19_performance
+SUITE=coremark
+STATUS=PASS
+SIM_TOP=tb_lab19_coremark
+PASS_MARKER=LAB19_PERF_PASS program=coremark
+PROGRAM=coremark
+PERF_METRICS=program=1 cycles=2305331 retired_instructions=416073 ic_hit=260271 ic_miss=508 ic_refill=508 dc_hit=77338 dc_miss=70 dc_writeback=0 dc_uncache=7507 axi_ar=162251 axi_r=166297 axi_aw=1130 axi_w=1130 axi_b=1130 simulation_ns=23053310 cpu_frequency_hz=100000000 num_data=01394d3c
+PROGRAM_OUTPUT_PASS=PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-coremark-20261118-03/project/coremark_soc.xpr
+PROGRAM_IMAGE=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab19/perf_func/obj/coremark/axi_ram.coe
+WAVEFORM=OMITTED_LONG_RUN_USE_METRICS_AND_UART_OUTPUT
+SIMULATOR_CPU_MS=473171
+SOURCE_INTEGRITY=PASS
+SOURCE_MANIFEST=source-manifest.csv
+INPUT_MANIFEST=input_manifest.csv
+GIT_HEAD=4ba901c186567560dea1ca2fdfd1a73edf895fc5

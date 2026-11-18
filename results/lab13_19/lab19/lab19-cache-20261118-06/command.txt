@@ -1,0 +1,15 @@
+RUN_ID=lab19-cache-20261118-06
+CASE=lab19
+SUITE=cache
+VIVADO=D:\Verilog\2025.2\Vivado\bin\vivado.bat
+TCL_SCRIPT=C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree\scripts\tlb_cache\run_soc.tcl
+ARGUMENTS_BEGIN
+ARG[0]=-mode
+ARG[1]=batch
+ARG[2]=-source
+ARG[3]=C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree\scripts\tlb_cache\run_soc.tcl
+ARG[4]=-tclargs
+ARG[5]=C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree
+ARG[6]=C:\Users\lenovo\Desktop\Projects\FPGA\lab12-lab19-worktree\results\lab13_19\lab19\lab19-cache-20261118-06
+ARG[7]=lab19
+ARGUMENTS_END

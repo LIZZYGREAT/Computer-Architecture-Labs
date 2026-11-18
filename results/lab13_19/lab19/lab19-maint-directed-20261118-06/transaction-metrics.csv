@@ -1,0 +1,10 @@
+category,metric,value,unit
+functional,directed_checks,9,checks
+icache,tested_ways,"2,3",ways
+icache,operations,"index invalidate; index store tag; hit invalidate",coverage
+icache,taglo_state,valid,coverage
+dcache,tested_ways,"2,3",ways
+dcache,taglo_state,valid_dirty,coverage
+dcache,hit_invalidate_writeback,0,writebacks
+dcache,writebacks,2,lines
+dcache,B_response_backpressure,1,observed_event

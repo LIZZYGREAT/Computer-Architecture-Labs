@@ -1,0 +1,9 @@
+WCFG_PARSE=PASS
+WCFG_OBJECTS=37
+WCFG_DBREF=wave-full.wdb
+WDB_EXISTS=PASS
+WDB_BYTES=6288968
+WDB_SHA256=75A47936D1CBC38C8DA32FD2DFD4722500387A878078FCBF2D5BDE05D73338B8
+WCFG_BYTES=9299
+WCFG_SHA256=BB23B0944582ABC7DF6EA3D1657CC8B815403E291720E90A61E6C2D75EC1CE98
+SIGNALS=clk,resetn,cache_maint_op,cache_maint_vaddr,cache_maint_commit,icache_maint_done,dcache_maint_done,u_icache.state,ic_stat_miss,ic_stat_refill,u_dcache.state,dc_stat_writeback,bridge.rd_state,bridge.wr_state

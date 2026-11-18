@@ -1,0 +1,326 @@
+
+*** Running vivado
+    with args -log lab6_div32.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source lab6_div32.tcl
+
+
+
+****** Vivado v2025.2 (64-bit)
+  **** SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+  **** IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+  **** SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+  **** Start of session at: Wed Nov 18 15:11:56 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source lab6_div32.tcl -notrace
+create_project: Time (s): cpu = 00:00:25 ; elapsed = 00:00:36 . Memory (MB): peak = 525.141 ; gain = 218.938
+Command: synth_design -top lab6_div32 -part xc7a200tfbg676-2 -incremental_mode off -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a200t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a200t'
+INFO: [Device 21-403] Loading part xc7a200tfbg676-2
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 31152
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:25 ; elapsed = 00:00:30 . Memory (MB): peak = 1313.031 ; gain = 540.875
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'lab6_div32' [c:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/ip-src/lab6_div32/synth/lab6_div32.vhd:74]
+	Parameter C_XDEVICEFAMILY bound to: artix7 - type: string 
+	Parameter C_HAS_ARESETN bound to: 1 - type: integer 
+	Parameter C_HAS_ACLKEN bound to: 0 - type: integer 
+	Parameter C_LATENCY bound to: 35 - type: integer 
+	Parameter ALGORITHM_TYPE bound to: 1 - type: integer 
+	Parameter DIVISOR_WIDTH bound to: 32 - type: integer 
+	Parameter DIVIDEND_WIDTH bound to: 32 - type: integer 
+	Parameter SIGNED_B bound to: 0 - type: integer 
+	Parameter DIVCLK_SEL bound to: 8 - type: integer 
+	Parameter FRACTIONAL_B bound to: 0 - type: integer 
+	Parameter FRACTIONAL_WIDTH bound to: 32 - type: integer 
+	Parameter C_HAS_DIV_BY_ZERO bound to: 0 - type: integer 
+	Parameter C_THROTTLE_SCHEME bound to: 3 - type: integer 
+	Parameter C_TLAST_RESOLUTION bound to: 0 - type: integer 
+	Parameter C_HAS_S_AXIS_DIVISOR_TUSER bound to: 0 - type: integer 
+	Parameter C_HAS_S_AXIS_DIVISOR_TLAST bound to: 0 - type: integer 
+	Parameter C_S_AXIS_DIVISOR_TDATA_WIDTH bound to: 32 - type: integer 
+	Parameter C_S_AXIS_DIVISOR_TUSER_WIDTH bound to: 1 - type: integer 
+	Parameter C_HAS_S_AXIS_DIVIDEND_TUSER bound to: 0 - type: integer 
+	Parameter C_HAS_S_AXIS_DIVIDEND_TLAST bound to: 0 - type: integer 
+	Parameter C_S_AXIS_DIVIDEND_TDATA_WIDTH bound to: 32 - type: integer 
+	Parameter C_S_AXIS_DIVIDEND_TUSER_WIDTH bound to: 1 - type: integer 
+	Parameter C_M_AXIS_DOUT_TDATA_WIDTH bound to: 64 - type: integer 
+	Parameter C_M_AXIS_DOUT_TUSER_WIDTH bound to: 1 - type: integer 
+INFO: [Synth 8-3491] module 'div_gen_v5_1_25' declared at 'c:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/ip-src/lab6_div32/hdl/div_gen_v5_1_vh_rfs.vhd:12886' bound to instance 'U0' of component 'div_gen_v5_1_25' [c:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/ip-src/lab6_div32/synth/lab6_div32.vhd:156]
+INFO: [Synth 8-256] done synthesizing module 'lab6_div32' (0#1) [c:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/ip-src/lab6_div32/synth/lab6_div32.vhd:74]
+INFO: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_11_viv__parameterized34 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_11_viv__parameterized34 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_11_viv__parameterized34 is either unconnected or has no load
+INFO: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_11_viv__parameterized16 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_11_viv__parameterized16 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_11_viv__parameterized16 is either unconnected or has no load
+INFO: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_11_viv__parameterized5 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_11_viv__parameterized5 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_11_viv__parameterized5 is either unconnected or has no load
+INFO: [Synth 8-7129] Port c_out in module c_addsub_lut6__parameterized1 is either unconnected or has no load
+INFO: [Synth 8-7129] Port ce in module c_addsub_lut6__parameterized1 is either unconnected or has no load
+INFO: [Synth 8-7129] Port aclr in module c_addsub_lut6__parameterized1 is either unconnected or has no load
+INFO: [Synth 8-7129] Port aset in module c_addsub_lut6__parameterized1 is either unconnected or has no load
+INFO: [Synth 8-7129] Port ainit in module c_addsub_lut6__parameterized1 is either unconnected or has no load
+INFO: [Synth 8-7129] Port sset in module c_addsub_lut6__parameterized1 is either unconnected or has no load
+INFO: [Synth 8-7129] Port sinit in module c_addsub_lut6__parameterized1 is either unconnected or has no load
+INFO: [Synth 8-7129] Port b_in in module c_addsub_viv__parameterized0 is either unconnected or has no load
+INFO: [Synth 8-7129] Port a_signed in module c_addsub_viv__parameterized0 is either unconnected or has no load
+INFO: [Synth 8-7129] Port b_signed in module c_addsub_viv__parameterized0 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_11_viv__parameterized11 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_11_viv__parameterized11 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_11_viv__parameterized32 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_11_viv__parameterized32 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_11_viv__parameterized3 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_11_viv__parameterized3 is either unconnected or has no load
+INFO: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_11_viv__parameterized18 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_11_viv__parameterized18 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_11_viv__parameterized18 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_11_viv__parameterized30 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_11_viv__parameterized30 is either unconnected or has no load
+INFO: [Synth 8-7129] Port ce in module c_addsub_lut6 is either unconnected or has no load
+INFO: [Synth 8-7129] Port bypass in module c_addsub_lut6 is either unconnected or has no load
+INFO: [Synth 8-7129] Port aclr in module c_addsub_lut6 is either unconnected or has no load
+INFO: [Synth 8-7129] Port aset in module c_addsub_lut6 is either unconnected or has no load
+INFO: [Synth 8-7129] Port ainit in module c_addsub_lut6 is either unconnected or has no load
+INFO: [Synth 8-7129] Port sset in module c_addsub_lut6 is either unconnected or has no load
+INFO: [Synth 8-7129] Port sinit in module c_addsub_lut6 is either unconnected or has no load
+INFO: [Synth 8-7129] Port b_in in module c_addsub_viv is either unconnected or has no load
+INFO: [Synth 8-7129] Port a_signed in module c_addsub_viv is either unconnected or has no load
+INFO: [Synth 8-7129] Port b_signed in module c_addsub_viv is either unconnected or has no load
+INFO: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_11_viv__parameterized13 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_11_viv__parameterized13 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_11_viv__parameterized13 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_11_viv__parameterized28 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_11_viv__parameterized28 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_11_viv__parameterized26 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_11_viv__parameterized26 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_11_viv__parameterized24 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_11_viv__parameterized24 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_11_viv__parameterized22 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_11_viv__parameterized22 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_11_viv__parameterized20 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_11_viv__parameterized20 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_11_viv__parameterized9 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_11_viv__parameterized9 is either unconnected or has no load
+INFO: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_11_viv__parameterized7 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_11_viv__parameterized7 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_11_viv__parameterized7 is either unconnected or has no load
+INFO: [Synth 8-7129] Port rdy in module dividervdc_v is either unconnected or has no load
+INFO: [Synth 8-7129] Port nd in module dividervdc_v is either unconnected or has no load
+INFO: [Synth 8-7129] Port aclr in module dividervdc_v is either unconnected or has no load
+INFO: [Synth 8-7129] Port CE in module div_gen_synth is either unconnected or has no load
+INFO: [Synth 8-7129] Port ND in module div_gen_synth is either unconnected or has no load
+INFO: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_11_viv__parameterized1 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_11_viv__parameterized1 is either unconnected or has no load
+INFO: [Synth 8-7129] Port CE in module xbip_pipe_v3_0_11_viv is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR in module xbip_pipe_v3_0_11_viv is either unconnected or has no load
+INFO: [Synth 8-7129] Port SSET in module xbip_pipe_v3_0_11_viv is either unconnected or has no load
+INFO: [Synth 8-7129] Port SINIT in module xbip_pipe_v3_0_11_viv is either unconnected or has no load
+INFO: [Synth 8-7129] Port aclken in module div_gen_v5_1_25_viv is either unconnected or has no load
+INFO: [Synth 8-7129] Port s_axis_divisor_tuser[0] in module div_gen_v5_1_25_viv is either unconnected or has no load
+INFO: [Synth 8-7129] Port s_axis_divisor_tlast in module div_gen_v5_1_25_viv is either unconnected or has no load
+INFO: [Synth 8-7129] Port s_axis_dividend_tuser[0] in module div_gen_v5_1_25_viv is either unconnected or has no load
+INFO: [Synth 8-7129] Port s_axis_dividend_tlast in module div_gen_v5_1_25_viv is either unconnected or has no load
+INFO: [Synth 8-7129] Port m_axis_dout_tready in module div_gen_v5_1_25_viv is either unconnected or has no load
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:40 ; elapsed = 00:00:53 . Memory (MB): peak = 1508.875 ; gain = 736.719
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:40 ; elapsed = 00:00:53 . Memory (MB): peak = 1508.875 ; gain = 736.719
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:40 ; elapsed = 00:00:53 . Memory (MB): peak = 1508.875 ; gain = 736.719
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.160 . Memory (MB): peak = 1508.875 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 330 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [c:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/ip-src/lab6_div32/lab6_div32_ooc.xdc] for cell 'U0'
+Finished Parsing XDC File [c:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/ip-src/lab6_div32/lab6_div32_ooc.xdc] for cell 'U0'
+Parsing XDC File [C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/project/lab19_soc.runs/lab6_div32_synth_1/dont_touch.xdc]
+Finished Parsing XDC File [C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/project/lab19_soc.runs/lab6_div32_synth_1/dont_touch.xdc]
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.004 . Memory (MB): peak = 1603.438 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.248 . Memory (MB): peak = 1603.438 ; gain = 0.000
+INFO: [Designutils 20-5008] Incremental synthesis strategy off
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:01:09 ; elapsed = 00:01:26 . Memory (MB): peak = 1603.438 ; gain = 831.281
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a200tfbg676-2
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:01:09 ; elapsed = 00:01:26 . Memory (MB): peak = 1603.438 ; gain = 831.281
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:01:09 ; elapsed = 00:01:27 . Memory (MB): peak = 1603.438 ; gain = 831.281
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:01:10 ; elapsed = 00:01:29 . Memory (MB): peak = 1603.438 ; gain = 831.281
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 740 (col length:100)
+BRAMs: 730 (col length: RAMB18 100 RAMB36 50)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+INFO: [Synth 8-7129] Port aclken in module div_gen_v5_1_25_viv is either unconnected or has no load
+INFO: [Synth 8-7129] Port s_axis_divisor_tuser[0] in module div_gen_v5_1_25_viv is either unconnected or has no load
+INFO: [Synth 8-7129] Port s_axis_divisor_tlast in module div_gen_v5_1_25_viv is either unconnected or has no load
+INFO: [Synth 8-7129] Port s_axis_dividend_tuser[0] in module div_gen_v5_1_25_viv is either unconnected or has no load
+INFO: [Synth 8-7129] Port s_axis_dividend_tlast in module div_gen_v5_1_25_viv is either unconnected or has no load
+INFO: [Synth 8-7129] Port m_axis_dout_tready in module div_gen_v5_1_25_viv is either unconnected or has no load
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:01:18 ; elapsed = 00:01:37 . Memory (MB): peak = 1603.438 ; gain = 831.281
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:01:36 ; elapsed = 00:01:57 . Memory (MB): peak = 1645.195 ; gain = 873.039
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:01:37 ; elapsed = 00:01:58 . Memory (MB): peak = 1656.695 ; gain = 884.539
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:01:37 ; elapsed = 00:01:59 . Memory (MB): peak = 1659.922 ; gain = 887.766
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:01:56 ; elapsed = 00:02:19 . Memory (MB): peak = 1906.785 ; gain = 1134.629
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:01:56 ; elapsed = 00:02:19 . Memory (MB): peak = 1906.785 ; gain = 1134.629
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:01:57 ; elapsed = 00:02:20 . Memory (MB): peak = 1906.785 ; gain = 1134.629
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:01:57 ; elapsed = 00:02:20 . Memory (MB): peak = 1906.785 ; gain = 1134.629
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:01:57 ; elapsed = 00:02:20 . Memory (MB): peak = 1906.785 ; gain = 1134.629
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:01:57 ; elapsed = 00:02:20 . Memory (MB): peak = 1906.785 ; gain = 1134.629
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+------+------+
+|      |Cell  |Count |
++------+------+------+
+|1     |LUT1  |    34|
+|2     |LUT2  |    76|
+|3     |LUT3  |   265|
+|4     |LUT6  |     8|
+|5     |MUXCY |   165|
+|6     |MUXF7 |     4|
+|7     |XORCY |   165|
+|8     |FDRE  |   500|
+|9     |FDSE  |   310|
++------+------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:01:57 ; elapsed = 00:02:20 . Memory (MB): peak = 1906.785 ; gain = 1134.629
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 0 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:01:08 ; elapsed = 00:02:09 . Memory (MB): peak = 1906.785 ; gain = 1040.066
+Synthesis Optimization Complete : Time (s): cpu = 00:01:58 ; elapsed = 00:02:21 . Memory (MB): peak = 1906.785 ; gain = 1134.629
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.144 . Memory (MB): peak = 1906.785 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 334 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.003 . Memory (MB): peak = 1922.199 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 45 instances were transformed.
+  (MUXCY,XORCY) => CARRY4: 45 instances
+
+Synth Design complete | Checksum: 4ea39d54
+INFO: [Common 17-83] Releasing license: Synthesis
+101 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:02:17 ; elapsed = 00:03:25 . Memory (MB): peak = 1922.199 ; gain = 1387.074
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.024 . Memory (MB): peak = 1922.199 ; gain = 0.000
+INFO: [Common 17-1381] The checkpoint 'C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/project/lab19_soc.runs/lab6_div32_synth_1/lab6_div32.dcp' has been generated.
+INFO: [Coretcl 2-1648] Added synthesis output to IP cache for IP lab6_div32, cache-ID = f9aab4fb72b351fe
+INFO: [Coretcl 2-1174] Renamed 94 cell refs.
+Write ShapeDB Complete: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.025 . Memory (MB): peak = 1922.199 ; gain = 0.000
+INFO: [Common 17-1381] The checkpoint 'C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-synthesis-20261118-01/project/lab19_soc.runs/lab6_div32_synth_1/lab6_div32.dcp' has been generated.
+INFO: [Vivado 12-24828] Executing command : report_utilization -file lab6_div32_utilization_synth.rpt -pb lab6_div32_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Wed Nov 18 15:16:36 2026...
