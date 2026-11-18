@@ -2,7 +2,7 @@
 # untouched; their legacy PLL is replaced only for cycle-based unit benches.
 # Usage: vivado -mode batch -source run_unit.tcl -tclargs <case> <suite> <repo-root> <run-dir>
 if {[llength $argv] != 4} {
-    error "usage: run_unit.tcl <lab13|lab16|lab17|lab18|lab18_fault|lab18_arb|lab18_mem|lab19_maint|lab19_index_contract|lab19_if_redirect> <directed|official> <repo-root> <run-dir>"
+    error "usage: run_unit.tcl <lab13|lab16|lab17|lab18|lab18_fault|lab18_arb|lab18_mem|lab19_maint|lab19_index_contract|lab19_if_redirect|lab19_tlb_redirect> <directed|official> <repo-root> <run-dir>"
 }
 set case [lindex $argv 0]
 set suite [lindex $argv 1]
@@ -69,10 +69,15 @@ if {$case eq "lab13"} {
 } elseif {$case eq "lab19_if_redirect"} {
     set rtl [file join $repo lab19 cpu_cache rtl myCPU IF_stage.v]
     set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_if_redirect_directed.sv]
+} elseif {$case eq "lab19_tlb_redirect"} {
+    set rtl [concat \
+        [glob [file join $repo lab19 cpu_cache rtl myCPU *.v]] \
+        [list [file join $repo lab13 tlb_verify rtl tlb.v]]]
+    set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_tlb_redirect_contract.sv]
 } else {
     error "unsupported unit case: $case"
 }
-if {($case eq "lab17" || $case eq "lab18" || $case eq "lab18_fault" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_if_redirect") && $suite ne "directed"} {
+if {($case eq "lab17" || $case eq "lab18" || $case eq "lab18_fault" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect") && $suite ne "directed"} {
     error "$case currently supports only its directed cache suite"
 }
 
@@ -97,10 +102,10 @@ if {$suite eq "directed"} {
 }
 
 set_property top $sim_top [get_filesets sim_1]
-if {$case eq "lab11_axi3" || $case eq "lab18_mem" || $case eq "lab19_index_contract" || $case eq "lab19_if_redirect"} {
+if {$case eq "lab11_axi3" || $case eq "lab18_mem" || $case eq "lab19_index_contract" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect"} {
     if {$case eq "lab18_mem"} {
         set cpu_include [file join $repo lab18 cpu_dcache rtl myCPU]
-    } elseif {$case eq "lab19_index_contract" || $case eq "lab19_if_redirect"} {
+    } elseif {$case eq "lab19_index_contract" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect"} {
         set cpu_include [file join $repo lab19 cpu_cache rtl myCPU]
     } else {
         set cpu_include [file join $repo lab14 cpu_tlb rtl myCPU]
@@ -110,7 +115,7 @@ if {$case eq "lab11_axi3" || $case eq "lab18_mem" || $case eq "lab19_index_contr
 }
 set_property xsim.simulate.log_all_signals true [get_filesets sim_1]
 set_property xsim.simulate.runtime 1000000ns [get_filesets sim_1]
-if {$case eq "lab17" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_if_redirect"} {
+if {$case eq "lab17" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect"} {
     set wave_config_file [file join $run_dir wave-full.wcfg]
     set wave_hook_file [file join $run_dir wave-config-hook.tcl]
     set wave_log_file [file join $run_dir wave-config-hook.log]
@@ -138,6 +143,20 @@ if {$case eq "lab17" || $case eq "lab19_maint" || $case eq "lab19_index_contract
         /tb_lab19_maint_directed/u_dcache/dirty_way2 \
         /tb_lab19_maint_directed/u_dcache/dirty_way3 \
         /tb_lab19_maint_directed/u_dcache/maint_selected_dirty]
+    } elseif {$case eq "lab19_tlb_redirect"} {
+        set wave_objects [list \
+            /tb_lab19_tlb_redirect_contract/dut/tlb_write_enable \
+            /tb_lab19_tlb_redirect_contract/dut/pipeline_flush \
+            /tb_lab19_tlb_redirect_contract/dut/if_stage/state \
+            /tb_lab19_tlb_redirect_contract/dut/if_stage/request_pc \
+            /tb_lab19_tlb_redirect_contract/dut/if_stage/stale_response \
+            /tb_lab19_tlb_redirect_contract/dut/if_stage/restart_pc \
+            /tb_lab19_tlb_redirect_contract/dut/u_tlb/entry_pfn0 \
+            /tb_lab19_tlb_redirect_contract/dut/inst_sram_addr \
+            /tb_lab19_tlb_redirect_contract/araddr \
+            /tb_lab19_tlb_redirect_contract/arvalid \
+            /tb_lab19_tlb_redirect_contract/rvalid \
+            /tb_lab19_tlb_redirect_contract/rlast]
     } elseif {$case eq "lab19_index_contract"} {
         set wave_objects [list \
             /tb_lab19_index_maint_contract/dut/cache_maint_req \
@@ -234,7 +253,7 @@ if {$case eq "lab11_axi3"} {
     puts $active_file "SOURCE=[file join $repo lab14 cpu_tlb rtl myCPU mycpu.h]"
 } elseif {$case eq "lab18_mem"} {
     puts $active_file "SOURCE=[file join $repo lab18 cpu_dcache rtl myCPU mycpu.h]"
-} elseif {$case eq "lab19_if_redirect"} {
+} elseif {$case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect"} {
     puts $active_file "SOURCE=[file join $repo lab19 cpu_cache rtl myCPU mycpu.h]"
 }
 if {$suite eq "directed"} {
@@ -267,6 +286,8 @@ if {$suite eq "directed"} {
         set pass_marker "LAB19_INDEX_CONTRACT_PASS"
     } elseif {$case eq "lab19_if_redirect"} {
         set pass_marker "LAB19_IF_REDIRECT_PASS"
+    } elseif {$case eq "lab19_tlb_redirect"} {
+        set pass_marker "LAB19_TLB_REDIRECT_PASS"
     } else {
         set pass_marker "DIRECTED_PASS"
     }
@@ -421,6 +442,16 @@ if {$case eq "lab19_if_redirect"} {
         }
     }
 }
+if {$case eq "lab19_tlb_redirect"} {
+    foreach marker {
+        "IF_TLB_REPLAY_PASS old_pa=abcde100 new_pa=12345100 old_stale_dropped=1 replay_pc=00402100"
+        "LAB19_TLB_REDIRECT_PASS checks=3"
+    } {
+        if {[string first $marker $sim_text] < 0} {
+            error "Lab19 TLB redirect test missed required marker: $marker"
+        }
+    }
+}
 if {[string first $pass_marker $sim_text] < 0} {
     error "simulation missed PASS marker $pass_marker; inspect $sim_log"
 }
@@ -464,7 +495,7 @@ if {[file isfile $wave_config_path]} {
     puts -nonewline $wave_config_out $wave_config_text
     close $wave_config_out
 }
-if {($case eq "lab17" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_if_redirect") && ![file isfile $wave_config_path]} {
+if {($case eq "lab17" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect") && ![file isfile $wave_config_path]} {
     set wave_log_path [file join $run_dir wave-config-hook.log]
     if {[file isfile $wave_log_path]} {
         set wave_log_in [open $wave_log_path r]
