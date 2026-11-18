@@ -2,7 +2,7 @@
 # untouched; their legacy PLL is replaced only for cycle-based unit benches.
 # Usage: vivado -mode batch -source run_unit.tcl -tclargs <case> <suite> <repo-root> <run-dir>
 if {[llength $argv] != 4} {
-    error "usage: run_unit.tcl <lab13|lab16|lab17> <directed|official> <repo-root> <run-dir>"
+    error "usage: run_unit.tcl <lab13|lab16|lab17|lab18|lab18_arb|lab18_mem> <directed|official> <repo-root> <run-dir>"
 }
 set case [lindex $argv 0]
 set suite [lindex $argv 1]
@@ -41,11 +41,23 @@ if {$case eq "lab13"} {
         [file join $repo lab17 cpu_icache rtl myCPU icache.v] \
         [file join $repo lab17 cpu_icache rtl myCPU cache_axi3_bridge.v]]
     set directed_tb [file join $repo lab17 cpu_icache testbench tb_lab17_icache_directed.sv]
+} elseif {$case eq "lab18"} {
+    set rtl [file join $repo lab18 cpu_dcache rtl myCPU dcache.v]
+    set directed_tb [file join $repo lab18 cpu_dcache testbench tb_lab18_dcache_directed.sv]
+} elseif {$case eq "lab18_arb"} {
+    set rtl [list \
+        [file join $repo lab18 cpu_dcache rtl myCPU icache.v] \
+        [file join $repo lab18 cpu_dcache rtl myCPU dcache.v] \
+        [file join $repo lab18 cpu_dcache rtl myCPU cache_axi3_bridge.v]]
+    set directed_tb [file join $repo lab18 cpu_dcache testbench tb_lab18_cache_arbitration.sv]
+} elseif {$case eq "lab18_mem"} {
+    set rtl [file join $repo lab18 cpu_dcache rtl myCPU MEM_stage.v]
+    set directed_tb [file join $repo lab18 cpu_dcache testbench tb_lab18_mem_exception.sv]
 } else {
     error "unsupported unit case: $case"
 }
-if {$case eq "lab17" && $suite ne "directed"} {
-    error "Lab17 currently supports only its directed bridge/cache suite"
+if {($case eq "lab17" || $case eq "lab18") && $suite ne "directed"} {
+    error "$case currently supports only its directed cache suite"
 }
 
 foreach rtl_file $rtl {
@@ -69,8 +81,12 @@ if {$suite eq "directed"} {
 }
 
 set_property top $sim_top [get_filesets sim_1]
-if {$case eq "lab11_axi3"} {
-    set cpu_include [file join $repo lab14 cpu_tlb rtl myCPU]
+if {$case eq "lab11_axi3" || $case eq "lab18_mem"} {
+    if {$case eq "lab18_mem"} {
+        set cpu_include [file join $repo lab18 cpu_dcache rtl myCPU]
+    } else {
+        set cpu_include [file join $repo lab14 cpu_tlb rtl myCPU]
+    }
     set_property include_dirs [list $cpu_include] [get_filesets sources_1]
     set_property include_dirs [list $cpu_include] [get_filesets sim_1]
 }
@@ -83,19 +99,6 @@ puts "PROJECT_XPR=[file join $project_dir ${project_name}.xpr]"
 puts "SIM_TOP=$sim_top"
 puts "RTL=$rtl"
 puts "SIM_FILES=[get_files -of_objects [get_filesets sim_1]]"
-set active_path [file join $run_dir active-sources.txt]
-set active_file [open $active_path w]
-puts $active_file "PROJECT_XPR=[file join $project_dir ${project_name}.xpr]"
-foreach f [get_files -of_objects [get_filesets sources_1]] {
-    puts $active_file "SOURCE=[get_property NAME $f]"
-}
-foreach f [get_files -of_objects [get_filesets sim_1]] {
-    puts $active_file "SIM_SOURCE=[get_property NAME $f]"
-}
-if {$case eq "lab11_axi3"} {
-    puts $active_file "SOURCE=[file join $repo lab14 cpu_tlb rtl myCPU mycpu.h]"
-}
-close $active_file
 launch_simulation -mode behavioral -simset sim_1
 set sim_dir [file join $project_dir ${project_name}.sim sim_1 behav xsim]
 set sim_log [file join $sim_dir simulate.log]
@@ -105,6 +108,27 @@ if {![file isfile $sim_log]} {
 set log_in [open $sim_log r]
 set sim_text [read $log_in]
 close $log_in
+set active_path [file join $run_dir active-sources.txt]
+set active_file [open $active_path w]
+puts $active_file "PROJECT_XPR=[file join $project_dir ${project_name}.xpr]"
+foreach f $rtl {
+    puts $active_file "SOURCE=$f"
+}
+if {$suite eq "official"} {
+    puts $active_file "SOURCE=$wrapper"
+    puts $active_file "SOURCE=[file join $repo scripts tlb_cache sim_support clk_pll_stub.v]"
+}
+if {$case eq "lab11_axi3"} {
+    puts $active_file "SOURCE=[file join $repo lab14 cpu_tlb rtl myCPU mycpu.h]"
+} elseif {$case eq "lab18_mem"} {
+    puts $active_file "SOURCE=[file join $repo lab18 cpu_dcache rtl myCPU mycpu.h]"
+}
+if {$suite eq "directed"} {
+    puts $active_file "SIM_SOURCE=$directed_tb"
+} else {
+    puts $active_file "SIM_SOURCE=$official_tb"
+}
+close $active_file
 if {[regexp -nocase {WATCHDOG_TIMEOUT|----FAIL!!!|Fatal:|ERROR:|Error:} $sim_text]} {
     error "simulation reported a failure; inspect $sim_log"
 }
@@ -115,6 +139,12 @@ if {$suite eq "directed"} {
         set pass_marker "LAB11_AXI3_BUS_PASS"
     } elseif {$case eq "lab17"} {
         set pass_marker "DIRECTED_PASS"
+    } elseif {$case eq "lab18"} {
+        set pass_marker "DCache_DIRECTED_PASS"
+    } elseif {$case eq "lab18_arb"} {
+        set pass_marker "LAB18_ARBITRATION_PASS"
+    } elseif {$case eq "lab18_mem"} {
+        set pass_marker "D09_MEM_PASS"
     } else {
         set pass_marker "DIRECTED_PASS"
     }
@@ -171,6 +201,46 @@ if {$case eq "lab17"} {
         }
     }
 }
+if {$case eq "lab18"} {
+    foreach marker {
+        "D01_PASS first_miss=1 refill_beats=8"
+        "D02_PASS same_line_hit ar=1"
+        "D03_PASS store_then_load dirty=1"
+        "D04_PASS byte_halfword_lanes"
+        "D05_PASS swl_swr_lane_merge"
+        "D06_PASS dirty_victim_writeback_before_refill"
+        "D07_PASS uncache_bypass peripheral_write_once"
+        "D08_PASS refill_uncache_backpressure_payload_stable"
+        "D09_PASS request_completion_accounting"
+        "DIRECTED_CHECKS=9"
+        "DCache_DIRECTED_PASS checks=9"
+    } {
+        if {[string first $marker $sim_text] < 0} {
+            error "Lab18 directed test missed required marker: $marker"
+        }
+    }
+}
+if {$case eq "lab18_arb"} {
+    foreach marker {
+        "LAB18_SIMULTANEOUS_MISS_PASS ic_ar=1 dc_ar=1 id_owner_checked=1 r_beats=16"
+        "LAB18_ARBITRATION_PASS"
+    } {
+        if {[string first $marker $sim_text] < 0} {
+            error "Lab18 arbitration test missed required marker: $marker"
+        }
+    }
+}
+if {$case eq "lab18_mem"} {
+    foreach marker {
+        "D09_EXCEPTION_PASS trap_no_store=1"
+        "D09_COMMITTED_STORE_PASS accepted=1 completed=1 stable_payload=1"
+        "D09_MEM_PASS"
+    } {
+        if {[string first $marker $sim_text] < 0} {
+            error "Lab18 MEM exception test missed required marker: $marker"
+        }
+    }
+}
 if {[string first $pass_marker $sim_text] < 0} {
     error "simulation missed PASS marker $pass_marker; inspect $sim_log"
 }
@@ -222,6 +292,9 @@ if {$case eq "lab17" && [regexp {DIRECTED_COUNTS_VALID ([^\r\n]+)} $sim_text -> 
 }
 if {$case eq "lab17" && [regexp {DIRECTED_FAULT_INJECTION=([^\r\n]+)} $sim_text -> fault_injection]} {
     puts $result "DIRECTED_FAULT_INJECTION=$fault_injection"
+}
+if {$case eq "lab18" && [regexp {DCache_STATS ([^\r\n]+)} $sim_text -> dcache_stats]} {
+    puts $result "DCACHE_STATS=$dcache_stats"
 }
 if {$suite eq "official" && $case eq "lab13"} {
     puts $result "OFFICIAL_WRITE=PASS"

@@ -1,7 +1,7 @@
 # Create and run an isolated CPU SoC regression project.
-# Usage: vivado -mode batch -source run_soc.tcl -tclargs <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline?
+# Usage: vivado -mode batch -source run_soc.tcl -tclargs <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline|lab18?
 if {[llength $argv] < 2 || [llength $argv] > 3} {
-    error "usage: run_soc.tcl <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline?"
+    error "usage: run_soc.tcl <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline|lab18?"
 }
 
 set repo [file normalize [lindex $argv 0]]
@@ -47,6 +47,13 @@ if {$suite eq "lab14"} {
     set sim_top [expr {$suite eq "lab17" ? "tb_lab17_icache" : "tb_lab17_baseline"}]
     set sim_runtime 250000000ns
     set trace_file ""
+} elseif {$suite eq "lab18"} {
+    set cpu_root [file join $repo lab18 cpu_dcache]
+    set coe_file [file join $repo lab17 func_all94 obj inst_ram.coe]
+    set testbench [file join $cpu_root testbench tb_lab18_functional.sv]
+    set sim_top tb_lab18_dcache
+    set sim_runtime 250000000ns
+    set trace_file ""
 } else {
     error "unsupported SoC regression suite: $suite"
 }
@@ -80,7 +87,7 @@ foreach source_ip $ip_files {
         set xci_in [open $staged_ip r]
         set xci_text [read $xci_in]
         close $xci_in
-        if {$suite eq "lab17" || $suite eq "lab17_baseline"} {
+        if {$suite eq "lab17" || $suite eq "lab17_baseline" || $suite eq "lab18"} {
             set relative_coe "../../../../func_all94/obj/inst_ram.coe"
         } else {
             set relative_coe "../../../../tlb_func/obj/inst_ram.coe"
@@ -139,6 +146,8 @@ close $active_file
 
 if {$suite eq "lab14"} {
     puts "CASE=lab14"
+} elseif {$suite eq "lab18"} {
+    puts "CASE=lab18"
 } elseif {$suite eq "lab17" || $suite eq "lab17_baseline"} {
     puts "CASE=lab17"
 } else {
@@ -181,6 +190,32 @@ if {$suite eq "lab14"} {
         if {[string first $marker $sim_text] < 0} {
             error "Lab11 golden-trace regression missed marker $marker; inspect $sim_log"
         }
+    }
+} elseif {$suite eq "lab18"} {
+    set case_name lab18
+    set pass_marker "LAB18_DCACHE_FUNCTIONAL_PASS score=94/94"
+    if {[regexp -nocase {LAB18_FAIL=|Fatal:|ERROR:|Error:} $sim_text]} {
+        error "Lab18 functional regression reported a failure; inspect $sim_log"
+    }
+    if {[regexp -all {LAB18_TESTPOINT=} $sim_text] != 94} {
+        error "Lab18 functional regression expected 94 ordered score points; inspect $sim_log"
+    }
+    foreach marker [list $pass_marker "CACHE_STATS " "DCACHE_STATS " "AXI_METRICS " "STORE_COUNTS accepted=" "PERIPHERAL_NUM_WRITES accepted=95 completed=95 initial_clear=1 score_writes=94 duplicate_store=0"] {
+        if {[string first $marker $sim_text] < 0} {
+            error "Lab18 functional regression missed required marker $marker; inspect $sim_log"
+        }
+    }
+    if {![regexp {STORE_COUNTS accepted=([0-9]+) completed=([0-9]+) duplicate_store=0} $sim_text -> accepted_stores completed_stores] ||
+        $accepted_stores != $completed_stores} {
+        error "Lab18 store completion accounting is inconsistent; inspect $sim_log"
+    }
+    if {![regexp {DCACHE_STATS hit=([0-9]+) miss=([0-9]+) writeback=([0-9]+) uncache=([0-9]+)} $sim_text -> dc_hit dc_miss dc_writebacks dc_uncache] ||
+        $dc_hit == 0 || $dc_miss == 0 || $dc_writebacks == 0 || $dc_uncache == 0} {
+        error "Lab18 DCache statistics are incomplete; inspect $sim_log"
+    }
+    if {![regexp {AXI_METRICS ar=([0-9]+) r=([0-9]+) aw=([0-9]+) w=([0-9]+) b=([0-9]+)} $sim_text -> ar_count r_count aw_count w_count b_count] ||
+        $r_count < $ar_count || $aw_count != $b_count || $w_count < $aw_count} {
+        error "Lab18 AXI transaction/beat metrics are inconsistent; inspect $sim_log"
     }
 } else {
     set case_name lab17
@@ -246,6 +281,26 @@ if {$suite eq "lab14"} {
     if {[regexp {BUS_METRICS ([^\r\n]+)} $sim_text -> bus_metrics]} {
         puts $result "BUS_METRICS=$bus_metrics"
     }
+} elseif {$suite eq "lab18"} {
+    puts $result "TESTPOINTS=94"
+    if {[regexp {CACHE_STATS ([^\r\n]+)} $sim_text -> cache_metrics]} {
+        puts $result "CACHE_STATS=$cache_metrics"
+    }
+    if {[regexp {DCACHE_STATS ([^\r\n]+)} $sim_text -> dcache_metrics]} {
+        puts $result "DCACHE_STATS=$dcache_metrics"
+    }
+    if {[regexp {AXI_METRICS ([^\r\n]+)} $sim_text -> axi_metrics]} {
+        puts $result "AXI_METRICS=$axi_metrics"
+    }
+    if {[regexp {STORE_COUNTS ([^\r\n]+)} $sim_text -> store_metrics]} {
+        puts $result "STORE_COUNTS=$store_metrics"
+    }
+    if {[regexp {PERIPHERAL_NUM_WRITES ([^\r\n]+)} $sim_text -> peripheral_metrics]} {
+        puts $result "PERIPHERAL_NUM_WRITES=$peripheral_metrics"
+    }
+    if {[regexp {cycles=([0-9]+)} $sim_text -> functional_cycles]} {
+        puts $result "FUNCTIONAL_CYCLES=$functional_cycles"
+    }
 } else {
     puts $result "TESTPOINTS=94"
     if {[regexp {CACHE_STATS ([^\r\n]+)} $sim_text -> cache_metrics]} {
@@ -267,7 +322,7 @@ if {$suite eq "lab14" && [file isfile [file join $run_dir wave-full.wdb]]} {
     puts $result "WAVEFORM=wave-full.wdb"
 } elseif {$suite eq "lab11_trace"} {
     puts $result "WAVEFORM=OMITTED_LONG_RUN"
-} elseif {$suite eq "lab17" || $suite eq "lab17_baseline"} {
+} elseif {$suite eq "lab17" || $suite eq "lab17_baseline" || $suite eq "lab18"} {
     puts $result "WAVEFORM=OMITTED_FUNCTIONAL_RUN_USE_DIRECTED_WAVEFORM"
 } else {
     puts $result "WAVEFORM=NOT_CAPTURED"

@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('lab13', 'lab14', 'lab16', 'lab17')]
+    [ValidateSet('lab13', 'lab14', 'lab16', 'lab17', 'lab18')]
     [string]$Case,
 
     [Parameter(Mandatory = $true)]
@@ -84,23 +84,94 @@ switch ($Case) {
             Write-Host 'Lab17 full functional runs use the ordered transaction log; the compact directed run retains the waveform.'
         }
     }
+    'lab18' {
+        $inputFiles = @()
+        if ($Suite -eq 'directed') {
+            $tclScript = Join-Path $PSScriptRoot 'run_unit.tcl'
+            $tclArgs = @('lab18', 'directed', $repoRoot, $runDir)
+        } elseif ($Suite -eq 'arbitration') {
+            $tclScript = Join-Path $PSScriptRoot 'run_unit.tcl'
+            $tclArgs = @('lab18_arb', 'directed', $repoRoot, $runDir)
+        } elseif ($Suite -eq 'mem-exception') {
+            $tclScript = Join-Path $PSScriptRoot 'run_unit.tcl'
+            $tclArgs = @('lab18_mem', 'directed', $repoRoot, $runDir)
+        } elseif ($Suite -eq 'functional') {
+            $tclScript = Join-Path $PSScriptRoot 'run_soc.tcl'
+            $tclArgs = @($repoRoot, $runDir, 'lab18')
+            $inputFiles = @((Join-Path $repoRoot 'lab17/func_all94/obj/inst_ram.coe'))
+        } else {
+            throw "Lab18 supports Suite 'directed', 'arbitration', 'mem-exception', or 'functional'."
+        }
+        if ($CaptureWaveform -and $Suite -ne 'directed') {
+            Write-Host 'Lab18 functional runs retain the compact DCache directed waveform.'
+        }
+    }
 }
 
 $stdoutPath = Join-Path $runDir 'launcher.stdout.log'
 $stderrPath = Join-Path $runDir 'launcher.stderr.log'
 $arguments = @('-mode', 'batch', '-source', $tclScript, '-tclargs') + $tclArgs
+$commandLines = @(
+    "RUN_ID=$RunId",
+    "CASE=$Case",
+    "SUITE=$Suite",
+    "VIVADO=$vivado",
+    "TCL_SCRIPT=$tclScript",
+    'ARGUMENTS_BEGIN'
+)
+for ($index = 0; $index -lt $arguments.Count; $index++) {
+    $commandLines += "ARG[$index]=$($arguments[$index])"
+}
+$commandLines += 'ARGUMENTS_END'
+[IO.File]::WriteAllLines((Join-Path $runDir 'command.txt'), $commandLines, [Text.UTF8Encoding]::new($false))
+
+$preflightLines = @('INPUT_CHECK_STATUS=PASS')
+$preflightLines += 'VIVADO_CHECK_STATUS=PASS'
+for ($index = 0; $index -lt $inputFiles.Count; $index++) {
+    $inputPath = $inputFiles[$index]
+    if (-not (Test-Path -LiteralPath $inputPath -PathType Leaf)) {
+        $preflightLines[0] = 'INPUT_CHECK_STATUS=FAIL'
+        $preflightLines += "MISSING_INPUT=$inputPath"
+    } else {
+        $preflightLines += "INPUT[$index]=$inputPath"
+    }
+}
+$preflightLines += 'PROJECT_PREFLIGHT_STATUS=PENDING'
+$preflightPath = Join-Path $runDir 'preflight.txt'
+[IO.File]::WriteAllLines($preflightPath, $preflightLines, [Text.UTF8Encoding]::new($false))
+if ($preflightLines[0] -ne 'INPUT_CHECK_STATUS=PASS') {
+    throw "Input preflight failed; inspect $preflightPath."
+}
+
 $process = Start-Process -FilePath $vivado -ArgumentList $arguments `
     -WorkingDirectory $VivadoBin -Wait -PassThru -WindowStyle Hidden `
     -RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath
 if ($process.ExitCode -ne 0) {
+    $preflightLines = @(Get-Content -LiteralPath $preflightPath | ForEach-Object {
+        if ($_ -eq 'PROJECT_PREFLIGHT_STATUS=PENDING') { 'PROJECT_PREFLIGHT_STATUS=FAIL' } else { $_ }
+    })
+    $preflightLines += "VIVADO_EXIT_CODE=$($process.ExitCode)"
+    [IO.File]::WriteAllLines($preflightPath, $preflightLines, [Text.UTF8Encoding]::new($false))
     throw "Vivado exited with code $($process.ExitCode). Inspect $stdoutPath and the run directory."
 }
 
 $resultPath = Join-Path $runDir 'result.txt'
 if (-not (Test-Path -LiteralPath $resultPath) -or
     -not (Select-String -LiteralPath $resultPath -Pattern '^STATUS=PASS$' -Quiet)) {
+    $preflightLines = @(Get-Content -LiteralPath $preflightPath | ForEach-Object {
+        if ($_ -eq 'PROJECT_PREFLIGHT_STATUS=PENDING') { 'PROJECT_PREFLIGHT_STATUS=FAIL' } else { $_ }
+    })
+    $preflightLines += 'RESULT_STATUS=NOT_PASS'
+    [IO.File]::WriteAllLines($preflightPath, $preflightLines, [Text.UTF8Encoding]::new($false))
     throw "Vivado did not produce a PASS result file: $resultPath"
 }
+
+$preflightLines = @(Get-Content -LiteralPath $preflightPath | ForEach-Object {
+    if ($_ -eq 'PROJECT_PREFLIGHT_STATUS=PENDING') { 'PROJECT_PREFLIGHT_STATUS=PASS' } else { $_ }
+})
+$projectLine = (Select-String -LiteralPath $resultPath -Pattern '^PROJECT_XPR=' | Select-Object -First 1).Line
+if ($projectLine) { $preflightLines += $projectLine }
+[IO.File]::WriteAllLines($preflightPath, $preflightLines, [Text.UTF8Encoding]::new($false))
 
 if (Test-Path -LiteralPath $stdoutPath) {
     $launcherText = Get-Content -LiteralPath $stdoutPath -Raw
