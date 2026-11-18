@@ -55,6 +55,7 @@ All indexed Run directories have a purpose in the evidence index or the final ve
 | `89050b4` | Add dedicated Lab17 AXI fault waveform configuration | Four fault cases rerun with WDB/WCFG (`r2l17fault06`) |
 | `92db094` | Include Vivado process exit code in final acceptance gate; prevent PASS when Vivado exits nonzero after writing a simulation PASS | `python -m unittest discover -s scripts/tests -p 'test_*.py'`: 19/19; final result `r2l19cache03` records simulation PASS, source integrity PASS and Vivado exit 0 |
 | `38f205d` | Add full CPU Top/real TLB/AXI test for a TLB write during an outstanding old-PFN fetch | `r2l19tlbreplay02`: old response dropped; same VA re-read at the new PFN; result and source manifest PASS |
+| `925fd70` | Add a real-Store DCache writeback scoreboard for all four ways, including AXI metadata and beat-level backpressure checks | `r2l19wbs01`: 4 CPU Stores create four dirty ways; 32/32 WDATA words match reference memory; 4 AW, 4 B; final result/source integrity PASS |
 
 ## Revision 2 file-level changes
 
@@ -66,7 +67,7 @@ All indexed Run directories have a purpose in the evidence index or the final ve
 | `lab18/cpu_dcache/rtl/myCPU/dcache.v` | Give bridge failure global priority and stop new request/completion behavior |
 | `lab19/cpu_cache/rtl/myCPU/IF_stage.v` | Drop outstanding stale fetches and replay from the saved PC on TLB write commit |
 | `scripts/tlb_cache/verify.ps1`, `capture_run_manifest.py`, `finalize_run_result.py` | Keep raw simulator status in `sim-result.txt`; atomically write final result only after simulation exit and source/input integrity checks |
-| New directed testbenches | Cover Index acceptance/writeback payload, four ICache AXI faults, four DCache fault states, branch/stale-response replay and TLB remap with an outstanding read |
+| New directed testbenches | Cover Index acceptance/writeback payload, real CPU Store plus all-way DCache writeback scoreboard, four ICache AXI faults, four DCache fault states, branch/stale-response replay and TLB remap with an outstanding read |
 
 All new final Runs retain their own `source-manifest.csv`, `input_manifest.csv`, raw `sim-result.txt` and authoritative `result.txt`. The Lab17 and Lab18 94/94 outputs are software functional-point regressions, not full instruction-by-instruction golden trace comparisons. Lab15 precise TLB exceptions remain outside this revision; see [unsupported TLB exception scope](unsupported-tlb-exceptions.md).
 

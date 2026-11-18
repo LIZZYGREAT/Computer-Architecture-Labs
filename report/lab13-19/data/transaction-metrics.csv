@@ -160,3 +160,12 @@ lab19,r2l19contract03,indexwb_write_beats,8,beats,results/lab13-lab19/lab19/r2l1
 lab19,r2l19redirect03,if_redirect_checks,7,checks,results/lab13-lab19/lab19/r2l19redirect03/simulate.log,
 lab19,r2l19tlbreplay02,tlb_write_replay_checks,3,checks,results/lab13-lab19/lab19/r2l19tlbreplay02/simulate.log,
 lab19,r2l19tlbreplay02,old_instruction_dropped,1,boolean,results/lab13-lab19/lab19/r2l19tlbreplay02/simulate.log,Old physical response not exposed to decode after TLB write
+lab19,r2l19wbs01,cpu_store_transactions,4,stores,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,One real CPU Store allocated a dirty line in each way 0-3
+lab19,r2l19wbs01,dcache_refill_transactions,4,transactions,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,One 8-beat refill per CPU Store
+lab19,r2l19wbs01,refill_r_beats,32,beats,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,Four lines from the deterministic reference memory model
+lab19,r2l19wbs01,writeback_aw_transactions,4,transactions,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,One IndexWBInv transaction for each way
+lab19,r2l19wbs01,writeback_w_beats,32,beats,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,Eight checked W beats per way
+lab19,r2l19wbs01,writeback_b_responses,4,responses,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,Each maintenance completes only after a successful B response
+lab19,r2l19wbs01,writeback_word_payload_compares,32,words,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,Each WDATA matched the reference memory after the CPU Store
+lab19,r2l19wbs01,aw_w_backpressure_stability,1,boolean,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,AW and W payloads remained stable during two-cycle stalls
+lab19,r2l19wbs01,maintenance_completions,4,completions,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,One completion per accepted way-specific IndexWBInv

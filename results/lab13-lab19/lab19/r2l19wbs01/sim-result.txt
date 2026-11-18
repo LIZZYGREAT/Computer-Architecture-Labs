@@ -1,0 +1,9 @@
+RUN_ID=r2l19wbs01
+CASE=lab19_writeback_scoreboard
+SUITE=directed
+STATUS=PASS
+SIM_TOP=tb_lab19_dcache_writeback_scoreboard
+PASS_MARKER=LAB19_DCache_WRITEBACK_SCOREBOARD_PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r2l19wbs01/project/lab19_writeback_scoreboard_directed.xpr
+WAVEFORM=wave-full.wdb
+WAVEFORM_CONFIG=wave-full.wcfg
