@@ -1,0 +1,5 @@
+INPUT_CHECK_STATUS=PASS
+VIVADO_CHECK_STATUS=PASS
+INPUT[0]=C:\Users\lenovo\Desktop\Projects\FPGA\lab19\perf_func\obj\dhrystone\axi_ram.coe
+PROJECT_PREFLIGHT_STATUS=PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-dhrystone-01/project/dhrystone_soc.xpr

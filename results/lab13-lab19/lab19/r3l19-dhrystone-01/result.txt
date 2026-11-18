@@ -1,0 +1,20 @@
+RUN_ID=r3l19-dhrystone-01
+CASE=lab19_performance
+SUITE=dhrystone
+SIM_TOP=tb_lab19_dhrystone
+PASS_MARKER=LAB19_PERF_PASS program=dhrystone
+PROGRAM=dhrystone
+PERF_METRICS=program=0 cycles=251834 retired_instructions=51073 ic_hit=40789 ic_miss=133 ic_refill=133 dc_hit=6579 dc_miss=13 dc_writeback=0 dc_uncache=4559 axi_ar=12675 axi_r=13697 axi_aw=2185 axi_w=2185 axi_b=2185 simulation_ns=2518340 cpu_frequency_hz=100000000 num_data=0003343c
+PROGRAM_OUTPUT_PASS=PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-dhrystone-01/project/dhrystone_soc.xpr
+PROGRAM_IMAGE=C:/Users/lenovo/Desktop/Projects/FPGA/lab19/perf_func/obj/dhrystone/axi_ram.coe
+WAVEFORM=OMITTED_LONG_RUN_USE_METRICS_AND_UART_OUTPUT
+STATUS=PASS
+SIMULATION_STATUS=PASS
+SOURCE_INTEGRITY=PASS
+VIVADO_EXIT_CODE=0
+VIVADO_PROCESS_STATUS=PASS
+SOURCE_MANIFEST=source-manifest.csv
+INPUT_MANIFEST=input_manifest.csv
+GIT_HEAD=234910f8b4aa54d0dc5fe71c0cfc4eb619920025
+SIMULATOR_CPU_MS=44328
