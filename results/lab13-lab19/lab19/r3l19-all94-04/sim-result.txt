@@ -1,0 +1,16 @@
+RUN_ID=r3l19-all94-04
+CASE=lab19
+SUITE=lab19_all94
+STATUS=PASS
+SIM_TOP=tb_lab19_all94
+PASS_MARKER=LAB19_ALL94_FUNCTIONAL_PASS score=94/94
+TESTPOINTS=94
+CACHE_STATS=ic_hit=0 ic_miss=0 ic_refill=0 ic_uncache_read=172900
+DCACHE_STATS=hit=0 miss=0 writeback=0 uncache=8370
+AXI_METRICS=ar=177517 r=177517 aw=3752 w=3752 b=3752
+STORE_COUNTS=accepted=3752 completed=3752 duplicate_store=0
+PERIPHERAL_NUM_WRITES=accepted=95 completed=95 initial_clear=1 score_writes=94 duplicate_store=0
+FUNCTIONAL_CYCLES=1402837
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-04/project/lab19_all94_soc.xpr
+PROGRAM_IMAGE=C:/Users/lenovo/Desktop/Projects/FPGA/lab17/func_all94/obj/inst_ram.coe
+WAVEFORM=NOT_CAPTURED
