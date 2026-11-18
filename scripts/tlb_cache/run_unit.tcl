@@ -2,7 +2,7 @@
 # untouched; their legacy PLL is replaced only for cycle-based unit benches.
 # Usage: vivado -mode batch -source run_unit.tcl -tclargs <case> <suite> <repo-root> <run-dir>
 if {[llength $argv] != 4} {
-    error "usage: run_unit.tcl <lab13|lab16|lab17|lab18|lab18_arb|lab18_mem|lab19_maint> <directed|official> <repo-root> <run-dir>"
+    error "usage: run_unit.tcl <lab13|lab16|lab17|lab18|lab18_fault|lab18_arb|lab18_mem|lab19_maint|lab19_index_contract> <directed|official> <repo-root> <run-dir>"
 }
 set case [lindex $argv 0]
 set suite [lindex $argv 1]
@@ -44,6 +44,9 @@ if {$case eq "lab13"} {
 } elseif {$case eq "lab18"} {
     set rtl [file join $repo lab18 cpu_dcache rtl myCPU dcache.v]
     set directed_tb [file join $repo lab18 cpu_dcache testbench tb_lab18_dcache_directed.sv]
+} elseif {$case eq "lab18_fault"} {
+    set rtl [file join $repo lab18 cpu_dcache rtl myCPU dcache.v]
+    set directed_tb [file join $repo lab18 cpu_dcache testbench tb_lab18_dcache_fault_directed.sv]
 } elseif {$case eq "lab18_arb"} {
     set rtl [list \
         [file join $repo lab18 cpu_dcache rtl myCPU icache.v] \
@@ -58,10 +61,15 @@ if {$case eq "lab13"} {
         [file join $repo lab19 cpu_cache rtl myCPU icache.v] \
         [file join $repo lab19 cpu_cache rtl myCPU dcache.v]]
     set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_maint_directed.sv]
+} elseif {$case eq "lab19_index_contract"} {
+    set rtl [concat \
+        [glob [file join $repo lab19 cpu_cache rtl myCPU *.v]] \
+        [list [file join $repo lab13 tlb_verify rtl tlb.v]]]
+    set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_index_maint_contract.sv]
 } else {
     error "unsupported unit case: $case"
 }
-if {($case eq "lab17" || $case eq "lab18" || $case eq "lab19_maint") && $suite ne "directed"} {
+if {($case eq "lab17" || $case eq "lab18" || $case eq "lab18_fault" || $case eq "lab19_maint" || $case eq "lab19_index_contract") && $suite ne "directed"} {
     error "$case currently supports only its directed cache suite"
 }
 
@@ -86,9 +94,11 @@ if {$suite eq "directed"} {
 }
 
 set_property top $sim_top [get_filesets sim_1]
-if {$case eq "lab11_axi3" || $case eq "lab18_mem"} {
+if {$case eq "lab11_axi3" || $case eq "lab18_mem" || $case eq "lab19_index_contract"} {
     if {$case eq "lab18_mem"} {
         set cpu_include [file join $repo lab18 cpu_dcache rtl myCPU]
+    } elseif {$case eq "lab19_index_contract"} {
+        set cpu_include [file join $repo lab19 cpu_cache rtl myCPU]
     } else {
         set cpu_include [file join $repo lab14 cpu_tlb rtl myCPU]
     }
@@ -97,11 +107,12 @@ if {$case eq "lab11_axi3" || $case eq "lab18_mem"} {
 }
 set_property xsim.simulate.log_all_signals true [get_filesets sim_1]
 set_property xsim.simulate.runtime 1000000ns [get_filesets sim_1]
-if {$case eq "lab19_maint"} {
+if {$case eq "lab19_maint" || $case eq "lab19_index_contract"} {
     set wave_config_file [file join $run_dir wave-full.wcfg]
     set wave_hook_file [file join $run_dir wave-config-hook.tcl]
     set wave_log_file [file join $run_dir wave-config-hook.log]
-    set wave_objects [list \
+    if {$case eq "lab19_maint"} {
+        set wave_objects [list \
         /tb_lab19_maint_directed/u_icache/state \
         /tb_lab19_maint_directed/u_icache/valid_way2 \
         /tb_lab19_maint_directed/u_icache/valid_way3 \
@@ -113,6 +124,25 @@ if {$case eq "lab19_maint"} {
         /tb_lab19_maint_directed/u_dcache/dirty_way2 \
         /tb_lab19_maint_directed/u_dcache/dirty_way3 \
         /tb_lab19_maint_directed/u_dcache/maint_selected_dirty]
+    } else {
+        set wave_objects [list \
+            /tb_lab19_index_maint_contract/dut/cache_maint_req \
+            /tb_lab19_index_maint_contract/dut/cache_maint_op \
+            /tb_lab19_index_maint_contract/dut/cache_maint_vaddr \
+            /tb_lab19_index_maint_contract/dut/cache_maint_translation_ok \
+            /tb_lab19_index_maint_contract/dut/cache_maint_addr_ok \
+            /tb_lab19_index_maint_contract/dut/cache_maint_done \
+            /tb_lab19_index_maint_contract/dut/cache_maint_unsupported \
+            /tb_lab19_index_maint_contract/dut/u_icache/state \
+            /tb_lab19_index_maint_contract/dut/u_dcache/state \
+            /tb_lab19_index_maint_contract/dut/awaddr \
+            /tb_lab19_index_maint_contract/dut/awvalid \
+            /tb_lab19_index_maint_contract/dut/wdata \
+            /tb_lab19_index_maint_contract/dut/wvalid \
+            /tb_lab19_index_maint_contract/dut/wlast \
+            /tb_lab19_index_maint_contract/dut/bvalid \
+            /tb_lab19_index_maint_contract/dut/bready]
+    }
     set wave_hook_text [string map [list \
         @WAVE_PATH@ [list $wave_config_file] \
         @WAVE_LOG@ [list $wave_log_file] \
@@ -194,12 +224,16 @@ if {$suite eq "directed"} {
         set pass_marker "DIRECTED_PASS"
     } elseif {$case eq "lab18"} {
         set pass_marker "DCache_DIRECTED_PASS"
+    } elseif {$case eq "lab18_fault"} {
+        set pass_marker "LAB18_DCACHE_FAULT_PASS"
     } elseif {$case eq "lab18_arb"} {
         set pass_marker "LAB18_ARBITRATION_PASS"
     } elseif {$case eq "lab18_mem"} {
         set pass_marker "D09_MEM_PASS"
     } elseif {$case eq "lab19_maint"} {
         set pass_marker "LAB19_MAINT_DIRECTED_PASS"
+    } elseif {$case eq "lab19_index_contract"} {
+        set pass_marker "LAB19_INDEX_CONTRACT_PASS"
     } else {
         set pass_marker "DIRECTED_PASS"
     }
@@ -240,9 +274,14 @@ if {$suite eq "directed"} {
 }
 if {$case eq "lab17"} {
     foreach marker {
-        "DIRECTED_CHECKS=24"
+        "DIRECTED_CHECKS=28"
         "DIRECTED_COUNTS_VALID cpu=4/4 data=2/2 writeback=1/1"
         "DIRECTED_FAULT_INJECTION=RID_MISMATCH accepted=1 completed=0 expected_pending=1 axi_fault=1"
+        "DIRECTED_FAULT_CASE=RID_MISMATCH accepted=1 completed=0 terminal_state=8"
+        "DIRECTED_FAULT_CASE=RRESP_ERROR accepted=1 completed=0 terminal_state=8"
+        "DIRECTED_FAULT_CASE=RLAST_EARLY accepted=1 completed=0 terminal_state=8"
+        "DIRECTED_FAULT_CASE=RLAST_MISSING accepted=1 completed=0 terminal_state=8"
+        "DIRECTED_FAULT_CASES=4 RID_MISMATCH,RRESP_ERROR,RLAST_EARLY,RLAST_MISSING"
         "WAVE_CASE=ICACHE_8_BEAT_REFILL_AND_DATA_ARBITRATION"
         "WAVE_CASE=ICACHE_SAME_LINE_HIT"
         "WAVE_CASE=KSEG1_UNCACHE_SINGLE_BEAT"
@@ -275,6 +314,19 @@ if {$case eq "lab18"} {
         }
     }
 }
+if {$case eq "lab18_fault"} {
+    foreach marker {
+        "DFAULT_IDLE_PASS state=ST_FAULT new_request_blocked=1"
+        "DFAULT_LOOKUP_PASS state=ST_FAULT normal_completion=0"
+        "DFAULT_WB_WAIT_PASS state=ST_FAULT writeback_done=0 victim_preserved=1"
+        "DFAULT_REFILL_DATA_PASS state=ST_FAULT valid_line=0 completion=0"
+        "LAB18_DCACHE_FAULT_PASS checks=4"
+    } {
+        if {[string first $marker $sim_text] < 0} {
+            error "Lab18 DCache fault test missed required marker: $marker"
+        }
+    }
+}
 if {$case eq "lab18_arb"} {
     foreach marker {
         "LAB18_SIMULTANEOUS_MISS_PASS ic_ar=1 dc_ar=1 id_owner_checked=1 r_beats=16"
@@ -298,14 +350,27 @@ if {$case eq "lab18_mem"} {
 }
 if {$case eq "lab19_maint"} {
     foreach marker {
-        "LAB19_MAINT_DIRECTED_PASS checks=9"
+        "LAB19_MAINT_DIRECTED_PASS checks=10"
         "icache_way=2,3"
         "dcache_way=2,3"
         "hitinv_no_writeback=1"
-        "writebacks=2 B_wait=1"
+        "writebacks=3 index_unmapped_set35_way3=8words sentinel_set0=preserved B_wait=1"
     } {
         if {[string first $marker $sim_text] < 0} {
             error "Lab19 CACHE maintenance directed test missed required marker: $marker"
+        }
+    }
+}
+if {$case eq "lab19_index_contract"} {
+    foreach marker {
+        "IDX-01_PASS unmapped_va=004006a0 top_accept=1 icache_accept=1 icache_done=1 side_effect=once"
+        "IDX-04_PASS busy_to_ready top_accepts=2 icache_accepts=2 completions=2"
+        "IDX-03_UNSUPPORTED_BY_SCOPE hit_translation_valid=0 downstream_accept=0 done=0"
+        "IDX-02_PASS unmapped_va_set=35 way=3 awaddr=abcde6a0 beats=8 accept=1 done=1 sentinel_set0=preserved"
+        "LAB19_INDEX_CONTRACT_PASS checks=4 unsupported_hit=explicit dcache_accepts=1 dcache_done=1"
+    } {
+        if {[string first $marker $sim_text] < 0} {
+            error "Lab19 index-maintenance contract test missed required marker: $marker"
         }
     }
 }
@@ -352,7 +417,7 @@ if {[file isfile $wave_config_path]} {
     puts -nonewline $wave_config_out $wave_config_text
     close $wave_config_out
 }
-if {$case eq "lab19_maint" && ![file isfile $wave_config_path]} {
+if {($case eq "lab19_maint" || $case eq "lab19_index_contract") && ![file isfile $wave_config_path]} {
     set wave_log_path [file join $run_dir wave-config-hook.log]
     if {[file isfile $wave_log_path]} {
         set wave_log_in [open $wave_log_path r]

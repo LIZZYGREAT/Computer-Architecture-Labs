@@ -118,6 +118,8 @@ reg [31:0] maint_selected_tag;
 reg [255:0] maint_selected_line;
 reg        maint_selected_valid;
 reg        maint_selected_dirty;
+reg [6:0]  maint_index;
+reg [1:0]  maint_way;
 
 assign cpu_addr_ok = reset_done && (state == ST_IDLE);
 assign cpu_data_ok = (state == ST_COMPLETE);
@@ -127,7 +129,7 @@ assign refill_req = (state == ST_REFILL_REQ);
 assign refill_addr = refill_addr_reg;
 assign writeback_req = (state == ST_WB_REQ);
 assign writeback_addr = wb_for_maint ?
-                        {maint_selected_tag[19:0], req_addr[11:5], 5'b0} :
+                        {maint_selected_tag[19:0], maint_index, 5'b0} :
                         {chosen_tag[19:0], req_addr[11:5], 5'b0};
 assign writeback_data = wb_for_maint ? maint_selected_line : chosen_line;
 assign uncache_req = (state == ST_UNC_REQ);
@@ -206,39 +208,6 @@ always @* begin
         2'd1: hit_line = line_way1[req_addr[11:5]];
         2'd2: hit_line = line_way2[req_addr[11:5]];
         default: hit_line = line_way3[req_addr[11:5]];
-    endcase
-end
-
-always @* begin
-    maint_selected_tag = 32'b0;
-    maint_selected_line = 256'b0;
-    maint_selected_valid = 1'b0;
-    maint_selected_dirty = 1'b0;
-    case (victim_way)
-        2'd0: begin
-            maint_selected_tag = {12'b0, tag_way0[req_addr[11:5]]};
-            maint_selected_line = line_way0[req_addr[11:5]];
-            maint_selected_valid = valid_way0[req_addr[11:5]];
-            maint_selected_dirty = dirty_way0[req_addr[11:5]];
-        end
-        2'd1: begin
-            maint_selected_tag = {12'b0, tag_way1[req_addr[11:5]]};
-            maint_selected_line = line_way1[req_addr[11:5]];
-            maint_selected_valid = valid_way1[req_addr[11:5]];
-            maint_selected_dirty = dirty_way1[req_addr[11:5]];
-        end
-        2'd2: begin
-            maint_selected_tag = {12'b0, tag_way2[req_addr[11:5]]};
-            maint_selected_line = line_way2[req_addr[11:5]];
-            maint_selected_valid = valid_way2[req_addr[11:5]];
-            maint_selected_dirty = dirty_way2[req_addr[11:5]];
-        end
-        default: begin
-            maint_selected_tag = {12'b0, tag_way3[req_addr[11:5]]};
-            maint_selected_line = line_way3[req_addr[11:5]];
-            maint_selected_valid = valid_way3[req_addr[11:5]];
-            maint_selected_dirty = dirty_way3[req_addr[11:5]];
-        end
     endcase
 end
 
@@ -337,10 +306,18 @@ always @(posedge clk) begin
         cache_fault <= 1'b0;
         maint_done <= 1'b0;
         wb_for_maint <= 1'b0;
+        maint_selected_tag <= 32'b0;
+        maint_selected_line <= 256'b0;
+        maint_selected_valid <= 1'b0;
+        maint_selected_dirty <= 1'b0;
+        maint_index <= 7'b0;
+        maint_way <= 2'b0;
     end else begin
         maint_done <= 1'b0;
-        if (bridge_fault)
+        if (bridge_fault) begin
             cache_fault <= 1'b1;
+            state <= ST_FAULT;
+        end else begin
         case (state)
             ST_RESET_CLEAR: begin
                 valid_way0[clear_index] <= 1'b0;
@@ -362,16 +339,69 @@ always @(posedge clk) begin
 
             ST_IDLE: begin
                 if (maint_req && maint_addr_ok) begin
-                    req_addr <= maint_paddr;
                     wb_for_maint <= 1'b0;
                     case (maint_op)
                         5'h01: begin
+                            maint_index <= maint_vaddr[11:5];
+                            maint_way <= maint_vaddr[13:12];
                             victim_way <= maint_vaddr[13:12];
                             case (maint_vaddr[13:12])
-                                2'd0: if (valid_way0[maint_vaddr[11:5]] && dirty_way0[maint_vaddr[11:5]]) begin wb_for_maint <= 1'b1; state <= ST_WB_REQ; end else begin valid_way0[maint_vaddr[11:5]] <= 1'b0; dirty_way0[maint_vaddr[11:5]] <= 1'b0; maint_done <= 1'b1; end
-                                2'd1: if (valid_way1[maint_vaddr[11:5]] && dirty_way1[maint_vaddr[11:5]]) begin wb_for_maint <= 1'b1; state <= ST_WB_REQ; end else begin valid_way1[maint_vaddr[11:5]] <= 1'b0; dirty_way1[maint_vaddr[11:5]] <= 1'b0; maint_done <= 1'b1; end
-                                2'd2: if (valid_way2[maint_vaddr[11:5]] && dirty_way2[maint_vaddr[11:5]]) begin wb_for_maint <= 1'b1; state <= ST_WB_REQ; end else begin valid_way2[maint_vaddr[11:5]] <= 1'b0; dirty_way2[maint_vaddr[11:5]] <= 1'b0; maint_done <= 1'b1; end
-                                default: if (valid_way3[maint_vaddr[11:5]] && dirty_way3[maint_vaddr[11:5]]) begin wb_for_maint <= 1'b1; state <= ST_WB_REQ; end else begin valid_way3[maint_vaddr[11:5]] <= 1'b0; dirty_way3[maint_vaddr[11:5]] <= 1'b0; maint_done <= 1'b1; end
+                                2'd0: begin
+                                    maint_selected_tag <= {12'b0, tag_way0[maint_vaddr[11:5]]};
+                                    maint_selected_line <= line_way0[maint_vaddr[11:5]];
+                                    maint_selected_valid <= valid_way0[maint_vaddr[11:5]];
+                                    maint_selected_dirty <= dirty_way0[maint_vaddr[11:5]];
+                                    if (valid_way0[maint_vaddr[11:5]] && dirty_way0[maint_vaddr[11:5]]) begin
+                                        wb_for_maint <= 1'b1;
+                                        state <= ST_WB_REQ;
+                                    end else begin
+                                        valid_way0[maint_vaddr[11:5]] <= 1'b0;
+                                        dirty_way0[maint_vaddr[11:5]] <= 1'b0;
+                                        maint_done <= 1'b1;
+                                    end
+                                end
+                                2'd1: begin
+                                    maint_selected_tag <= {12'b0, tag_way1[maint_vaddr[11:5]]};
+                                    maint_selected_line <= line_way1[maint_vaddr[11:5]];
+                                    maint_selected_valid <= valid_way1[maint_vaddr[11:5]];
+                                    maint_selected_dirty <= dirty_way1[maint_vaddr[11:5]];
+                                    if (valid_way1[maint_vaddr[11:5]] && dirty_way1[maint_vaddr[11:5]]) begin
+                                        wb_for_maint <= 1'b1;
+                                        state <= ST_WB_REQ;
+                                    end else begin
+                                        valid_way1[maint_vaddr[11:5]] <= 1'b0;
+                                        dirty_way1[maint_vaddr[11:5]] <= 1'b0;
+                                        maint_done <= 1'b1;
+                                    end
+                                end
+                                2'd2: begin
+                                    maint_selected_tag <= {12'b0, tag_way2[maint_vaddr[11:5]]};
+                                    maint_selected_line <= line_way2[maint_vaddr[11:5]];
+                                    maint_selected_valid <= valid_way2[maint_vaddr[11:5]];
+                                    maint_selected_dirty <= dirty_way2[maint_vaddr[11:5]];
+                                    if (valid_way2[maint_vaddr[11:5]] && dirty_way2[maint_vaddr[11:5]]) begin
+                                        wb_for_maint <= 1'b1;
+                                        state <= ST_WB_REQ;
+                                    end else begin
+                                        valid_way2[maint_vaddr[11:5]] <= 1'b0;
+                                        dirty_way2[maint_vaddr[11:5]] <= 1'b0;
+                                        maint_done <= 1'b1;
+                                    end
+                                end
+                                default: begin
+                                    maint_selected_tag <= {12'b0, tag_way3[maint_vaddr[11:5]]};
+                                    maint_selected_line <= line_way3[maint_vaddr[11:5]];
+                                    maint_selected_valid <= valid_way3[maint_vaddr[11:5]];
+                                    maint_selected_dirty <= dirty_way3[maint_vaddr[11:5]];
+                                    if (valid_way3[maint_vaddr[11:5]] && dirty_way3[maint_vaddr[11:5]]) begin
+                                        wb_for_maint <= 1'b1;
+                                        state <= ST_WB_REQ;
+                                    end else begin
+                                        valid_way3[maint_vaddr[11:5]] <= 1'b0;
+                                        dirty_way3[maint_vaddr[11:5]] <= 1'b0;
+                                        maint_done <= 1'b1;
+                                    end
+                                end
                             endcase
                         end
                         5'h09: begin
@@ -386,24 +416,43 @@ always @(posedge clk) begin
                         5'h11, 5'h15: begin
                             if (maint_hit) begin
                                 victim_way <= maint_hit_way;
+                                maint_way <= maint_hit_way;
+                                maint_index <= maint_paddr[11:5];
                                 wb_for_maint <= (maint_op == 5'h15);
-                                req_addr <= maint_paddr;
-                                if ((maint_op == 5'h15) &&
-                                    ((maint_hit_way == 2'd0 && dirty_way0[maint_paddr[11:5]]) ||
-                                     (maint_hit_way == 2'd1 && dirty_way1[maint_paddr[11:5]]) ||
-                                     (maint_hit_way == 2'd2 && dirty_way2[maint_paddr[11:5]]) ||
-                                     (maint_hit_way == 2'd3 && dirty_way3[maint_paddr[11:5]]))) begin
-                                    state <= ST_WB_REQ;
-                                end else begin
-                                    case (maint_hit_way)
-                                        2'd0: begin valid_way0[maint_paddr[11:5]] <= 1'b0; dirty_way0[maint_paddr[11:5]] <= 1'b0; end
-                                        2'd1: begin valid_way1[maint_paddr[11:5]] <= 1'b0; dirty_way1[maint_paddr[11:5]] <= 1'b0; end
-                                        2'd2: begin valid_way2[maint_paddr[11:5]] <= 1'b0; dirty_way2[maint_paddr[11:5]] <= 1'b0; end
-                                        default: begin valid_way3[maint_paddr[11:5]] <= 1'b0; dirty_way3[maint_paddr[11:5]] <= 1'b0; end
-                                    endcase
-                                    wb_for_maint <= 1'b0;
-                                    maint_done <= 1'b1;
-                                end
+                                case (maint_hit_way)
+                                    2'd0: begin
+                                        maint_selected_tag <= {12'b0, tag_way0[maint_paddr[11:5]]};
+                                        maint_selected_line <= line_way0[maint_paddr[11:5]];
+                                        maint_selected_valid <= valid_way0[maint_paddr[11:5]];
+                                        maint_selected_dirty <= dirty_way0[maint_paddr[11:5]];
+                                        if ((maint_op == 5'h15) && dirty_way0[maint_paddr[11:5]]) state <= ST_WB_REQ;
+                                        else begin valid_way0[maint_paddr[11:5]] <= 1'b0; dirty_way0[maint_paddr[11:5]] <= 1'b0; wb_for_maint <= 1'b0; maint_done <= 1'b1; end
+                                    end
+                                    2'd1: begin
+                                        maint_selected_tag <= {12'b0, tag_way1[maint_paddr[11:5]]};
+                                        maint_selected_line <= line_way1[maint_paddr[11:5]];
+                                        maint_selected_valid <= valid_way1[maint_paddr[11:5]];
+                                        maint_selected_dirty <= dirty_way1[maint_paddr[11:5]];
+                                        if ((maint_op == 5'h15) && dirty_way1[maint_paddr[11:5]]) state <= ST_WB_REQ;
+                                        else begin valid_way1[maint_paddr[11:5]] <= 1'b0; dirty_way1[maint_paddr[11:5]] <= 1'b0; wb_for_maint <= 1'b0; maint_done <= 1'b1; end
+                                    end
+                                    2'd2: begin
+                                        maint_selected_tag <= {12'b0, tag_way2[maint_paddr[11:5]]};
+                                        maint_selected_line <= line_way2[maint_paddr[11:5]];
+                                        maint_selected_valid <= valid_way2[maint_paddr[11:5]];
+                                        maint_selected_dirty <= dirty_way2[maint_paddr[11:5]];
+                                        if ((maint_op == 5'h15) && dirty_way2[maint_paddr[11:5]]) state <= ST_WB_REQ;
+                                        else begin valid_way2[maint_paddr[11:5]] <= 1'b0; dirty_way2[maint_paddr[11:5]] <= 1'b0; wb_for_maint <= 1'b0; maint_done <= 1'b1; end
+                                    end
+                                    default: begin
+                                        maint_selected_tag <= {12'b0, tag_way3[maint_paddr[11:5]]};
+                                        maint_selected_line <= line_way3[maint_paddr[11:5]];
+                                        maint_selected_valid <= valid_way3[maint_paddr[11:5]];
+                                        maint_selected_dirty <= dirty_way3[maint_paddr[11:5]];
+                                        if ((maint_op == 5'h15) && dirty_way3[maint_paddr[11:5]]) state <= ST_WB_REQ;
+                                        else begin valid_way3[maint_paddr[11:5]] <= 1'b0; dirty_way3[maint_paddr[11:5]] <= 1'b0; wb_for_maint <= 1'b0; maint_done <= 1'b1; end
+                                    end
+                                endcase
                             end else begin
                                 maint_done <= 1'b1;
                             end
@@ -414,6 +463,7 @@ always @(posedge clk) begin
                         end
                     endcase
                 end else if (cpu_req && cpu_addr_ok) begin
+                    wb_for_maint <= 1'b0;
                     req_addr <= cpu_addr;
                     req_wr <= cpu_wr;
                     req_size <= cpu_size;
@@ -477,17 +527,23 @@ always @(posedge clk) begin
             ST_WB_WAIT: begin
                 if (writeback_done && !bridge_fault) begin
                     stat_writeback <= stat_writeback + 32'd1;
-                    case (victim_way)
-                        2'd0: begin valid_way0[req_addr[11:5]] <= 1'b0; dirty_way0[req_addr[11:5]] <= 1'b0; end
-                        2'd1: begin valid_way1[req_addr[11:5]] <= 1'b0; dirty_way1[req_addr[11:5]] <= 1'b0; end
-                        2'd2: begin valid_way2[req_addr[11:5]] <= 1'b0; dirty_way2[req_addr[11:5]] <= 1'b0; end
-                        default: begin valid_way3[req_addr[11:5]] <= 1'b0; dirty_way3[req_addr[11:5]] <= 1'b0; end
-                    endcase
                     if (wb_for_maint) begin
+                        case (maint_way)
+                            2'd0: begin valid_way0[maint_index] <= 1'b0; dirty_way0[maint_index] <= 1'b0; end
+                            2'd1: begin valid_way1[maint_index] <= 1'b0; dirty_way1[maint_index] <= 1'b0; end
+                            2'd2: begin valid_way2[maint_index] <= 1'b0; dirty_way2[maint_index] <= 1'b0; end
+                            default: begin valid_way3[maint_index] <= 1'b0; dirty_way3[maint_index] <= 1'b0; end
+                        endcase
                         wb_for_maint <= 1'b0;
                         maint_done <= 1'b1;
                         state <= ST_IDLE;
                     end else begin
+                        case (victim_way)
+                            2'd0: begin valid_way0[req_addr[11:5]] <= 1'b0; dirty_way0[req_addr[11:5]] <= 1'b0; end
+                            2'd1: begin valid_way1[req_addr[11:5]] <= 1'b0; dirty_way1[req_addr[11:5]] <= 1'b0; end
+                            2'd2: begin valid_way2[req_addr[11:5]] <= 1'b0; dirty_way2[req_addr[11:5]] <= 1'b0; end
+                            default: begin valid_way3[req_addr[11:5]] <= 1'b0; dirty_way3[req_addr[11:5]] <= 1'b0; end
+                        endcase
                         state <= ST_REFILL_REQ;
                     end
                 end else if (bridge_fault) begin
@@ -566,6 +622,7 @@ always @(posedge clk) begin
             ST_FAULT: state <= ST_FAULT;
             default: state <= ST_FAULT;
         endcase
+        end
     end
 end
 

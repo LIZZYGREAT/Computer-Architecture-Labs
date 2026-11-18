@@ -113,6 +113,7 @@ module tb_lab18_cache_arbitration;
         .refill_req(ic_refill_req), .refill_addr(ic_refill_addr),
         .refill_addr_ok(ic_refill_addr_ok), .refill_data_valid(ic_ret_valid),
         .refill_data_last(ic_ret_last), .refill_data(ic_ret_data),
+        .bridge_fault(axi_fault),
         .uncache_req(ic_uncache_req), .uncache_addr(ic_uncache_addr),
         .uncache_addr_ok(ic_uncache_addr_ok), .uncache_data_ok(ic_uncache_data_ok),
         .uncache_data(ic_uncache_data), .stat_hit(ic_hit), .stat_miss(ic_miss),

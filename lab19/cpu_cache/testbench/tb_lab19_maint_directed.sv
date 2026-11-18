@@ -29,6 +29,8 @@ module tb_lab19_maint_directed;
 
     integer checks = 0;
     integer timeout_count;
+    reg [255:0] expected_index_line;
+    reg [255:0] saved_sentinel_line;
     always #5 clk = ~clk;
 
     icache u_icache (
@@ -39,6 +41,7 @@ module tb_lab19_maint_directed;
         .maint_taglo(i_taglo), .maint_addr_ok(i_maint_addr_ok), .maint_done(i_maint_done),
         .refill_req(), .refill_addr(), .refill_addr_ok(1'b0),
         .refill_data_valid(1'b0), .refill_data_last(1'b0), .refill_data(32'b0),
+        .bridge_fault(1'b0),
         .uncache_req(), .uncache_addr(), .uncache_addr_ok(1'b0),
         .uncache_data_ok(1'b0), .uncache_data(32'b0),
         .stat_hit(), .stat_miss(), .stat_refill(), .stat_uncache_read(), .cache_fault()
@@ -145,6 +148,39 @@ module tb_lab19_maint_directed;
         end
     endtask
 
+    task complete_writeback_payload(input [31:0] expected_addr,
+                                    input [255:0] expected_line,
+                                    input [4:0] op);
+        integer beat;
+        begin
+            timeout_count = 0;
+            while (d_writeback_req !== 1'b1) begin
+                @(negedge clk);
+                timeout_count = timeout_count + 1;
+                if (timeout_count > 100)
+                    $fatal(1, "LAB19_MAINT_FAIL=payload_writeback_request_timeout op=%02x", op);
+            end
+            if (d_writeback_addr !== expected_addr || d_writeback_data !== expected_line)
+                $fatal(1, "LAB19_MAINT_FAIL=payload_writeback_mismatch addr=%08x data=%064x",
+                       d_writeback_addr, d_writeback_data);
+            for (beat = 0; beat < 8; beat = beat + 1) begin
+                if (d_writeback_data[beat*32 +: 32] !== expected_line[beat*32 +: 32])
+                    $fatal(1, "LAB19_MAINT_FAIL=payload_word_mismatch beat=%0d", beat);
+            end
+            @(negedge clk); d_writeback_addr_ok = 1'b1;
+            @(posedge clk); #1 d_writeback_addr_ok = 1'b0;
+            repeat (3) begin
+                @(posedge clk); #1;
+                if (d_maint_done)
+                    $fatal(1, "LAB19_MAINT_FAIL=payload_retired_before_b op=%02x", op);
+            end
+            @(negedge clk); d_writeback_done = 1'b1;
+            @(posedge clk); #1 d_writeback_done = 1'b0;
+            if (d_maint_done !== 1'b1)
+                $fatal(1, "LAB19_MAINT_FAIL=payload_did_not_complete_after_b op=%02x", op);
+        end
+    endtask
+
     initial begin
         repeat (5) @(posedge clk);
         resetn = 1'b1;
@@ -209,8 +245,33 @@ module tb_lab19_maint_directed;
             $fatal(1, "LAB19_MAINT_FAIL=hit_wbinv_way2_final_state");
         checks = checks + 1;
 
+        // IndexWBInv must use its accepted VA set/way even when translation
+        // is absent (maint_paddr=0); set zero is a sentinel for wrong-target bugs.
+        expected_index_line = {32'h88888888, 32'h77777777, 32'h66666666, 32'h55555555,
+                               32'h44444444, 32'h33333333, 32'h22222222, 32'h11111111};
+        saved_sentinel_line = {32'hfedcba98, 32'h76543210, 32'h01234567, 32'h89abcdef,
+                               32'h0badc0de, 32'h55aa55aa, 32'ha5a5a5a5, 32'h5a5a5a5a};
+        u_dcache.tag_way3[7'h35] = 20'habcde;
+        u_dcache.line_way3[7'h35] = expected_index_line;
+        u_dcache.valid_way3[7'h35] = 1'b1;
+        u_dcache.dirty_way3[7'h35] = 1'b1;
+        u_dcache.tag_way0[7'h00] = 20'h54321;
+        u_dcache.line_way0[7'h00] = saved_sentinel_line;
+        u_dcache.valid_way0[7'h00] = 1'b1;
+        u_dcache.dirty_way0[7'h00] = 1'b1;
+        issue_d(5'h01, {18'b0, 2'd3, 7'h35, 5'b0}, 32'b0, 32'b0);
+        complete_writeback_payload({20'habcde, 7'h35, 5'b0}, expected_index_line, 5'h01);
+        if (u_dcache.valid_way3[7'h35] || u_dcache.dirty_way3[7'h35] ||
+            u_dcache.valid_way0[7'h00] !== 1'b1 ||
+            u_dcache.dirty_way0[7'h00] !== 1'b1 ||
+            u_dcache.tag_way0[7'h00] !== 20'h54321 ||
+            u_dcache.line_way0[7'h00] !== saved_sentinel_line ||
+            d_stat_writeback != 3 || d_cache_fault)
+            $fatal(1, "LAB19_MAINT_FAIL=index_unmapped_target_or_sentinel");
+        checks = checks + 1;
+
         $display("DIRECTED_CHECKS=%0d", checks);
-        $display("LAB19_MAINT_DIRECTED_PASS checks=%0d icache_way=2,3 dcache_way=2,3 taglo=valid_dirty hitinv_no_writeback=1 writebacks=2 B_wait=1",
+        $display("LAB19_MAINT_DIRECTED_PASS checks=%0d icache_way=2,3 dcache_way=2,3 taglo=valid_dirty hitinv_no_writeback=1 writebacks=3 index_unmapped_set35_way3=8words sentinel_set0=preserved B_wait=1",
                  checks);
         $finish;
     end

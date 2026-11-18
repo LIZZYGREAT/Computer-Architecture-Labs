@@ -111,6 +111,12 @@ wire        icache_maint_done;
 wire        dcache_maint_done;
 wire        cache_maint_addr_ok;
 wire        cache_maint_done;
+wire        cache_maint_is_icache;
+wire        cache_maint_is_index;
+wire        cache_maint_supported;
+wire        cache_maint_translation_ok;
+wire        cache_maint_unsupported;
+wire        cache_maint_permit;
 wire        pipeline_flush;
 wire [31:0] exception_vector;
 
@@ -218,6 +224,25 @@ wire        tlb_write_enable;
 
 assign pipeline_flush = trap_commit || eret_commit || icache_maint_commit;
 assign cp0_serial_busy = es_cp0_serial_busy || ms_cp0_serial_busy;
+
+// Index operations use VA index/way by project convention and do not need a
+// TLB translation. Hit operations use a physical tag and require valid PA.
+assign cache_maint_is_icache = (cache_maint_op == 5'h00) ||
+                               (cache_maint_op == 5'h08) ||
+                               (cache_maint_op == 5'h10);
+assign cache_maint_is_index = (cache_maint_op == 5'h00) ||
+                              (cache_maint_op == 5'h08) ||
+                              (cache_maint_op == 5'h01) ||
+                              (cache_maint_op == 5'h09);
+assign cache_maint_supported = cache_maint_is_icache ||
+                               (cache_maint_op == 5'h01) ||
+                               (cache_maint_op == 5'h09) ||
+                               (cache_maint_op == 5'h11) ||
+                               (cache_maint_op == 5'h15);
+assign cache_maint_translation_ok = cache_maint_is_index || data_translation_valid;
+assign cache_maint_permit = cache_maint_supported && cache_maint_translation_ok;
+assign cache_maint_unsupported = cache_maint_req && cache_maint_supported &&
+                                 !cache_maint_translation_ok;
 assign exception_vector = cp0_bev ? 32'hbfc0_0380 : 32'h8000_0180;
 addr_translate u_inst_translate(
     .vaddr           (inst_sram_addr),
@@ -469,7 +494,7 @@ icache u_icache(
     .cpu_rdata(inst_sram_rdata),
     .maint_req(cache_maint_req && ((cache_maint_op == 5'h00) ||
                                    (cache_maint_op == 5'h08) ||
-                                   (cache_maint_op == 5'h10))),
+                                   (cache_maint_op == 5'h10)) && cache_maint_permit),
     .maint_op(cache_maint_op),
     .maint_vaddr(cache_maint_vaddr),
     .maint_paddr(data_sram_pa),
@@ -482,6 +507,7 @@ icache u_icache(
     .refill_data_valid(ic_ret_valid),
     .refill_data_last(ic_ret_last),
     .refill_data(ic_ret_data),
+    .bridge_fault(axi_fault),
     .uncache_req(ic_uncache_req),
     .uncache_addr(ic_uncache_addr),
     .uncache_addr_ok(ic_uncache_addr_ok),
@@ -506,9 +532,7 @@ dcache u_dcache(
     .cpu_wstrb(data_sram_wstrb),
     .cpu_addr(data_sram_pa),
     .cpu_wdata(data_sram_wdata),
-    .maint_req(cache_maint_req && !((cache_maint_op == 5'h00) ||
-                                    (cache_maint_op == 5'h08) ||
-                                    (cache_maint_op == 5'h10))),
+    .maint_req(cache_maint_req && !cache_maint_is_icache && cache_maint_permit),
     .maint_op(cache_maint_op),
     .maint_vaddr(cache_maint_vaddr),
     .maint_paddr(data_sram_pa),
@@ -550,15 +574,9 @@ assign data_sram_addr_ok = dcache_cpu_addr_ok && data_translation_valid;
 assign data_sram_data_ok = dcache_cpu_data_ok;
 assign data_sram_rdata = dcache_cpu_rdata;
 
-assign cache_maint_addr_ok = ((cache_maint_op == 5'h00) ||
-                              (cache_maint_op == 5'h08) ||
-                              (cache_maint_op == 5'h10)) ?
-                             (icache_maint_addr_ok && data_translation_valid) :
-                             (dcache_maint_addr_ok && data_translation_valid);
-assign cache_maint_done = ((cache_maint_op == 5'h00) ||
-                           (cache_maint_op == 5'h08) ||
-                           (cache_maint_op == 5'h10)) ?
-                          icache_maint_done : dcache_maint_done;
+assign cache_maint_addr_ok = cache_maint_permit &&
+                             (cache_maint_is_icache ? icache_maint_addr_ok : dcache_maint_addr_ok);
+assign cache_maint_done = cache_maint_is_icache ? icache_maint_done : dcache_maint_done;
 
 cache_axi3_bridge u_cache_axi3_bridge(
     .aclk(aclk),

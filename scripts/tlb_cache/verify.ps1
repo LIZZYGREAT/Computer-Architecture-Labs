@@ -87,7 +87,10 @@ switch ($Case) {
     }
     'lab18' {
         $inputFiles = @()
-        if ($Suite -eq 'directed') {
+        if ($Suite -eq 'fault') {
+            $tclScript = Join-Path $PSScriptRoot 'run_unit.tcl'
+            $tclArgs = @('lab18_fault', 'directed', $repoRoot, $runDir)
+        } elseif ($Suite -eq 'directed') {
             $tclScript = Join-Path $PSScriptRoot 'run_unit.tcl'
             $tclArgs = @('lab18', 'directed', $repoRoot, $runDir)
         } elseif ($Suite -eq 'arbitration') {
@@ -101,14 +104,17 @@ switch ($Case) {
             $tclArgs = @($repoRoot, $runDir, 'lab18')
             $inputFiles = @((Join-Path $repoRoot 'lab17/func_all94/obj/inst_ram.coe'))
         } else {
-            throw "Lab18 supports Suite 'directed', 'arbitration', 'mem-exception', or 'functional'."
+            throw "Lab18 supports Suite 'fault', 'directed', 'arbitration', 'mem-exception', or 'functional'."
         }
         if ($CaptureWaveform -and $Suite -ne 'directed') {
             Write-Host 'Lab18 functional runs retain the compact DCache directed waveform.'
         }
     }
     'lab19' {
-        if ($Suite -eq 'directed') {
+        if ($Suite -eq 'index-contract') {
+            $tclScript = Join-Path $PSScriptRoot 'run_unit.tcl'
+            $tclArgs = @('lab19_index_contract', 'directed', $repoRoot, $runDir)
+        } elseif ($Suite -eq 'directed') {
             $tclScript = Join-Path $PSScriptRoot 'run_unit.tcl'
             $tclArgs = @('lab19_maint', 'directed', $repoRoot, $runDir)
         } elseif ($Suite -eq 'cache') {
@@ -134,7 +140,13 @@ switch ($Case) {
 
 $stdoutPath = Join-Path $runDir 'launcher.stdout.log'
 $stderrPath = Join-Path $runDir 'launcher.stderr.log'
-$arguments = @('-mode', 'batch', '-source', $tclScript, '-tclargs') + $tclArgs
+$arguments = @(
+    '-mode', 'batch',
+    '-log', (Join-Path $runDir 'vivado.log'),
+    '-journal', (Join-Path $runDir 'vivado.jou'),
+    '-source', $tclScript,
+    '-tclargs'
+) + $tclArgs
 $commandLines = @(
     "RUN_ID=$RunId",
     "CASE=$Case",
@@ -170,53 +182,74 @@ if ($preflightLines[0] -ne 'INPUT_CHECK_STATUS=PASS') {
 $process = Start-Process -FilePath $vivado -ArgumentList $arguments `
     -WorkingDirectory $VivadoBin -Wait -PassThru -WindowStyle Hidden `
     -RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath
-if ($process.ExitCode -ne 0) {
-    $preflightLines = @(Get-Content -LiteralPath $preflightPath | ForEach-Object {
-        if ($_ -eq 'PROJECT_PREFLIGHT_STATUS=PENDING') { 'PROJECT_PREFLIGHT_STATUS=FAIL' } else { $_ }
-    })
-    $preflightLines += "VIVADO_EXIT_CODE=$($process.ExitCode)"
-    [IO.File]::WriteAllLines($preflightPath, $preflightLines, [Text.UTF8Encoding]::new($false))
-    throw "Vivado exited with code $($process.ExitCode). Inspect $stdoutPath and the run directory."
-}
-
 $resultPath = Join-Path $runDir 'result.txt'
-if (-not (Test-Path -LiteralPath $resultPath) -or
-    -not (Select-String -LiteralPath $resultPath -Pattern '^STATUS=PASS$' -Quiet)) {
-    $preflightLines = @(Get-Content -LiteralPath $preflightPath | ForEach-Object {
-        if ($_ -eq 'PROJECT_PREFLIGHT_STATUS=PENDING') { 'PROJECT_PREFLIGHT_STATUS=FAIL' } else { $_ }
-    })
-    $preflightLines += 'RESULT_STATUS=NOT_PASS'
-    [IO.File]::WriteAllLines($preflightPath, $preflightLines, [Text.UTF8Encoding]::new($false))
-    throw "Vivado did not produce a PASS result file: $resultPath"
+$simulationResultPath = Join-Path $runDir 'sim-result.txt'
+if (Test-Path -LiteralPath $resultPath) {
+    Move-Item -LiteralPath $resultPath -Destination $simulationResultPath
+} else {
+    [IO.File]::WriteAllLines($simulationResultPath, @(
+        "RUN_ID=$RunId", "CASE=$Case", "SUITE=$Suite", 'STATUS=INCOMPLETE',
+        "VIVADO_EXIT_CODE=$($process.ExitCode)", 'REASON=SIMULATION_RESULT_MISSING'
+    ), [Text.UTF8Encoding]::new($false))
 }
 
-$preflightLines = @(Get-Content -LiteralPath $preflightPath | ForEach-Object {
-    if ($_ -eq 'PROJECT_PREFLIGHT_STATUS=PENDING') { 'PROJECT_PREFLIGHT_STATUS=PASS' } else { $_ }
-})
-$projectLine = (Select-String -LiteralPath $resultPath -Pattern '^PROJECT_XPR=' | Select-Object -First 1).Line
-if ($projectLine) { $preflightLines += $projectLine }
-[IO.File]::WriteAllLines($preflightPath, $preflightLines, [Text.UTF8Encoding]::new($false))
-
+$simulatorCpuMs = $null
 if (Test-Path -LiteralPath $stdoutPath) {
     $launcherText = Get-Content -LiteralPath $stdoutPath -Raw
     if ($launcherText -match 'Simulation CPU Usage:\s*([0-9]+) ms') {
-        Add-Content -LiteralPath $resultPath -Value "SIMULATOR_CPU_MS=$($Matches[1])" -Encoding utf8
+        $simulatorCpuMs = $Matches[1]
     }
-    Remove-Item -LiteralPath $stdoutPath
 }
+
+$rawSimulationPassed = (Test-Path -LiteralPath $simulationResultPath) -and
+    (Select-String -LiteralPath $simulationResultPath -Pattern '^STATUS=PASS$' -Quiet)
+$projectLine = (Select-String -LiteralPath $simulationResultPath -Pattern '^PROJECT_XPR=' | Select-Object -First 1).Line
+$preflightLines = @(Get-Content -LiteralPath $preflightPath | ForEach-Object {
+    if ($_ -eq 'PROJECT_PREFLIGHT_STATUS=PENDING') {
+        if ($process.ExitCode -eq 0 -and $rawSimulationPassed) { 'PROJECT_PREFLIGHT_STATUS=PASS' }
+        else { 'PROJECT_PREFLIGHT_STATUS=FAIL' }
+    } else { $_ }
+})
+if ($projectLine) { $preflightLines += $projectLine }
+if ($process.ExitCode -ne 0) { $preflightLines += "VIVADO_EXIT_CODE=$($process.ExitCode)" }
+[IO.File]::WriteAllLines($preflightPath, $preflightLines, [Text.UTF8Encoding]::new($false))
 
 $manifestArgs = @((Join-Path $PSScriptRoot 'capture_run_manifest.py'), '--repo-root', $repoRoot, '--run-dir', $runDir)
 foreach ($inputFile in $inputFiles) {
     $manifestArgs += @('--input-file', $inputFile)
 }
 & python @manifestArgs
-if ($LASTEXITCODE -ne 0) {
-    throw "Source/input integrity capture failed; inspect $runDir\source-integrity.txt"
+$sourceIntegrity = 'FAIL'
+if ($LASTEXITCODE -eq 0 -and
+    (Test-Path -LiteralPath (Join-Path $runDir 'source-integrity.txt')) -and
+    (Select-String -LiteralPath (Join-Path $runDir 'source-integrity.txt') -Pattern '^SOURCE_INTEGRITY=PASS$' -Quiet)) {
+    $sourceIntegrity = 'PASS'
 }
+
+$finalizeArgs = @(
+    (Join-Path $PSScriptRoot 'finalize_run_result.py'),
+    '--run-dir', $runDir,
+    '--simulation-result', $simulationResultPath,
+    '--source-integrity', $sourceIntegrity
+)
+if ($null -ne $simulatorCpuMs) { $finalizeArgs += @('--simulator-cpu-ms', $simulatorCpuMs) }
+& python @finalizeArgs
+$finalizeExitCode = $LASTEXITCODE
+
 if ((Test-Path -LiteralPath $stderrPath) -and (Get-Item -LiteralPath $stderrPath).Length -eq 0) {
     Remove-Item -LiteralPath $stderrPath
+}
+if (Test-Path -LiteralPath $stdoutPath) { Remove-Item -LiteralPath $stdoutPath }
+if ($process.ExitCode -ne 0) {
+    throw "Vivado exited with code $($process.ExitCode). The authoritative result is INCOMPLETE; inspect the run directory."
+}
+if (-not $rawSimulationPassed) {
+    throw "Vivado did not produce a simulation PASS. The authoritative result is INCOMPLETE; inspect $simulationResultPath."
+}
+if ($sourceIntegrity -ne 'PASS' -or $finalizeExitCode -ne 0) {
+    throw "Source/input integrity capture failed. The authoritative result is INCOMPLETE; inspect $runDir\source-integrity.txt."
 }
 
 Write-Host "RUN_ID=$RunId"
 Write-Host "RUN_DIR=$runDir"
-Get-Content -LiteralPath $resultPath
+Get-Content -LiteralPath (Join-Path $runDir 'result.txt')

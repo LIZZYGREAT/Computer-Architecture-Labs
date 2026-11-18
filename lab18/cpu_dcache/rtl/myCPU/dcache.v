@@ -263,9 +263,10 @@ always @(posedge clk) begin
         stat_writeback <= 32'b0;
         stat_uncache <= 32'b0;
         cache_fault <= 1'b0;
+    end else if (bridge_fault) begin
+        cache_fault <= 1'b1;
+        state <= ST_FAULT;
     end else begin
-        if (bridge_fault)
-            cache_fault <= 1'b1;
         case (state)
             ST_RESET_CLEAR: begin
                 valid_way0[clear_index] <= 1'b0;

@@ -415,6 +415,7 @@ icache u_icache(
     .refill_data_valid(ic_ret_valid),
     .refill_data_last(ic_ret_last),
     .refill_data(ic_ret_data),
+    .bridge_fault(axi_fault),
     .uncache_req(ic_uncache_req),
     .uncache_addr(ic_uncache_addr),
     .uncache_addr_ok(ic_uncache_addr_ok),

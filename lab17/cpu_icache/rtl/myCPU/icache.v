@@ -15,6 +15,7 @@ module icache(
     input          refill_data_valid,
     input          refill_data_last,
     input  [31:0]  refill_data,
+    input          bridge_fault,
 
     output         uncache_req,
     output [31:0]  uncache_addr,
@@ -185,6 +186,9 @@ always @(posedge clk) begin
         stat_refill <= 32'b0;
         stat_uncache_read <= 32'b0;
         cache_fault <= 1'b0;
+    end else if (bridge_fault) begin
+        cache_fault <= 1'b1;
+        state <= ST_FAULT;
     end else begin
         case (state)
             ST_RESET_CLEAR: begin

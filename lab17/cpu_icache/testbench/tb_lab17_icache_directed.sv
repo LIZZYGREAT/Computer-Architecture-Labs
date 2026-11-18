@@ -123,6 +123,7 @@ module tb_lab17_icache_directed;
         .refill_data_valid(ic_ret_valid),
         .refill_data_last(ic_ret_last),
         .refill_data(ic_ret_data),
+        .bridge_fault(axi_fault),
         .uncache_req(ic_uncache_req),
         .uncache_addr(ic_uncache_addr),
         .uncache_addr_ok(ic_uncache_addr_ok),
@@ -325,6 +326,36 @@ module tb_lab17_icache_directed;
             @(negedge clk);
             rvalid = 1'b0;
             rlast = 1'b0;
+        end
+    endtask
+
+    task reset_fault_path;
+        begin
+            @(negedge clk);
+            resetn = 1'b0;
+            cpu_req = 1'b0;
+            arready = 1'b0;
+            rvalid = 1'b0;
+            rlast = 1'b0;
+            repeat (5) @(posedge clk);
+            @(negedge clk);
+            resetn = 1'b1;
+            wait_cpu_ready();
+        end
+    endtask
+
+    task wait_fault_terminal(input [127:0] case_name);
+        integer n;
+        begin
+            n = 0;
+            while ((!axi_fault || !icache_fault) && n < 100) begin
+                @(negedge clk);
+                n = n + 1;
+            end
+            if (!axi_fault || !icache_fault || dut_icache.state !== 4'd8 || cpu_data_ok)
+                $fatal(1, "DIRECTED_FAIL=fault_not_terminal case=%0s axi=%0d ic=%0d state=%0d data_ok=%0d",
+                       case_name, axi_fault, icache_fault, dut_icache.state, cpu_data_ok);
+            $display("DIRECTED_FAULT_CASE=%0s accepted=1 completed=0 terminal_state=8", case_name);
         end
     endtask
 
@@ -583,16 +614,52 @@ module tb_lab17_icache_directed;
         accept_ar(32'h1faf_9000, 8'd0, 4'h2, 3'b110);
         send_r_beat(32'hbad0_0000, 1'b1, 4'hf, 2'b00);
         timeout = 0;
-        while (!axi_fault && timeout < 100) begin
+        while ((!axi_fault || !icache_fault) && timeout < 100) begin
             @(negedge clk);
             timeout = timeout + 1;
         end
-        if (!axi_fault) $fatal(1, "DIRECTED_FAIL=rid_error_not_detected");
+        if (!axi_fault || !icache_fault || dut_icache.state !== 4'd8 || cpu_data_ok)
+            $fatal(1, "DIRECTED_FAIL=icache_fault_not_terminal axi=%0d ic=%0d state=%0d data_ok=%0d",
+                   axi_fault, icache_fault, dut_icache.state, cpu_data_ok);
         $display("WAVE_CASE=RID_MISMATCH_STICKY_AXI_FAULT time=%0t", $time);
+        $display("DIRECTED_FAULT_CASE=RID_MISMATCH accepted=1 completed=0 terminal_state=8");
+        $display("DIRECTED_FAULT_INJECTION=RID_MISMATCH accepted=%0d completed=%0d expected_pending=1 axi_fault=%0d icache_fault=%0d terminal_state=%0d",
+                 cpu_accepts - 4, cpu_completions - 4, axi_fault, icache_fault,
+                 dut_icache.state);
 
-        $display("DIRECTED_CHECKS=24");
-        $display("DIRECTED_FAULT_INJECTION=RID_MISMATCH accepted=%0d completed=%0d expected_pending=1 axi_fault=%0d",
-                 cpu_accepts - 4, cpu_completions - 4, axi_fault);
+        reset_fault_path();
+        issue_cpu(1'b0, 32'h1faf_a000);
+        accept_ar(32'h1faf_a000, 8'd0, 4'h2, 3'b110);
+        send_r_beat(32'hbad0_1000, 1'b1, 4'h2, 2'b10);
+        wait_fault_terminal("RRESP_ERROR");
+
+        reset_fault_path();
+        issue_cpu(1'b1, 32'h1fc0_0240);
+        timeout = 0;
+        while (!ic_refill_req && timeout < 100) begin
+            @(negedge clk);
+            timeout = timeout + 1;
+        end
+        if (!ic_refill_req) $fatal(1, "DIRECTED_FAIL=early_rlast_refill_request_timeout");
+        accept_ar(32'h1fc0_0240, 8'd7, 4'h0, 3'b110);
+        send_r_beat(32'hbabe_0000, 1'b1, 4'h0, 2'b00);
+        wait_fault_terminal("RLAST_EARLY");
+
+        reset_fault_path();
+        issue_cpu(1'b1, 32'h1fc0_0340);
+        timeout = 0;
+        while (!ic_refill_req && timeout < 100) begin
+            @(negedge clk);
+            timeout = timeout + 1;
+        end
+        if (!ic_refill_req) $fatal(1, "DIRECTED_FAIL=missing_rlast_refill_request_timeout");
+        accept_ar(32'h1fc0_0340, 8'd7, 4'h0, 3'b110);
+        for (rbeat_index = 0; rbeat_index < 8; rbeat_index = rbeat_index + 1)
+            send_r_beat(32'hface_0000 + rbeat_index, 1'b0, 4'h0, 2'b00);
+        wait_fault_terminal("RLAST_MISSING");
+
+        $display("DIRECTED_CHECKS=28");
+        $display("DIRECTED_FAULT_CASES=4 RID_MISMATCH,RRESP_ERROR,RLAST_EARLY,RLAST_MISSING");
         $display("DIRECTED_AXI ar=%0d r=%0d aw=%0d w=%0d b=%0d",
                  stat_ar_transactions, stat_r_beats, stat_aw_transactions,
                  stat_w_beats, stat_b_responses);

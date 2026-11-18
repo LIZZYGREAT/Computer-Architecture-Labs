@@ -116,18 +116,6 @@ def capture_run_manifest(
     integrity_lines.extend(f"MISSING={path}" for path in missing)
     (run_dir / "source-integrity.txt").write_text("\n".join(integrity_lines) + "\n", encoding="utf-8")
 
-    result_path = run_dir / "result.txt"
-    if result_path.is_file():
-        existing = result_path.read_text(encoding="utf-8-sig")
-        managed_keys = ("SOURCE_INTEGRITY=", "SOURCE_MANIFEST=", "INPUT_MANIFEST=", "GIT_HEAD=")
-        base_lines = [line for line in existing.splitlines() if not line.startswith(managed_keys)]
-        extra = [
-            f"SOURCE_INTEGRITY={integrity_status}",
-            f"SOURCE_MANIFEST=source-manifest.csv",
-            f"INPUT_MANIFEST=input_manifest.csv",
-            f"GIT_HEAD={head}",
-        ]
-        result_path.write_text("\n".join(base_lines + extra) + "\n", encoding="utf-8")
     return integrity_status == "PASS"
 
 
