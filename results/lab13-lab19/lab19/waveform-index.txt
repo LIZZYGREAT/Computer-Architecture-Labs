@@ -1,11 +1,14 @@
-Lab19 final waveform index
-Source head: 4ba901c186567560dea1ca2fdfd1a73edf895fc5
+Lab19 final waveform handoff index
 
-| Purpose | Run | WDB | WDB SHA-256 | WCFG | WCFG SHA-256 |
-| --- | --- | --- | --- | --- | --- |
-| Official CACHE instruction program, 7/7 | lab19-cache-20261118-06 | wave-full.wdb (6,288,968 bytes) | 75A47936D1CBC38C8DA32FD2DFD4722500387A878078FCBF2D5BDE05D73338B8 | wave-full.wcfg (9,299 bytes) | BB23B0944582ABC7DF6EA3D1657CC8B815403E291720E90A61E6C2D75EC1CE98 |
-| Maintenance directed checks, 9/9 | lab19-maint-directed-20261118-06 | wave-full.wdb (130,476 bytes) | F83738CB0B4CF52F1F0CAF66896981AFCA9237C6F19BDC13CB5874F6692932F0 | wave-full.wcfg (15,425 bytes) | 39C0299DC455EE35DB6CED8462D54480C841BC2DBFD3CC3B9E74E5E313C89C06 |
+The entries below bind each waveform pair to its own RunId and run-time GIT_HEAD. WDB/WCFG hashes are SHA-256. The files are current selected regression artifacts; opening/configuration checks do not count as human waveform verification.
 
-The official configuration includes the CACHE operation, commit/done signals, I/D cache states and counters, bridge state, and testbench metrics. The directed configuration includes maintenance/writeback handshakes and valid/tag/dirty signals for ways 2 and 3. Both WCFG files reference their adjacent WDB and were structurally parsed; their logs record the selected signals.
+| Figure | Purpose | RunId / GIT_HEAD | WDB / bytes / SHA-256 | WCFG / bytes / SHA-256 |
+| --- | --- | --- | --- | --- |
+| L19-01 | Official CACHE instruction program, 7/7 | r3l19-cache-01 / f504c94fae79b2c4ed37f225a56795b214f895af | wave-full.wdb / 6,308,733 / AE2E57A1830DEE93F16F66BF35D2F2DD25A59C36BDC118D7877EFFADE19765E5 | wave-full.wcfg / 9,299 / BB23B0944582ABC7DF6EA3D1657CC8B815403E291720E90A61E6C2D75EC1CE98 |
+| L19-02 | Maintenance directed checks, 10/10 | r3l19-maint-01 / 8126dee13fd064064214b24dcf946bc11d27ca6f | wave-full.wdb / 130,258 / F2AFF425B9FFD8DEBB8BA23C3758A85B65040F87F7D31DD013BC1CE3B2B88ED8 | wave-full.wcfg / 16,513 / 46893DC2E155C2DAC9425CA06AB790538FB535349CB3B1CFCB900C67ADBAD1D2 |
+| L19-04 | Top-level Index/Hit CACHE acceptance contract | r3l19-index-02 / 731041f0ee78d5afa555ca3d9f5a76996766b79a | wave-full.wdb / 400,868 / 7A6BF400CA7C416543BB08C767663840751E8A66FE0020E15261B7D354B12568 | wave-full.wcfg / 20,370 / 8560783D1A749F359087AA2CD9804FEEC00E3F899C820308A4016EF21B05812A |
+| L19-05 | Unmapped IndexWBInv, eight W beats, B completion and sentinel | r3l19-index-02 / 731041f0ee78d5afa555ca3d9f5a76996766b79a | wave-full.wdb / 400,868 / 7A6BF400CA7C416543BB08C767663840751E8A66FE0020E15261B7D354B12568 | wave-full.wcfg / 20,370 / 8560783D1A749F359087AA2CD9804FEEC00E3F899C820308A4016EF21B05812A |
+| L19-06 | Forced stale-response replay crosscheck (not software-issued TLBWI) | r3l19-tlbreplay-01 / a73b51f1ec3d51474e7fd824d54e75b537cc9810 | wave-full.wdb / 398,248 / 32018A171626988A009F2A203E7C8258AB45B1CE3BEF4245874B061EF8EC9332 | wave-full.wcfg / 12,839 / E2DE198E11CE1367BE69FF1DAB6137DAA6BE57228F4A6D09D8849FEF1A39DE37 |
+| L19-07 | Four-way DCache writeback scoreboard, 32 WDATA compares | r3l19-wb-02 / f4a0b7fedba0985f5371172089fc9fde3b6cc2bf | wave-full.wdb / 148,146 / D7D4DD8EFB2E127E910F9C64A95B2ACD99952B496A422A942282D5C238B848E7 | wave-full.wcfg / 50,976 / 942779B5949EA62C06FD2A98DD6074439E606744F7D646E1520EEF082CB3F26C |
 
-Dhrystone and CoreMark are long performance runs and intentionally have no full-run WDB/WCFG. Their result.txt, simulate.log, UART output, and transaction-metrics.csv are the evidence for L19-03. GUI screenshots, manual observed values, and screenshot time windows remain pending in report/lab13-19/data/wave-capture-log.csv.
+Dhrystone and CoreMark are long performance runs and intentionally have no full-run WDB/WCFG; their logs and counters provide the L19-03 evidence. GUI screenshots, human observations, and screenshot time windows remain pending in report/lab13-19/data/wave-capture-log.csv.

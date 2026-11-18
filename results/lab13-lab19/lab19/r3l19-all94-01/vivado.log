@@ -1,0 +1,382 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Thu Nov 19 00:49:35 2026
+# Process ID         : 25788
+# Current directory  : D:/Verilog/2025.2/Vivado/bin
+# Command line       : vivado.exe -mode batch -log C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-all94-01\vivado.log -journal C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-all94-01\vivado.jou -source C:\Users\lenovo\Desktop\Projects\FPGA\scripts\tlb_cache\run_soc.tcl -tclargs C:\Users\lenovo\Desktop\Projects\FPGA C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-all94-01 lab19_all94
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/vivado.log
+# Journal file       : C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-all94-01\vivado.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 6979 MB
+# Total Virtual      : 30439 MB
+# Available Virtual  : 11098 MB
+#-----------------------------------------------------------
+source {C:\Users\lenovo\Desktop\Projects\FPGA\scripts\tlb_cache\run_soc.tcl}
+# if {[llength $argv] < 2 || [llength $argv] > 3} {
+#     error "usage: run_soc.tcl <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline|lab18|lab19|lab19_all94|dhrystone|coremark?"
+# }
+# set repo [file normalize [lindex $argv 0]]
+# set run_dir [file normalize [lindex $argv 1]]
+# set suite [expr {[llength $argv] == 3 ? [lindex $argv 2] : "lab14"}]
+# set cpu_root [file join $repo lab14 cpu_tlb]
+# set project_name ${suite}_soc
+# set project_dir [file join $run_dir project]
+# file mkdir $run_dir
+# if {$suite eq "lab14"} {
+#     set coe_file [file join $repo lab14 tlb_func obj inst_ram.coe]
+#     set testbench [file join $cpu_root testbench tb_lab14_tlb.sv]
+#     set sim_top tb_lab14_tlb
+#     set sim_runtime 20000000ns
+#     set trace_file ""
+# } elseif {$suite eq "lab11_trace"} {
+#     set coe_file [file join $repo lab11 CPU_CDE_AXI soft func_lab9 obj inst_ram.coe]
+#     set original_testbench [file join $cpu_root testbench mycpu_tb.v]
+#     set testbench [file join $run_dir tb_lab11_trace.v]
+#     set trace_file [file join $repo lab11 CPU_CDE_AXI cpu132_gettrace golden_trace.txt]
+#     set sim_top tb_top
+#     set sim_runtime 100000000ns
+#     if {![file isfile $original_testbench] || ![file isfile $trace_file]} {
+#         error "Lab11 golden-trace testbench or reference trace is missing"
+#     }
+#     set tb_in [open $original_testbench r]
+#     set tb_text [read $tb_in]
+#     close $tb_in
+#     set old_trace_define {`define TRACE_REF_FILE "../../../../../../../cpu132_gettrace/golden_trace.txt"}
+#     if {[string first $old_trace_define $tb_text] < 0} {
+#         error "Lab11 testbench trace macro is not at the expected baseline definition"
+#     }
+#     set new_trace_define [format {`define TRACE_REF_FILE "%s"} [file normalize $trace_file]]
+#     set tb_text [string map [list $old_trace_define $new_trace_define] $tb_text]
+#     set tb_out [open $testbench w]
+#     puts -nonewline $tb_out $tb_text
+#     close $tb_out
+# } elseif {$suite eq "lab17" || $suite eq "lab17_baseline"} {
+#     set cpu_root [file join $repo lab17 cpu_icache]
+#     set coe_file [file join $repo lab17 func_all94 obj inst_ram.coe]
+#     set testbench [file join $cpu_root testbench tb_lab17_functional.sv]
+#     set sim_top [expr {$suite eq "lab17" ? "tb_lab17_icache" : "tb_lab17_baseline"}]
+#     set sim_runtime 250000000ns
+#     set trace_file ""
+# } elseif {$suite eq "lab18"} {
+#     set cpu_root [file join $repo lab18 cpu_dcache]
+#     set coe_file [file join $repo lab17 func_all94 obj inst_ram.coe]
+#     set testbench [file join $cpu_root testbench tb_lab18_functional.sv]
+#     set sim_top tb_lab18_dcache
+#     set sim_runtime 250000000ns
+#     set trace_file ""
+# } elseif {$suite eq "lab19"} {
+#     set cpu_root [file join $repo lab19 cpu_cache]
+#     set coe_file [file join $repo lab19 cache_func obj inst_ram.coe]
+#     set testbench [file join $cpu_root testbench tb_lab19_cache.sv]
+#     set sim_top tb_lab19_cache
+#     set sim_runtime 250000000ns
+#     set trace_file ""
+# } elseif {$suite eq "lab19_all94"} {
+#     set cpu_root [file join $repo lab19 cpu_cache]
+#     set coe_file [file join $repo lab17 func_all94 obj inst_ram.coe]
+#     set testbench [file join $cpu_root testbench tb_lab19_all94.sv]
+#     set sim_top tb_lab19_all94
+#     set sim_runtime 250000000ns
+#     set trace_file ""
+# } elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
+#     set cpu_root [file join $repo lab19 cpu_cache]
+#     set coe_file [file join $repo lab19 perf_func obj $suite axi_ram.coe]
+#     set testbench [file join $cpu_root testbench tb_lab19_perf.sv]
+#     set sim_top [expr {$suite eq "dhrystone" ? "tb_lab19_dhrystone" : "tb_lab19_coremark"}]
+#     set sim_runtime 2000000000ns
+#     set trace_file ""
+# } else {
+#     error "unsupported SoC regression suite: $suite"
+# }
+# create_project -force $project_name $project_dir -part xc7a200tfbg676-2
+INFO: [ProjectBase 1-489] The host OS only allows 260 characters in a normal path. The project is stored in a path with more than 80 characters. If you experience issues with IP, Block Designs, or files not being found, please consider moving the project to a location with a shorter path. Alternately consider using the OS subst command to map part of the path to a drive letter.
+Current project path is 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/project'
+create_project: Time (s): cpu = 00:00:19 ; elapsed = 00:00:20 . Memory (MB): peak = 530.184 ; gain = 222.062
+# set_property target_language Verilog [current_project]
+# set_property simulator_language Mixed [current_project]
+# set_property target_simulator XSim [current_project]
+# set cpu_rtl [glob -nocomplain [file join $cpu_root rtl myCPU *.v]]
+# set common_rtl [list \
+#     [file join $cpu_root rtl axi_wrap axi_wrap.v] \
+#     [file join $cpu_root rtl ram_wrap axi_wrap_ram.v] \
+#     [file join $cpu_root rtl CONFREG confreg.v] \
+#     [file join $cpu_root rtl soc_axi_lite_top.v]]
+# set ip_files [list \
+#     [file join $cpu_root rtl xilinx_ip axi_ram axi_ram.xci] \
+#     [file join $cpu_root rtl xilinx_ip axi_crossbar_1x2 axi_crossbar_1x2.xci] \
+#     [file join $cpu_root rtl xilinx_ip lab6_mult33 lab6_mult33.xci] \
+#     [file join $cpu_root rtl xilinx_ip lab6_div32 lab6_div32.xci]]
+# set ip_source_root [file join $run_dir ip-src]
+# file mkdir $ip_source_root
+# set staged_ip_files [list]
+# foreach source_ip $ip_files {
+#     set ip_name [file rootname [file tail $source_ip]]
+#     set staged_ip_dir [file join $ip_source_root $ip_name]
+#     file mkdir $staged_ip_dir
+#     set staged_ip [file join $staged_ip_dir [file tail $source_ip]]
+#     file copy -force $source_ip $staged_ip
+#     if {$ip_name eq "axi_ram"} {
+#         set xci_in [open $staged_ip r]
+#         set xci_text [read $xci_in]
+#         close $xci_in
+#         if {$suite eq "lab17" || $suite eq "lab17_baseline" || $suite eq "lab18"} {
+#             set relative_coe "../../../../func_all94/obj/inst_ram.coe"
+#         } elseif {$suite eq "lab19" || $suite eq "lab19_all94"} {
+#             set relative_coe "../../../../func_all94/obj/inst_ram.coe"
+#         } elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
+#             set relative_coe "../../../../func_all94/obj/inst_ram.coe"
+#         } else {
+#             set relative_coe "../../../../tlb_func/obj/inst_ram.coe"
+#         }
+#         if {[string first $relative_coe $xci_text] < 0} {
+#             error "COE reference not found in staged axi_ram XCI"
+#         }
+#         set xci_text [string map [list $relative_coe [file normalize $coe_file]] $xci_text]
+#         set xci_out [open $staged_ip w]
+#         puts -nonewline $xci_out $xci_text
+#         close $xci_out
+#     }
+#     lappend staged_ip_files $staged_ip
+# }
+# set include_header [file join $cpu_root rtl myCPU mycpu.h]
+# set tlb_rtl [file join $repo lab13 tlb_verify rtl tlb.v]
+# foreach required [concat $cpu_rtl $common_rtl $ip_files [list $include_header $coe_file $tlb_rtl $testbench]] {
+#     if {![file isfile $required]} {
+#         error "required S2 source or image is missing: $required"
+#     }
+# }
+# add_files -norecurse -fileset sources_1 [concat $cpu_rtl $common_rtl $staged_ip_files [list $include_header $coe_file $tlb_rtl]]
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'D:/Verilog/2025.2/Vivado/data/ip'.
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab17/func_all94/obj/inst_ram.coe' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [IP_Flow 19-2162] IP 'axi_ram' is locked:
+* IP definition 'Block Memory Generator (8.4)' for IP 'axi_ram' (customized with software release 2019.2) has a different revision in the IP Catalog.
+WARNING: [IP_Flow 19-2162] IP 'axi_crossbar_1x2' is locked:
+* IP definition 'AXI Crossbar (2.1)' for IP 'axi_crossbar_1x2' (customized with software release 2019.2) has a different revision in the IP Catalog.
+WARNING: [Vivado 12-13650] The IP file 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/ip-src/axi_ram/axi_ram.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in 'c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/ip-src/axi_ram'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+WARNING: [Vivado 12-13650] The IP file 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/ip-src/axi_crossbar_1x2/axi_crossbar_1x2.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in 'c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/ip-src/axi_crossbar_1x2'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+WARNING: [Vivado 12-13650] The IP file 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/ip-src/lab6_mult33/lab6_mult33.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in 'c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/ip-src/lab6_mult33'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+WARNING: [Vivado 12-13650] The IP file 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/ip-src/lab6_div32/lab6_div32.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in 'c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/ip-src/lab6_div32'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+add_files: Time (s): cpu = 00:00:03 ; elapsed = 00:00:06 . Memory (MB): peak = 580.168 ; gain = 49.984
+# add_files -norecurse -fileset sim_1 $testbench
+# set_property include_dirs [list [file join $cpu_root rtl myCPU]] [get_filesets sources_1]
+# set_property top soc_axi_lite_top [get_filesets sources_1]
+# set_property top $sim_top [get_filesets sim_1]
+# set log_all_signals [expr {$suite eq "lab14" || $suite eq "lab19"}]
+# set_property xsim.simulate.log_all_signals $log_all_signals [get_filesets sim_1]
+# set_property xsim.simulate.runtime $sim_runtime [get_filesets sim_1]
+# if {$suite eq "lab19"} {
+#     set wave_config_file [file join $run_dir wave-full.wcfg]
+#     set wave_hook_file [file join $run_dir wave-config-hook.tcl]
+#     set wave_log_file [file join $run_dir wave-config-hook.log]
+#     set wave_objects [list \
+#         /tb_lab19_cache/clk \
+#         /tb_lab19_cache/resetn \
+#         /tb_lab19_cache/soc_lite/u_cpu/cache_maint_op \
+#         /tb_lab19_cache/soc_lite/u_cpu/cache_maint_vaddr \
+#         /tb_lab19_cache/soc_lite/u_cpu/cache_maint_commit \
+#         /tb_lab19_cache/soc_lite/u_cpu/icache_maint_done \
+#         /tb_lab19_cache/soc_lite/u_cpu/dcache_maint_done \
+#         /tb_lab19_cache/soc_lite/u_cpu/u_icache/state \
+#         /tb_lab19_cache/soc_lite/u_cpu/u_icache/stat_miss \
+#         /tb_lab19_cache/soc_lite/u_cpu/u_icache/stat_refill \
+#         /tb_lab19_cache/soc_lite/u_cpu/u_dcache/state \
+#         /tb_lab19_cache/soc_lite/u_cpu/u_dcache/stat_writeback \
+#         /tb_lab19_cache/soc_lite/u_cpu/u_cache_axi3_bridge/rd_state \
+#         /tb_lab19_cache/soc_lite/u_cpu/u_cache_axi3_bridge/wr_state]
+#     set wave_hook_text [string map [list \
+#         @WAVE_PATH@ [list $wave_config_file] \
+#         @WAVE_LOG@ [list $wave_log_file] \
+#         @WAVE_NAME@ [file tail $wave_config_file] \
+#         @WAVE_OBJECTS@ [list $wave_objects]] {
+# set wave_log [open @WAVE_LOG@ w]
+# if {[catch {
+#     set wave_config [current_wave_config]
+#     if {[string length $wave_config] == 0} { create_wave_config }
+#     set wave_added [list]
+#     foreach wave_object @WAVE_OBJECTS@ {
+#         set wave_matches [get_objects -quiet $wave_object]
+#         if {[llength $wave_matches] > 0} {
+#             add_wave $wave_matches
+#             lappend wave_added $wave_object
+#         }
+#     }
+#     save_wave_config @WAVE_PATH@
+# } wave_error]} {
+#     puts $wave_log "WCFG_CAPTURE_ERROR=$wave_error"
+# } else {
+#     puts $wave_log "WCFG_CAPTURED=@WAVE_NAME@"
+#     puts $wave_log "WAVE_OBJECTS_ADDED=[join $wave_added ,]"
+# }
+# close $wave_log
+# }]
+#     set wave_hook [open $wave_hook_file w]
+#     puts -nonewline $wave_hook $wave_hook_text
+#     close $wave_hook
+#     set_property xsim.simulate.tcl.post $wave_hook_file [get_filesets sim_1]
+# }
+# update_compile_order -fileset sources_1
+# update_compile_order -fileset sim_1
+# set ip_objects [get_ips -quiet]
+# if {[llength $ip_objects] > 0} {
+#     upgrade_ip -quiet $ip_objects
+#     generate_target all $ip_objects
+#     export_ip_user_files -of_objects $ip_objects -no_script -sync -force -quiet
+# }
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'axi_crossbar_1x2'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'axi_crossbar_1x2'...
+INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'axi_crossbar_1x2'...
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'axi_ram'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'axi_ram'...
+INFO: [IP_Flow 19-1686] Generating 'Miscellaneous' target for IP 'axi_ram'...
+INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'axi_ram'...
+INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'lab6_div32'...
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'lab6_div32'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'lab6_div32'...
+INFO: [IP_Flow 19-1686] Generating 'C Simulation' target for IP 'lab6_div32'...
+INFO: [IP_Flow 19-1686] Generating 'Test Bench' target for IP 'lab6_div32'...
+INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'lab6_div32'...
+INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'lab6_mult33'...
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'lab6_mult33'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'lab6_mult33'...
+INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'lab6_mult33'...
+generate_target: Time (s): cpu = 00:00:17 ; elapsed = 00:00:19 . Memory (MB): peak = 656.613 ; gain = 5.789
+# report_ip_status -file [file join $run_dir ip-status.rpt]
+# set project_xpr [file join $project_dir ${project_name}.xpr]
+# set active_path [file join $run_dir active-sources.txt]
+# set active_file [open $active_path w]
+# puts $active_file "PROJECT_XPR=$project_xpr"
+# foreach f [concat $cpu_rtl $common_rtl $staged_ip_files [list $include_header $coe_file $tlb_rtl]] {
+#     puts $active_file "SOURCE=$f"
+# }
+# if {$suite eq "lab11_trace"} {
+#     puts $active_file "SOURCE=$original_testbench"
+# }
+# foreach f [get_files -of_objects [get_filesets sim_1]] {
+#     puts $active_file "SIM_SOURCE=[get_property NAME $f]"
+# }
+# close $active_file
+# if {$suite eq "lab14"} {
+#     puts "CASE=lab14"
+# } elseif {$suite eq "lab18"} {
+#     puts "CASE=lab18"
+# } elseif {$suite eq "lab19"} {
+#     puts "CASE=lab19"
+# } elseif {$suite eq "lab19_all94"} {
+#     puts "CASE=lab19"
+# } elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
+#     puts "CASE=lab19_performance"
+# } elseif {$suite eq "lab17" || $suite eq "lab17_baseline"} {
+#     puts "CASE=lab17"
+# } else {
+#     puts "CASE=lab11"
+# }
+CASE=lab19
+# puts "SUITE=$suite"
+SUITE=lab19_all94
+# puts "PROJECT_XPR=$project_xpr"
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/project/lab19_all94_soc.xpr
+# puts "SIM_TOP=$sim_top"
+SIM_TOP=tb_lab19_all94
+# puts "PROGRAM_IMAGE=$coe_file"
+PROGRAM_IMAGE=C:/Users/lenovo/Desktop/Projects/FPGA/lab17/func_all94/obj/inst_ram.coe
+# if {$trace_file ne ""} { puts "TRACE_REFERENCE=$trace_file" }
+# launch_simulation -mode behavioral
+Command: launch_simulation  -mode behavioral
+INFO: [Vivado 12-25911] Executing simulation for 'XSim' simulator
+INFO: [Vivado 12-28535] Process started - Thu Nov 19 00:51:00 2026
+
+INFO: [Vivado 12-12493] Simulation top is 'tb_lab19_all94'
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/project/lab19_all94_soc.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-13660] Precompiled IP simulation library mode is enabled (default). The design IP libraries will be referenced from the compiled library path. Please note that if the precompiled version of the library is not found from the path or the IP is in locked state, then the library source files for these IPs will be compiled locally as part of the compile order.
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-72] Using boost library from 'D:/Verilog/2025.2/Vivado/tps/boost_1_72_0'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'D:/Verilog/2025.2/Vivado/data/xsim/xsim.ini' copied to run dir:'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/project/lab19_all94_soc.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_lab19_all94' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/project/lab19_all94_soc.sim/sim_1/behav/xsim/inst_ram.coe'
+INFO: [SIM-utils-43] Exported 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/project/lab19_all94_soc.sim/sim_1/behav/xsim/axi_ram.mif'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/project/lab19_all94_soc.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -L uvm -prj tb_lab19_all94_vlog.prj"
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/ip-src/axi_ram/sim/axi_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module axi_ram
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/ip-src/axi_crossbar_1x2/sim/axi_crossbar_1x2.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module axi_crossbar_1x2
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/EXE_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module exe_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/ID_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module id_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/IF_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module if_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/MEM_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/WB_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module wb_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/addr_translate.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module addr_translate
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/alu.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module alu
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/axi_wrap/axi_wrap.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module axi_wrap
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/ram_wrap/axi_wrap_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module axi_wrap_ram
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cache_axi3_bridge.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cache_axi3_bridge
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/CONFREG/confreg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module confreg
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cp0_reg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cp0_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module dcache
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/hilo_unit.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module hilo_unit
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module icache
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/mycpu_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mycpu_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module regfile
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/soc_axi_lite_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module soc_axi_lite_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab13/tlb_verify/rtl/tlb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tlb
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/tools.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module decoder_5_32
+INFO: [VRFC 10-311] analyzing module decoder_6_64
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/testbench/tb_lab19_all94.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module lab19_all94_check
+INFO: [VRFC 10-311] analyzing module tb_lab19_all94
+ERROR: [VRFC 10-1491] unexpected EOF [C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/testbench/tb_lab19_all94.sv:199]
+"xvhdl --incr --relax -prj tb_lab19_all94_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/ip-src/lab6_div32/sim/lab6_div32.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'lab6_div32'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/ip-src/lab6_mult33/sim/lab6_mult33.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'lab6_mult33'
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:09 . Memory (MB): peak = 656.613 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '9' seconds
+INFO: [USF-XSim-99] Step results log file:'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/project/lab19_all94_soc.sim/sim_1/behav/xsim/xvlog.log'
+ERROR: [USF-XSim-62] 'compile' step failed with error(s). Please check the Tcl console output or 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/project/lab19_all94_soc.sim/sim_1/behav/xsim/xvlog.log' file for more information.
+ERROR: [Vivado 12-4473] Detected error while running simulation. Please correct the issue and retry this operation.
+launch_simulation: Time (s): cpu = 00:00:05 ; elapsed = 00:00:16 . Memory (MB): peak = 656.613 ; gain = 0.000
+ERROR: [Common 17-39] 'launch_simulation' failed due to earlier errors.
+
+    while executing
+"launch_simulation -mode behavioral"
+    (file "C:\Users\lenovo\Desktop\Projects\FPGA\scripts\tlb_cache\run_soc.tcl" line 242)
+INFO: [Common 17-206] Exiting Vivado at Thu Nov 19 00:51:17 2026...

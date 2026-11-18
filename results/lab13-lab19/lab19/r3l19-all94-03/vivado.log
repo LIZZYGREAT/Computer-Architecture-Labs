@@ -1,0 +1,836 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Thu Nov 19 01:04:44 2026
+# Process ID         : 3804
+# Current directory  : D:/Verilog/2025.2/Vivado/bin
+# Command line       : vivado.exe -mode batch -log C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-all94-03\vivado.log -journal C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-all94-03\vivado.jou -source C:\Users\lenovo\Desktop\Projects\FPGA\scripts\tlb_cache\run_soc.tcl -tclargs C:\Users\lenovo\Desktop\Projects\FPGA C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-all94-03 lab19_all94
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/vivado.log
+# Journal file       : C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-all94-03\vivado.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 6979 MB
+# Total Virtual      : 30439 MB
+# Available Virtual  : 11115 MB
+#-----------------------------------------------------------
+source {C:\Users\lenovo\Desktop\Projects\FPGA\scripts\tlb_cache\run_soc.tcl}
+# if {[llength $argv] < 2 || [llength $argv] > 3} {
+#     error "usage: run_soc.tcl <repo-root> <run-dir> ?lab14|lab11_trace|lab17|lab17_baseline|lab18|lab19|lab19_all94|dhrystone|coremark?"
+# }
+# set repo [file normalize [lindex $argv 0]]
+# set run_dir [file normalize [lindex $argv 1]]
+# set suite [expr {[llength $argv] == 3 ? [lindex $argv 2] : "lab14"}]
+# set cpu_root [file join $repo lab14 cpu_tlb]
+# set project_name ${suite}_soc
+# set project_dir [file join $run_dir project]
+# file mkdir $run_dir
+# if {$suite eq "lab14"} {
+#     set coe_file [file join $repo lab14 tlb_func obj inst_ram.coe]
+#     set testbench [file join $cpu_root testbench tb_lab14_tlb.sv]
+#     set sim_top tb_lab14_tlb
+#     set sim_runtime 20000000ns
+#     set trace_file ""
+# } elseif {$suite eq "lab11_trace"} {
+#     set coe_file [file join $repo lab11 CPU_CDE_AXI soft func_lab9 obj inst_ram.coe]
+#     set original_testbench [file join $cpu_root testbench mycpu_tb.v]
+#     set testbench [file join $run_dir tb_lab11_trace.v]
+#     set trace_file [file join $repo lab11 CPU_CDE_AXI cpu132_gettrace golden_trace.txt]
+#     set sim_top tb_top
+#     set sim_runtime 100000000ns
+#     if {![file isfile $original_testbench] || ![file isfile $trace_file]} {
+#         error "Lab11 golden-trace testbench or reference trace is missing"
+#     }
+#     set tb_in [open $original_testbench r]
+#     set tb_text [read $tb_in]
+#     close $tb_in
+#     set old_trace_define {`define TRACE_REF_FILE "../../../../../../../cpu132_gettrace/golden_trace.txt"}
+#     if {[string first $old_trace_define $tb_text] < 0} {
+#         error "Lab11 testbench trace macro is not at the expected baseline definition"
+#     }
+#     set new_trace_define [format {`define TRACE_REF_FILE "%s"} [file normalize $trace_file]]
+#     set tb_text [string map [list $old_trace_define $new_trace_define] $tb_text]
+#     set tb_out [open $testbench w]
+#     puts -nonewline $tb_out $tb_text
+#     close $tb_out
+# } elseif {$suite eq "lab17" || $suite eq "lab17_baseline"} {
+#     set cpu_root [file join $repo lab17 cpu_icache]
+#     set coe_file [file join $repo lab17 func_all94 obj inst_ram.coe]
+#     set testbench [file join $cpu_root testbench tb_lab17_functional.sv]
+#     set sim_top [expr {$suite eq "lab17" ? "tb_lab17_icache" : "tb_lab17_baseline"}]
+#     set sim_runtime 250000000ns
+#     set trace_file ""
+# } elseif {$suite eq "lab18"} {
+#     set cpu_root [file join $repo lab18 cpu_dcache]
+#     set coe_file [file join $repo lab17 func_all94 obj inst_ram.coe]
+#     set testbench [file join $cpu_root testbench tb_lab18_functional.sv]
+#     set sim_top tb_lab18_dcache
+#     set sim_runtime 250000000ns
+#     set trace_file ""
+# } elseif {$suite eq "lab19"} {
+#     set cpu_root [file join $repo lab19 cpu_cache]
+#     set coe_file [file join $repo lab19 cache_func obj inst_ram.coe]
+#     set testbench [file join $cpu_root testbench tb_lab19_cache.sv]
+#     set sim_top tb_lab19_cache
+#     set sim_runtime 250000000ns
+#     set trace_file ""
+# } elseif {$suite eq "lab19_all94"} {
+#     set cpu_root [file join $repo lab19 cpu_cache]
+#     set coe_file [file join $repo lab17 func_all94 obj inst_ram.coe]
+#     set testbench [file join $cpu_root testbench tb_lab19_all94.sv]
+#     set sim_top tb_lab19_all94
+#     set sim_runtime 250000000ns
+#     set trace_file ""
+# } elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
+#     set cpu_root [file join $repo lab19 cpu_cache]
+#     set coe_file [file join $repo lab19 perf_func obj $suite axi_ram.coe]
+#     set testbench [file join $cpu_root testbench tb_lab19_perf.sv]
+#     set sim_top [expr {$suite eq "dhrystone" ? "tb_lab19_dhrystone" : "tb_lab19_coremark"}]
+#     set sim_runtime 2000000000ns
+#     set trace_file ""
+# } else {
+#     error "unsupported SoC regression suite: $suite"
+# }
+# create_project -force $project_name $project_dir -part xc7a200tfbg676-2
+INFO: [ProjectBase 1-489] The host OS only allows 260 characters in a normal path. The project is stored in a path with more than 80 characters. If you experience issues with IP, Block Designs, or files not being found, please consider moving the project to a location with a shorter path. Alternately consider using the OS subst command to map part of the path to a drive letter.
+Current project path is 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/project'
+create_project: Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 526.207 ; gain = 218.852
+# set_property target_language Verilog [current_project]
+# set_property simulator_language Mixed [current_project]
+# set_property target_simulator XSim [current_project]
+# set cpu_rtl [glob -nocomplain [file join $cpu_root rtl myCPU *.v]]
+# set common_rtl [list \
+#     [file join $cpu_root rtl axi_wrap axi_wrap.v] \
+#     [file join $cpu_root rtl ram_wrap axi_wrap_ram.v] \
+#     [file join $cpu_root rtl CONFREG confreg.v] \
+#     [file join $cpu_root rtl soc_axi_lite_top.v]]
+# set ip_files [list \
+#     [file join $cpu_root rtl xilinx_ip axi_ram axi_ram.xci] \
+#     [file join $cpu_root rtl xilinx_ip axi_crossbar_1x2 axi_crossbar_1x2.xci] \
+#     [file join $cpu_root rtl xilinx_ip lab6_mult33 lab6_mult33.xci] \
+#     [file join $cpu_root rtl xilinx_ip lab6_div32 lab6_div32.xci]]
+# set ip_source_root [file join $run_dir ip-src]
+# file mkdir $ip_source_root
+# set staged_ip_files [list]
+# foreach source_ip $ip_files {
+#     set ip_name [file rootname [file tail $source_ip]]
+#     set staged_ip_dir [file join $ip_source_root $ip_name]
+#     file mkdir $staged_ip_dir
+#     set staged_ip [file join $staged_ip_dir [file tail $source_ip]]
+#     file copy -force $source_ip $staged_ip
+#     if {$ip_name eq "axi_ram"} {
+#         set xci_in [open $staged_ip r]
+#         set xci_text [read $xci_in]
+#         close $xci_in
+#         if {$suite eq "lab17" || $suite eq "lab17_baseline" || $suite eq "lab18"} {
+#             set relative_coe "../../../../func_all94/obj/inst_ram.coe"
+#         } elseif {$suite eq "lab19" || $suite eq "lab19_all94"} {
+#             set relative_coe "../../../../func_all94/obj/inst_ram.coe"
+#         } elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
+#             set relative_coe "../../../../func_all94/obj/inst_ram.coe"
+#         } else {
+#             set relative_coe "../../../../tlb_func/obj/inst_ram.coe"
+#         }
+#         if {[string first $relative_coe $xci_text] < 0} {
+#             error "COE reference not found in staged axi_ram XCI"
+#         }
+#         set xci_text [string map [list $relative_coe [file normalize $coe_file]] $xci_text]
+#         set xci_out [open $staged_ip w]
+#         puts -nonewline $xci_out $xci_text
+#         close $xci_out
+#     }
+#     lappend staged_ip_files $staged_ip
+# }
+# set include_header [file join $cpu_root rtl myCPU mycpu.h]
+# set tlb_rtl [file join $repo lab13 tlb_verify rtl tlb.v]
+# foreach required [concat $cpu_rtl $common_rtl $ip_files [list $include_header $coe_file $tlb_rtl $testbench]] {
+#     if {![file isfile $required]} {
+#         error "required S2 source or image is missing: $required"
+#     }
+# }
+# add_files -norecurse -fileset sources_1 [concat $cpu_rtl $common_rtl $staged_ip_files [list $include_header $coe_file $tlb_rtl]]
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'D:/Verilog/2025.2/Vivado/data/ip'.
+WARNING: [filemgmt 56-12] File 'C:/Users/lenovo/Desktop/Projects/FPGA/lab17/func_all94/obj/inst_ram.coe' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [IP_Flow 19-2162] IP 'axi_ram' is locked:
+* IP definition 'Block Memory Generator (8.4)' for IP 'axi_ram' (customized with software release 2019.2) has a different revision in the IP Catalog.
+WARNING: [IP_Flow 19-2162] IP 'axi_crossbar_1x2' is locked:
+* IP definition 'AXI Crossbar (2.1)' for IP 'axi_crossbar_1x2' (customized with software release 2019.2) has a different revision in the IP Catalog.
+WARNING: [Vivado 12-13650] The IP file 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/ip-src/axi_ram/axi_ram.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in 'c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/ip-src/axi_ram'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+WARNING: [Vivado 12-13650] The IP file 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/ip-src/axi_crossbar_1x2/axi_crossbar_1x2.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in 'c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/ip-src/axi_crossbar_1x2'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+WARNING: [Vivado 12-13650] The IP file 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/ip-src/lab6_mult33/lab6_mult33.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in 'c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/ip-src/lab6_mult33'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+WARNING: [Vivado 12-13650] The IP file 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/ip-src/lab6_div32/lab6_div32.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in 'c:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/ip-src/lab6_div32'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+add_files: Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 578.906 ; gain = 52.699
+# add_files -norecurse -fileset sim_1 $testbench
+# set_property include_dirs [list [file join $cpu_root rtl myCPU]] [get_filesets sources_1]
+# set_property top soc_axi_lite_top [get_filesets sources_1]
+# set_property top $sim_top [get_filesets sim_1]
+# set log_all_signals [expr {$suite eq "lab14" || $suite eq "lab19"}]
+# set_property xsim.simulate.log_all_signals $log_all_signals [get_filesets sim_1]
+# set_property xsim.simulate.runtime $sim_runtime [get_filesets sim_1]
+# if {$suite eq "lab19"} {
+#     set wave_config_file [file join $run_dir wave-full.wcfg]
+#     set wave_hook_file [file join $run_dir wave-config-hook.tcl]
+#     set wave_log_file [file join $run_dir wave-config-hook.log]
+#     set wave_objects [list \
+#         /tb_lab19_cache/clk \
+#         /tb_lab19_cache/resetn \
+#         /tb_lab19_cache/soc_lite/u_cpu/cache_maint_op \
+#         /tb_lab19_cache/soc_lite/u_cpu/cache_maint_vaddr \
+#         /tb_lab19_cache/soc_lite/u_cpu/cache_maint_commit \
+#         /tb_lab19_cache/soc_lite/u_cpu/icache_maint_done \
+#         /tb_lab19_cache/soc_lite/u_cpu/dcache_maint_done \
+#         /tb_lab19_cache/soc_lite/u_cpu/u_icache/state \
+#         /tb_lab19_cache/soc_lite/u_cpu/u_icache/stat_miss \
+#         /tb_lab19_cache/soc_lite/u_cpu/u_icache/stat_refill \
+#         /tb_lab19_cache/soc_lite/u_cpu/u_dcache/state \
+#         /tb_lab19_cache/soc_lite/u_cpu/u_dcache/stat_writeback \
+#         /tb_lab19_cache/soc_lite/u_cpu/u_cache_axi3_bridge/rd_state \
+#         /tb_lab19_cache/soc_lite/u_cpu/u_cache_axi3_bridge/wr_state]
+#     set wave_hook_text [string map [list \
+#         @WAVE_PATH@ [list $wave_config_file] \
+#         @WAVE_LOG@ [list $wave_log_file] \
+#         @WAVE_NAME@ [file tail $wave_config_file] \
+#         @WAVE_OBJECTS@ [list $wave_objects]] {
+# set wave_log [open @WAVE_LOG@ w]
+# if {[catch {
+#     set wave_config [current_wave_config]
+#     if {[string length $wave_config] == 0} { create_wave_config }
+#     set wave_added [list]
+#     foreach wave_object @WAVE_OBJECTS@ {
+#         set wave_matches [get_objects -quiet $wave_object]
+#         if {[llength $wave_matches] > 0} {
+#             add_wave $wave_matches
+#             lappend wave_added $wave_object
+#         }
+#     }
+#     save_wave_config @WAVE_PATH@
+# } wave_error]} {
+#     puts $wave_log "WCFG_CAPTURE_ERROR=$wave_error"
+# } else {
+#     puts $wave_log "WCFG_CAPTURED=@WAVE_NAME@"
+#     puts $wave_log "WAVE_OBJECTS_ADDED=[join $wave_added ,]"
+# }
+# close $wave_log
+# }]
+#     set wave_hook [open $wave_hook_file w]
+#     puts -nonewline $wave_hook $wave_hook_text
+#     close $wave_hook
+#     set_property xsim.simulate.tcl.post $wave_hook_file [get_filesets sim_1]
+# }
+# update_compile_order -fileset sources_1
+# update_compile_order -fileset sim_1
+# set ip_objects [get_ips -quiet]
+# if {[llength $ip_objects] > 0} {
+#     upgrade_ip -quiet $ip_objects
+#     generate_target all $ip_objects
+#     export_ip_user_files -of_objects $ip_objects -no_script -sync -force -quiet
+# }
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'axi_crossbar_1x2'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'axi_crossbar_1x2'...
+INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'axi_crossbar_1x2'...
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'axi_ram'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'axi_ram'...
+INFO: [IP_Flow 19-1686] Generating 'Miscellaneous' target for IP 'axi_ram'...
+INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'axi_ram'...
+INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'lab6_div32'...
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'lab6_div32'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'lab6_div32'...
+INFO: [IP_Flow 19-1686] Generating 'C Simulation' target for IP 'lab6_div32'...
+INFO: [IP_Flow 19-1686] Generating 'Test Bench' target for IP 'lab6_div32'...
+INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'lab6_div32'...
+INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'lab6_mult33'...
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'lab6_mult33'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'lab6_mult33'...
+INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'lab6_mult33'...
+generate_target: Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 652.750 ; gain = 6.004
+# report_ip_status -file [file join $run_dir ip-status.rpt]
+# set project_xpr [file join $project_dir ${project_name}.xpr]
+# set active_path [file join $run_dir active-sources.txt]
+# set active_file [open $active_path w]
+# puts $active_file "PROJECT_XPR=$project_xpr"
+# foreach f [concat $cpu_rtl $common_rtl $staged_ip_files [list $include_header $coe_file $tlb_rtl]] {
+#     puts $active_file "SOURCE=$f"
+# }
+# if {$suite eq "lab11_trace"} {
+#     puts $active_file "SOURCE=$original_testbench"
+# }
+# foreach f [get_files -of_objects [get_filesets sim_1]] {
+#     puts $active_file "SIM_SOURCE=[get_property NAME $f]"
+# }
+# close $active_file
+# if {$suite eq "lab14"} {
+#     puts "CASE=lab14"
+# } elseif {$suite eq "lab18"} {
+#     puts "CASE=lab18"
+# } elseif {$suite eq "lab19"} {
+#     puts "CASE=lab19"
+# } elseif {$suite eq "lab19_all94"} {
+#     puts "CASE=lab19"
+# } elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
+#     puts "CASE=lab19_performance"
+# } elseif {$suite eq "lab17" || $suite eq "lab17_baseline"} {
+#     puts "CASE=lab17"
+# } else {
+#     puts "CASE=lab11"
+# }
+CASE=lab19
+# puts "SUITE=$suite"
+SUITE=lab19_all94
+# puts "PROJECT_XPR=$project_xpr"
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/project/lab19_all94_soc.xpr
+# puts "SIM_TOP=$sim_top"
+SIM_TOP=tb_lab19_all94
+# puts "PROGRAM_IMAGE=$coe_file"
+PROGRAM_IMAGE=C:/Users/lenovo/Desktop/Projects/FPGA/lab17/func_all94/obj/inst_ram.coe
+# if {$trace_file ne ""} { puts "TRACE_REFERENCE=$trace_file" }
+# launch_simulation -mode behavioral
+Command: launch_simulation  -mode behavioral
+INFO: [Vivado 12-25911] Executing simulation for 'XSim' simulator
+INFO: [Vivado 12-28535] Process started - Thu Nov 19 01:06:04 2026
+
+INFO: [Vivado 12-12493] Simulation top is 'tb_lab19_all94'
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/project/lab19_all94_soc.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-13660] Precompiled IP simulation library mode is enabled (default). The design IP libraries will be referenced from the compiled library path. Please note that if the precompiled version of the library is not found from the path or the IP is in locked state, then the library source files for these IPs will be compiled locally as part of the compile order.
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-72] Using boost library from 'D:/Verilog/2025.2/Vivado/tps/boost_1_72_0'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'D:/Verilog/2025.2/Vivado/data/xsim/xsim.ini' copied to run dir:'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/project/lab19_all94_soc.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_lab19_all94' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/project/lab19_all94_soc.sim/sim_1/behav/xsim/inst_ram.coe'
+INFO: [SIM-utils-43] Exported 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/project/lab19_all94_soc.sim/sim_1/behav/xsim/axi_ram.mif'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/project/lab19_all94_soc.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -L uvm -prj tb_lab19_all94_vlog.prj"
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/ip-src/axi_ram/sim/axi_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module axi_ram
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/ip-src/axi_crossbar_1x2/sim/axi_crossbar_1x2.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module axi_crossbar_1x2
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/EXE_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module exe_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/ID_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module id_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/IF_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module if_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/MEM_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/WB_stage.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module wb_stage
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/addr_translate.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module addr_translate
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/alu.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module alu
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/axi_wrap/axi_wrap.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module axi_wrap
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/ram_wrap/axi_wrap_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module axi_wrap_ram
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cache_axi3_bridge.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cache_axi3_bridge
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/CONFREG/confreg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module confreg
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cp0_reg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cp0_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module dcache
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/hilo_unit.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module hilo_unit
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/icache.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module icache
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/mycpu_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mycpu_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module regfile
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/soc_axi_lite_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module soc_axi_lite_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab13/tlb_verify/rtl/tlb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tlb
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/tools.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module decoder_5_32
+INFO: [VRFC 10-311] analyzing module decoder_6_64
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/testbench/tb_lab19_all94.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module lab19_all94_check
+INFO: [VRFC 10-311] analyzing module tb_lab19_all94
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/project/lab19_all94_soc.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+"xvhdl --incr --relax -prj tb_lab19_all94_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/ip-src/lab6_div32/sim/lab6_div32.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'lab6_div32'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/ip-src/lab6_mult33/sim/lab6_mult33.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'lab6_mult33'
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:10 . Memory (MB): peak = 652.750 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '10' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/project/lab19_all94_soc.sim/sim_1/behav/xsim'
+"xelab --incr --debug typical --relax --mt 2 -L xil_defaultlib -L blk_mem_gen_v8_4_12 -L generic_baseblocks_v2_1_2 -L axi_infrastructure_v1_1_0 -L axi_register_slice_v2_1_36 -L fifo_generator_v13_2_14 -L axi_data_fifo_v2_1_36 -L axi_crossbar_v2_1_38 -L xbip_utils_v3_0_15 -L axi_utils_v2_0_11 -L xbip_pipe_v3_0_11 -L xbip_dsp48_wrapper_v3_0_7 -L mult_gen_v12_0_24 -L floating_point_v7_0_26 -L div_gen_v5_1_25 -L uvm -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_lab19_all94_behav xil_defaultlib.tb_lab19_all94 xil_defaultlib.glbl -log elaborate.log"
+Vivado Simulator v2025.2
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Verilog/2025.2/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L blk_mem_gen_v8_4_12 -L generic_baseblocks_v2_1_2 -L axi_infrastructure_v1_1_0 -L axi_register_slice_v2_1_36 -L fifo_generator_v13_2_14 -L axi_data_fifo_v2_1_36 -L axi_crossbar_v2_1_38 -L xbip_utils_v3_0_15 -L axi_utils_v2_0_11 -L xbip_pipe_v3_0_11 -L xbip_dsp48_wrapper_v3_0_7 -L mult_gen_v12_0_24 -L floating_point_v7_0_26 -L div_gen_v5_1_25 -L uvm -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_lab19_all94_behav xil_defaultlib.tb_lab19_all94 xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-5021] port 'aclk2x' is not connected on this instance [/wrk/ci/prod/2025.2/sw/continuous/3083/output/customer/vivado/data/ip/xilinx/axi_crossbar_v2_1/hdl/axi_crossbar_v2_1_vl_rfs.v:3097]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.numeric_std
+Compiling package xbip_utils_v3_0_15.xbip_utils_v3_0_15_pkg
+Compiling package mult_gen_v12_0_24.mult_gen_v12_0_24_viv_comp
+Compiling package mult_gen_v12_0_24.mult_gen_v12_0_24_pkg
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_signed
+Compiling package unisim.vcomponents
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.vital_timing
+Compiling package ieee.vital_primitives
+Compiling package unisim.vpkg
+Compiling package div_gen_v5_1_25.div_gen_v5_1_25_viv_comp
+Compiling package xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv_comp
+Compiling package axi_utils_v2_0_11.axi_utils_v2_0_11_pkg
+Compiling package ieee.math_real
+Compiling package axi_utils_v2_0_11.global_util_pkg
+Compiling package axi_utils_v2_0_11.axi_utils_comps
+Compiling package div_gen_v5_1_25.div_gen_pkg
+Compiling package div_gen_v5_1_25.pkg_addsub
+Compiling module xil_defaultlib.addr_translate
+Compiling module xil_defaultlib.cp0_reg
+Compiling module xil_defaultlib.tlb_default
+Compiling module xil_defaultlib.if_stage
+Compiling module xil_defaultlib.decoder_6_64
+Compiling module xil_defaultlib.decoder_5_32
+Compiling module xil_defaultlib.regfile
+Compiling module xil_defaultlib.id_stage
+Compiling architecture lut2_v of entity unisim.LUT2 [\LUT2(init="1000")(0,3)\]
+Compiling architecture mult_and_v of entity unisim.MULT_AND [mult_and_default]
+Compiling architecture muxcy_v of entity unisim.MUXCY [muxcy_default]
+Compiling architecture xorcy_v of entity unisim.XORCY [xorcy_default]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.op_resize [\op_resize(ai_width=33,bi_width=...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.luts [\luts(c_xdevicefamily="artix7",c...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.mult_gen_v12_0_24_viv [\mult_gen_v12_0_24_viv(c_verbosi...]
+Compiling architecture xilinx of entity mult_gen_v12_0_24.mult_gen_v12_0_24 [\mult_gen_v12_0_24(c_xdevicefami...]
+Compiling architecture lab6_mult33_arch of entity xil_defaultlib.lab6_mult33 [lab6_mult33_default]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture rtl of entity div_gen_v5_1_25.c_addsub_lut6 [\c_addsub_lut6(c_width=33,c_add_...]
+Compiling architecture synth of entity div_gen_v5_1_25.c_addsub_viv [\c_addsub_viv(c_a_width=33,c_b_w...]
+Compiling architecture virtex of entity div_gen_v5_1_25.addsubreg_v [\addsubreg_v(c_bus_width=33,c_ha...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture rtl of entity div_gen_v5_1_25.c_addsub_lut6 [\c_addsub_lut6(c_width=33,c_add_...]
+Compiling architecture synth of entity div_gen_v5_1_25.c_addsub_viv [\c_addsub_viv(c_a_width=33,c_b_w...]
+Compiling architecture virtex of entity div_gen_v5_1_25.addsubreg_v [\addsubreg_v(c_bus_width=33,c_ha...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture virtex of entity div_gen_v5_1_25.dividervdc_v [\dividervdc_v(bus_num=32,bus_div...]
+Compiling architecture synth of entity div_gen_v5_1_25.bip_sdivider_synth [\bip_sdivider_synth(c_xdevicefam...]
+Compiling architecture synth of entity div_gen_v5_1_25.div_gen_synth [\div_gen_synth(c_xdevicefamily="...]
+Compiling architecture synth of entity xbip_pipe_v3_0_11.xbip_pipe_v3_0_11_viv [\xbip_pipe_v3_0_11_viv(c_latency...]
+Compiling architecture synth of entity div_gen_v5_1_25.div_gen_v5_1_25_viv [\div_gen_v5_1_25_viv(c_xdevicefa...]
+Compiling architecture xilinx of entity div_gen_v5_1_25.div_gen_v5_1_25 [\div_gen_v5_1_25(c_xdevicefamily...]
+Compiling architecture lab6_div32_arch of entity xil_defaultlib.lab6_div32 [lab6_div32_default]
+Compiling module xil_defaultlib.hilo_unit
+Compiling module xil_defaultlib.alu
+Compiling module xil_defaultlib.exe_stage
+Compiling module xil_defaultlib.mem_stage
+Compiling module xil_defaultlib.wb_stage
+Compiling module xil_defaultlib.icache
+Compiling module xil_defaultlib.dcache
+Compiling module xil_defaultlib.cache_axi3_bridge
+Compiling module xil_defaultlib.mycpu_top
+Compiling module xil_defaultlib.axi_wrap
+Compiling module generic_baseblocks_v2_1_2.generic_baseblocks_v2_1_2_carry_...
+Compiling module generic_baseblocks_v2_1_2.generic_baseblocks_v2_1_2_compar...
+Compiling module generic_baseblocks_v2_1_2.generic_baseblocks_v2_1_2_compar...
+Compiling module generic_baseblocks_v2_1_2.generic_baseblocks_v2_1_2_compar...
+Compiling module generic_baseblocks_v2_1_2.generic_baseblocks_v2_1_2_compar...
+Compiling module generic_baseblocks_v2_1_2.generic_baseblocks_v2_1_2_compar...
+Compiling module generic_baseblocks_v2_1_2.generic_baseblocks_v2_1_2_compar...
+Compiling module generic_baseblocks_v2_1_2.generic_baseblocks_v2_1_2_compar...
+Compiling module generic_baseblocks_v2_1_2.generic_baseblocks_v2_1_2_compar...
+Compiling module generic_baseblocks_v2_1_2.generic_baseblocks_v2_1_2_compar...
+Compiling module generic_baseblocks_v2_1_2.generic_baseblocks_v2_1_2_compar...
+Compiling module axi_crossbar_v2_1_38.axi_crossbar_v2_1_38_addr_decode...
+Compiling module axi_crossbar_v2_1_38.axi_crossbar_v2_1_38_arbiter_res...
+Compiling module generic_baseblocks_v2_1_2.generic_baseblocks_v2_1_2_mux_en...
+Compiling module unisims_ver.SRLC32E_default
+Compiling module axi_data_fifo_v2_1_36.axi_data_fifo_v2_1_36_ndeep_srl(...
+Compiling module axi_data_fifo_v2_1_36.axi_data_fifo_v2_1_36_axic_srl_f...
+Compiling module axi_crossbar_v2_1_38.axi_crossbar_v2_1_38_si_transact...
+Compiling module generic_baseblocks_v2_1_2.generic_baseblocks_v2_1_2_mux_en...
+Compiling module axi_crossbar_v2_1_38.axi_crossbar_v2_1_38_si_transact...
+Compiling module axi_crossbar_v2_1_38.axi_crossbar_v2_1_38_splitter
+Compiling module axi_data_fifo_v2_1_36.axi_data_fifo_v2_1_36_ndeep_srl(...
+Compiling module axi_data_fifo_v2_1_36.axi_data_fifo_v2_1_36_axic_reg_s...
+Compiling module axi_crossbar_v2_1_38.axi_crossbar_v2_1_38_wdata_route...
+Compiling module axi_crossbar_v2_1_38.axi_crossbar_v2_1_38_wdata_mux(C...
+Compiling module axi_data_fifo_v2_1_36.axi_data_fifo_v2_1_36_axic_srl_f...
+Compiling module axi_infrastructure_v1_1_0.axi_infrastructure_v1_1_0_axi2ve...
+Compiling module axi_infrastructure_v1_1_0.axi_infrastructure_v1_1_0_vector...
+Compiling module axi_register_slice_v2_1_36.axi_register_slice_v2_1_36_axic_...
+Compiling module axi_register_slice_v2_1_36.axi_register_slice_v2_1_36_axic_...
+Compiling module axi_register_slice_v2_1_36.axi_register_slice_v2_1_36_axic_...
+Compiling module axi_register_slice_v2_1_36.axi_register_slice_v2_1_36_axic_...
+Compiling module axi_register_slice_v2_1_36.axi_register_slice_v2_1_36_axi_r...
+Compiling module axi_crossbar_v2_1_38.axi_crossbar_v2_1_38_wdata_mux(C...
+Compiling module axi_data_fifo_v2_1_36.axi_data_fifo_v2_1_36_axic_srl_f...
+Compiling module axi_crossbar_v2_1_38.axi_crossbar_v2_1_38_addr_arbite...
+Compiling module axi_crossbar_v2_1_38.axi_crossbar_v2_1_38_decerr_slav...
+Compiling module axi_crossbar_v2_1_38.axi_crossbar_v2_1_38_crossbar(C_...
+Compiling module axi_crossbar_v2_1_38.axi_crossbar_v2_1_38_axi_crossba...
+Compiling module xil_defaultlib.axi_crossbar_1x2
+Compiling module blk_mem_gen_v8_4_12.beh_vlog_ff_clr_v8_4
+Compiling module blk_mem_gen_v8_4_12.beh_vlog_ff_pre_v8_4
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b010101...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b101111...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b101010...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b010101...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b010001...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b010001...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b011010...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b111111...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b011000...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b011111...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b0111)
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b111110...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b01000)
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b100010...
+Compiling module blk_mem_gen_v8_4_12.write_netlist_v8_4(C_AXI_TYPE=1)
+Compiling module blk_mem_gen_v8_4_12.blk_mem_axi_write_wrapper_beh_v8...
+Compiling module blk_mem_gen_v8_4_12.beh_vlog_ff_ce_clr_v8_4
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b01011)
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b0100)
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b111011...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b010001...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b010000...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b011111...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b01)
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b010000...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b010001...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b011101...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b111111...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b010101...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b111100...
+Compiling module blk_mem_gen_v8_4_12.beh_vlog_muxf7_v8_4
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b010101...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b011100...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b011111...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b010001...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b010001...
+Compiling module blk_mem_gen_v8_4_12.STATE_LOGIC_v8_4(INIT=64'b011100...
+Compiling module blk_mem_gen_v8_4_12.read_netlist_v8_4(C_ADDRB_WIDTH=...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_axi_read_wrapper_beh_v8_...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_output_stage...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_output_stage...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_softecc_outp...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12_mem_module(C...
+Compiling module blk_mem_gen_v8_4_12.blk_mem_gen_v8_4_12(C_FAMILY="ar...
+Compiling module xil_defaultlib.axi_ram
+Compiling module xil_defaultlib.axi_wrap_ram
+Compiling module xil_defaultlib.confreg(SIMULATION=1'b1)
+Compiling module xil_defaultlib.soc_axi_lite_top(SIMULATION=1'b1...
+Compiling module xil_defaultlib.lab19_all94_check
+Compiling module xil_defaultlib.tb_lab19_all94
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot tb_lab19_all94_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:56 . Memory (MB): peak = 652.750 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '56' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/project/lab19_all94_soc.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "tb_lab19_all94_behav -key {Behavioral:sim_1:Functional:tb_lab19_all94} -tclbatch {tb_lab19_all94.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Time resolution is 1 ps
+source tb_lab19_all94.tcl
+## set curr_wave [current_wave_config]
+## if { [string length $curr_wave] == 0 } {
+##   if { [llength [get_objects]] > 0} {
+##     add_wave /
+##     set_property needs_save false [current_wave_config]
+##   } else {
+##      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+##   }
+## }
+WARNING: [Simtcl 6-168] No object found for the given pattern.
+WARNING: [Add_Wave-1] No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console.
+## run 250000000ns
+ Block Memory Generator module loading initial data...
+ Block Memory Generator data initialization complete.
+Block Memory Generator module tb_lab19_all94.check.soc_lite.u_axi_ram.ram.inst.axi_mem_module.blk_mem_gen_v8_4_12_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
+LAB19_ALL94_TESTPOINT=1 VALUE=01000001
+LAB19_ALL94_TESTPOINT=2 VALUE=02000002
+LAB19_ALL94_TESTPOINT=3 VALUE=03000003
+LAB19_ALL94_TESTPOINT=4 VALUE=04000004
+LAB19_ALL94_TESTPOINT=5 VALUE=05000005
+LAB19_ALL94_TESTPOINT=6 VALUE=06000006
+LAB19_ALL94_TESTPOINT=7 VALUE=07000007
+LAB19_ALL94_TESTPOINT=8 VALUE=08000008
+LAB19_ALL94_TESTPOINT=9 VALUE=09000009
+LAB19_ALL94_TESTPOINT=10 VALUE=0a00000a
+LAB19_ALL94_TESTPOINT=11 VALUE=0b00000b
+LAB19_ALL94_TESTPOINT=12 VALUE=0c00000c
+LAB19_ALL94_TESTPOINT=13 VALUE=0d00000d
+LAB19_ALL94_TESTPOINT=14 VALUE=0e00000e
+LAB19_ALL94_TESTPOINT=15 VALUE=0f00000f
+LAB19_ALL94_TESTPOINT=16 VALUE=10000010
+LAB19_ALL94_TESTPOINT=17 VALUE=11000011
+LAB19_ALL94_TESTPOINT=18 VALUE=12000012
+LAB19_ALL94_TESTPOINT=19 VALUE=13000013
+LAB19_ALL94_TESTPOINT=20 VALUE=14000014
+LAB19_ALL94_TESTPOINT=21 VALUE=15000015
+LAB19_ALL94_TESTPOINT=22 VALUE=16000016
+LAB19_ALL94_TESTPOINT=23 VALUE=17000017
+LAB19_ALL94_TESTPOINT=24 VALUE=18000018
+LAB19_ALL94_TESTPOINT=25 VALUE=19000019
+LAB19_ALL94_TESTPOINT=26 VALUE=1a00001a
+LAB19_ALL94_TESTPOINT=27 VALUE=1b00001b
+LAB19_ALL94_TESTPOINT=28 VALUE=1c00001c
+LAB19_ALL94_TESTPOINT=29 VALUE=1d00001d
+LAB19_ALL94_TESTPOINT=30 VALUE=1e00001e
+LAB19_ALL94_TESTPOINT=31 VALUE=1f00001f
+LAB19_ALL94_TESTPOINT=32 VALUE=20000020
+LAB19_ALL94_TESTPOINT=33 VALUE=21000021
+LAB19_ALL94_TESTPOINT=34 VALUE=22000022
+LAB19_ALL94_TESTPOINT=35 VALUE=23000023
+LAB19_ALL94_TESTPOINT=36 VALUE=24000024
+LAB19_ALL94_TESTPOINT=37 VALUE=25000025
+LAB19_ALL94_TESTPOINT=38 VALUE=26000026
+LAB19_ALL94_TESTPOINT=39 VALUE=27000027
+LAB19_ALL94_TESTPOINT=40 VALUE=28000028
+LAB19_ALL94_TESTPOINT=41 VALUE=29000029
+LAB19_ALL94_TESTPOINT=42 VALUE=2a00002a
+LAB19_ALL94_TESTPOINT=43 VALUE=2b00002b
+LAB19_ALL94_TESTPOINT=44 VALUE=2c00002c
+LAB19_ALL94_TESTPOINT=45 VALUE=2d00002d
+LAB19_ALL94_TESTPOINT=46 VALUE=2e00002e
+LAB19_ALL94_TESTPOINT=47 VALUE=2f00002f
+LAB19_ALL94_TESTPOINT=48 VALUE=30000030
+LAB19_ALL94_TESTPOINT=49 VALUE=31000031
+LAB19_ALL94_TESTPOINT=50 VALUE=32000032
+LAB19_ALL94_TESTPOINT=51 VALUE=33000033
+LAB19_ALL94_TESTPOINT=52 VALUE=34000034
+LAB19_ALL94_TESTPOINT=53 VALUE=35000035
+LAB19_ALL94_TESTPOINT=54 VALUE=36000036
+LAB19_ALL94_TESTPOINT=55 VALUE=37000037
+LAB19_ALL94_TESTPOINT=56 VALUE=38000038
+LAB19_ALL94_TESTPOINT=57 VALUE=39000039
+LAB19_ALL94_TESTPOINT=58 VALUE=3a00003a
+LAB19_ALL94_TESTPOINT=59 VALUE=3b00003b
+LAB19_ALL94_TESTPOINT=60 VALUE=3c00003c
+LAB19_ALL94_TESTPOINT=61 VALUE=3d00003d
+LAB19_ALL94_TESTPOINT=62 VALUE=3e00003e
+LAB19_ALL94_TESTPOINT=63 VALUE=3f00003f
+LAB19_ALL94_TESTPOINT=64 VALUE=40000040
+LAB19_ALL94_TESTPOINT=65 VALUE=41000041
+LAB19_ALL94_TESTPOINT=66 VALUE=42000042
+LAB19_ALL94_TESTPOINT=67 VALUE=43000043
+LAB19_ALL94_TESTPOINT=68 VALUE=44000044
+LAB19_ALL94_TESTPOINT=69 VALUE=45000045
+LAB19_ALL94_TESTPOINT=70 VALUE=46000046
+LAB19_ALL94_TESTPOINT=71 VALUE=47000047
+LAB19_ALL94_TESTPOINT=72 VALUE=48000048
+LAB19_ALL94_TESTPOINT=73 VALUE=49000049
+LAB19_ALL94_TESTPOINT=74 VALUE=4a00004a
+LAB19_ALL94_TESTPOINT=75 VALUE=4b00004b
+LAB19_ALL94_TESTPOINT=76 VALUE=4c00004c
+LAB19_ALL94_TESTPOINT=77 VALUE=4d00004d
+LAB19_ALL94_TESTPOINT=78 VALUE=4e00004e
+LAB19_ALL94_TESTPOINT=79 VALUE=4f00004f
+LAB19_ALL94_TESTPOINT=80 VALUE=50000050
+LAB19_ALL94_TESTPOINT=81 VALUE=51000051
+LAB19_ALL94_TESTPOINT=82 VALUE=52000052
+LAB19_ALL94_TESTPOINT=83 VALUE=53000053
+LAB19_ALL94_TESTPOINT=84 VALUE=54000054
+LAB19_ALL94_TESTPOINT=85 VALUE=55000055
+LAB19_ALL94_TESTPOINT=86 VALUE=56000056
+LAB19_ALL94_TESTPOINT=87 VALUE=57000057
+LAB19_ALL94_TESTPOINT=88 VALUE=58000058
+LAB19_ALL94_TESTPOINT=89 VALUE=59000059
+LAB19_ALL94_TESTPOINT=90 VALUE=5a00005a
+LAB19_ALL94_TESTPOINT=91 VALUE=5b00005b
+LAB19_ALL94_TESTPOINT=92 VALUE=5c00005c
+LAB19_ALL94_TESTPOINT=93 VALUE=5d00005d
+LAB19_ALL94_TESTPOINT=94 VALUE=5e00005e
+Fatal: LAB19_ALL94_FAIL=icache_statistics_missing hit=0 miss=0 refill=0 uncache_read=172900
+Time: 14028367 ns  Iteration: 0  Process: /tb_lab19_all94/check/Initial125_551  Scope: tb_lab19_all94.check  File: C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/testbench/tb_lab19_all94.sv Line: 147
+$finish called at time : 14028367 ns
+run: Time (s): cpu = 00:00:01 ; elapsed = 00:03:29 . Memory (MB): peak = 669.520 ; gain = 0.000
+xsim: Time (s): cpu = 00:00:01 ; elapsed = 00:03:31 . Memory (MB): peak = 669.520 ; gain = 16.770
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'tb_lab19_all94_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 250000000ns
+launch_simulation: Time (s): cpu = 00:00:05 ; elapsed = 00:04:44 . Memory (MB): peak = 669.520 ; gain = 16.770
+# set sim_dir [file join $project_dir ${project_name}.sim sim_1 behav xsim]
+# set sim_log [file join $sim_dir simulate.log]
+# if {![file isfile $sim_log]} {
+#     error "simulation log was not produced: $sim_log"
+# }
+# set h [open $sim_log r]
+# set sim_text [read $h]
+# close $h
+# if {$suite eq "lab14"} {
+#     set case_name lab14
+#     set pass_marker "LAB14_N1_N6_PASS score=6/6"
+#     if {[regexp -nocase {LAB14_WATCHDOG_TIMEOUT|LAB14_SCORE_|LAB14_TEST_SEQUENCE|LAB14_SOFTWARE_REPORTED_FAILURE|Fatal:|ERROR:|Error:} $sim_text]} {
+#         error "Lab14 simulation reported a failure; inspect $sim_log"
+#     }
+#     if {[regexp -all {LAB14_TESTPOINT=} $sim_text] != 6} {
+#         error "expected six Lab14 score points; inspect $sim_log"
+#     }
+#     if {[string first $pass_marker $sim_text] < 0} {
+#         error "Lab14 simulation missed n1-n6 PASS marker; inspect $sim_log"
+#     }
+# } elseif {$suite eq "lab11_trace"} {
+#     set case_name lab11
+#     set pass_marker "COURSE_SOC_PASS"
+#     if {[regexp -nocase {COURSE_SOC_FAIL=|Fail!!!Total|Fatal:|ERROR:|Error:} $sim_text]} {
+#         error "Lab11 golden-trace regression reported a failure; inspect $sim_log"
+#     }
+#     foreach marker {"----PASS!!!" "TRACE_OPEN_PASS" "TRACE_EXHAUSTION_PASS" "COURSE_SOC_PASS"} {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "Lab11 golden-trace regression missed marker $marker; inspect $sim_log"
+#         }
+#     }
+# } elseif {$suite eq "lab18"} {
+#     set case_name lab18
+#     set pass_marker "LAB18_DCACHE_FUNCTIONAL_PASS score=94/94"
+#     if {[regexp -nocase {LAB18_FAIL=|Fatal:|ERROR:|Error:} $sim_text]} {
+#         error "Lab18 functional regression reported a failure; inspect $sim_log"
+#     }
+#     if {[regexp -all {LAB18_TESTPOINT=} $sim_text] != 94} {
+#         error "Lab18 functional regression expected 94 ordered score points; inspect $sim_log"
+#     }
+#     foreach marker [list $pass_marker "CACHE_STATS " "DCACHE_STATS " "AXI_METRICS " "STORE_COUNTS accepted=" "PERIPHERAL_NUM_WRITES accepted=95 completed=95 initial_clear=1 score_writes=94 duplicate_store=0"] {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "Lab18 functional regression missed required marker $marker; inspect $sim_log"
+#         }
+#     }
+#     if {![regexp {STORE_COUNTS accepted=([0-9]+) completed=([0-9]+) duplicate_store=0} $sim_text -> accepted_stores completed_stores] ||
+#         $accepted_stores != $completed_stores} {
+#         error "Lab18 store completion accounting is inconsistent; inspect $sim_log"
+#     }
+#     if {![regexp {DCACHE_STATS hit=([0-9]+) miss=([0-9]+) writeback=([0-9]+) uncache=([0-9]+)} $sim_text -> dc_hit dc_miss dc_writebacks dc_uncache] ||
+#         $dc_hit == 0 || $dc_miss == 0 || $dc_writebacks == 0 || $dc_uncache == 0} {
+#         error "Lab18 DCache statistics are incomplete; inspect $sim_log"
+#     }
+#     if {![regexp {AXI_METRICS ar=([0-9]+) r=([0-9]+) aw=([0-9]+) w=([0-9]+) b=([0-9]+)} $sim_text -> ar_count r_count aw_count w_count b_count] ||
+#         $r_count < $ar_count || $aw_count != $b_count || $w_count < $aw_count} {
+#         error "Lab18 AXI transaction/beat metrics are inconsistent; inspect $sim_log"
+#     }
+# } elseif {$suite eq "lab19_all94"} {
+#     set case_name lab19
+#     set pass_marker "LAB19_ALL94_FUNCTIONAL_PASS score=94/94"
+#     if {[regexp -nocase {LAB19_ALL94_FAIL=|Fatal:|ERROR:|Error:} $sim_text]} {
+#         error "Lab19 all94 functional regression reported a failure; inspect $sim_log"
+#     }
+#     if {[regexp -all {LAB19_ALL94_TESTPOINT=} $sim_text] != 94} {
+#         error "Lab19 all94 functional regression expected 94 ordered score points; inspect $sim_log"
+#     }
+#     foreach marker [list $pass_marker "CACHE_STATS " "DCACHE_STATS " "AXI_METRICS " "STORE_COUNTS accepted=" "PERIPHERAL_NUM_WRITES accepted=95 completed=95 initial_clear=1 score_writes=94 duplicate_store=0"] {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "Lab19 all94 regression missed required marker $marker; inspect $sim_log"
+#         }
+#     }
+#     if {![regexp {STORE_COUNTS accepted=([0-9]+) completed=([0-9]+) duplicate_store=0} $sim_text -> accepted_stores completed_stores] ||
+#         $accepted_stores != $completed_stores} {
+#         error "Lab19 all94 Store completion accounting is inconsistent; inspect $sim_log"
+#     }
+#     if {![regexp {AXI_METRICS ar=([0-9]+) r=([0-9]+) aw=([0-9]+) w=([0-9]+) b=([0-9]+)} $sim_text -> ar_count r_count aw_count w_count b_count] ||
+#         $r_count < $ar_count || $aw_count != $b_count || $w_count < $aw_count} {
+#         error "Lab19 all94 AXI transaction/beat metrics are inconsistent; inspect $sim_log"
+#     }
+# } elseif {$suite eq "lab19"} {
+#     set case_name lab19
+#     set pass_marker "LAB19_CACHE_FUNCTIONAL_PASS score=7/7"
+#     if {[regexp -nocase {LAB19_FAIL=|Fatal:|ERROR:|Error:} $sim_text]} {
+#         error "Lab19 CACHE instruction regression reported a failure; inspect $sim_log"
+#     }
+#     if {[regexp -all {LAB19_TESTPOINT=} $sim_text] != 7} {
+#         error "Lab19 CACHE instruction regression expected seven ordered score points; inspect $sim_log"
+#     }
+#     foreach marker [list $pass_marker "CACHE_MAINTENANCE_COUNTS " "CACHE_STATS " "AXI_METRICS " "STORE_COUNTS " "RETIRED_INSTRUCTIONS="] {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "Lab19 CACHE instruction regression missed required marker $marker; inspect $sim_log"
+#         }
+#     }
+# } elseif {$suite eq "dhrystone" || $suite eq "coremark"} {
+#     set case_name lab19_performance
+#     set program_name $suite
+#     set pass_marker "LAB19_PERF_PASS program=$program_name"
+#     if {[regexp -nocase {LAB19_PERF_FAIL=|Fatal:|ERROR:|Error:} $sim_text]} {
+#         error "$program_name performance regression reported a failure; inspect $sim_log"
+#     }
+#     foreach marker [list $pass_marker "PERF_METRICS program="] {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "$program_name performance regression missed required marker $marker; inspect $sim_log"
+#         }
+#     }
+#     if {![regexp -nocase "$program_name PASS!" $sim_text]} {
+#         error "$program_name program output did not include its success text; inspect $sim_log"
+#     }
+# } else {
+#     set case_name lab17
+#     if {$suite eq "lab17"} {
+#         set pass_marker "LAB17_ICACHE_FUNCTIONAL_PASS score=94/94"
+#     } else {
+#         set pass_marker "LAB17_BASELINE_FUNCTIONAL_PASS score=94/94"
+#     }
+#     if {[regexp -nocase {LAB17_FAIL=|Fatal:|ERROR:|Error:} $sim_text]} {
+#         error "Lab17 functional regression reported a failure; inspect $sim_log"
+#     }
+#     if {[regexp -all {LAB17_TESTPOINT=} $sim_text] != 94} {
+#         error "Lab17 functional regression expected 94 ordered score points; inspect $sim_log"
+#     }
+#     foreach marker [list $pass_marker "CACHE_STATS " "AXI_METRICS " "STORE_COUNTS accepted="] {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "Lab17 functional regression missed required marker $marker; inspect $sim_log"
+#         }
+#     }
+#     if {![regexp {STORE_COUNTS accepted=([0-9]+) completed=([0-9]+) duplicate_store=0} $sim_text -> accepted_stores completed_stores] ||
+#         $accepted_stores != $completed_stores} {
+#         error "Lab17 store completion accounting is inconsistent; inspect $sim_log"
+#     }
+#     if {![regexp {AXI_METRICS ar=([0-9]+) r=([0-9]+) aw=([0-9]+) w=([0-9]+) b=([0-9]+)} $sim_text -> ar_count r_count aw_count w_count b_count] ||
+#         $r_count < $ar_count || $aw_count != $b_count || $aw_count != $w_count} {
+#         error "Lab17 AXI transaction/beat metrics are inconsistent; inspect $sim_log"
+#     }
+# }
+Lab19 all94 functional regression reported a failure; inspect C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-03/project/lab19_all94_soc.sim/sim_1/behav/xsim/simulate.log
+    while executing
+"error "Lab19 all94 functional regression reported a failure; inspect $sim_log""
+    invoked from within
+"if {[regexp -nocase {LAB19_ALL94_FAIL=|Fatal:|ERROR:|Error:} $sim_text]} {
+        error "Lab19 all94 functional regression reported a failure; inspec..."
+    invoked from within
+"if {$suite eq "lab14"} {
+    set case_name lab14
+    set pass_marker "LAB14_N1_N6_PASS score=6/6"
+    if {[regexp -nocase {LAB14_WATCHDOG_TIMEOUT|LAB1..."
+    (file "C:\Users\lenovo\Desktop\Projects\FPGA\scripts\tlb_cache\run_soc.tcl" line 252)
+INFO: xsimkernel Simulation Memory Usage: 23948 KB (Peak: 23948 KB), Simulation CPU Usage: 207233 ms
+INFO: [Common 17-206] Exiting Vivado at Thu Nov 19 01:10:48 2026...

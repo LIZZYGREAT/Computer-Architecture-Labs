@@ -1,0 +1,2 @@
+ERROR: [USF-XSim-62] 'compile' step failed with error(s). Please check the Tcl console output or 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-all94-01/project/lab19_all94_soc.sim/sim_1/behav/xsim/xvlog.log' file for more information.
+ERROR: [Vivado 12-4473] Detected error while running simulation. Please correct the issue and retry this operation.

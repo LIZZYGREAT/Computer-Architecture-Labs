@@ -58,80 +58,80 @@ lab18,lab18-dcache-functional-20261118-02,num_peripheral_writes_completed,95,wri
 lab18,lab18-dcache-directed-20261118-01,directed_checks,9,checks,results/lab13-lab19/lab18/lab18-dcache-directed-20261118-01/result.txt,
 lab18,lab18-cache-arbitration-20261118-02,concurrent_cache_misses,2,misses,results/lab13-lab19/lab18/lab18-cache-arbitration-20261118-02/result.txt,
 lab18,lab18-mem-exception-20261118-02,exception_stores_blocked,1,stores,results/lab13-lab19/lab18/lab18-mem-exception-20261118-02/result.txt,
-lab19,lab19-cache-20261118-06,cache_instruction_tests,7,tests,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,cycles,2836,cycles,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,retired_instructions,458,instructions,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,icache_hit,397,hits,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,icache_miss,51,misses,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,icache_refill,51,lines,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,icache_uncache_read,19,reads,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,dcache_hit,2,hits,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,dcache_miss,4,misses,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,dcache_writeback,2,lines,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,dcache_uncache,45,requests,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,axi_ar_transactions,95,transactions,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,axi_r_beats,480,beats,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,axi_aw_transactions,26,transactions,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,axi_w_beats,40,beats,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,axi_b_responses,26,responses,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,stores_accepted,28,stores,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,stores_completed,28,stores,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,duplicate_stores,0,stores,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,maintenance_ICIndexInv,2,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,maintenance_ICIndexStTag,2,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,maintenance_ICHitInv,1,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,maintenance_DCIndexWBInv,2,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,maintenance_DCIndexStTag,2,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,maintenance_DCHitInv,1,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,maintenance_DCHitWBInv,1,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-maint-directed-20261118-06,maintenance_directed_checks,9,checks,results/lab13-lab19/lab19/lab19-maint-directed-20261118-06/result.txt,
-lab19,lab19-maint-directed-20261118-06,way2_way3_coverage,2,ways,results/lab13-lab19/lab19/lab19-maint-directed-20261118-06/result.txt,
-lab19,lab19-maint-directed-20261118-06,hit_invalidate_writebacks,0,writebacks,results/lab13-lab19/lab19/lab19-maint-directed-20261118-06/result.txt,
-lab19,lab19-maint-directed-20261118-06,writebacks_completed,2,writebacks,results/lab13-lab19/lab19/lab19-maint-directed-20261118-06/result.txt,
-lab19,lab19-maint-directed-20261118-06,b_response_wait_observed,1,boolean,results/lab13-lab19/lab19/lab19-maint-directed-20261118-06/result.txt,
-lab19_perf,lab19-dhrystone-20261118-06,cycles,251834,cycles,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,retired_instructions,51073,instructions,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,icache_hit,40789,hits,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,icache_miss,133,misses,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,icache_refill,133,lines,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,dcache_hit,6579,hits,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,dcache_miss,13,misses,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,dcache_writeback,0,lines,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,dcache_uncache,4559,requests,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,axi_ar_transactions,12675,transactions,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,axi_r_beats,13697,beats,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,axi_aw_transactions,2185,transactions,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,axi_w_beats,2185,beats,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,axi_b_responses,2185,responses,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,simulation_ns,2518340,ns,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,num_data,0003343c,hex,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-coremark-20261118-03,cycles,2305331,cycles,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,retired_instructions,416073,instructions,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,icache_hit,260271,hits,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,icache_miss,508,misses,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,icache_refill,508,lines,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,dcache_hit,77338,hits,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,dcache_miss,70,misses,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,dcache_writeback,0,lines,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,dcache_uncache,7507,requests,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,axi_ar_transactions,162251,transactions,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,axi_r_beats,166297,beats,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,axi_aw_transactions,1130,transactions,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,axi_w_beats,1130,beats,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,axi_b_responses,1130,responses,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,simulation_ns,23053310,ns,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,num_data,01394d3c,hex,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_synthesis,lab19-synthesis-20261118-01,synth_errors,0,errors,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,synth_warnings,131,warnings,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,synth_critical_warnings,0,warnings,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,lut_utilization,18.78,percent,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,register_utilization,4.13,percent,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,bram_tile_utilization,70.14,percent,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,setup_wns,3.975,ns,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,setup_tns,0,ns,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,hold_whs,-0.087,ns,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,hold_ths,-5.338,ns,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,hold_failing_endpoints,66,endpoints,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
+lab19,lab19-cache-20261118-06,cache_instruction_tests,7,tests,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,cycles,2836,cycles,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,retired_instructions,458,instructions,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,icache_hit,397,hits,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,icache_miss,51,misses,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,icache_refill,51,lines,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,icache_uncache_read,19,reads,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,dcache_hit,2,hits,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,dcache_miss,4,misses,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,dcache_writeback,2,lines,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,dcache_uncache,45,requests,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,axi_ar_transactions,95,transactions,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,axi_r_beats,480,beats,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,axi_aw_transactions,26,transactions,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,axi_w_beats,40,beats,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,axi_b_responses,26,responses,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,stores_accepted,28,stores,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,stores_completed,28,stores,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,duplicate_stores,0,stores,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,maintenance_ICIndexInv,2,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,maintenance_ICIndexStTag,2,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,maintenance_ICHitInv,1,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,maintenance_DCIndexWBInv,2,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,maintenance_DCIndexStTag,2,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,maintenance_DCHitInv,1,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-cache-20261118-06,maintenance_DCHitWBInv,1,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-maint-directed-20261118-06,maintenance_directed_checks,9,checks,results/lab13-lab19/lab19/lab19-maint-directed-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-maint-directed-20261118-06,way2_way3_coverage,2,ways,results/lab13-lab19/lab19/lab19-maint-directed-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-maint-directed-20261118-06,hit_invalidate_writebacks,0,writebacks,results/lab13-lab19/lab19/lab19-maint-directed-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-maint-directed-20261118-06,writebacks_completed,2,writebacks,results/lab13-lab19/lab19/lab19-maint-directed-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19,lab19-maint-directed-20261118-06,b_response_wait_observed,1,boolean,results/lab13-lab19/lab19/lab19-maint-directed-20261118-06/result.txt,HISTORICAL_BASELINE;
+lab19_perf,lab19-dhrystone-20261118-06,cycles,251834,cycles,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,HISTORICAL_BASELINE; dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,retired_instructions,51073,instructions,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,HISTORICAL_BASELINE; dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,icache_hit,40789,hits,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,HISTORICAL_BASELINE; dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,icache_miss,133,misses,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,HISTORICAL_BASELINE; dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,icache_refill,133,lines,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,HISTORICAL_BASELINE; dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,dcache_hit,6579,hits,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,HISTORICAL_BASELINE; dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,dcache_miss,13,misses,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,HISTORICAL_BASELINE; dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,dcache_writeback,0,lines,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,HISTORICAL_BASELINE; dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,dcache_uncache,4559,requests,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,HISTORICAL_BASELINE; dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,axi_ar_transactions,12675,transactions,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,HISTORICAL_BASELINE; dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,axi_r_beats,13697,beats,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,HISTORICAL_BASELINE; dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,axi_aw_transactions,2185,transactions,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,HISTORICAL_BASELINE; dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,axi_w_beats,2185,beats,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,HISTORICAL_BASELINE; dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,axi_b_responses,2185,responses,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,HISTORICAL_BASELINE; dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,simulation_ns,2518340,ns,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,HISTORICAL_BASELINE; dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,num_data,0003343c,hex,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,HISTORICAL_BASELINE; dhrystone program PASS
+lab19_perf,lab19-coremark-20261118-03,cycles,2305331,cycles,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,HISTORICAL_BASELINE; coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,retired_instructions,416073,instructions,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,HISTORICAL_BASELINE; coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,icache_hit,260271,hits,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,HISTORICAL_BASELINE; coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,icache_miss,508,misses,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,HISTORICAL_BASELINE; coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,icache_refill,508,lines,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,HISTORICAL_BASELINE; coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,dcache_hit,77338,hits,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,HISTORICAL_BASELINE; coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,dcache_miss,70,misses,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,HISTORICAL_BASELINE; coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,dcache_writeback,0,lines,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,HISTORICAL_BASELINE; coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,dcache_uncache,7507,requests,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,HISTORICAL_BASELINE; coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,axi_ar_transactions,162251,transactions,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,HISTORICAL_BASELINE; coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,axi_r_beats,166297,beats,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,HISTORICAL_BASELINE; coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,axi_aw_transactions,1130,transactions,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,HISTORICAL_BASELINE; coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,axi_w_beats,1130,beats,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,HISTORICAL_BASELINE; coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,axi_b_responses,1130,responses,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,HISTORICAL_BASELINE; coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,simulation_ns,23053310,ns,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,HISTORICAL_BASELINE; coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,num_data,01394d3c,hex,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,HISTORICAL_BASELINE; coremark program PASS
+lab19_synthesis,lab19-synthesis-20261118-01,synth_errors,0,errors,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,HISTORICAL_BASELINE; Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,synth_warnings,131,warnings,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,HISTORICAL_BASELINE; Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,synth_critical_warnings,0,warnings,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,HISTORICAL_BASELINE; Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,lut_utilization,18.78,percent,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,HISTORICAL_BASELINE; Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,register_utilization,4.13,percent,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,HISTORICAL_BASELINE; Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,bram_tile_utilization,70.14,percent,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,HISTORICAL_BASELINE; Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,setup_wns,3.975,ns,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,HISTORICAL_BASELINE; Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,setup_tns,0,ns,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,HISTORICAL_BASELINE; Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,hold_whs,-0.087,ns,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,HISTORICAL_BASELINE; Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,hold_ths,-5.338,ns,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,HISTORICAL_BASELINE; Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,hold_failing_endpoints,66,endpoints,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,HISTORICAL_BASELINE; Synthesized top; no placement/routing; hold closure pending
 lab17,r2l17func01,functional_points,94,points,results/lab13-lab19/lab17/r2l17func01/result.txt,94/94 software functional points; not a golden trace comparison
 lab17,r2l17func01,functional_cycles,1038101,cycles,results/lab13-lab19/lab17/r2l17func01/result.txt,
 lab17,r2l17func01,stores_accepted,3752,stores,results/lab13-lab19/lab17/r2l17func01/result.txt,
@@ -149,23 +149,153 @@ lab18,r2l18func01,peripheral_writes_completed,95,writes,results/lab13-lab19/lab1
 lab18,r2l18dcache01,directed_checks,9,checks,results/lab13-lab19/lab18/r2l18dcache01/result.txt,
 lab18,r2l18arb01,concurrent_cache_misses,2,misses,results/lab13-lab19/lab18/r2l18arb01/simulate.log,
 lab18,r2l18fault05,fail_stop_states,4,states,results/lab13-lab19/lab18/r2l18fault05/simulate.log,Idle Lookup writeback-wait and refill-data
-lab19,r2l19cache03,cache_instruction_tests,7,tests,results/lab13-lab19/lab19/r2l19cache03/result.txt,
-lab19,r2l19cache03,functional_cycles,2836,cycles,results/lab13-lab19/lab19/r2l19cache03/result.txt,
-lab19,r2l19cache03,stores_accepted,28,stores,results/lab13-lab19/lab19/r2l19cache03/result.txt,
-lab19,r2l19cache03,stores_completed,28,stores,results/lab13-lab19/lab19/r2l19cache03/result.txt,
-lab19,r2l19cache03,duplicate_stores,0,stores,results/lab13-lab19/lab19/r2l19cache03/result.txt,
-lab19,r2l19maint01,maintenance_directed_checks,10,checks,results/lab13-lab19/lab19/r2l19maint01/result.txt,
-lab19,r2l19contract03,index_contract_checks,4,checks,results/lab13-lab19/lab19/r2l19contract03/simulate.log,
-lab19,r2l19contract03,indexwb_write_beats,8,beats,results/lab13-lab19/lab19/r2l19contract03/simulate.log,
-lab19,r2l19redirect03,if_redirect_checks,7,checks,results/lab13-lab19/lab19/r2l19redirect03/simulate.log,
-lab19,r2l19tlbreplay02,tlb_write_replay_checks,3,checks,results/lab13-lab19/lab19/r2l19tlbreplay02/simulate.log,
-lab19,r2l19tlbreplay02,old_instruction_dropped,1,boolean,results/lab13-lab19/lab19/r2l19tlbreplay02/simulate.log,Old physical response not exposed to decode after TLB write
-lab19,r2l19wbs01,cpu_store_transactions,4,stores,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,One real CPU Store allocated a dirty line in each way 0-3
-lab19,r2l19wbs01,dcache_refill_transactions,4,transactions,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,One 8-beat refill per CPU Store
-lab19,r2l19wbs01,refill_r_beats,32,beats,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,Four lines from the deterministic reference memory model
-lab19,r2l19wbs01,writeback_aw_transactions,4,transactions,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,One IndexWBInv transaction for each way
-lab19,r2l19wbs01,writeback_w_beats,32,beats,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,Eight checked W beats per way
-lab19,r2l19wbs01,writeback_b_responses,4,responses,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,Each maintenance completes only after a successful B response
-lab19,r2l19wbs01,writeback_word_payload_compares,32,words,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,Each WDATA matched the reference memory after the CPU Store
-lab19,r2l19wbs01,aw_w_backpressure_stability,1,boolean,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,AW and W payloads remained stable during two-cycle stalls
-lab19,r2l19wbs01,maintenance_completions,4,completions,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,One completion per accepted way-specific IndexWBInv
+lab19,r2l19cache03,cache_instruction_tests,7,tests,results/lab13-lab19/lab19/r2l19cache03/result.txt,HISTORICAL_REVISION;
+lab19,r2l19cache03,functional_cycles,2836,cycles,results/lab13-lab19/lab19/r2l19cache03/result.txt,HISTORICAL_REVISION;
+lab19,r2l19cache03,stores_accepted,28,stores,results/lab13-lab19/lab19/r2l19cache03/result.txt,HISTORICAL_REVISION;
+lab19,r2l19cache03,stores_completed,28,stores,results/lab13-lab19/lab19/r2l19cache03/result.txt,HISTORICAL_REVISION;
+lab19,r2l19cache03,duplicate_stores,0,stores,results/lab13-lab19/lab19/r2l19cache03/result.txt,HISTORICAL_REVISION;
+lab19,r2l19maint01,maintenance_directed_checks,10,checks,results/lab13-lab19/lab19/r2l19maint01/result.txt,HISTORICAL_REVISION;
+lab19,r2l19contract03,index_contract_checks,4,checks,results/lab13-lab19/lab19/r2l19contract03/simulate.log,HISTORICAL_REVISION;
+lab19,r2l19contract03,indexwb_write_beats,8,beats,results/lab13-lab19/lab19/r2l19contract03/simulate.log,HISTORICAL_REVISION;
+lab19,r2l19redirect03,if_redirect_checks,7,checks,results/lab13-lab19/lab19/r2l19redirect03/simulate.log,HISTORICAL_REVISION;
+lab19,r2l19tlbreplay02,tlb_write_replay_checks,3,checks,results/lab13-lab19/lab19/r2l19tlbreplay02/simulate.log,HISTORICAL_REVISION;
+lab19,r2l19tlbreplay02,old_instruction_dropped,1,boolean,results/lab13-lab19/lab19/r2l19tlbreplay02/simulate.log,HISTORICAL_REVISION; Old physical response not exposed to decode after TLB write
+lab19,r2l19wbs01,cpu_store_transactions,4,stores,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,HISTORICAL_REVISION; One real CPU Store allocated a dirty line in each way 0-3
+lab19,r2l19wbs01,dcache_refill_transactions,4,transactions,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,HISTORICAL_REVISION; One 8-beat refill per CPU Store
+lab19,r2l19wbs01,refill_r_beats,32,beats,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,HISTORICAL_REVISION; Four lines from the deterministic reference memory model
+lab19,r2l19wbs01,writeback_aw_transactions,4,transactions,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,HISTORICAL_REVISION; One IndexWBInv transaction for each way
+lab19,r2l19wbs01,writeback_w_beats,32,beats,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,HISTORICAL_REVISION; Eight checked W beats per way
+lab19,r2l19wbs01,writeback_b_responses,4,responses,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,HISTORICAL_REVISION; Each maintenance completes only after a successful B response
+lab19,r2l19wbs01,writeback_word_payload_compares,32,words,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,HISTORICAL_REVISION; Each WDATA matched the reference memory after the CPU Store
+lab19,r2l19wbs01,aw_w_backpressure_stability,1,boolean,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,HISTORICAL_REVISION; AW and W payloads remained stable during two-cycle stalls
+lab19,r2l19wbs01,maintenance_completions,4,completions,results/lab13-lab19/lab19/r2l19wbs01/simulate.log,HISTORICAL_REVISION; One completion per accepted way-specific IndexWBInv
+lab19,r3l19-all94-04,functional_points,94,points,results/lab13-lab19/lab19/r3l19-all94-04/result.txt,Final Lab19 CPU against func_all94 image.
+lab19,r3l19-all94-04,functional_cycles,1402837,cycles,results/lab13-lab19/lab19/r3l19-all94-04/result.txt,100 MHz simulation.
+lab19,r3l19-all94-04,icache_hit,0,hits,results/lab13-lab19/lab19/r3l19-all94-04/result.txt,Workload executes through uncacheable mapping.
+lab19,r3l19-all94-04,icache_miss,0,misses,results/lab13-lab19/lab19/r3l19-all94-04/result.txt,Workload executes through uncacheable mapping.
+lab19,r3l19-all94-04,icache_refill,0,lines,results/lab13-lab19/lab19/r3l19-all94-04/result.txt,Workload executes through uncacheable mapping.
+lab19,r3l19-all94-04,icache_uncache_read,172900,reads,results/lab13-lab19/lab19/r3l19-all94-04/result.txt,
+lab19,r3l19-all94-04,dcache_hit,0,hits,results/lab13-lab19/lab19/r3l19-all94-04/result.txt,Workload executes through uncacheable mapping.
+lab19,r3l19-all94-04,dcache_miss,0,misses,results/lab13-lab19/lab19/r3l19-all94-04/result.txt,Workload executes through uncacheable mapping.
+lab19,r3l19-all94-04,dcache_writeback,0,lines,results/lab13-lab19/lab19/r3l19-all94-04/result.txt,Workload executes through uncacheable mapping.
+lab19,r3l19-all94-04,dcache_uncache,8370,requests,results/lab13-lab19/lab19/r3l19-all94-04/result.txt,
+lab19,r3l19-all94-04,axi_ar_transactions,177517,transactions,results/lab13-lab19/lab19/r3l19-all94-04/result.txt,
+lab19,r3l19-all94-04,axi_r_beats,177517,beats,results/lab13-lab19/lab19/r3l19-all94-04/result.txt,
+lab19,r3l19-all94-04,stores_accepted,3752,stores,results/lab13-lab19/lab19/r3l19-all94-04/result.txt,
+lab19,r3l19-all94-04,stores_completed,3752,stores,results/lab13-lab19/lab19/r3l19-all94-04/result.txt,
+lab19,r3l19-all94-04,duplicate_stores,0,stores,results/lab13-lab19/lab19/r3l19-all94-04/result.txt,
+lab19,r3l19-all94-04,peripheral_num_writes_accepted,95,writes,results/lab13-lab19/lab19/r3l19-all94-04/result.txt,Includes initial clear and 94 score writes.
+lab19,r3l19-all94-04,peripheral_num_writes_completed,95,writes,results/lab13-lab19/lab19/r3l19-all94-04/result.txt,
+lab19,r3l19-tlbwi-e2e-01,tlbwi_commits,1,commits,results/lab13-lab19/lab19/r3l19-tlbwi-e2e-01/simulate.log,Software mtc0 sequence followed by actual TLBWI.
+lab19,r3l19-tlbwi-e2e-01,mapped_fetch_va,00400100,hex,results/lab13-lab19/lab19/r3l19-tlbwi-e2e-01/simulate.log,
+lab19,r3l19-tlbwi-e2e-01,mapped_fetch_pa,00000100,hex,results/lab13-lab19/lab19/r3l19-tlbwi-e2e-01/simulate.log,
+lab19,r3l19-tlbwi-e2e-01,cycles,245,cycles,results/lab13-lab19/lab19/r3l19-tlbwi-e2e-01/simulate.log,
+lab19,r3l19-tlbreplay-01,tlb_replay_checks,3,checks,results/lab13-lab19/lab19/r3l19-tlbreplay-01/simulate.log,"Force-based event crosscheck, separate from software TLBWI run."
+lab19,r3l19-tlbreplay-01,old_pa,ABCDE100,hex,results/lab13-lab19/lab19/r3l19-tlbreplay-01/simulate.log,
+lab19,r3l19-tlbreplay-01,new_pa,12345100,hex,results/lab13-lab19/lab19/r3l19-tlbreplay-01/simulate.log,
+lab19,r3l19-tlbreplay-01,old_stale_response_dropped,1,boolean,results/lab13-lab19/lab19/r3l19-tlbreplay-01/simulate.log,
+lab19,r3l19-cache-01,cache_instruction_tests,7,tests,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,cycles,2836,cycles,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,retired_instructions,458,instructions,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,icache_hit,397,hits,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,icache_miss,51,misses,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,icache_refill,51,lines,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,icache_uncache_read,19,reads,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,dcache_hit,2,hits,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,dcache_miss,4,misses,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,dcache_writeback,2,lines,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,dcache_uncache,45,requests,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,axi_ar_transactions,95,transactions,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,axi_r_beats,480,beats,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,axi_aw_transactions,26,transactions,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,axi_w_beats,40,beats,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,axi_b_responses,26,responses,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,stores_accepted,28,stores,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,stores_completed,28,stores,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,duplicate_stores,0,stores,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,maintenance_ICIndexInv,2,operations,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,maintenance_ICIndexStTag,2,operations,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,maintenance_ICHitInv,1,operations,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,maintenance_DCIndexWBInv,2,operations,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,maintenance_DCIndexStTag,2,operations,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,maintenance_DCHitInv,1,operations,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-cache-01,maintenance_DCHitWBInv,1,operations,results/lab13-lab19/lab19/r3l19-cache-01/result.txt,
+lab19,r3l19-maint-01,maintenance_directed_checks,10,checks,results/lab13-lab19/lab19/r3l19-maint-01/simulate.log,Current-source directed regression.
+lab19,r3l19-maint-01,writebacks_completed,3,writebacks,results/lab13-lab19/lab19/r3l19-maint-01/simulate.log,Includes selected maintenance lines.
+lab19,r3l19-maint-01,indexwb_write_beats,8,beats,results/lab13-lab19/lab19/r3l19-maint-01/simulate.log,One unmapped IndexWBInv line.
+lab19,r3l19-maint-01,b_response_wait_observed,1,boolean,results/lab13-lab19/lab19/r3l19-maint-01/simulate.log,Completion waits for B.
+lab19,r3l19-maint-01,sentinel_set0_preserved,1,boolean,results/lab13-lab19/lab19/r3l19-maint-01/simulate.log,
+lab19,r3l19-index-02,index_contract_checks,4,checks,results/lab13-lab19/lab19/r3l19-index-02/simulate.log,IDX-03 explicitly UNSUPPORTED_BY_SCOPE.
+lab19,r3l19-index-02,index_unmapped_accepts,1,accepts,results/lab13-lab19/lab19/r3l19-index-02/simulate.log,IDX-01.
+lab19,r3l19-index-02,indexwb_write_beats,8,beats,results/lab13-lab19/lab19/r3l19-index-02/simulate.log,IDX-02.
+lab19,r3l19-index-02,busy_to_ready_completions,2,completions,results/lab13-lab19/lab19/r3l19-index-02/simulate.log,IDX-04 accepts and completes twice.
+lab19,r3l19-index-02,untranslated_hit_side_effects,0,side_effects,results/lab13-lab19/lab19/r3l19-index-02/simulate.log,IDX-03 blocked before I/D Cache.
+lab19,r3l19-wb-02,cpu_store_transactions,4,stores,results/lab13-lab19/lab19/r3l19-wb-02/simulate.log,One store dirties each way.
+lab19,r3l19-wb-02,dcache_refill_transactions,4,transactions,results/lab13-lab19/lab19/r3l19-wb-02/simulate.log,
+lab19,r3l19-wb-02,writeback_aw_transactions,4,transactions,results/lab13-lab19/lab19/r3l19-wb-02/simulate.log,
+lab19,r3l19-wb-02,writeback_w_beats,32,beats,results/lab13-lab19/lab19/r3l19-wb-02/simulate.log,
+lab19,r3l19-wb-02,writeback_b_responses,4,responses,results/lab13-lab19/lab19/r3l19-wb-02/simulate.log,
+lab19,r3l19-wb-02,writeback_word_payload_compares,32,words,results/lab13-lab19/lab19/r3l19-wb-02/simulate.log,All match reference memory.
+lab19,r3l19-wb-02,b_before_completion,1,boolean,results/lab13-lab19/lab19/r3l19-wb-02/simulate.log,Each way remains incomplete before B.
+lab19,r3l19-wb-02,aw_w_backpressure_stability,1,boolean,results/lab13-lab19/lab19/r3l19-wb-02/simulate.log,Stable under AW/W backpressure.
+lab19,r3l19-redirect-01,if_redirect_checks,7,checks,results/lab13-lab19/lab19/r3l19-redirect-01/simulate.log,
+lab19,r3l19-redirect-01,branch_delay_slot_cases,2,cases,results/lab13-lab19/lab19/r3l19-redirect-01/simulate.log,Taken and not-taken.
+lab19,r3l19-redirect-01,stale_responses_dropped,2,responses,results/lab13-lab19/lab19/r3l19-redirect-01/simulate.log,Cache maintenance and TLB write events.
+lab19,r3l19-redirect-01,trap_over_eret_cache_tlb_priority,1,boolean,results/lab13-lab19/lab19/r3l19-redirect-01/simulate.log,
+lab19_perf,r3l19-dhrystone-01,cycles,251834,cycles,results/lab13-lab19/lab19/r3l19-dhrystone-01/result.txt,Firmware-reported throughput configured for 50 MHz; simulation CPU clock is 100 MHz.
+lab19_perf,r3l19-dhrystone-01,retired_instructions,51073,instructions,results/lab13-lab19/lab19/r3l19-dhrystone-01/result.txt,
+lab19_perf,r3l19-dhrystone-01,icache_hit,40789,hits,results/lab13-lab19/lab19/r3l19-dhrystone-01/result.txt,
+lab19_perf,r3l19-dhrystone-01,icache_miss,133,misses,results/lab13-lab19/lab19/r3l19-dhrystone-01/result.txt,
+lab19_perf,r3l19-dhrystone-01,icache_refill,133,lines,results/lab13-lab19/lab19/r3l19-dhrystone-01/result.txt,
+lab19_perf,r3l19-dhrystone-01,dcache_hit,6579,hits,results/lab13-lab19/lab19/r3l19-dhrystone-01/result.txt,
+lab19_perf,r3l19-dhrystone-01,dcache_miss,13,misses,results/lab13-lab19/lab19/r3l19-dhrystone-01/result.txt,
+lab19_perf,r3l19-dhrystone-01,dcache_writeback,0,lines,results/lab13-lab19/lab19/r3l19-dhrystone-01/result.txt,
+lab19_perf,r3l19-dhrystone-01,dcache_uncache,4559,requests,results/lab13-lab19/lab19/r3l19-dhrystone-01/result.txt,
+lab19_perf,r3l19-dhrystone-01,axi_ar_transactions,12675,transactions,results/lab13-lab19/lab19/r3l19-dhrystone-01/result.txt,
+lab19_perf,r3l19-dhrystone-01,axi_r_beats,13697,beats,results/lab13-lab19/lab19/r3l19-dhrystone-01/result.txt,
+lab19_perf,r3l19-dhrystone-01,axi_aw_transactions,2185,transactions,results/lab13-lab19/lab19/r3l19-dhrystone-01/result.txt,
+lab19_perf,r3l19-dhrystone-01,axi_w_beats,2185,beats,results/lab13-lab19/lab19/r3l19-dhrystone-01/result.txt,
+lab19_perf,r3l19-dhrystone-01,axi_b_responses,2185,responses,results/lab13-lab19/lab19/r3l19-dhrystone-01/result.txt,
+lab19_perf,r3l19-dhrystone-01,simulation_ns,2518340,ns,results/lab13-lab19/lab19/r3l19-dhrystone-01/result.txt,Firmware-reported throughput configured for 50 MHz; simulation CPU clock is 100 MHz.
+lab19_perf,r3l19-dhrystone-01,num_data,0003343c,hex,results/lab13-lab19/lab19/r3l19-dhrystone-01/result.txt,
+lab19_perf,r3l19-coremark-01,cycles,2305331,cycles,results/lab13-lab19/lab19/r3l19-coremark-01/result.txt,Firmware-reported throughput configured for 50 MHz; simulation CPU clock is 100 MHz.
+lab19_perf,r3l19-coremark-01,retired_instructions,416073,instructions,results/lab13-lab19/lab19/r3l19-coremark-01/result.txt,
+lab19_perf,r3l19-coremark-01,icache_hit,260271,hits,results/lab13-lab19/lab19/r3l19-coremark-01/result.txt,
+lab19_perf,r3l19-coremark-01,icache_miss,508,misses,results/lab13-lab19/lab19/r3l19-coremark-01/result.txt,
+lab19_perf,r3l19-coremark-01,icache_refill,508,lines,results/lab13-lab19/lab19/r3l19-coremark-01/result.txt,
+lab19_perf,r3l19-coremark-01,dcache_hit,77338,hits,results/lab13-lab19/lab19/r3l19-coremark-01/result.txt,
+lab19_perf,r3l19-coremark-01,dcache_miss,70,misses,results/lab13-lab19/lab19/r3l19-coremark-01/result.txt,
+lab19_perf,r3l19-coremark-01,dcache_writeback,0,lines,results/lab13-lab19/lab19/r3l19-coremark-01/result.txt,
+lab19_perf,r3l19-coremark-01,dcache_uncache,7507,requests,results/lab13-lab19/lab19/r3l19-coremark-01/result.txt,
+lab19_perf,r3l19-coremark-01,axi_ar_transactions,162251,transactions,results/lab13-lab19/lab19/r3l19-coremark-01/result.txt,
+lab19_perf,r3l19-coremark-01,axi_r_beats,166297,beats,results/lab13-lab19/lab19/r3l19-coremark-01/result.txt,
+lab19_perf,r3l19-coremark-01,axi_aw_transactions,1130,transactions,results/lab13-lab19/lab19/r3l19-coremark-01/result.txt,
+lab19_perf,r3l19-coremark-01,axi_w_beats,1130,beats,results/lab13-lab19/lab19/r3l19-coremark-01/result.txt,
+lab19_perf,r3l19-coremark-01,axi_b_responses,1130,responses,results/lab13-lab19/lab19/r3l19-coremark-01/result.txt,
+lab19_perf,r3l19-coremark-01,simulation_ns,23053310,ns,results/lab13-lab19/lab19/r3l19-coremark-01/result.txt,Firmware-reported throughput configured for 50 MHz; simulation CPU clock is 100 MHz.
+lab19_perf,r3l19-coremark-01,num_data,01394d3c,hex,results/lab13-lab19/lab19/r3l19-coremark-01/result.txt,
+lab19,r3l19-synthesis-02,synth_errors,0,errors,results/lab13-lab19/lab19/r3l19-synthesis-02/result.txt,synth_design messages only; one separate Vivado Common path diagnostic.
+lab19,r3l19-synthesis-02,synth_warnings,131,warnings,results/lab13-lab19/lab19/r3l19-synthesis-02/result.txt,
+lab19,r3l19-synthesis-02,synth_critical_warnings,0,warnings,results/lab13-lab19/lab19/r3l19-synthesis-02/result.txt,
+lab19,r3l19-synthesis-02,slice_luts,34400,LUTs,results/lab13-lab19/lab19/r3l19-synthesis-02/result.txt,+36.09% vs historical 25278 baseline.
+lab19,r3l19-synthesis-02,lut_as_memory,10582,LUTs,results/lab13-lab19/lab19/r3l19-synthesis-02/result.txt,
+lab19,r3l19-synthesis-02,slice_registers,11546,registers,results/lab13-lab19/lab19/r3l19-synthesis-02/result.txt,
+lab19,r3l19-synthesis-02,bram_tiles,256,tiles,results/lab13-lab19/lab19/r3l19-synthesis-02/result.txt,
+lab19,r3l19-synthesis-02,dsp,0,blocks,results/lab13-lab19/lab19/r3l19-synthesis-02/result.txt,
+lab19,r3l19-synthesis-02,iob,55,ports,results/lab13-lab19/lab19/r3l19-synthesis-02/result.txt,
+lab19,r3l19-synthesis-02,setup_wns,4.235,ns,results/lab13-lab19/lab19/r3l19-synthesis-02/result.txt,"Post-synthesis estimate, not timing closure."
+lab19,r3l19-synthesis-02,setup_tns,0,ns,results/lab13-lab19/lab19/r3l19-synthesis-02/result.txt,
+lab19,r3l19-synthesis-02,hold_whs,-0.087,ns,results/lab13-lab19/lab19/r3l19-synthesis-02/result.txt,
+lab19,r3l19-synthesis-02,hold_ths,-5.338,ns,results/lab13-lab19/lab19/r3l19-synthesis-02/result.txt,
+lab19,r3l19-synthesis-02,hold_failing_endpoints,66,endpoints,results/lab13-lab19/lab19/r3l19-synthesis-02/result.txt,
+lab19,r3l19-synthesis-02,unconstrained_inputs,15,ports,results/lab13-lab19/lab19/r3l19-synthesis-02/result.txt,Board XDC absent.
+lab19,r3l19-synthesis-02,unconstrained_outputs,39,ports,results/lab13-lab19/lab19/r3l19-synthesis-02/result.txt,Board XDC absent.
+lab19,r3l19-synthesis-02,place_route_status,NOT_RUN,status,results/lab13-lab19/lab19/r3l19-synthesis-02/result.txt,
+lab19_perf,r3l19-dhrystone-01,simulation_cpu_frequency_hz,100000000,Hz,results/lab13-lab19/lab19/r3l19-dhrystone-01/simulate.log,Simulator clock reported in PERF_METRICS.
+lab19_perf,r3l19-dhrystone-01,firmware_throughput_frequency_mhz,50,MHz,results/lab13-lab19/lab19/r3l19-dhrystone-01/simulate.log,Firmware performance output uses this configured value.
+lab19_perf,r3l19-coremark-01,simulation_cpu_frequency_hz,100000000,Hz,results/lab13-lab19/lab19/r3l19-coremark-01/simulate.log,Simulator clock reported in PERF_METRICS.
+lab19_perf,r3l19-coremark-01,firmware_throughput_frequency_mhz,50,MHz,results/lab13-lab19/lab19/r3l19-coremark-01/simulate.log,Firmware performance output uses this configured value.
+lab19_perf,r3l19-dhrystone-01,dhrystones_per_second,47846,Dhrystones/s,results/lab13-lab19/lab19/r3l19-dhrystone-01/simulate.log,Firmware-reported throughput; not measured at 100 MHz.
+lab19_perf,r3l19-dhrystone-01,dmips_per_mhz,0.544,DMIPS/MHz,results/lab13-lab19/lab19/r3l19-dhrystone-01/simulate.log,Firmware-reported value using its configured 50 MHz input.
+lab19_perf,r3l19-coremark-01,iterations_per_1000_seconds,48704,iterations/1000s,results/lab13-lab19/lab19/r3l19-coremark-01/simulate.log,Firmware-reported throughput; not measured at 100 MHz.
+lab19_perf,r3l19-coremark-01,coremark_per_mhz,0.974,CoreMark/MHz,results/lab13-lab19/lab19/r3l19-coremark-01/simulate.log,Firmware-reported value using its configured 50 MHz input.

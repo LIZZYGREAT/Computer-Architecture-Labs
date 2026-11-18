@@ -1,0 +1,7 @@
+BRANCH=lab13-lab19
+HEAD=0af24a5956453709e600f55cbc9ed449e70e64d0
+WORKTREE_STATUS_BEGIN
+?? results/lab13-lab19/lab19/r2l19top03/
+?? results/lab13-lab19/lab19/r3l19-all94-01/
+?? results/lab13-lab19/lab19/revision2-l19-maint-p0-03/
+WORKTREE_STATUS_END
