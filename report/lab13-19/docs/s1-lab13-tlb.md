@@ -10,8 +10,8 @@ The official module interface has no reset input. The entry-valid vector starts 
 
 | Run | Result | Evidence |
 | --- | --- | --- |
-| `lab13-tlb-official-unit-20261118-01` | Official wrapper printed `OK!!!write`, `OK!!!read`, `OK!!!search`, `Test end!`, and `----PASS!!!`; 16 writes, 16 indexed readbacks, and 26 lookup-port cases completed with zero test error. | [Run record](../../../results/lab13_19/lab13/lab13-tlb-official-unit-20261118-01/) |
-| `lab13-tlb-directed-20261118-04` | Nine directed checks passed, including simultaneous lookup ports, ASID and Global matching, both page halves, invalid-page hit reporting, readback, unwritten-entry behavior, and overwrite. | [Run record](../../../results/lab13_19/lab13/lab13-tlb-directed-20261118-04/) |
+| `lab13-tlb-official-unit-20261118-01` | Official wrapper printed `OK!!!write`, `OK!!!read`, `OK!!!search`, `Test end!`, and `----PASS!!!`; 16 writes, 16 indexed readbacks, and 26 lookup-port cases completed with zero test error. | [Run record](../../../results/lab13-lab19/lab13/lab13-tlb-official-unit-20261118-01/) |
+| `lab13-tlb-directed-20261118-04` | Nine directed checks passed, including simultaneous lookup ports, ASID and Global matching, both page halves, invalid-page hit reporting, readback, unwritten-entry behavior, and overwrite. | [Run record](../../../results/lab13-lab19/lab13/lab13-tlb-directed-20261118-04/) |
 
 The official project wrapper and testbench were used unchanged. Because the legacy Clocking Wizard is locked in Vivado 2025.2, these cycle-based unit runs use the pass-through `clk_pll` shim in an isolated generated project. The original project and XCI remain unchanged; this unit-level result does not claim CPU/CP0 integration, which is covered by S2.
 

@@ -28,10 +28,10 @@
 
 ## 证据与运行
 
-- 定向 run：[lab17-bridge-directed-20261118-06](../../results/lab13_19/lab17/lab17-bridge-directed-20261118-06/result.txt)，24 项通过，含完整 WDB。
-- ICache 功能 run：[lab17-icache-functional-20261118-02](../../results/lab13_19/lab17/lab17-icache-functional-20261118-02/result.txt)，94/94 通过。
-- 无缓存基线：[lab17-baseline-functional-20261118-01](../../results/lab13_19/lab17/lab17-baseline-functional-20261118-01/result.txt)，94/94 通过。
-- [波形索引](../../results/lab13_19/lab17/waveform-index.txt)；[功能对照 CSV](../../results/lab13_19/lab17/functional-comparison.csv)。
+- 定向 run：[lab17-bridge-directed-20261118-06](../../results/lab13-lab19/lab17/lab17-bridge-directed-20261118-06/result.txt)，24 项通过，含完整 WDB。
+- ICache 功能 run：[lab17-icache-functional-20261118-02](../../results/lab13-lab19/lab17/lab17-icache-functional-20261118-02/result.txt)，94/94 通过。
+- 无缓存基线：[lab17-baseline-functional-20261118-01](../../results/lab13-lab19/lab17/lab17-baseline-functional-20261118-01/result.txt)，94/94 通过。
+- [波形索引](../../results/lab13-lab19/lab17/waveform-index.txt)；[功能对照 CSV](../../results/lab13-lab19/lab17/functional-comparison.csv)。
 - 三个最终 run 的 `source-integrity.txt` 均为 PASS；两个 SoC run 的 COE 镜像 SHA-256 均为 `D2FE2D064B2611237805DCB502A273329C8DE5FACF5C8368F55DE1326D3C2244`。
 - 每个类别只保留一个最终有效 run；本阶段的失败和被替代目录已清理。
 

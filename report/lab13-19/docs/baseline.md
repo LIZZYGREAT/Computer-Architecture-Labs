@@ -4,13 +4,13 @@
 
 The implementation branch is `lab12-lab19`. It started at `3ee4fcdc5b512f05000cce47fc2bac658b722a0b` with a clean worktree. The original Lab10/Lab11 integration was merge commit `64e2586cbd94856abef57cabb9142d839c56f3bc`, including commits `e95923c` and `c6c2920`. After the `lab10-lab11` cleanup commit `c8a6ea9a5616f346b20d323bc10c153a20de3567`, that updated branch state was merged here as `ccf9c3f4fc9fad9074af3c3d6b09631687e18c95`.
 
-Vivado 2025.2 is installed and starts in batch mode. The Lab10/Lab11 cleanup removed the earlier directed run `lab11-source-provenance-directed-20261118-03`; its remaining CSV entries are historical audit data, not a retained run directory. Current Lab11 regression evidence is retained in the [AXI3 directed run result](../../../results/lab13_19/lab14/lab11-axi3-directed-20261118-02/result.txt) and the [CPU golden-trace run result](../../../results/lab13_19/lab14/lab11-cpu-golden-20261118-03/result.txt).
+Vivado 2025.2 is installed and starts in batch mode. The Lab10/Lab11 cleanup removed the earlier directed run `lab11-source-provenance-directed-20261118-03`; its remaining CSV entries are historical audit data, not a retained run directory. Current Lab11 regression evidence is retained in the [AXI3 directed run result](../../../results/lab13-lab19/lab14/lab11-axi3-directed-20261118-02/result.txt) and the [CPU golden-trace run result](../../../results/lab13-lab19/lab14/lab11-cpu-golden-20261118-03/result.txt).
 
 ## Official unit projects
 
 The original Lab13 and Lab16 XPRs were opened with Vivado 2025.2 using `open_project -read_only`. Their original XPR and XCI files remain unchanged. Both projects target `xc7a200tfbg676-1`, set their simulation top to `testbench`, and contain only two `sources_1` entries: the wrapper RTL and `clk_pll.xci`.
 
-Both projects were created with Vivado 2019.2. Their `clk_pll` Clocking Wizard is IP 6.0 revision 4; Vivado 2025.2 offers revision 17 and reports the IP as locked while the project is read-only. The reports and logs are preserved in [the S0 run record](../../../results/lab13_19/baseline/s0-merge-baseline-20261118-02/). Simulation must use a private project copy and upgrade/regenerate the IP there. Do not upgrade the official XCI in place.
+Both projects were created with Vivado 2019.2. Their `clk_pll` Clocking Wizard is IP 6.0 revision 4; Vivado 2025.2 offers revision 17 and reports the IP as locked while the project is read-only. The reports and logs are preserved in [the S0 run record](../../../results/lab13-lab19/baseline/s0-merge-baseline-20261118-02/). Simulation must use a private project copy and upgrade/regenerate the IP there. Do not upgrade the official XCI in place.
 
 The wrappers instantiate modules absent from the baseline:
 
@@ -35,4 +35,4 @@ Full candidate-source and image hashes are in the S0 `source-candidate-manifest.
 
 ## S0 evidence
 
-The S0 result is `results/lab13_19/baseline/s0-merge-baseline-20261118-02/result.txt`. It includes branch/merge provenance, the Vivado version, read-only project inspection, both IP status reports, candidate source hashes, separate program-image hashes, and the implementation-gap audit.
+The S0 result is `results/lab13-lab19/baseline/s0-merge-baseline-20261118-02/result.txt`. It includes branch/merge provenance, the Vivado version, read-only project inspection, both IP status reports, candidate source hashes, separate program-image hashes, and the implementation-gap audit.

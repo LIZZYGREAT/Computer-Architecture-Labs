@@ -31,11 +31,11 @@ W beat 数包含脏行写回的 8 拍突发；446 次整行写回贡献 3,568 �
 
 ## 证据
 
-- [DCache 定向 run](../../results/lab13_19/lab18/lab18-dcache-directed-20261118-01/result.txt)：9 项检查通过，含 WDB。
-- [I/D 并发 miss run](../../results/lab13_19/lab18/lab18-cache-arbitration-20261118-02/result.txt)：owner/ID 正确，两行共 16 个 R beat，含 WDB。
-- [MEM 异常/提交 run](../../results/lab13_19/lab18/lab18-mem-exception-20261118-02/result.txt)：异常 Store 被阻止，有效 Store 完成一次，含 WDB。
-- [94 项功能 run](../../results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt)：94/94、源码完整性 PASS；长仿真不保留全量 WDB。
-- [波形索引](../../results/lab13_19/lab18/waveform-index.txt)记录三个 WDB 的大小、SHA-256 和事件锚点；Vivado 截图/WCFG 人工复核待后续捕获。
+- [DCache 定向 run](../../results/lab13-lab19/lab18/lab18-dcache-directed-20261118-01/result.txt)：9 项检查通过，含 WDB。
+- [I/D 并发 miss run](../../results/lab13-lab19/lab18/lab18-cache-arbitration-20261118-02/result.txt)：owner/ID 正确，两行共 16 个 R beat，含 WDB。
+- [MEM 异常/提交 run](../../results/lab13-lab19/lab18/lab18-mem-exception-20261118-02/result.txt)：异常 Store 被阻止，有效 Store 完成一次，含 WDB。
+- [94 项功能 run](../../results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt)：94/94、源码完整性 PASS；长仿真不保留全量 WDB。
+- [波形索引](../../results/lab13-lab19/lab18/waveform-index.txt)记录三个 WDB 的大小、SHA-256 和事件锚点；Vivado 截图/WCFG 人工复核待后续捕获。
 - 功能镜像 COE SHA-256：`D2FE2D064B2611237805DCB502A273329C8DE5FACF5C8368F55DE1326D3C2244`。
 - 每个验收类别只保留一个最终有效 run；失败的计数判定与 Vivado xelab 启动尝试已清理。
 

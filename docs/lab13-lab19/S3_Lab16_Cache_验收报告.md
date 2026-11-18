@@ -17,8 +17,8 @@
 
 | 类别 | 最终 RunId | 结果 |
 | --- | --- | --- |
-| Lab16 官方测试 | [lab16-official-20261118-05](../../results/lab13_19/lab16/lab16-official-20261118-05/result.txt) | PASS；256/256 个 index 各完成一次，Test end! 与 ----PASS!!!；失败标记为 0 |
-| Cache 定向检查 | [lab16-directed-20261118-02](../../results/lab13_19/lab16/lab16-directed-20261118-02/result.txt) | PASS；20 项检查，21 次接受、20 次完成、1 次复位取消；16 次读 refill、1 次脏行写回 |
+| Lab16 官方测试 | [lab16-official-20261118-05](../../results/lab13-lab19/lab16/lab16-official-20261118-05/result.txt) | PASS；256/256 个 index 各完成一次，Test end! 与 ----PASS!!!；失败标记为 0 |
+| Cache 定向检查 | [lab16-directed-20261118-02](../../results/lab13-lab19/lab16/lab16-directed-20261118-02/result.txt) | PASS；20 项检查，21 次接受、20 次完成、1 次复位取消；16 次读 refill、1 次脏行写回 |
 
 官方仿真结束时间为 265,495 ns。定向仿真结束时间为 7,180 ns。定向仿真对读 miss/hit、干净第五路替换、脏行写回等待、写回后 refill 和复位取消提供了日志时间标记。
 
@@ -26,7 +26,7 @@
 
 ## 波形证据
 
-波形索引：[waveform-index.txt](../../results/lab13_19/lab16/waveform-index.txt)。XSim 开启全信号记录，波形包含 CPU 请求与响应、四路 hit、victim、dirty 元数据、refill 请求与 beat、writeback payload 和 FSM。
+波形索引：[waveform-index.txt](../../results/lab13-lab19/lab16/waveform-index.txt)。XSim 开启全信号记录，波形包含 CPU 请求与响应、四路 hit、victim、dirty 元数据、refill 请求与 beat、writeback payload 和 FSM。
 
 - 官方 WDB：4,151,864 字节，SHA-256 59AEB34FF430CE202924058961E2C6056D8591B03D993ACA70A88B51272F6A01。
 - 定向 WDB：120,528 字节，SHA-256 D8F728C40948DF18CAF566D86D5D5650F4617235CF032AE523AAA1CA483BB8FB。

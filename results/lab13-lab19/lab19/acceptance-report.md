@@ -8,11 +8,11 @@
 
 | Suite | Final run | Result |
 | --- | --- | --- |
-| Official CACHE instruction tests | [lab19-cache-20261118-06](../../../results/lab13_19/lab19/lab19-cache-20261118-06/result.txt) | PASS, 7/7; 2,836 cycles; 458 retired instructions; 28/28 stores accepted/completed, no duplicate stores |
-| CACHE maintenance directed | [lab19-maint-directed-20261118-06](../../../results/lab13_19/lab19/lab19-maint-directed-20261118-06/result.txt) | PASS, 9 directed checks; ways 2/3, TagLo valid/dirty state, hit invalidation without writeback, dirty writeback delayed by B response |
-| Dhrystone | [lab19-dhrystone-20261118-06](../../../results/lab13_19/lab19/lab19-dhrystone-20261118-06/result.txt) | PASS; 251,834 cycles, 51,073 retired instructions; normal program completion |
-| CoreMark | [lab19-coremark-20261118-03](../../../results/lab13_19/lab19/lab19-coremark-20261118-03/result.txt) | PASS; 2,305,331 cycles, 416,073 retired instructions; normal program completion |
-| Top-level synthesis | [lab19-synthesis-20261118-01](../../../results/lab13_19/lab19/lab19-synthesis-20261118-01/result.txt) | `soc_axi_lite_top` synth_design completed; 0 errors, 0 critical warnings; resource and timing reports generated |
+| Official CACHE instruction tests | [lab19-cache-20261118-06](../../../results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt) | PASS, 7/7; 2,836 cycles; 458 retired instructions; 28/28 stores accepted/completed, no duplicate stores |
+| CACHE maintenance directed | [lab19-maint-directed-20261118-06](../../../results/lab13-lab19/lab19/lab19-maint-directed-20261118-06/result.txt) | PASS, 9 directed checks; ways 2/3, TagLo valid/dirty state, hit invalidation without writeback, dirty writeback delayed by B response |
+| Dhrystone | [lab19-dhrystone-20261118-06](../../../results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt) | PASS; 251,834 cycles, 51,073 retired instructions; normal program completion |
+| CoreMark | [lab19-coremark-20261118-03](../../../results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt) | PASS; 2,305,331 cycles, 416,073 retired instructions; normal program completion |
+| Top-level synthesis | [lab19-synthesis-20261118-01](../../../results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt) | `soc_axi_lite_top` synth_design completed; 0 errors, 0 critical warnings; resource and timing reports generated |
 
 The official CACHE run executed the expected maintenance sequence: `ICIndexInv=2`, `ICIndexStTag=2`, `ICHitInv=1`, `DCIndexWBInv=2`, `DCIndexStTag=2`, `DCHitInv=1`, and `DCHitWBInv=1`. Its counters were ICache hit/miss/refill `397/51/51`, ICache uncache reads `19`, DCache hit/miss/writeback/uncache `2/4/2/45`, and AXI AR/R/AW/W/B `95/480/26/40/26`. The directed test verifies 9 additional cases and chooses ways 2 and 3. Its marker records `hitinv_no_writeback=1`, `writebacks=2`, and a wait for B before completion.
 

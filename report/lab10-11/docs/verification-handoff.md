@@ -2,7 +2,7 @@
 
 ## 当前树状态
 
-本文记录的是 `lab10-lab11` 清理提交 `c8a6ea9` 之前的验收交接快照。该清理提交移除了本文件下文所述的 Lab11 directed Run `lab11-source-provenance-directed-20261118-03` 及若干冗余历史 Run；对应汇总 CSV 中的行保留作历史记录，不代表这些 Run 目录仍存在。当前树保留的 Lab11 回归证据见 [AXI3 directed Run result](../../../results/lab13_19/lab14/lab11-axi3-directed-20261118-02/result.txt) 和 [CPU golden-trace Run result](../../../results/lab13_19/lab14/lab11-cpu-golden-20261118-03/result.txt)。
+本文记录的是 `lab10-lab11` 清理提交 `c8a6ea9` 之前的验收交接快照。该清理提交移除了本文件下文所述的 Lab11 directed Run `lab11-source-provenance-directed-20261118-03` 及若干冗余历史 Run；对应汇总 CSV 中的行保留作历史记录，不代表这些 Run 目录仍存在。当前树保留的 Lab11 回归证据见 [AXI3 directed Run result](../../../results/lab13-lab19/lab14/lab11-axi3-directed-20261118-02/result.txt) 和 [CPU golden-trace Run result](../../../results/lab13-lab19/lab14/lab11-cpu-golden-20261118-03/result.txt)。
 
 ## 最终结论
 

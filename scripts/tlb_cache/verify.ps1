@@ -19,11 +19,12 @@ param(
 $ErrorActionPreference = 'Stop'
 $repoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..\..')).Path
 $branch = (& git -C $repoRoot branch --show-current).Trim()
-if ($branch -ne 'lab12-lab19') {
-    throw "Run on lab12-lab19; current worktree branch is '$branch'."
+$allowedBranches = @('lab12-lab19', 'lab13-lab19')
+if ($branch -notin $allowedBranches) {
+    throw "Run on lab12-lab19 or lab13-lab19; current worktree branch is '$branch'."
 }
 
-$runDir = Join-Path $repoRoot (Join-Path 'results\lab13_19' (Join-Path $Case $RunId))
+$runDir = Join-Path $repoRoot (Join-Path 'results\lab13-lab19' (Join-Path $Case $RunId))
 if (Test-Path -LiteralPath $runDir) {
     throw "Run ID already exists; choose a fresh RunId: $runDir"
 }

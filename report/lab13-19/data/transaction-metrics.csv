@@ -4,131 +4,131 @@ lab13,lab13-tlb-official-unit-20261118-01,indexed_readbacks,16,entries,lab13/tlb
 lab13,lab13-tlb-official-unit-20261118-01,search_port_cases,26,port_cases,lab13/tlb_verify/rtl/tlb_top.v; official simulate.log,13 official s0/s1 cycles times two independent lookup ports; official search and overall PASS markers observed
 lab13,lab13-tlb-official-unit-20261118-01,test_error,0,assertions,lab13/tlb_verify/rtl/tlb_top.v; official simulate.log,Official testbench reached joint PASS without test_error
 lab13,lab13-tlb-directed-20261118-04,directed_checks,9,checks,lab13/tlb_verify/testbench/tb_tlb_directed.sv; simulate.log,"Explicit checks passed for simultaneous ports, ASID/global matching, odd/even page selection, invalid-page hit, indexed read, unwritten zero, and overwrite"
-lab11,lab11-cpu-golden-20261118-03,golden_points,94,points,results/lab13_19/lab14/lab11-cpu-golden-20261118-03/result.txt,PASS golden-trace regression
-lab11,lab11-cpu-golden-20261118-03,trace_rows,111625,rows,results/lab13_19/lab14/lab11-cpu-golden-20261118-03/result.txt,PASS golden-trace regression
-lab11,lab11-cpu-golden-20261118-03,valid_trace_rows,111583,rows,results/lab13_19/lab14/lab11-cpu-golden-20261118-03/result.txt,PASS golden-trace regression
-lab11,lab11-cpu-golden-20261118-03,stores_accepted,3753,stores,results/lab13_19/lab14/lab11-cpu-golden-20261118-03/result.txt,PASS golden-trace regression
-lab11,lab11-cpu-golden-20261118-03,stores_completed,3753,stores,results/lab13_19/lab14/lab11-cpu-golden-20261118-03/result.txt,PASS golden-trace regression
-lab11,lab11-cpu-golden-20261118-03,duplicate_stores,0,stores,results/lab13_19/lab14/lab11-cpu-golden-20261118-03/result.txt,PASS golden-trace regression
-lab11,lab11-cpu-golden-20261118-03,protocol_assertion_failures,0,assertions,results/lab13_19/lab14/lab11-cpu-golden-20261118-03/result.txt,PASS golden-trace regression
-lab11,lab11-cpu-golden-20261118-03,redirect_stale_responses_dropped,687,responses,results/lab13_19/lab14/lab11-cpu-golden-20261118-03/result.txt,PASS golden-trace regression
-lab14,lab14-n1-n6-official-20261118-05,official_tests_passed,6,tests,results/lab13_19/lab14/lab14-n1-n6-official-20261118-05/result.txt,Official n1-n6
-lab14,lab14-n1-n6-official-20261118-05,cycles,4705,cycles,results/lab13_19/lab14/lab14-n1-n6-official-20261118-05/result.txt,Official n1-n6
-lab14,lab14-translate-directed-20261118-02,translation_directed_checks,11,checks,results/lab13_19/lab14/lab14-translate-directed-20261118-02/result.txt,
-lab16,lab16-official-20261118-05,official_indices_completed,256,indices,results/lab13_19/lab16/lab16-official-20261118-05/result.txt,
-lab16,lab16-directed-20261118-02,directed_checks,20,checks,results/lab13_19/lab16/lab16-directed-20261118-02/result.txt,
-lab16,lab16-directed-20261118-02,requests_accepted,21,requests,results/lab13_19/lab16/lab16-directed-20261118-02/result.txt,
-lab16,lab16-directed-20261118-02,requests_completed,20,requests,results/lab13_19/lab16/lab16-directed-20261118-02/result.txt,
-lab16,lab16-directed-20261118-02,requests_cancelled_by_reset,1,requests,results/lab13_19/lab16/lab16-directed-20261118-02/result.txt,
-lab16,lab16-directed-20261118-02,refill_reads,16,lines,results/lab13_19/lab16/lab16-directed-20261118-02/result.txt,
-lab16,lab16-directed-20261118-02,dirty_writebacks,1,lines,results/lab13_19/lab16/lab16-directed-20261118-02/result.txt,
-lab17,lab17-icache-functional-20261118-02,functional_points,94,points,results/lab13_19/lab17/lab17-icache-functional-20261118-02/result.txt,
-lab17,lab17-icache-functional-20261118-02,cycles,1038101,cycles,results/lab13_19/lab17/lab17-icache-functional-20261118-02/result.txt,
-lab17,lab17-icache-functional-20261118-02,icache_hit,134535,hits,results/lab13_19/lab17/lab17-icache-functional-20261118-02/result.txt,
-lab17,lab17-icache-functional-20261118-02,icache_miss,21571,misses,results/lab13_19/lab17/lab17-icache-functional-20261118-02/result.txt,
-lab17,lab17-icache-functional-20261118-02,icache_refill,21571,lines,results/lab13_19/lab17/lab17-icache-functional-20261118-02/result.txt,
-lab17,lab17-icache-functional-20261118-02,icache_uncache_read,16919,reads,results/lab13_19/lab17/lab17-icache-functional-20261118-02/result.txt,
-lab17,lab17-icache-functional-20261118-02,axi_ar_transactions,43108,transactions,results/lab13_19/lab17/lab17-icache-functional-20261118-02/result.txt,
-lab17,lab17-icache-functional-20261118-02,axi_r_beats,194105,beats,results/lab13_19/lab17/lab17-icache-functional-20261118-02/result.txt,
-lab17,lab17-icache-functional-20261118-02,stores_accepted,3752,stores,results/lab13_19/lab17/lab17-icache-functional-20261118-02/result.txt,
-lab17,lab17-icache-functional-20261118-02,stores_completed,3752,stores,results/lab13_19/lab17/lab17-icache-functional-20261118-02/result.txt,
-lab17_baseline,lab17-baseline-functional-20261118-01,cycles,1402080,cycles,results/lab13_19/lab17/lab17-baseline-functional-20261118-01/result.txt,Same image and clock; no-cache baseline
-lab17_baseline,lab17-baseline-functional-20261118-01,axi_ar_transactions,177518,transactions,results/lab13_19/lab17/lab17-baseline-functional-20261118-01/result.txt,Same image and clock; no-cache baseline
-lab17,lab17-icache-functional-20261118-02,same_image_speedup,1.3506,ratio,results/lab13_19/lab17/functional-comparison.csv,1402080 baseline cycles / 1038101 ICache cycles
-lab17,lab17-icache-functional-20261118-02,axi_ar_reduction,75.72,percent,results/lab13_19/lab17/functional-comparison.csv,Same image and testbench
-lab17,lab17-bridge-directed-20261118-06,directed_checks,24,checks,results/lab13_19/lab17/lab17-bridge-directed-20261118-06/result.txt,
-lab18,lab18-dcache-functional-20261118-02,functional_points,94,points,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-functional-20261118-02,cycles,1041981,cycles,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-functional-20261118-02,icache_hit,134525,hits,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-functional-20261118-02,icache_miss,21571,misses,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-functional-20261118-02,icache_refill,21571,lines,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-functional-20261118-02,dcache_hit,6937,hits,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-functional-20261118-02,dcache_miss,950,misses,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-functional-20261118-02,dcache_writeback,446,lines,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-functional-20261118-02,dcache_uncache,483,requests,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-functional-20261118-02,axi_ar_transactions,39684,transactions,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-functional-20261118-02,axi_r_beats,197331,beats,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-functional-20261118-02,axi_aw_transactions,685,transactions,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-functional-20261118-02,axi_w_beats,3807,beats,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-functional-20261118-02,axi_b_responses,685,responses,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-functional-20261118-02,cpu_stores_accepted,3752,stores,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-functional-20261118-02,cpu_stores_completed,3752,stores,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-functional-20261118-02,num_peripheral_writes_accepted,95,writes,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-functional-20261118-02,num_peripheral_writes_completed,95,writes,results/lab13_19/lab18/lab18-dcache-functional-20261118-02/result.txt,
-lab18,lab18-dcache-directed-20261118-01,directed_checks,9,checks,results/lab13_19/lab18/lab18-dcache-directed-20261118-01/result.txt,
-lab18,lab18-cache-arbitration-20261118-02,concurrent_cache_misses,2,misses,results/lab13_19/lab18/lab18-cache-arbitration-20261118-02/result.txt,
-lab18,lab18-mem-exception-20261118-02,exception_stores_blocked,1,stores,results/lab13_19/lab18/lab18-mem-exception-20261118-02/result.txt,
-lab19,lab19-cache-20261118-06,cache_instruction_tests,7,tests,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,cycles,2836,cycles,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,retired_instructions,458,instructions,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,icache_hit,397,hits,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,icache_miss,51,misses,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,icache_refill,51,lines,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,icache_uncache_read,19,reads,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,dcache_hit,2,hits,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,dcache_miss,4,misses,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,dcache_writeback,2,lines,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,dcache_uncache,45,requests,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,axi_ar_transactions,95,transactions,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,axi_r_beats,480,beats,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,axi_aw_transactions,26,transactions,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,axi_w_beats,40,beats,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,axi_b_responses,26,responses,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,stores_accepted,28,stores,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,stores_completed,28,stores,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,duplicate_stores,0,stores,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,maintenance_ICIndexInv,2,operations,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,maintenance_ICIndexStTag,2,operations,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,maintenance_ICHitInv,1,operations,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,maintenance_DCIndexWBInv,2,operations,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,maintenance_DCIndexStTag,2,operations,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,maintenance_DCHitInv,1,operations,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-cache-20261118-06,maintenance_DCHitWBInv,1,operations,results/lab13_19/lab19/lab19-cache-20261118-06/result.txt,
-lab19,lab19-maint-directed-20261118-06,maintenance_directed_checks,9,checks,results/lab13_19/lab19/lab19-maint-directed-20261118-06/result.txt,
-lab19,lab19-maint-directed-20261118-06,way2_way3_coverage,2,ways,results/lab13_19/lab19/lab19-maint-directed-20261118-06/result.txt,
-lab19,lab19-maint-directed-20261118-06,hit_invalidate_writebacks,0,writebacks,results/lab13_19/lab19/lab19-maint-directed-20261118-06/result.txt,
-lab19,lab19-maint-directed-20261118-06,writebacks_completed,2,writebacks,results/lab13_19/lab19/lab19-maint-directed-20261118-06/result.txt,
-lab19,lab19-maint-directed-20261118-06,b_response_wait_observed,1,boolean,results/lab13_19/lab19/lab19-maint-directed-20261118-06/result.txt,
-lab19_perf,lab19-dhrystone-20261118-06,cycles,251834,cycles,results/lab13_19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,retired_instructions,51073,instructions,results/lab13_19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,icache_hit,40789,hits,results/lab13_19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,icache_miss,133,misses,results/lab13_19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,icache_refill,133,lines,results/lab13_19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,dcache_hit,6579,hits,results/lab13_19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,dcache_miss,13,misses,results/lab13_19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,dcache_writeback,0,lines,results/lab13_19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,dcache_uncache,4559,requests,results/lab13_19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,axi_ar_transactions,12675,transactions,results/lab13_19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,axi_r_beats,13697,beats,results/lab13_19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,axi_aw_transactions,2185,transactions,results/lab13_19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,axi_w_beats,2185,beats,results/lab13_19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,axi_b_responses,2185,responses,results/lab13_19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,simulation_ns,2518340,ns,results/lab13_19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-dhrystone-20261118-06,num_data,0003343c,hex,results/lab13_19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
-lab19_perf,lab19-coremark-20261118-03,cycles,2305331,cycles,results/lab13_19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,retired_instructions,416073,instructions,results/lab13_19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,icache_hit,260271,hits,results/lab13_19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,icache_miss,508,misses,results/lab13_19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,icache_refill,508,lines,results/lab13_19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,dcache_hit,77338,hits,results/lab13_19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,dcache_miss,70,misses,results/lab13_19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,dcache_writeback,0,lines,results/lab13_19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,dcache_uncache,7507,requests,results/lab13_19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,axi_ar_transactions,162251,transactions,results/lab13_19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,axi_r_beats,166297,beats,results/lab13_19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,axi_aw_transactions,1130,transactions,results/lab13_19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,axi_w_beats,1130,beats,results/lab13_19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,axi_b_responses,1130,responses,results/lab13_19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,simulation_ns,23053310,ns,results/lab13_19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_perf,lab19-coremark-20261118-03,num_data,01394d3c,hex,results/lab13_19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
-lab19_synthesis,lab19-synthesis-20261118-01,synth_errors,0,errors,results/lab13_19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,synth_warnings,131,warnings,results/lab13_19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,synth_critical_warnings,0,warnings,results/lab13_19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,lut_utilization,18.78,percent,results/lab13_19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,register_utilization,4.13,percent,results/lab13_19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,bram_tile_utilization,70.14,percent,results/lab13_19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,setup_wns,3.975,ns,results/lab13_19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,setup_tns,0,ns,results/lab13_19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,hold_whs,-0.087,ns,results/lab13_19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,hold_ths,-5.338,ns,results/lab13_19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
-lab19_synthesis,lab19-synthesis-20261118-01,hold_failing_endpoints,66,endpoints,results/lab13_19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
+lab11,lab11-cpu-golden-20261118-03,golden_points,94,points,results/lab13-lab19/lab14/lab11-cpu-golden-20261118-03/result.txt,PASS golden-trace regression
+lab11,lab11-cpu-golden-20261118-03,trace_rows,111625,rows,results/lab13-lab19/lab14/lab11-cpu-golden-20261118-03/result.txt,PASS golden-trace regression
+lab11,lab11-cpu-golden-20261118-03,valid_trace_rows,111583,rows,results/lab13-lab19/lab14/lab11-cpu-golden-20261118-03/result.txt,PASS golden-trace regression
+lab11,lab11-cpu-golden-20261118-03,stores_accepted,3753,stores,results/lab13-lab19/lab14/lab11-cpu-golden-20261118-03/result.txt,PASS golden-trace regression
+lab11,lab11-cpu-golden-20261118-03,stores_completed,3753,stores,results/lab13-lab19/lab14/lab11-cpu-golden-20261118-03/result.txt,PASS golden-trace regression
+lab11,lab11-cpu-golden-20261118-03,duplicate_stores,0,stores,results/lab13-lab19/lab14/lab11-cpu-golden-20261118-03/result.txt,PASS golden-trace regression
+lab11,lab11-cpu-golden-20261118-03,protocol_assertion_failures,0,assertions,results/lab13-lab19/lab14/lab11-cpu-golden-20261118-03/result.txt,PASS golden-trace regression
+lab11,lab11-cpu-golden-20261118-03,redirect_stale_responses_dropped,687,responses,results/lab13-lab19/lab14/lab11-cpu-golden-20261118-03/result.txt,PASS golden-trace regression
+lab14,lab14-n1-n6-official-20261118-05,official_tests_passed,6,tests,results/lab13-lab19/lab14/lab14-n1-n6-official-20261118-05/result.txt,Official n1-n6
+lab14,lab14-n1-n6-official-20261118-05,cycles,4705,cycles,results/lab13-lab19/lab14/lab14-n1-n6-official-20261118-05/result.txt,Official n1-n6
+lab14,lab14-translate-directed-20261118-02,translation_directed_checks,11,checks,results/lab13-lab19/lab14/lab14-translate-directed-20261118-02/result.txt,
+lab16,lab16-official-20261118-05,official_indices_completed,256,indices,results/lab13-lab19/lab16/lab16-official-20261118-05/result.txt,
+lab16,lab16-directed-20261118-02,directed_checks,20,checks,results/lab13-lab19/lab16/lab16-directed-20261118-02/result.txt,
+lab16,lab16-directed-20261118-02,requests_accepted,21,requests,results/lab13-lab19/lab16/lab16-directed-20261118-02/result.txt,
+lab16,lab16-directed-20261118-02,requests_completed,20,requests,results/lab13-lab19/lab16/lab16-directed-20261118-02/result.txt,
+lab16,lab16-directed-20261118-02,requests_cancelled_by_reset,1,requests,results/lab13-lab19/lab16/lab16-directed-20261118-02/result.txt,
+lab16,lab16-directed-20261118-02,refill_reads,16,lines,results/lab13-lab19/lab16/lab16-directed-20261118-02/result.txt,
+lab16,lab16-directed-20261118-02,dirty_writebacks,1,lines,results/lab13-lab19/lab16/lab16-directed-20261118-02/result.txt,
+lab17,lab17-icache-functional-20261118-02,functional_points,94,points,results/lab13-lab19/lab17/lab17-icache-functional-20261118-02/result.txt,
+lab17,lab17-icache-functional-20261118-02,cycles,1038101,cycles,results/lab13-lab19/lab17/lab17-icache-functional-20261118-02/result.txt,
+lab17,lab17-icache-functional-20261118-02,icache_hit,134535,hits,results/lab13-lab19/lab17/lab17-icache-functional-20261118-02/result.txt,
+lab17,lab17-icache-functional-20261118-02,icache_miss,21571,misses,results/lab13-lab19/lab17/lab17-icache-functional-20261118-02/result.txt,
+lab17,lab17-icache-functional-20261118-02,icache_refill,21571,lines,results/lab13-lab19/lab17/lab17-icache-functional-20261118-02/result.txt,
+lab17,lab17-icache-functional-20261118-02,icache_uncache_read,16919,reads,results/lab13-lab19/lab17/lab17-icache-functional-20261118-02/result.txt,
+lab17,lab17-icache-functional-20261118-02,axi_ar_transactions,43108,transactions,results/lab13-lab19/lab17/lab17-icache-functional-20261118-02/result.txt,
+lab17,lab17-icache-functional-20261118-02,axi_r_beats,194105,beats,results/lab13-lab19/lab17/lab17-icache-functional-20261118-02/result.txt,
+lab17,lab17-icache-functional-20261118-02,stores_accepted,3752,stores,results/lab13-lab19/lab17/lab17-icache-functional-20261118-02/result.txt,
+lab17,lab17-icache-functional-20261118-02,stores_completed,3752,stores,results/lab13-lab19/lab17/lab17-icache-functional-20261118-02/result.txt,
+lab17_baseline,lab17-baseline-functional-20261118-01,cycles,1402080,cycles,results/lab13-lab19/lab17/lab17-baseline-functional-20261118-01/result.txt,Same image and clock; no-cache baseline
+lab17_baseline,lab17-baseline-functional-20261118-01,axi_ar_transactions,177518,transactions,results/lab13-lab19/lab17/lab17-baseline-functional-20261118-01/result.txt,Same image and clock; no-cache baseline
+lab17,lab17-icache-functional-20261118-02,same_image_speedup,1.3506,ratio,results/lab13-lab19/lab17/functional-comparison.csv,1402080 baseline cycles / 1038101 ICache cycles
+lab17,lab17-icache-functional-20261118-02,axi_ar_reduction,75.72,percent,results/lab13-lab19/lab17/functional-comparison.csv,Same image and testbench
+lab17,lab17-bridge-directed-20261118-06,directed_checks,24,checks,results/lab13-lab19/lab17/lab17-bridge-directed-20261118-06/result.txt,
+lab18,lab18-dcache-functional-20261118-02,functional_points,94,points,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-functional-20261118-02,cycles,1041981,cycles,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-functional-20261118-02,icache_hit,134525,hits,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-functional-20261118-02,icache_miss,21571,misses,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-functional-20261118-02,icache_refill,21571,lines,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-functional-20261118-02,dcache_hit,6937,hits,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-functional-20261118-02,dcache_miss,950,misses,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-functional-20261118-02,dcache_writeback,446,lines,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-functional-20261118-02,dcache_uncache,483,requests,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-functional-20261118-02,axi_ar_transactions,39684,transactions,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-functional-20261118-02,axi_r_beats,197331,beats,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-functional-20261118-02,axi_aw_transactions,685,transactions,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-functional-20261118-02,axi_w_beats,3807,beats,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-functional-20261118-02,axi_b_responses,685,responses,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-functional-20261118-02,cpu_stores_accepted,3752,stores,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-functional-20261118-02,cpu_stores_completed,3752,stores,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-functional-20261118-02,num_peripheral_writes_accepted,95,writes,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-functional-20261118-02,num_peripheral_writes_completed,95,writes,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02/result.txt,
+lab18,lab18-dcache-directed-20261118-01,directed_checks,9,checks,results/lab13-lab19/lab18/lab18-dcache-directed-20261118-01/result.txt,
+lab18,lab18-cache-arbitration-20261118-02,concurrent_cache_misses,2,misses,results/lab13-lab19/lab18/lab18-cache-arbitration-20261118-02/result.txt,
+lab18,lab18-mem-exception-20261118-02,exception_stores_blocked,1,stores,results/lab13-lab19/lab18/lab18-mem-exception-20261118-02/result.txt,
+lab19,lab19-cache-20261118-06,cache_instruction_tests,7,tests,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,cycles,2836,cycles,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,retired_instructions,458,instructions,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,icache_hit,397,hits,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,icache_miss,51,misses,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,icache_refill,51,lines,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,icache_uncache_read,19,reads,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,dcache_hit,2,hits,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,dcache_miss,4,misses,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,dcache_writeback,2,lines,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,dcache_uncache,45,requests,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,axi_ar_transactions,95,transactions,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,axi_r_beats,480,beats,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,axi_aw_transactions,26,transactions,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,axi_w_beats,40,beats,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,axi_b_responses,26,responses,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,stores_accepted,28,stores,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,stores_completed,28,stores,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,duplicate_stores,0,stores,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,maintenance_ICIndexInv,2,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,maintenance_ICIndexStTag,2,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,maintenance_ICHitInv,1,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,maintenance_DCIndexWBInv,2,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,maintenance_DCIndexStTag,2,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,maintenance_DCHitInv,1,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-cache-20261118-06,maintenance_DCHitWBInv,1,operations,results/lab13-lab19/lab19/lab19-cache-20261118-06/result.txt,
+lab19,lab19-maint-directed-20261118-06,maintenance_directed_checks,9,checks,results/lab13-lab19/lab19/lab19-maint-directed-20261118-06/result.txt,
+lab19,lab19-maint-directed-20261118-06,way2_way3_coverage,2,ways,results/lab13-lab19/lab19/lab19-maint-directed-20261118-06/result.txt,
+lab19,lab19-maint-directed-20261118-06,hit_invalidate_writebacks,0,writebacks,results/lab13-lab19/lab19/lab19-maint-directed-20261118-06/result.txt,
+lab19,lab19-maint-directed-20261118-06,writebacks_completed,2,writebacks,results/lab13-lab19/lab19/lab19-maint-directed-20261118-06/result.txt,
+lab19,lab19-maint-directed-20261118-06,b_response_wait_observed,1,boolean,results/lab13-lab19/lab19/lab19-maint-directed-20261118-06/result.txt,
+lab19_perf,lab19-dhrystone-20261118-06,cycles,251834,cycles,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,retired_instructions,51073,instructions,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,icache_hit,40789,hits,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,icache_miss,133,misses,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,icache_refill,133,lines,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,dcache_hit,6579,hits,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,dcache_miss,13,misses,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,dcache_writeback,0,lines,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,dcache_uncache,4559,requests,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,axi_ar_transactions,12675,transactions,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,axi_r_beats,13697,beats,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,axi_aw_transactions,2185,transactions,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,axi_w_beats,2185,beats,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,axi_b_responses,2185,responses,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,simulation_ns,2518340,ns,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
+lab19_perf,lab19-dhrystone-20261118-06,num_data,0003343c,hex,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06/result.txt,dhrystone program PASS
+lab19_perf,lab19-coremark-20261118-03,cycles,2305331,cycles,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,retired_instructions,416073,instructions,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,icache_hit,260271,hits,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,icache_miss,508,misses,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,icache_refill,508,lines,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,dcache_hit,77338,hits,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,dcache_miss,70,misses,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,dcache_writeback,0,lines,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,dcache_uncache,7507,requests,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,axi_ar_transactions,162251,transactions,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,axi_r_beats,166297,beats,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,axi_aw_transactions,1130,transactions,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,axi_w_beats,1130,beats,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,axi_b_responses,1130,responses,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,simulation_ns,23053310,ns,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
+lab19_perf,lab19-coremark-20261118-03,num_data,01394d3c,hex,results/lab13-lab19/lab19/lab19-coremark-20261118-03/result.txt,coremark program PASS
+lab19_synthesis,lab19-synthesis-20261118-01,synth_errors,0,errors,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,synth_warnings,131,warnings,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,synth_critical_warnings,0,warnings,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,lut_utilization,18.78,percent,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,register_utilization,4.13,percent,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,bram_tile_utilization,70.14,percent,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,setup_wns,3.975,ns,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,setup_tns,0,ns,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,hold_whs,-0.087,ns,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,hold_ths,-5.338,ns,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending
+lab19_synthesis,lab19-synthesis-20261118-01,hold_failing_endpoints,66,endpoints,results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt,Synthesized top; no placement/routing; hold closure pending

@@ -21,10 +21,10 @@
 
 | 类别 | 最终 RunId | 结果 |
 | --- | --- | --- |
-| Lab14 官方 n1–n6 | [lab14-n1-n6-official-20261118-05](../../results/lab13_19/lab14/lab14-n1-n6-official-20261118-05/result.txt) | PASS，6/6，4,705 周期 |
-| 地址转换定向检查 | [lab14-translate-directed-20261118-02](../../results/lab13_19/lab14/lab14-translate-directed-20261118-02/result.txt) | PASS，11/11 |
-| Lab11 AXI3 定向回归 | [lab11-axi3-directed-20261118-02](../../results/lab13_19/lab14/lab11-axi3-directed-20261118-02/result.txt) | PASS，读写握手、AW/W 独立延迟、重定向取指、错误响应检查均通过 |
-| Lab11 CPU golden-trace 回归 | [lab11-cpu-golden-20261118-03](../../results/lab13_19/lab14/lab11-cpu-golden-20261118-03/result.txt) | PASS，94/94 功能点，111,625 条 trace 记录耗尽 |
+| Lab14 官方 n1–n6 | [lab14-n1-n6-official-20261118-05](../../results/lab13-lab19/lab14/lab14-n1-n6-official-20261118-05/result.txt) | PASS，6/6，4,705 周期 |
+| 地址转换定向检查 | [lab14-translate-directed-20261118-02](../../results/lab13-lab19/lab14/lab14-translate-directed-20261118-02/result.txt) | PASS，11/11 |
+| Lab11 AXI3 定向回归 | [lab11-axi3-directed-20261118-02](../../results/lab13-lab19/lab14/lab11-axi3-directed-20261118-02/result.txt) | PASS，读写握手、AW/W 独立延迟、重定向取指、错误响应检查均通过 |
+| Lab11 CPU golden-trace 回归 | [lab11-cpu-golden-20261118-03](../../results/lab13-lab19/lab14/lab11-cpu-golden-20261118-03/result.txt) | PASS，94/94 功能点，111,625 条 trace 记录耗尽 |
 
 每个最终 RunId 均保留 `result.txt`、Vivado 日志、仿真日志、编译顺序、工程文件、活动源码清单和来源/输入 hash 清单；四个 `source-integrity.txt` 均为 PASS，缺失活动文件数为 0。保存的 WDB 另有 SHA-256 记录：
 

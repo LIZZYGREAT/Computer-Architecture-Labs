@@ -1,5 +1,6 @@
 
-set wave_log [open C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-cache-20261118-06/wave-config-hook.log w]
+set run_dir [file normalize [file dirname [info script]]]
+set wave_log [open [file join $run_dir wave-config-hook.log] w]
 if {[catch {
     set wave_config [current_wave_config]
     if {[string length $wave_config] == 0} { create_wave_config }
@@ -11,7 +12,7 @@ if {[catch {
             lappend wave_added $wave_object
         }
     }
-    save_wave_config C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab19/lab19-cache-20261118-06/wave-full.wcfg
+    save_wave_config [file join $run_dir wave-full.wcfg]
 } wave_error]} {
     puts $wave_log "WCFG_CAPTURE_ERROR=$wave_error"
 } else {

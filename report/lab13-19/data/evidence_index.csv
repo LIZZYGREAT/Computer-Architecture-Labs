@@ -1,22 +1,22 @@
 case,run_id,suite,status,head,artifact_path,notes
-baseline,s0-merge-baseline-20261118-02,s0,BASELINE_CAPTURED,64e2586cbd94856abef57cabb9142d839c56f3bc,results/lab13_19/baseline/s0-merge-baseline-20261118-02,Baseline project/merge inventory and Lab11 reference
-lab13,lab13-tlb-official-unit-20261118-01,official,PASS,22bb2085f32920a1e1b95efd22cc1fd01a8b6b00,results/lab13_19/lab13/lab13-tlb-official-unit-20261118-01,"Official TLB wrapper: 16 writes/readbacks, 26 lookup-port cases"
-lab13,lab13-tlb-directed-20261118-04,directed,PASS,22bb2085f32920a1e1b95efd22cc1fd01a8b6b00,results/lab13_19/lab13/lab13-tlb-directed-20261118-04,9 directed TLB checks PASS
-lab14,lab14-n1-n6-official-20261118-05,functional,PASS,985f64facb4ee9bf8df21acdac74c1bef61e5068,results/lab13_19/lab14/lab14-n1-n6-official-20261118-05,Official n1-n6 6/6 PASS
-lab14,lab14-translate-directed-20261118-02,directed,PASS,985f64facb4ee9bf8df21acdac74c1bef61e5068,results/lab13_19/lab14/lab14-translate-directed-20261118-02,11 translation checks PASS
-lab11_axi3,lab11-axi3-directed-20261118-02,directed,PASS,985f64facb4ee9bf8df21acdac74c1bef61e5068,results/lab13_19/lab14/lab11-axi3-directed-20261118-02,AXI3 directed regression PASS
-lab11_golden,lab11-cpu-golden-20261118-03,golden-trace,PASS,985f64facb4ee9bf8df21acdac74c1bef61e5068,results/lab13_19/lab14/lab11-cpu-golden-20261118-03,94/94; 111625 trace rows; no duplicate stores/protocol failures
-lab16,lab16-official-20261118-05,official,PASS,719252cf700f631b2182507cf16f8dc3941e14a0,results/lab13_19/lab16/lab16-official-20261118-05,256/256 indexes PASS
-lab16,lab16-directed-20261118-02,directed,PASS,719252cf700f631b2182507cf16f8dc3941e14a0,results/lab13_19/lab16/lab16-directed-20261118-02,20 directed checks PASS; reset cancellation recorded
-lab17,lab17-icache-functional-20261118-02,functional,PASS,e3266752b0867826b137223afbd6e7338108a798,results/lab13_19/lab17/lab17-icache-functional-20261118-02,94/94 PASS
-lab17_baseline,lab17-baseline-functional-20261118-01,functional,PASS,e3266752b0867826b137223afbd6e7338108a798,results/lab13_19/lab17/lab17-baseline-functional-20261118-01,Same-image no-ICache 94/94 baseline for Lab17 comparison
-lab17,lab17-bridge-directed-20261118-06,directed,PASS,e3266752b0867826b137223afbd6e7338108a798,results/lab13_19/lab17/lab17-bridge-directed-20261118-06,24 bridge/cache checks PASS
-lab18,lab18-dcache-functional-20261118-02,functional,PASS,c1cfd9387fc75430c051d2d9375f3019d70869e3,results/lab13_19/lab18/lab18-dcache-functional-20261118-02,94/94 PASS
-lab18,lab18-dcache-directed-20261118-01,directed,PASS,c1cfd9387fc75430c051d2d9375f3019d70869e3,results/lab13_19/lab18/lab18-dcache-directed-20261118-01,9 DCache checks PASS
-lab18,lab18-cache-arbitration-20261118-02,arbitration,PASS,c1cfd9387fc75430c051d2d9375f3019d70869e3,results/lab13_19/lab18/lab18-cache-arbitration-20261118-02,Concurrent I/D misses PASS
-lab18,lab18-mem-exception-20261118-02,mem-exception,PASS,c1cfd9387fc75430c051d2d9375f3019d70869e3,results/lab13_19/lab18/lab18-mem-exception-20261118-02,Exception store blocked; committed store accepted/completed once
-lab19,lab19-cache-20261118-06,official,PASS,4ba901c186567560dea1ca2fdfd1a73edf895fc5,results/lab13_19/lab19/lab19-cache-20261118-06,7/7 CACHE tests PASS
-lab19,lab19-maint-directed-20261118-06,directed,PASS,4ba901c186567560dea1ca2fdfd1a73edf895fc5,results/lab13_19/lab19/lab19-maint-directed-20261118-06,9 maintenance checks PASS; ways 2/3 covered
-lab19_perf,lab19-dhrystone-20261118-06,dhrystone,PASS,4ba901c186567560dea1ca2fdfd1a73edf895fc5,results/lab13_19/lab19/lab19-dhrystone-20261118-06,Dhrystone PASS; performance counters and UART output retained
-lab19_perf,lab19-coremark-20261118-03,coremark,PASS,4ba901c186567560dea1ca2fdfd1a73edf895fc5,results/lab13_19/lab19/lab19-coremark-20261118-03,CoreMark PASS; performance counters and UART output retained
-lab19,lab19-synthesis-20261118-01,synthesis,PASS,4ba901c186567560dea1ca2fdfd1a73edf895fc5,results/lab13_19/lab19/lab19-synthesis-20261118-01,Top-level synth_design complete; resource/timing reports; hold closure pending
+baseline,s0-merge-baseline-20261118-02,s0,BASELINE_CAPTURED,64e2586cbd94856abef57cabb9142d839c56f3bc,results/lab13-lab19/baseline/s0-merge-baseline-20261118-02,Baseline project/merge inventory and Lab11 reference
+lab13,lab13-tlb-official-unit-20261118-01,official,PASS,22bb2085f32920a1e1b95efd22cc1fd01a8b6b00,results/lab13-lab19/lab13/lab13-tlb-official-unit-20261118-01,"Official TLB wrapper: 16 writes/readbacks, 26 lookup-port cases"
+lab13,lab13-tlb-directed-20261118-04,directed,PASS,22bb2085f32920a1e1b95efd22cc1fd01a8b6b00,results/lab13-lab19/lab13/lab13-tlb-directed-20261118-04,9 directed TLB checks PASS
+lab14,lab14-n1-n6-official-20261118-05,functional,PASS,985f64facb4ee9bf8df21acdac74c1bef61e5068,results/lab13-lab19/lab14/lab14-n1-n6-official-20261118-05,Official n1-n6 6/6 PASS
+lab14,lab14-translate-directed-20261118-02,directed,PASS,985f64facb4ee9bf8df21acdac74c1bef61e5068,results/lab13-lab19/lab14/lab14-translate-directed-20261118-02,11 translation checks PASS
+lab11_axi3,lab11-axi3-directed-20261118-02,directed,PASS,985f64facb4ee9bf8df21acdac74c1bef61e5068,results/lab13-lab19/lab14/lab11-axi3-directed-20261118-02,AXI3 directed regression PASS
+lab11_golden,lab11-cpu-golden-20261118-03,golden-trace,PASS,985f64facb4ee9bf8df21acdac74c1bef61e5068,results/lab13-lab19/lab14/lab11-cpu-golden-20261118-03,94/94; 111625 trace rows; no duplicate stores/protocol failures
+lab16,lab16-official-20261118-05,official,PASS,719252cf700f631b2182507cf16f8dc3941e14a0,results/lab13-lab19/lab16/lab16-official-20261118-05,256/256 indexes PASS
+lab16,lab16-directed-20261118-02,directed,PASS,719252cf700f631b2182507cf16f8dc3941e14a0,results/lab13-lab19/lab16/lab16-directed-20261118-02,20 directed checks PASS; reset cancellation recorded
+lab17,lab17-icache-functional-20261118-02,functional,PASS,e3266752b0867826b137223afbd6e7338108a798,results/lab13-lab19/lab17/lab17-icache-functional-20261118-02,94/94 PASS
+lab17_baseline,lab17-baseline-functional-20261118-01,functional,PASS,e3266752b0867826b137223afbd6e7338108a798,results/lab13-lab19/lab17/lab17-baseline-functional-20261118-01,Same-image no-ICache 94/94 baseline for Lab17 comparison
+lab17,lab17-bridge-directed-20261118-06,directed,PASS,e3266752b0867826b137223afbd6e7338108a798,results/lab13-lab19/lab17/lab17-bridge-directed-20261118-06,24 bridge/cache checks PASS
+lab18,lab18-dcache-functional-20261118-02,functional,PASS,c1cfd9387fc75430c051d2d9375f3019d70869e3,results/lab13-lab19/lab18/lab18-dcache-functional-20261118-02,94/94 PASS
+lab18,lab18-dcache-directed-20261118-01,directed,PASS,c1cfd9387fc75430c051d2d9375f3019d70869e3,results/lab13-lab19/lab18/lab18-dcache-directed-20261118-01,9 DCache checks PASS
+lab18,lab18-cache-arbitration-20261118-02,arbitration,PASS,c1cfd9387fc75430c051d2d9375f3019d70869e3,results/lab13-lab19/lab18/lab18-cache-arbitration-20261118-02,Concurrent I/D misses PASS
+lab18,lab18-mem-exception-20261118-02,mem-exception,PASS,c1cfd9387fc75430c051d2d9375f3019d70869e3,results/lab13-lab19/lab18/lab18-mem-exception-20261118-02,Exception store blocked; committed store accepted/completed once
+lab19,lab19-cache-20261118-06,official,PASS,4ba901c186567560dea1ca2fdfd1a73edf895fc5,results/lab13-lab19/lab19/lab19-cache-20261118-06,7/7 CACHE tests PASS
+lab19,lab19-maint-directed-20261118-06,directed,PASS,4ba901c186567560dea1ca2fdfd1a73edf895fc5,results/lab13-lab19/lab19/lab19-maint-directed-20261118-06,9 maintenance checks PASS; ways 2/3 covered
+lab19_perf,lab19-dhrystone-20261118-06,dhrystone,PASS,4ba901c186567560dea1ca2fdfd1a73edf895fc5,results/lab13-lab19/lab19/lab19-dhrystone-20261118-06,Dhrystone PASS; performance counters and UART output retained
+lab19_perf,lab19-coremark-20261118-03,coremark,PASS,4ba901c186567560dea1ca2fdfd1a73edf895fc5,results/lab13-lab19/lab19/lab19-coremark-20261118-03,CoreMark PASS; performance counters and UART output retained
+lab19,lab19-synthesis-20261118-01,synthesis,PASS,4ba901c186567560dea1ca2fdfd1a73edf895fc5,results/lab13-lab19/lab19/lab19-synthesis-20261118-01,Top-level synth_design complete; resource/timing reports; hold closure pending

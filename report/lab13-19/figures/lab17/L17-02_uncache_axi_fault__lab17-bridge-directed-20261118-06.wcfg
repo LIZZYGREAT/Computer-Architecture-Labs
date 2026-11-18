@@ -3,7 +3,7 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="../../../../results/lab13_19/lab17/lab17-bridge-directed-20261118-06/wave-full.wdb" id="1">
+      <db_ref path="../../../../results/lab13-lab19/lab17/lab17-bridge-directed-20261118-06/wave-full.wdb" id="1">
          <top_modules>
             <top_module name="glbl" />
             <top_module name="tb_lab17_icache_directed" />

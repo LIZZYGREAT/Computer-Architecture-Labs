@@ -15,13 +15,13 @@
 | 阶段 | 主要实现提交 | 最终验收结果 | 最终证据 |
 | --- | --- | --- | --- |
 | S0 基线/合并 | merge `64e2586` | `lab10-lab11` 合并进入本分支；保留 Lab11 回归参考与基线审计 | [基线记录](../docs/baseline.md) |
-| S1 Lab13 TLB | `1e201f1`; evidence `c7e6eeb` | 官方 write/read/search PASS；16 项写入与读回、26 个查找端口案例、`test_error=0`；定向 9/9 | [官方运行](../../../results/lab13_19/lab13/lab13-tlb-official-unit-20261118-01/result.txt)、[定向运行](../../../results/lab13_19/lab13/lab13-tlb-directed-20261118-04/result.txt)、[S1 报告](s1-lab13-tlb.md) |
-| S2 Lab14 CP0/TLB | `ce1cd75`; 回归 `fc34199`, `985f64f`; evidence `719252c` | 官方 n1–n6 6/6、4,705 周期；地址翻译定向 11/11；Lab11 AXI3 directed PASS；Lab11 golden trace 94/94、111,625 行 | [官方运行](../../../results/lab13_19/lab14/lab14-n1-n6-official-20261118-05/result.txt)、[S2 报告](../../../docs/lab13-lab19/S2_Lab14_CP0_TLB_验收报告.md) |
-| S3 Lab16 独立 Cache | `e326675` | 官方索引 `00`–`ff` 共 256/256；定向 20 项通过，复位取消单独记账 | [官方运行](../../../results/lab13_19/lab16/lab16-official-20261118-05/result.txt)、[S3 报告](../../../docs/lab13-lab19/S3_Lab16_Cache_验收报告.md) |
-| S4 Lab17 ICache | `c1cfd93` | 功能 94/94；定向 bridge/cache 24 项；同镜像无 Cache 基线也为 94/94，3,752 次 Store 全部恰好完成一次 | [定向运行](../../../results/lab13_19/lab17/lab17-bridge-directed-20261118-06/result.txt)、[S4 报告](../../../docs/lab13-lab19/S4_Lab17_ICache_验收报告.md) |
-| S5 Lab18 DCache | `b222239`; evidence `139d085` | 功能 94/94；DCache 定向 9 项；并发 I/D miss、MEM 异常/提交检查通过；无重复 Store | [DCache 定向运行](../../../results/lab13_19/lab18/lab18-dcache-directed-20261118-01/result.txt)、[S5 报告](../../../docs/lab13-lab19/S5_Lab18_DCache_验收报告.md) |
-| S6 Lab19 CACHE/性能 | `4ba901c` | CACHE 官方 7/7；维护定向 9 项并覆盖 way2/way3；Dhrystone 与 CoreMark 均正常结束 | [Lab19 报告](../../../results/lab13_19/lab19/acceptance-report.md) |
-| Lab19 综合 | `4ba901c` | 顶层 `soc_axi_lite_top` `synth_design` 完成；0 errors、0 critical warnings；资源与 timing summary 已保存 | [综合结果](../../../results/lab13_19/lab19/lab19-synthesis-20261118-01/result.txt)、[综合摘要](../../../results/lab13_19/lab19/lab19-synthesis-20261118-01/synthesis-summary.txt) |
+| S1 Lab13 TLB | `1e201f1`; evidence `c7e6eeb` | 官方 write/read/search PASS；16 项写入与读回、26 个查找端口案例、`test_error=0`；定向 9/9 | [官方运行](../../../results/lab13-lab19/lab13/lab13-tlb-official-unit-20261118-01/result.txt)、[定向运行](../../../results/lab13-lab19/lab13/lab13-tlb-directed-20261118-04/result.txt)、[S1 报告](s1-lab13-tlb.md) |
+| S2 Lab14 CP0/TLB | `ce1cd75`; 回归 `fc34199`, `985f64f`; evidence `719252c` | 官方 n1–n6 6/6、4,705 周期；地址翻译定向 11/11；Lab11 AXI3 directed PASS；Lab11 golden trace 94/94、111,625 行 | [官方运行](../../../results/lab13-lab19/lab14/lab14-n1-n6-official-20261118-05/result.txt)、[S2 报告](../../../docs/lab13-lab19/S2_Lab14_CP0_TLB_验收报告.md) |
+| S3 Lab16 独立 Cache | `e326675` | 官方索引 `00`–`ff` 共 256/256；定向 20 项通过，复位取消单独记账 | [官方运行](../../../results/lab13-lab19/lab16/lab16-official-20261118-05/result.txt)、[S3 报告](../../../docs/lab13-lab19/S3_Lab16_Cache_验收报告.md) |
+| S4 Lab17 ICache | `c1cfd93` | 功能 94/94；定向 bridge/cache 24 项；同镜像无 Cache 基线也为 94/94，3,752 次 Store 全部恰好完成一次 | [定向运行](../../../results/lab13-lab19/lab17/lab17-bridge-directed-20261118-06/result.txt)、[S4 报告](../../../docs/lab13-lab19/S4_Lab17_ICache_验收报告.md) |
+| S5 Lab18 DCache | `b222239`; evidence `139d085` | 功能 94/94；DCache 定向 9 项；并发 I/D miss、MEM 异常/提交检查通过；无重复 Store | [DCache 定向运行](../../../results/lab13-lab19/lab18/lab18-dcache-directed-20261118-01/result.txt)、[S5 报告](../../../docs/lab13-lab19/S5_Lab18_DCache_验收报告.md) |
+| S6 Lab19 CACHE/性能 | `4ba901c` | CACHE 官方 7/7；维护定向 9 项并覆盖 way2/way3；Dhrystone 与 CoreMark 均正常结束 | [Lab19 报告](../../../results/lab13-lab19/lab19/acceptance-report.md) |
+| Lab19 综合 | `4ba901c` | 顶层 `soc_axi_lite_top` `synth_design` 完成；0 errors、0 critical warnings；资源与 timing summary 已保存 | [综合结果](../../../results/lab13-lab19/lab19/lab19-synthesis-20261118-01/result.txt)、[综合摘要](../../../results/lab13-lab19/lab19/lab19-synthesis-20261118-01/synthesis-summary.txt) |
 
 Lab14 n7–n9 及 Lab15 专用 TLB 异常均不在本轮硬性验收范围。Lab11 原始 CPU/AXI 回归结果仍在证据索引中；Lab13–19 的实现放在隔离目录/副本中，旧 Lab11 验收 RTL 未被替换。
 
@@ -54,7 +54,7 @@ Lab19 仿真 CPU 时钟是 100 MHz；固件性能输出按配置的 50 MHz 报�
 
 ## 证据与截图交接
 
-[证据索引](../data/evidence_index.csv)列出 21 份最终/基线 Run；[事务指标表](../data/transaction-metrics.csv)集中记录各阶段关键计数；[截图交接 CSV](../data/wave-capture-log.csv)列出方案中的 15 个图项。截图交接所选的 Lab13–Lab19 WDB 均配有对应 WCFG；Lab14–Lab19 的新增配置已用 Vivado 对应 WDB 打开并校验信号路径。其他非截图运行的 WDB 不一定另存 WCFG。Lab19 两个 WDB/WCFG 的 SHA-256 与信号数见 [Lab19 waveform index](../../../results/lab13_19/lab19/waveform-index.txt)。
+[证据索引](../data/evidence_index.csv)列出 21 份最终/基线 Run；[事务指标表](../data/transaction-metrics.csv)集中记录各阶段关键计数；[截图交接 CSV](../data/wave-capture-log.csv)列出方案中的 15 个图项。截图交接所选的 Lab13–Lab19 WDB 均配有对应 WCFG；Lab14–Lab19 的新增配置已用 Vivado 对应 WDB 打开并校验信号路径。其他非截图运行的 WDB 不一定另存 WCFG。Lab19 两个 WDB/WCFG 的 SHA-256 与信号数见 [Lab19 waveform index](../../../results/lab13-lab19/lab19/waveform-index.txt)。
 
 这次没有生成或代填 PNG 截图、人工 `observed` 值或 `time_start_ns/time_end_ns`。请从交接 CSV 指定的最终 WDB/WCFG 截图并人工读数后，再把对应行改成 `CAPTURED_VERIFIED`。Lab17 的第二张配置展示 directed bridge run 中的 KSEG1 Uncache 与 RID fault；该 WDB 不含 CPU redirect 信号，所以不把它标成 redirect 证明。Dhrystone/CoreMark 长跑没有 WDB，L19-03 只交接真实日志/计数。
 
