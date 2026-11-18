@@ -1,0 +1,11 @@
+Time resolution is 1 ps
+WAVE_CASE=READ_MISS_THEN_HIT time=2750000
+WAVE_CASE=CLEAN_FIFTH_TAG_REPLACEMENT time=3490000
+WAVE_CASE=DIRTY_WRITEBACK_STALLED time=4185000
+WAVE_CASE=DIRTY_WRITEBACK_REFILL_COMPLETE time=4300000
+WAVE_CASE=RESET_CANCELLATION_PENDING_REFILL time=4460000
+DIRECTED_CHECKS=20
+DIRECTED_REQUESTS accepted=21 completed=20 cancelled=1
+DIRECTED_MEMORY read_handshakes=16 writeback_handshakes=1
+DIRECTED_PASS
+$finish called at time : 7180 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab16/cache_verify/testbench/tb_cache_directed.sv" Line 463

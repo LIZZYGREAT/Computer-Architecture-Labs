@@ -26,16 +26,7 @@ cache_top #(
 
 always @(posedge clk)
 begin
-    if(`ROUND_FINISH) begin
-	    $display("index %x finished",`TEST_INDEX);
-        if(`TEST_INDEX==8'hff) begin
-	        $display("=========================================================");
-	        $display("Test end!");
-            $display("----PASS!!!");
-	        $finish;
-        end
-    end
-    else if(`REPLACE_WRONG) begin
+    if(`REPLACE_WRONG) begin
 	    $display("replace wrong at index %x",`TEST_INDEX);
 	    $display("=========================================================");
 	    $display("Test end!");
@@ -48,6 +39,15 @@ begin
 	    $display("Test end!");
         $display("----FAIL!!!");
 	    $finish;
+    end
+    else if(`ROUND_FINISH) begin
+	    $display("index %x finished",`TEST_INDEX);
+	    if(`TEST_INDEX==8'hff) begin
+	        $display("=========================================================");
+	        $display("Test end!");
+            $display("----PASS!!!");
+	        $finish;
+	    end
     end
 end
 

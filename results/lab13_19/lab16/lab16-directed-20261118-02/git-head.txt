@@ -1,0 +1,9 @@
+BRANCH=lab12-lab19
+HEAD=719252cf700f631b2182507cf16f8dc3941e14a0
+WORKTREE_STATUS_BEGIN
+M lab16/cache_verify/testbench/testbench.v
+ M scripts/tlb_cache/run_unit.tcl
+?? lab16/cache_verify/rtl/cache.v
+?? lab16/cache_verify/testbench/tb_cache_directed.sv
+?? results/lab13_19/lab16/
+WORKTREE_STATUS_END

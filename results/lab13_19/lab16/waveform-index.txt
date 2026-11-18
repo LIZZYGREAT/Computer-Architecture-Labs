@@ -1,0 +1,11 @@
+Lab16 waveform evidence index
+All active XSim signals were captured by xsim.simulate.log_all_signals=true.
+The official waveform is results/lab13_19/lab16/lab16-official-20261118-05/wave-full.wdb; its log completes indexes 00 through ff once each.
+The directed waveform is results/lab13_19/lab16/lab16-directed-20261118-02/wave-full.wdb.
+Directed marker times below are logged in ps; divide by 1000 for ns.
+READ_MISS_THEN_HIT: 2750000 ps (2750 ns).
+CLEAN_FIFTH_TAG_REPLACEMENT: 3490000 ps (3490 ns).
+DIRTY_WRITEBACK_STALLED: 4185000 ps (4185 ns).
+DIRTY_WRITEBACK_REFILL_COMPLETE: 4300000 ps (4300 ns).
+RESET_CANCELLATION_PENDING_REFILL: 4460000 ps (4460 ns).
+Signals include CPU request/response fields, four-way hit and victim selection, dirty metadata, read request/return channels, writeback address/data/ready, and cache FSM.

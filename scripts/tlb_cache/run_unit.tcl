@@ -120,6 +120,28 @@ if {$suite eq "directed"} {
     if {[string first "Test end!" $sim_text] < 0} {
         error "official Lab16 simulation missed Test end!"
     }
+    set index_markers [regexp -all -inline -nocase {index ([0-9a-f]{2}) finished} $sim_text]
+    if {[llength $index_markers] != 512} {
+        error "official Lab16 simulation expected 256 unique finished indexes"
+    }
+    set seen_indexes [dict create]
+    foreach {marker finished_index} $index_markers {
+        dict set seen_indexes [string tolower $finished_index] 1
+    }
+    if {[dict size $seen_indexes] != 256} {
+        error "official Lab16 simulation did not finish every index exactly once"
+    }
+    for {set index_value 0} {$index_value < 256} {incr index_value} {
+        set expected_index [format %02x $index_value]
+        if {![dict exists $seen_indexes $expected_index]} {
+            error "official Lab16 simulation missed index $expected_index"
+        }
+    }
+    foreach failure_marker {"replace wrong at" "cacheres wrong at"} {
+        if {[string first $failure_marker $sim_text] >= 0} {
+            error "official Lab16 simulation reported: $failure_marker"
+        }
+    }
 }
 if {[string first $pass_marker $sim_text] < 0} {
     error "simulation missed PASS marker $pass_marker; inspect $sim_log"

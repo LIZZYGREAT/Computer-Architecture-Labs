@@ -1,0 +1,5 @@
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/results/lab13_19/lab16/lab16-official-20261118-05/project/lab16_official.xpr
+SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab16/cache_verify/rtl/cache.v
+SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab16/cache_verify/rtl/cache_top.v
+SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/scripts/tlb_cache/sim_support/clk_pll_stub.v
+SIM_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab12-lab19-worktree/lab16/cache_verify/testbench/testbench.v

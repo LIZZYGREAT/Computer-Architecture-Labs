@@ -1,0 +1,4 @@
+Vivado batch acceptance command
+vivado.bat -mode batch -source scripts/tlb_cache/run_unit.tcl
+-log results/lab13_19/lab16/lab16-directed-20261118-02/vivado.log -journal results/lab13_19/lab16/lab16-directed-20261118-02/vivado.jou
+-tclargs lab16 directed <repo-root> results/lab13_19/lab16/lab16-directed-20261118-02
