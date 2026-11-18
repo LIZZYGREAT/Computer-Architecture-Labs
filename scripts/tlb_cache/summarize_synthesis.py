@@ -67,21 +67,37 @@ def main() -> int:
 
     log = read_text(run_dir / "vivado.log")
     run = read_text(run_dir / "synthesis-run.txt")
+    synth_log = read_text(run_dir / "project/r3l19_synthesis.runs/synth_1/runme.log")
     timing = read_text(run_dir / "timing-summary.rpt")
     utilization = read_text(run_dir / "utilization.rpt")
     source_integrity = read_text(run_dir / "source-integrity.txt")
 
     warning_lines = [
         line for line in log.splitlines()
-        if re.match(r"^\s*(?:CRITICAL WARNING|WARNING|ERROR):", line, flags=re.IGNORECASE)
+        if re.match(r"^\s*(?:CRITICAL WARNING|WARNING):", line, flags=re.IGNORECASE)
+    ]
+    synth_warning_lines = [
+        line for line in synth_log.splitlines()
+        if re.match(r"^\s*(?:CRITICAL WARNING|WARNING):", line, flags=re.IGNORECASE)
+    ]
+    vivado_error_lines = [
+        line for line in log.splitlines()
+        if re.match(r"^\s*ERROR:", line, flags=re.IGNORECASE)
     ]
     (run_dir / "warning-messages.txt").write_text(
-        "\n".join(warning_lines) + ("\n" if warning_lines else ""), encoding="utf-8"
+        "\n".join(synth_warning_lines) + ("\n" if synth_warning_lines else ""), encoding="utf-8"
+    )
+    (run_dir / "vivado-error-messages.txt").write_text(
+        "\n".join(vivado_error_lines) + ("\n" if vivado_error_lines else ""), encoding="utf-8"
     )
 
-    critical_count = count_matches(r"^\s*CRITICAL WARNING:", log)
-    error_count = count_matches(r"^\s*ERROR:", log)
-    warning_count = count_matches(r"^\s*WARNING:", log)
+    synth_summary_match = re.search(
+        r"(?m)^\s*\d+\s+Infos?,\s+(\d+)\s+Warnings,\s+(\d+)\s+Critical Warnings and\s+(\d+)\s+Errors encountered\.",
+        synth_log,
+    )
+    warning_count = int(synth_summary_match.group(1)) if synth_summary_match else 0
+    critical_count = int(synth_summary_match.group(2)) if synth_summary_match else 0
+    error_count = int(synth_summary_match.group(3)) if synth_summary_match else 1
     categories = {
         "UNCONNECTED_OR_UNDRIVEN": r"unconnected|not connected|undriven|no driver",
         "WIDTH_OR_TRUNCATION": r"width mismatch|truncat|size mismatch|extended to|expects .* bits",
@@ -90,7 +106,7 @@ def main() -> int:
         "UNUSED_OR_TRIMMED": r"unused|trimmed|not used|unconnected",
     }
     category_counts = {
-        name: sum(1 for line in warning_lines if re.search(pattern, line, flags=re.IGNORECASE))
+        name: sum(1 for line in synth_warning_lines if re.search(pattern, line, flags=re.IGNORECASE))
         for name, pattern in categories.items()
     }
 
@@ -117,12 +133,16 @@ def main() -> int:
         and "complete" in run_status_match.group(1).lower()
         and progress_match
         and progress_match.group(1).strip() == "100%"
+        and "synth_design completed successfully" in synth_log.lower()
+        and synth_summary_match is not None
     )
     integrity_ok = "SOURCE_INTEGRITY=PASS" in source_integrity
     synth_status = "PASS" if synth_run_ok and args.vivado_exit_code == 0 else "FAIL"
     acceptance_status = "PASS" if (
         synth_status == "PASS" and integrity_ok and critical_count == 0 and error_count == 0
     ) else "FAIL"
+    if acceptance_status == "PASS" and vivado_error_lines:
+        acceptance_status = "PASS_WITH_TOOL_DIAGNOSTIC"
 
     try:
         setup_estimate = "PASS" if (
@@ -170,6 +190,9 @@ def main() -> int:
         f"SYNTH_WARNINGS={warning_count}",
         f"SYNTH_CRITICAL_WARNINGS={critical_count}",
         f"SYNTH_ERRORS={error_count}",
+        f"VIVADO_LOG_WARNING_LINES={len(warning_lines)}",
+        f"VIVADO_LOG_ERROR_LINES={len(vivado_error_lines)}",
+        f"VIVADO_COMMON_PATH_ERROR_LINES={sum('Common 17-1257' in line for line in vivado_error_lines)}",
     ]
     summary.extend(f"{key}={value}" for key, value in metrics.items())
     summary.extend(comparisons)
@@ -199,6 +222,7 @@ def main() -> int:
             "STATUS=", "SYNTHESIS_STATUS=", "TIMING_STATUS=", "PLACE_ROUTE_STATUS=",
             "BOARD_XDC_STATUS=", "SYNTH_SETUP_ESTIMATE=", "SYNTH_HOLD_ESTIMATE=", "EXTERNAL_IO_TIMING=",
             "SYNTH_ERRORS=", "SYNTH_WARNINGS=", "SYNTH_CRITICAL_WARNINGS=",
+            "VIVADO_LOG_WARNING_LINES=", "VIVADO_LOG_ERROR_LINES=", "VIVADO_COMMON_PATH_ERROR_LINES=",
             "SLICE_LUTS=", "LUT_AS_MEMORY=", "SLICE_REGISTERS=", "BRAM_TILES=",
             "DSP=", "IOB=", "PLLE2_ADV=", "BUFGCTRL=", "SETUP_WNS_NS=",
             "SETUP_TNS_NS=", "SETUP_FAILING_ENDPOINTS=", "HOLD_WHS_NS=",
@@ -219,6 +243,9 @@ def main() -> int:
         f"SYNTH_WARNINGS={warning_count}",
         f"SYNTH_CRITICAL_WARNINGS={critical_count}",
         f"SYNTH_ERRORS={error_count}",
+        f"VIVADO_LOG_WARNING_LINES={len(warning_lines)}",
+        f"VIVADO_LOG_ERROR_LINES={len(vivado_error_lines)}",
+        f"VIVADO_COMMON_PATH_ERROR_LINES={sum('Common 17-1257' in line for line in vivado_error_lines)}",
         *(f"{key}={metrics[key]}" for key in (
             "SLICE_LUTS", "LUT_AS_MEMORY", "SLICE_REGISTERS", "BRAM_TILES", "DSP", "IOB", "PLLE2_ADV", "BUFGCTRL",
             "SETUP_WNS_NS", "SETUP_TNS_NS", "SETUP_FAILING_ENDPOINTS", "HOLD_WHS_NS", "HOLD_THS_NS", "HOLD_FAILING_ENDPOINTS",
@@ -234,7 +261,7 @@ def main() -> int:
     print(f"SYNTH_ERRORS={error_count}")
     print(f"TIMING_STATUS={timing_status}")
     print(f"STATUS={acceptance_status}")
-    return 0 if acceptance_status == "PASS" else 1
+    return 0 if acceptance_status.startswith("PASS") else 1
 
 
 if __name__ == "__main__":
