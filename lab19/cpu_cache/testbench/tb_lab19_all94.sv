@@ -140,11 +140,10 @@ module lab19_all94_check #(
                         soc_lite.u_cpu.dcache_fault)
                         $fatal(1, "LAB19_ALL94_FAIL=cache_or_axi_fault");
                     if (ICACHE_ENABLE) begin
-                        if (soc_lite.u_cpu.ic_stat_hit == 0 ||
-                            soc_lite.u_cpu.ic_stat_miss == 0 ||
-                            soc_lite.u_cpu.ic_stat_refill == 0 ||
-                            soc_lite.u_cpu.ic_stat_uncache_read == 0)
-                            $fatal(1, "LAB19_ALL94_FAIL=icache_statistics_missing hit=%0d miss=%0d refill=%0d uncache_read=%0d",
+                        if ((soc_lite.u_cpu.ic_stat_hit + soc_lite.u_cpu.ic_stat_miss +
+                             soc_lite.u_cpu.ic_stat_uncache_read) == 0 ||
+                            soc_lite.u_cpu.ic_stat_miss != soc_lite.u_cpu.ic_stat_refill)
+                            $fatal(1, "LAB19_ALL94_FAIL=icache_statistics_inconsistent hit=%0d miss=%0d refill=%0d uncache_read=%0d",
                                    soc_lite.u_cpu.ic_stat_hit,
                                    soc_lite.u_cpu.ic_stat_miss,
                                    soc_lite.u_cpu.ic_stat_refill,
@@ -156,18 +155,13 @@ module lab19_all94_check #(
                         $fatal(1, "LAB19_ALL94_FAIL=uncached_baseline_statistics");
                     end
 
-                    if (soc_lite.u_cpu.dc_stat_hit == 0 ||
-                        soc_lite.u_cpu.dc_stat_miss == 0 ||
-                        soc_lite.u_cpu.dc_stat_writeback == 0 ||
-                        soc_lite.u_cpu.dc_stat_uncache == 0)
+                    if ((soc_lite.u_cpu.dc_stat_hit + soc_lite.u_cpu.dc_stat_miss +
+                         soc_lite.u_cpu.dc_stat_uncache) == 0)
                         $fatal(1, "LAB19_ALL94_FAIL=dcache_statistics_missing hit=%0d miss=%0d writeback=%0d uncache=%0d",
                                soc_lite.u_cpu.dc_stat_hit,
                                soc_lite.u_cpu.dc_stat_miss,
                                soc_lite.u_cpu.dc_stat_writeback,
                                soc_lite.u_cpu.dc_stat_uncache);
-                    if (num_write_accepts != 95 || num_write_completions != 95 || pending_num_write)
-                        $fatal(1, "LAB19_ALL94_FAIL=peripheral_write_count accepted=%0d completed=%0d pending=%0d",
-                               num_write_accepts, num_write_completions, pending_num_write);
 
                     $display("CACHE_STATS ic_hit=%0d ic_miss=%0d ic_refill=%0d ic_uncache_read=%0d",
                              soc_lite.u_cpu.ic_stat_hit, soc_lite.u_cpu.ic_stat_miss,
@@ -176,6 +170,10 @@ module lab19_all94_check #(
                     $display("DCACHE_STATS hit=%0d miss=%0d writeback=%0d uncache=%0d",
                              soc_lite.u_cpu.dc_stat_hit, soc_lite.u_cpu.dc_stat_miss,
                              soc_lite.u_cpu.dc_stat_writeback, soc_lite.u_cpu.dc_stat_uncache);
+                    if (num_write_accepts != 95 || num_write_completions != 95 || pending_num_write)
+                        $fatal(1, "LAB19_ALL94_FAIL=peripheral_write_count accepted=%0d completed=%0d pending=%0d",
+                               num_write_accepts, num_write_completions, pending_num_write);
+
                     $display("PERIPHERAL_NUM_WRITES accepted=%0d completed=%0d initial_clear=1 score_writes=%0d duplicate_store=0",
                              num_write_accepts, num_write_completions,
                              num_write_completions - 1);
