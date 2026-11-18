@@ -42,6 +42,19 @@ class FinalizeRunResultTests(unittest.TestCase):
             self.assertIn("SOURCE_INTEGRITY=PASS", result)
             self.assertIn("SIMULATOR_CPU_MS=123", result)
 
+    def test_nonzero_vivado_exit_cannot_leave_final_pass(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            run_dir, simulation_result = self.make_run(temp_dir, "PASS")
+            passed = finalize_run_result(
+                run_dir, simulation_result, "PASS", vivado_exit_code=1
+            )
+            result = (run_dir / "result.txt").read_text(encoding="utf-8")
+            self.assertFalse(passed)
+            self.assertIn("STATUS=INCOMPLETE", result)
+            self.assertIn("SIMULATION_STATUS=PASS", result)
+            self.assertIn("VIVADO_EXIT_CODE=1", result)
+            self.assertIn("VIVADO_PROCESS_STATUS=FAIL", result)
+
 
 if __name__ == "__main__":
     unittest.main()

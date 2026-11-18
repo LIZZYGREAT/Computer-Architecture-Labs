@@ -18,6 +18,8 @@ MANAGED_PREFIXES = (
     "INPUT_MANIFEST=",
     "GIT_HEAD=",
     "SIMULATOR_CPU_MS=",
+    "VIVADO_EXIT_CODE=",
+    "VIVADO_PROCESS_STATUS=",
 )
 
 
@@ -54,6 +56,7 @@ def finalize_run_result(
     simulation_result: Path,
     requested_integrity: str,
     simulator_cpu_ms: str | None = None,
+    vivado_exit_code: int = 0,
 ) -> bool:
     run_dir = run_dir.resolve()
     simulation_result = simulation_result.resolve()
@@ -64,13 +67,19 @@ def finalize_run_result(
     simulation_status = _read_key(simulation_result, "STATUS") or "NOT_PASS"
     captured_integrity = _read_key(run_dir / "source-integrity.txt", "SOURCE_INTEGRITY")
     integrity_status = "PASS" if requested_integrity == "PASS" and captured_integrity == "PASS" else "FAIL"
-    final_status = "PASS" if simulation_status == "PASS" and integrity_status == "PASS" else "INCOMPLETE"
+    final_status = (
+        "PASS"
+        if simulation_status == "PASS" and integrity_status == "PASS" and vivado_exit_code == 0
+        else "INCOMPLETE"
+    )
 
     lines = [line for line in raw_lines if not line.startswith(MANAGED_PREFIXES)]
     lines.extend((
         f"STATUS={final_status}",
         f"SIMULATION_STATUS={simulation_status}",
         f"SOURCE_INTEGRITY={integrity_status}",
+        f"VIVADO_EXIT_CODE={vivado_exit_code}",
+        f"VIVADO_PROCESS_STATUS={'PASS' if vivado_exit_code == 0 else 'FAIL'}",
         "SOURCE_MANIFEST=source-manifest.csv",
         "INPUT_MANIFEST=input_manifest.csv",
     ))
@@ -89,9 +98,11 @@ def main() -> int:
     parser.add_argument("--simulation-result", type=Path, required=True)
     parser.add_argument("--source-integrity", choices=("PASS", "FAIL"), required=True)
     parser.add_argument("--simulator-cpu-ms")
+    parser.add_argument("--vivado-exit-code", type=int, required=True)
     args = parser.parse_args()
     ok = finalize_run_result(
-        args.run_dir, args.simulation_result, args.source_integrity, args.simulator_cpu_ms
+        args.run_dir, args.simulation_result, args.source_integrity,
+        args.simulator_cpu_ms, args.vivado_exit_code
     )
     print(f"STATUS={'PASS' if ok else 'INCOMPLETE'}")
     return 0 if ok else 1

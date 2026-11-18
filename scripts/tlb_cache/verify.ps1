@@ -233,7 +233,8 @@ $finalizeArgs = @(
     (Join-Path $PSScriptRoot 'finalize_run_result.py'),
     '--run-dir', $runDir,
     '--simulation-result', $simulationResultPath,
-    '--source-integrity', $sourceIntegrity
+    '--source-integrity', $sourceIntegrity,
+    '--vivado-exit-code', [string]$process.ExitCode
 )
 if ($null -ne $simulatorCpuMs) { $finalizeArgs += @('--simulator-cpu-ms', $simulatorCpuMs) }
 & python @finalizeArgs
