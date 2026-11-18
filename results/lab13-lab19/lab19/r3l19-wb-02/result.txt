@@ -1,0 +1,16 @@
+RUN_ID=r3l19-wb-02
+CASE=lab19_writeback_scoreboard
+SUITE=directed
+SIM_TOP=tb_lab19_dcache_writeback_scoreboard
+PASS_MARKER=LAB19_DCache_WRITEBACK_SCOREBOARD_PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-wb-02/project/lab19_writeback_scoreboard_directed.xpr
+WAVEFORM=wave-full.wdb
+WAVEFORM_CONFIG=wave-full.wcfg
+STATUS=PASS
+SIMULATION_STATUS=PASS
+SOURCE_INTEGRITY=PASS
+VIVADO_EXIT_CODE=0
+VIVADO_PROCESS_STATUS=PASS
+SOURCE_MANIFEST=source-manifest.csv
+INPUT_MANIFEST=input_manifest.csv
+GIT_HEAD=f4a0b7fedba0985f5371172089fc9fde3b6cc2bf

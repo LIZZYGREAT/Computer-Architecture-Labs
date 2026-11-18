@@ -1,0 +1,734 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Thu Nov 19 03:15:00 2026
+# Process ID         : 22580
+# Current directory  : D:/Verilog/2025.2/Vivado/bin
+# Command line       : vivado.exe -mode batch -log C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-wb-02\vivado.log -journal C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-wb-02\vivado.jou -source C:\Users\lenovo\Desktop\Projects\FPGA\scripts\tlb_cache\run_unit.tcl -tclargs lab19_writeback_scoreboard directed C:\Users\lenovo\Desktop\Projects\FPGA C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-wb-02
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-wb-02/vivado.log
+# Journal file       : C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-wb-02\vivado.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 6979 MB
+# Total Virtual      : 30439 MB
+# Available Virtual  : 10864 MB
+#-----------------------------------------------------------
+source {C:\Users\lenovo\Desktop\Projects\FPGA\scripts\tlb_cache\run_unit.tcl}
+# if {[llength $argv] != 4} {
+#     error "usage: run_unit.tcl <lab13|lab16|lab17|lab18|lab18_fault|lab18_arb|lab18_mem|lab19_maint|lab19_index_contract|lab19_writeback_scoreboard|lab19_if_redirect|lab19_tlb_redirect> <directed|official> <repo-root> <run-dir>"
+# }
+# set case [lindex $argv 0]
+# set suite [lindex $argv 1]
+# set repo [file normalize [lindex $argv 2]]
+# set run_dir [file normalize [lindex $argv 3]]
+# file mkdir $run_dir
+# set project_name ${case}_${suite}
+# set project_dir [file join $run_dir project]
+# create_project -force $project_name $project_dir -part xc7a200tfbg676-1
+INFO: [ProjectBase 1-489] The host OS only allows 260 characters in a normal path. The project is stored in a path with more than 80 characters. If you experience issues with IP, Block Designs, or files not being found, please consider moving the project to a location with a shorter path. Alternately consider using the OS subst command to map part of the path to a drive letter.
+Current project path is 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-wb-02/project'
+create_project: Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 527.504 ; gain = 221.492
+# set_property target_language Verilog [current_project]
+# set_property simulator_language Mixed [current_project]
+# if {$case eq "lab13"} {
+#     set rtl [file join $repo lab13 tlb_verify rtl tlb.v]
+#     set wrapper [file join $repo lab13 tlb_verify rtl tlb_top.v]
+#     set official_tb [file join $repo lab13 tlb_verify testbench testbench.v]
+#     set directed_tb [file join $repo lab13 tlb_verify testbench tb_tlb_directed.sv]
+# } elseif {$case eq "lab16"} {
+#     set rtl [file join $repo lab16 cache_verify rtl cache.v]
+#     set wrapper [file join $repo lab16 cache_verify rtl cache_top.v]
+#     set official_tb [file join $repo lab16 cache_verify testbench testbench.v]
+#     set directed_tb [file join $repo lab16 cache_verify testbench tb_cache_directed.sv]
+# } elseif {$case eq "lab14_translate"} {
+#     set rtl [list \
+#         [file join $repo lab13 tlb_verify rtl tlb.v] \
+#         [file join $repo lab14 cpu_tlb rtl myCPU addr_translate.v]]
+#     set directed_tb [file join $repo lab14 cpu_tlb testbench tb_lab14_translate.sv]
+# } elseif {$case eq "lab11_axi3"} {
+#     set rtl [list \
+#         [file join $repo lab14 cpu_tlb rtl myCPU IF_stage.v] \
+#         [file join $repo lab14 cpu_tlb rtl myCPU axi3_cpu_bus.v]]
+#     set directed_tb [file join $repo lab14 cpu_tlb testbench tb_lab11_axi3_bus.sv]
+# } elseif {$case eq "lab17"} {
+#     set rtl [list \
+#         [file join $repo lab17 cpu_icache rtl myCPU icache.v] \
+#         [file join $repo lab17 cpu_icache rtl myCPU cache_axi3_bridge.v]]
+#     set directed_tb [file join $repo lab17 cpu_icache testbench tb_lab17_icache_directed.sv]
+# } elseif {$case eq "lab18"} {
+#     set rtl [file join $repo lab18 cpu_dcache rtl myCPU dcache.v]
+#     set directed_tb [file join $repo lab18 cpu_dcache testbench tb_lab18_dcache_directed.sv]
+# } elseif {$case eq "lab18_fault"} {
+#     set rtl [file join $repo lab18 cpu_dcache rtl myCPU dcache.v]
+#     set directed_tb [file join $repo lab18 cpu_dcache testbench tb_lab18_dcache_fault_directed.sv]
+# } elseif {$case eq "lab18_arb"} {
+#     set rtl [list \
+#         [file join $repo lab18 cpu_dcache rtl myCPU icache.v] \
+#         [file join $repo lab18 cpu_dcache rtl myCPU dcache.v] \
+#         [file join $repo lab18 cpu_dcache rtl myCPU cache_axi3_bridge.v]]
+#     set directed_tb [file join $repo lab18 cpu_dcache testbench tb_lab18_cache_arbitration.sv]
+# } elseif {$case eq "lab18_mem"} {
+#     set rtl [file join $repo lab18 cpu_dcache rtl myCPU MEM_stage.v]
+#     set directed_tb [file join $repo lab18 cpu_dcache testbench tb_lab18_mem_exception.sv]
+# } elseif {$case eq "lab19_maint"} {
+#     set rtl [list \
+#         [file join $repo lab19 cpu_cache rtl myCPU icache.v] \
+#         [file join $repo lab19 cpu_cache rtl myCPU dcache.v]]
+#     set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_maint_directed.sv]
+# } elseif {$case eq "lab19_index_contract"} {
+#     set rtl [concat \
+#         [glob [file join $repo lab19 cpu_cache rtl myCPU *.v]] \
+#         [list [file join $repo lab13 tlb_verify rtl tlb.v]]]
+#     set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_index_maint_contract.sv]
+# } elseif {$case eq "lab19_writeback_scoreboard"} {
+#     set rtl [list \
+#         [file join $repo lab19 cpu_cache rtl myCPU dcache.v] \
+#         [file join $repo lab19 cpu_cache rtl myCPU cache_axi3_bridge.v]]
+#     set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_dcache_writeback_scoreboard.sv]
+# } elseif {$case eq "lab19_if_redirect"} {
+#     set rtl [file join $repo lab19 cpu_cache rtl myCPU IF_stage.v]
+#     set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_if_redirect_directed.sv]
+# } elseif {$case eq "lab19_tlb_redirect"} {
+#     set rtl [concat \
+#         [glob [file join $repo lab19 cpu_cache rtl myCPU *.v]] \
+#         [list [file join $repo lab13 tlb_verify rtl tlb.v]]]
+#     set directed_tb [file join $repo lab19 cpu_cache testbench tb_lab19_tlb_redirect_contract.sv]
+# } else {
+#     error "unsupported unit case: $case"
+# }
+# if {($case eq "lab17" || $case eq "lab18" || $case eq "lab18_fault" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_writeback_scoreboard" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect") && $suite ne "directed"} {
+#     error "$case currently supports only its directed cache suite"
+# }
+# foreach rtl_file $rtl {
+#     if {![file isfile $rtl_file]} {
+#         error "required RTL is missing: $rtl_file"
+#     }
+# }
+# if {$suite eq "directed"} {
+#     if {![file isfile $directed_tb]} {
+#         error "directed testbench is missing: $directed_tb"
+#     }
+#     add_files -fileset sources_1 $rtl
+#     add_files -fileset sim_1 $directed_tb
+#     set sim_top [file rootname [file tail $directed_tb]]
+# } elseif {$suite eq "official"} {
+#     add_files -fileset sources_1 [list $rtl $wrapper [file join $repo scripts tlb_cache sim_support clk_pll_stub.v]]
+#     add_files -fileset sim_1 $official_tb
+#     set sim_top testbench
+# } else {
+#     error "unsupported suite: $suite"
+# }
+# set_property top $sim_top [get_filesets sim_1]
+# if {$case eq "lab11_axi3" || $case eq "lab18_mem" || $case eq "lab19_index_contract" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect"} {
+#     if {$case eq "lab18_mem"} {
+#         set cpu_include [file join $repo lab18 cpu_dcache rtl myCPU]
+#     } elseif {$case eq "lab19_index_contract" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect"} {
+#         set cpu_include [file join $repo lab19 cpu_cache rtl myCPU]
+#     } else {
+#         set cpu_include [file join $repo lab14 cpu_tlb rtl myCPU]
+#     }
+#     set_property include_dirs [list $cpu_include] [get_filesets sources_1]
+#     set_property include_dirs [list $cpu_include] [get_filesets sim_1]
+# }
+# set_property xsim.simulate.log_all_signals true [get_filesets sim_1]
+# set_property xsim.simulate.runtime 1000000ns [get_filesets sim_1]
+# if {$case eq "lab17" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_writeback_scoreboard" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect"} {
+#     set wave_config_file [file join $run_dir wave-full.wcfg]
+#     set wave_hook_file [file join $run_dir wave-config-hook.tcl]
+#     set wave_log_file [file join $run_dir wave-config-hook.log]
+#     if {$case eq "lab17"} {
+#         set wave_objects [list \
+#             /tb_lab17_icache_directed/dut_bridge/axi_fault \
+#             /tb_lab17_icache_directed/dut_icache/cache_fault \
+#             /tb_lab17_icache_directed/dut_icache/state \
+#             /tb_lab17_icache_directed/dut_icache/cpu_data_ok \
+#             /tb_lab17_icache_directed/rid \
+#             /tb_lab17_icache_directed/rresp \
+#             /tb_lab17_icache_directed/rlast \
+#             /tb_lab17_icache_directed/rvalid \
+#             /tb_lab17_icache_directed/rready]
+#     } elseif {$case eq "lab19_maint"} {
+#         set wave_objects [list \
+#         /tb_lab19_maint_directed/u_icache/state \
+#         /tb_lab19_maint_directed/u_icache/valid_way2 \
+#         /tb_lab19_maint_directed/u_icache/valid_way3 \
+#         /tb_lab19_maint_directed/u_icache/tag_way2 \
+#         /tb_lab19_maint_directed/u_icache/tag_way3 \
+#         /tb_lab19_maint_directed/u_dcache/state \
+#         /tb_lab19_maint_directed/u_dcache/valid_way2 \
+#         /tb_lab19_maint_directed/u_dcache/valid_way3 \
+#         /tb_lab19_maint_directed/u_dcache/dirty_way2 \
+#         /tb_lab19_maint_directed/u_dcache/dirty_way3 \
+#         /tb_lab19_maint_directed/u_dcache/maint_selected_dirty]
+#     } elseif {$case eq "lab19_writeback_scoreboard"} {
+#         set wave_objects [list \
+#             /tb_lab19_dcache_writeback_scoreboard/u_dcache/state \
+#             /tb_lab19_dcache_writeback_scoreboard/u_dcache/req_addr \
+#             /tb_lab19_dcache_writeback_scoreboard/u_dcache/victim_way \
+#             /tb_lab19_dcache_writeback_scoreboard/u_dcache/maint_index \
+#             /tb_lab19_dcache_writeback_scoreboard/u_dcache/maint_way \
+#             /tb_lab19_dcache_writeback_scoreboard/cpu_req \
+#             /tb_lab19_dcache_writeback_scoreboard/cpu_addr \
+#             /tb_lab19_dcache_writeback_scoreboard/cpu_data_ok \
+#             /tb_lab19_dcache_writeback_scoreboard/refill_addr \
+#             /tb_lab19_dcache_writeback_scoreboard/refill_data_valid \
+#             /tb_lab19_dcache_writeback_scoreboard/refill_data \
+#             /tb_lab19_dcache_writeback_scoreboard/maint_req \
+#             /tb_lab19_dcache_writeback_scoreboard/maint_done \
+#             /tb_lab19_dcache_writeback_scoreboard/awaddr \
+#             /tb_lab19_dcache_writeback_scoreboard/awvalid \
+#             /tb_lab19_dcache_writeback_scoreboard/awready \
+#             /tb_lab19_dcache_writeback_scoreboard/wdata \
+#             /tb_lab19_dcache_writeback_scoreboard/wstrb \
+#             /tb_lab19_dcache_writeback_scoreboard/wvalid \
+#             /tb_lab19_dcache_writeback_scoreboard/wready \
+#             /tb_lab19_dcache_writeback_scoreboard/wlast \
+#             /tb_lab19_dcache_writeback_scoreboard/bvalid \
+#             /tb_lab19_dcache_writeback_scoreboard/bready]
+#     } elseif {$case eq "lab19_tlb_redirect"} {
+#         set wave_objects [list \
+#             /tb_lab19_tlb_redirect_contract/dut/tlb_write_enable \
+#             /tb_lab19_tlb_redirect_contract/dut/pipeline_flush \
+#             /tb_lab19_tlb_redirect_contract/dut/if_stage/state \
+#             /tb_lab19_tlb_redirect_contract/dut/if_stage/request_pc \
+#             /tb_lab19_tlb_redirect_contract/dut/if_stage/stale_response \
+#             /tb_lab19_tlb_redirect_contract/dut/if_stage/restart_pc \
+#             /tb_lab19_tlb_redirect_contract/dut/u_tlb/entry_pfn0 \
+#             /tb_lab19_tlb_redirect_contract/dut/inst_sram_addr \
+#             /tb_lab19_tlb_redirect_contract/araddr \
+#             /tb_lab19_tlb_redirect_contract/arvalid \
+#             /tb_lab19_tlb_redirect_contract/rvalid \
+#             /tb_lab19_tlb_redirect_contract/rlast]
+#     } elseif {$case eq "lab19_index_contract"} {
+#         set wave_objects [list \
+#             /tb_lab19_index_maint_contract/dut/cache_maint_req \
+#             /tb_lab19_index_maint_contract/dut/cache_maint_op \
+#             /tb_lab19_index_maint_contract/dut/cache_maint_vaddr \
+#             /tb_lab19_index_maint_contract/dut/cache_maint_translation_ok \
+#             /tb_lab19_index_maint_contract/dut/cache_maint_addr_ok \
+#             /tb_lab19_index_maint_contract/dut/cache_maint_done \
+#             /tb_lab19_index_maint_contract/dut/cache_maint_unsupported \
+#             /tb_lab19_index_maint_contract/dut/u_icache/state \
+#             /tb_lab19_index_maint_contract/dut/u_dcache/state \
+#             /tb_lab19_index_maint_contract/dut/awaddr \
+#             /tb_lab19_index_maint_contract/dut/awvalid \
+#             /tb_lab19_index_maint_contract/dut/wdata \
+#             /tb_lab19_index_maint_contract/dut/wvalid \
+#             /tb_lab19_index_maint_contract/dut/wlast \
+#             /tb_lab19_index_maint_contract/dut/bvalid \
+#             /tb_lab19_index_maint_contract/dut/bready]
+#     } else {
+#         set wave_objects [list \
+#             /tb_lab19_if_redirect_directed/dut/state \
+#             /tb_lab19_if_redirect_directed/dut/request_pc \
+#             /tb_lab19_if_redirect_directed/dut/stale_response \
+#             /tb_lab19_if_redirect_directed/dut/restart_pc \
+#             /tb_lab19_if_redirect_directed/dut/redirect_valid \
+#             /tb_lab19_if_redirect_directed/dut/redirect_pc \
+#             /tb_lab19_if_redirect_directed/dut/delay_slot_pending \
+#             /tb_lab19_if_redirect_directed/dut/branch_target_pending \
+#             /tb_lab19_if_redirect_directed/cache_redirect \
+#             /tb_lab19_if_redirect_directed/tlb_redirect \
+#             /tb_lab19_if_redirect_directed/inst_sram_addr_ok \
+#             /tb_lab19_if_redirect_directed/inst_sram_data_ok \
+#             /tb_lab19_if_redirect_directed/fs_to_ds_valid]
+#     }
+#     set wave_hook_text [string map [list \
+#         @WAVE_PATH@ [list $wave_config_file] \
+#         @WAVE_LOG@ [list $wave_log_file] \
+#         @WAVE_NAME@ [file tail $wave_config_file] \
+#         @WAVE_OBJECTS@ [list $wave_objects]] {
+# set wave_log [open @WAVE_LOG@ w]
+# if {[catch {
+#     set wave_config [current_wave_config]
+#     if {[string length $wave_config] == 0} { create_wave_config }
+#     add_wave /
+#     set wave_added [list]
+#     foreach wave_object @WAVE_OBJECTS@ {
+#         set wave_matches [get_objects -quiet $wave_object]
+#         if {[llength $wave_matches] > 0} {
+#             add_wave $wave_matches
+#             lappend wave_added $wave_object
+#         }
+#     }
+#     save_wave_config @WAVE_PATH@
+# } wave_error]} {
+#     puts $wave_log "WCFG_CAPTURE_ERROR=$wave_error"
+# } else {
+#     puts $wave_log "WCFG_CAPTURED=@WAVE_NAME@"
+#     puts $wave_log "WAVE_OBJECTS_ADDED=[join $wave_added ,]"
+# }
+# close $wave_log
+# }]
+#     set wave_hook [open $wave_hook_file w]
+#     puts -nonewline $wave_hook $wave_hook_text
+#     close $wave_hook
+# }
+# update_compile_order -fileset sim_1
+# puts "CASE=$case"
+CASE=lab19_writeback_scoreboard
+# puts "SUITE=$suite"
+SUITE=directed
+# puts "PROJECT_XPR=[file join $project_dir ${project_name}.xpr]"
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-wb-02/project/lab19_writeback_scoreboard_directed.xpr
+# puts "SIM_TOP=$sim_top"
+SIM_TOP=tb_lab19_dcache_writeback_scoreboard
+# puts "RTL=$rtl"
+RTL=C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cache_axi3_bridge.v
+# puts "SIM_FILES=[get_files -of_objects [get_filesets sim_1]]"
+SIM_FILES=C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/testbench/tb_lab19_dcache_writeback_scoreboard.sv
+# launch_simulation -mode behavioral -simset sim_1
+Command: launch_simulation  -simset sim_1 -mode behavioral
+INFO: [Vivado 12-25911] Executing simulation for 'XSim' simulator
+INFO: [Vivado 12-28535] Process started - Thu Nov 19 03:15:34 2026
+
+INFO: [Vivado 12-12493] Simulation top is 'tb_lab19_dcache_writeback_scoreboard'
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-wb-02/project/lab19_writeback_scoreboard_directed.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-72] Using boost library from 'D:/Verilog/2025.2/Vivado/tps/boost_1_72_0'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_lab19_dcache_writeback_scoreboard' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-wb-02/project/lab19_writeback_scoreboard_directed.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -L uvm -prj tb_lab19_dcache_writeback_scoreboard_vlog.prj"
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cache_axi3_bridge.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cache_axi3_bridge
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module dcache
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/testbench/tb_lab19_dcache_writeback_scoreboard.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_lab19_dcache_writeback_scoreboard
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-wb-02/project/lab19_writeback_scoreboard_directed.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [USF-XSim-69] 'compile' step finished in '4' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-wb-02/project/lab19_writeback_scoreboard_directed.sim/sim_1/behav/xsim'
+"xelab --incr --debug typical --relax --mt 2 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_lab19_dcache_writeback_scoreboard_behav xil_defaultlib.tb_lab19_dcache_writeback_scoreboard xil_defaultlib.glbl -log elaborate.log"
+Vivado Simulator v2025.2
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Verilog/2025.2/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_lab19_dcache_writeback_scoreboard_behav xil_defaultlib.tb_lab19_dcache_writeback_scoreboard xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v" Line 2. Module dcache doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cache_axi3_bridge.v" Line 3. Module cache_axi3_bridge doesn't have a timescale but at least one module in design has a timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.dcache
+Compiling module xil_defaultlib.cache_axi3_bridge
+Compiling module xil_defaultlib.tb_lab19_dcache_writeback_scoreb...
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot tb_lab19_dcache_writeback_scoreboard_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:06 . Memory (MB): peak = 534.668 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '6' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in 'C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-wb-02/project/lab19_writeback_scoreboard_directed.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "tb_lab19_dcache_writeback_scoreboard_behav -key {Behavioral:sim_1:Functional:tb_lab19_dcache_writeback_scoreboard} -tclbatch {tb_lab19_dcache_writeback_scoreboard.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Time resolution is 1 ps
+source tb_lab19_dcache_writeback_scoreboard.tcl
+## set curr_wave [current_wave_config]
+## if { [string length $curr_wave] == 0 } {
+##   if { [llength [get_objects]] > 0} {
+##     add_wave /
+##     set_property needs_save false [current_wave_config]
+##   } else {
+##      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+##   }
+## }
+## log_wave -r /
+## run 1000000ns
+CPU_STORE_WAY_PASS way=0 tag=10001 addr=100016a4 store=cafe0000 line_dirty=1
+CPU_STORE_WAY_PASS way=1 tag=10002 addr=100026a8 store=cafe0102 line_dirty=1
+CPU_STORE_WAY_PASS way=2 tag=10003 addr=100036ac store=cafe0204 line_dirty=1
+CPU_STORE_WAY_PASS way=3 tag=10004 addr=100046b0 store=cafe0306 line_dirty=1
+WRITEBACK_WAY_PASS way=0 tag=10001 set=35 awaddr=100016a0 beats=8 store=1 before_b_done=0 after_b_done=1
+WRITEBACK_WAY_PASS way=1 tag=10002 set=35 awaddr=100026a0 beats=8 store=1 before_b_done=0 after_b_done=1
+WRITEBACK_WAY_PASS way=2 tag=10003 set=35 awaddr=100036a0 beats=8 store=1 before_b_done=0 after_b_done=1
+WRITEBACK_WAY_PASS way=3 tag=10004 set=35 awaddr=100046a0 beats=8 store=1 before_b_done=0 after_b_done=1
+LAB19_DCache_WRITEBACK_SCOREBOARD_PASS ways=4 cpu_stores=4 refills=4 AW=4 W=32 B=4 full_data_compare=1 backpressure=stable
+$finish called at time : 3086 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/testbench/tb_lab19_dcache_writeback_scoreboard.sv" Line 432
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'tb_lab19_dcache_writeback_scoreboard_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000000ns
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:17 . Memory (MB): peak = 548.895 ; gain = 21.391
+# if {[info exists wave_hook_file] && [file isfile $wave_hook_file]} {
+#     if {[catch {source $wave_hook_file} wave_hook_error]} {
+#         error "waveform configuration hook failed: $wave_hook_error"
+#     }
+# }
+## set wave_log [open C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-wb-02/wave-config-hook.log w]
+## if {[catch {
+##     set wave_config [current_wave_config]
+##     if {[string length $wave_config] == 0} { create_wave_config }
+##     add_wave /
+##     set wave_added [list]
+##     foreach wave_object {/tb_lab19_dcache_writeback_scoreboard/u_dcache/state /tb_lab19_dcache_writeback_scoreboard/u_dcache/req_addr /tb_lab19_dcache_writeback_scoreboard/u_dcache/victim_way /tb_lab19_dcache_writeback_scoreboard/u_dcache/maint_index /tb_lab19_dcache_writeback_scoreboard/u_dcache/maint_way /tb_lab19_dcache_writeback_scoreboard/cpu_req /tb_lab19_dcache_writeback_scoreboard/cpu_addr /tb_lab19_dcache_writeback_scoreboard/cpu_data_ok /tb_lab19_dcache_writeback_scoreboard/refill_addr /tb_lab19_dcache_writeback_scoreboard/refill_data_valid /tb_lab19_dcache_writeback_scoreboard/refill_data /tb_lab19_dcache_writeback_scoreboard/maint_req /tb_lab19_dcache_writeback_scoreboard/maint_done /tb_lab19_dcache_writeback_scoreboard/awaddr /tb_lab19_dcache_writeback_scoreboard/awvalid /tb_lab19_dcache_writeback_scoreboard/awready /tb_lab19_dcache_writeback_scoreboard/wdata /tb_lab19_dcache_writeback_scoreboard/wstrb /tb_lab19_dcache_writeback_scoreboard/wvalid /tb_lab19_dcache_writeback_scoreboard/wready /tb_lab19_dcache_writeback_scoreboard/wlast /tb_lab19_dcache_writeback_scoreboard/bvalid /tb_lab19_dcache_writeback_scoreboard/bready} {
+##         set wave_matches [get_objects -quiet $wave_object]
+##         if {[llength $wave_matches] > 0} {
+##             add_wave $wave_matches
+##             lappend wave_added $wave_object
+##         }
+##     }
+##     save_wave_config C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-wb-02/wave-full.wcfg
+## } wave_error]} {
+##     puts $wave_log "WCFG_CAPTURE_ERROR=$wave_error"
+## } else {
+##     puts $wave_log "WCFG_CAPTURED=wave-full.wcfg"
+##     puts $wave_log "WAVE_OBJECTS_ADDED=[join $wave_added ,]"
+## }
+## close $wave_log
+# set sim_dir [file join $project_dir ${project_name}.sim sim_1 behav xsim]
+# set sim_log [file join $sim_dir simulate.log]
+# if {![file isfile $sim_log]} {
+#     error "simulation log was not produced: $sim_log"
+# }
+# set log_in [open $sim_log r]
+# set sim_text [read $log_in]
+# close $log_in
+# set active_path [file join $run_dir active-sources.txt]
+# set active_file [open $active_path w]
+# puts $active_file "PROJECT_XPR=[file join $project_dir ${project_name}.xpr]"
+# foreach f $rtl {
+#     puts $active_file "SOURCE=$f"
+# }
+# if {$suite eq "official"} {
+#     puts $active_file "SOURCE=$wrapper"
+#     puts $active_file "SOURCE=[file join $repo scripts tlb_cache sim_support clk_pll_stub.v]"
+# }
+# if {$case eq "lab11_axi3"} {
+#     puts $active_file "SOURCE=[file join $repo lab14 cpu_tlb rtl myCPU mycpu.h]"
+# } elseif {$case eq "lab18_mem"} {
+#     puts $active_file "SOURCE=[file join $repo lab18 cpu_dcache rtl myCPU mycpu.h]"
+# } elseif {$case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect"} {
+#     puts $active_file "SOURCE=[file join $repo lab19 cpu_cache rtl myCPU mycpu.h]"
+# }
+# if {$suite eq "directed"} {
+#     puts $active_file "SIM_SOURCE=$directed_tb"
+# } else {
+#     puts $active_file "SIM_SOURCE=$official_tb"
+# }
+# close $active_file
+# if {[regexp -nocase {WATCHDOG_TIMEOUT|----FAIL!!!|Fatal:|ERROR:|Error:} $sim_text]} {
+#     error "simulation reported a failure; inspect $sim_log"
+# }
+# if {$suite eq "directed"} {
+#     if {$case eq "lab14_translate"} {
+#         set pass_marker "LAB14_TRANSLATE_PASS"
+#     } elseif {$case eq "lab11_axi3"} {
+#         set pass_marker "LAB11_AXI3_BUS_PASS"
+#     } elseif {$case eq "lab17"} {
+#         set pass_marker "DIRECTED_PASS"
+#     } elseif {$case eq "lab18"} {
+#         set pass_marker "DCache_DIRECTED_PASS"
+#     } elseif {$case eq "lab18_fault"} {
+#         set pass_marker "LAB18_DCACHE_FAULT_PASS"
+#     } elseif {$case eq "lab18_arb"} {
+#         set pass_marker "LAB18_ARBITRATION_PASS"
+#     } elseif {$case eq "lab18_mem"} {
+#         set pass_marker "D09_MEM_PASS"
+#     } elseif {$case eq "lab19_maint"} {
+#         set pass_marker "LAB19_MAINT_DIRECTED_PASS"
+#     } elseif {$case eq "lab19_index_contract"} {
+#         set pass_marker "LAB19_INDEX_CONTRACT_PASS"
+# } elseif {$case eq "lab19_writeback_scoreboard"} {
+#     set pass_marker "LAB19_DCache_WRITEBACK_SCOREBOARD_PASS"
+#     } elseif {$case eq "lab19_if_redirect"} {
+#         set pass_marker "LAB19_IF_REDIRECT_PASS"
+#     } elseif {$case eq "lab19_tlb_redirect"} {
+#         set pass_marker "LAB19_TLB_REDIRECT_PASS"
+#     } else {
+#         set pass_marker "DIRECTED_PASS"
+#     }
+# } elseif {$case eq "lab13"} {
+#     set pass_marker "----PASS!!!"
+#     foreach marker {"OK!!!write" "OK!!!read" "OK!!!search" "Test end!"} {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "official Lab13 simulation missed required marker: $marker"
+#         }
+#     }
+# } else {
+#     set pass_marker "----PASS!!!"
+#     if {[string first "Test end!" $sim_text] < 0} {
+#         error "official Lab16 simulation missed Test end!"
+#     }
+#     set index_markers [regexp -all -inline -nocase {index ([0-9a-f]{2}) finished} $sim_text]
+#     if {[llength $index_markers] != 512} {
+#         error "official Lab16 simulation expected 256 unique finished indexes"
+#     }
+#     set seen_indexes [dict create]
+#     foreach {marker finished_index} $index_markers {
+#         dict set seen_indexes [string tolower $finished_index] 1
+#     }
+#     if {[dict size $seen_indexes] != 256} {
+#         error "official Lab16 simulation did not finish every index exactly once"
+#     }
+#     for {set index_value 0} {$index_value < 256} {incr index_value} {
+#         set expected_index [format %02x $index_value]
+#         if {![dict exists $seen_indexes $expected_index]} {
+#             error "official Lab16 simulation missed index $expected_index"
+#         }
+#     }
+#     foreach failure_marker {"replace wrong at" "cacheres wrong at"} {
+#         if {[string first $failure_marker $sim_text] >= 0} {
+#             error "official Lab16 simulation reported: $failure_marker"
+#         }
+#     }
+# }
+# if {$case eq "lab17"} {
+#     foreach marker {
+#         "DIRECTED_CHECKS=28"
+#         "DIRECTED_COUNTS_VALID cpu=4/4 data=2/2 writeback=1/1"
+#         "DIRECTED_FAULT_INJECTION=RID_MISMATCH accepted=1 completed=0 expected_pending=1 axi_fault=1"
+#         "DIRECTED_FAULT_CASE=RID_MISMATCH accepted=1 completed=0 terminal_state=8"
+#         "DIRECTED_FAULT_CASE=RRESP_ERROR accepted=1 completed=0 terminal_state=8"
+#         "DIRECTED_FAULT_CASE=RLAST_EARLY accepted=1 completed=0 terminal_state=8"
+#         "DIRECTED_FAULT_CASE=RLAST_MISSING accepted=1 completed=0 terminal_state=8"
+#         "DIRECTED_FAULT_CASES=4 RID_MISMATCH,RRESP_ERROR,RLAST_EARLY,RLAST_MISSING"
+#         "WAVE_CASE=ICACHE_8_BEAT_REFILL_AND_DATA_ARBITRATION"
+#         "WAVE_CASE=ICACHE_SAME_LINE_HIT"
+#         "WAVE_CASE=KSEG1_UNCACHE_SINGLE_BEAT"
+#         "WAVE_CASE=DIRTY_WRITEBACK_8_BEATS_AND_B"
+#         "WAVE_CASE=UNCACHE_STORE_AW_W_INDEPENDENT"
+#         "WAVE_CASE=RID_MISMATCH_STICKY_AXI_FAULT"
+#         "DIRECTED_PASS"
+#     } {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "Lab17 directed test missed required marker: $marker"
+#         }
+#     }
+# }
+# if {$case eq "lab18"} {
+#     foreach marker {
+#         "D01_PASS first_miss=1 refill_beats=8"
+#         "D02_PASS same_line_hit ar=1"
+#         "D03_PASS store_then_load dirty=1"
+#         "D04_PASS byte_halfword_lanes"
+#         "D05_PASS swl_swr_lane_merge"
+#         "D06_PASS dirty_victim_writeback_before_refill"
+#         "D07_PASS uncache_bypass peripheral_write_once"
+#         "D08_PASS refill_uncache_backpressure_payload_stable"
+#         "D09_PASS request_completion_accounting"
+#         "DIRECTED_CHECKS=9"
+#         "DCache_DIRECTED_PASS checks=9"
+#     } {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "Lab18 directed test missed required marker: $marker"
+#         }
+#     }
+# }
+# if {$case eq "lab18_fault"} {
+#     foreach marker {
+#         "DFAULT_IDLE_PASS state=ST_FAULT new_request_blocked=1"
+#         "DFAULT_LOOKUP_PASS state=ST_FAULT normal_completion=0"
+#         "DFAULT_WB_WAIT_PASS state=ST_FAULT writeback_done=0 victim_preserved=1"
+#         "DFAULT_REFILL_DATA_PASS state=ST_FAULT valid_line=0 completion=0"
+#         "LAB18_DCACHE_FAULT_PASS checks=4"
+#     } {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "Lab18 DCache fault test missed required marker: $marker"
+#         }
+#     }
+# }
+# if {$case eq "lab18_arb"} {
+#     foreach marker {
+#         "LAB18_SIMULTANEOUS_MISS_PASS ic_ar=1 dc_ar=1 id_owner_checked=1 r_beats=16"
+#         "LAB18_ARBITRATION_PASS"
+#     } {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "Lab18 arbitration test missed required marker: $marker"
+#         }
+#     }
+# }
+# if {$case eq "lab18_mem"} {
+#     foreach marker {
+#         "D09_EXCEPTION_PASS trap_no_store=1"
+#         "D09_COMMITTED_STORE_PASS accepted=1 completed=1 stable_payload=1"
+#         "D09_MEM_PASS"
+#     } {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "Lab18 MEM exception test missed required marker: $marker"
+#         }
+#     }
+# }
+# if {$case eq "lab19_maint"} {
+#     foreach marker {
+#         "LAB19_MAINT_DIRECTED_PASS checks=10"
+#         "icache_way=2,3"
+#         "dcache_way=2,3"
+#         "hitinv_no_writeback=1"
+#         "writebacks=3 index_unmapped_set35_way3=8words sentinel_set0=preserved B_wait=1"
+#     } {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "Lab19 CACHE maintenance directed test missed required marker: $marker"
+#         }
+#     }
+# }
+# if {$case eq "lab19_index_contract"} {
+#     foreach marker {
+#         "IDX-01_PASS unmapped_va=004006a0 top_accept=1 icache_accept=1 icache_done=1 side_effect=once"
+#         "IDX-04_PASS busy_to_ready top_accepts=2 icache_accepts=2 completions=2"
+#         "IDX-03_UNSUPPORTED_BY_SCOPE hit_translation_valid=0 downstream_accept=0 done=0"
+#         "IDX-02_PASS unmapped_va_set=35 way=3 awaddr=abcde6a0 beats=8 accept=1 done=1 sentinel_set0=preserved"
+#         "LAB19_INDEX_CONTRACT_PASS checks=4 unsupported_hit=explicit dcache_accepts=1 dcache_done=1"
+#     } {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "Lab19 index-maintenance contract test missed required marker: $marker"
+#         }
+#     }
+# }
+# if {$case eq "lab19_writeback_scoreboard"} {
+#     foreach marker {
+#         "CPU_STORE_WAY_PASS way=0"
+#         "CPU_STORE_WAY_PASS way=1"
+#         "CPU_STORE_WAY_PASS way=2"
+#         "CPU_STORE_WAY_PASS way=3"
+#         "WRITEBACK_WAY_PASS way=0"
+#         "WRITEBACK_WAY_PASS way=1"
+#         "WRITEBACK_WAY_PASS way=2"
+#         "WRITEBACK_WAY_PASS way=3"
+#         "LAB19_DCache_WRITEBACK_SCOREBOARD_PASS ways=4 cpu_stores=4 refills=4 AW=4 W=32 B=4 full_data_compare=1 backpressure=stable"
+#     } {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "Lab19 DCache writeback scoreboard missed required marker: $marker"
+#         }
+#     }
+# }
+# if {$case eq "lab19_if_redirect"} {
+#     foreach marker {
+#         "IF_BRANCH_SLOT_PASS taken=1 slot_pc=bfc01000 next_pc=bfc02000"
+#         "IF_BRANCH_SLOT_PASS taken=0 slot_pc=bfc01000 next_pc=bfc01004"
+#         "IF_STALE_RESPONSE_DROPPED kind=CACHE_MAINT old_pc=00401000 replay_pc=00402000 delay_slot_cleared=1"
+#         "IF_STALE_RESPONSE_DROPPED kind=TLB_WRITE old_pc=00401000 replay_pc=00401000 delay_slot_cleared=1"
+#         "IF_REDIRECT_PRIORITY_PASS trap_over_eret_cache_tlb=1"
+#         "LAB19_IF_REDIRECT_PASS checks=7"
+#     } {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "Lab19 IF redirect test missed required marker: $marker"
+#         }
+#     }
+# }
+# if {$case eq "lab19_tlb_redirect"} {
+#     foreach marker {
+#         "IF_TLB_REPLAY_PASS old_pa=abcde100 new_pa=12345100 old_stale_dropped=1 replay_pc=00402100"
+#         "LAB19_TLB_REPLAY_CROSSCHECK_PASS old_pa=abcde100 new_pa=12345100 force_based=1 old_stale_dropped=1"
+#         "LAB19_TLB_REDIRECT_PASS checks=3"
+#     } {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "Lab19 TLB redirect test missed required marker: $marker"
+#         }
+#     }
+# }
+# if {[string first $pass_marker $sim_text] < 0} {
+#     error "simulation missed PASS marker $pass_marker; inspect $sim_log"
+# }
+# if {$case eq "lab11_axi3"} {
+#     foreach marker {
+#         "LAB11_AXI3_IF_REDIRECT_STALLED_AR_PASS"
+#         "LAB11_AXI3_IF_REDIRECT_ACCEPTED_AR_PASS"
+#         "LAB11_AXI3_HANDSHAKE_PASS reads=2 stores=2 AW_first=1 W_first=1"
+#         "LAB11_AXI3_RID_CHECK_PASS"
+#         "LAB11_AXI3_RRESP_CHECK_PASS"
+#         "LAB11_AXI3_RLAST_CHECK_PASS"
+#         "LAB11_AXI3_BID_CHECK_PASS"
+#         "LAB11_AXI3_BRESP_CHECK_PASS"
+#     } {
+#         if {[string first $marker $sim_text] < 0} {
+#             error "Lab11 AXI regression missed required marker: $marker"
+#         }
+#     }
+# }
+# foreach filename {compile.log elaborate.log simulate.log} {
+#     set source_path [file join $sim_dir $filename]
+#     if {[file isfile $source_path]} {
+#         file copy -force $source_path [file join $run_dir $filename]
+#     }
+# }
+# set compile_order_path [file join $sim_dir ${sim_top}_vlog.prj]
+# if {[file isfile $compile_order_path]} {
+#     file copy -force $compile_order_path [file join $run_dir sim-compile-order.prj]
+# }
+# set waveform_path [file join $sim_dir ${sim_top}_behav.wdb]
+# if {[file isfile $waveform_path]} {
+#     file copy -force $waveform_path [file join $run_dir wave-full.wdb]
+# }
+# set wave_config_path [file join $run_dir wave-full.wcfg]
+# if {[file isfile $wave_config_path]} {
+#     set wave_config_in [open $wave_config_path r]
+#     set wave_config_text [read $wave_config_in]
+#     close $wave_config_in
+#     set wave_config_text [string map [list "${sim_top}_behav.wdb" "wave-full.wdb"] $wave_config_text]
+#     set wave_config_out [open $wave_config_path w]
+#     puts -nonewline $wave_config_out $wave_config_text
+#     close $wave_config_out
+# }
+# if {($case eq "lab17" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_writeback_scoreboard" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect") && ![file isfile $wave_config_path]} {
+#     set wave_log_path [file join $run_dir wave-config-hook.log]
+#     if {[file isfile $wave_log_path]} {
+#         set wave_log_in [open $wave_log_path r]
+#         set wave_log_text [read $wave_log_in]
+#         close $wave_log_in
+#     } else {
+#         set wave_log_text "WCFG_CAPTURE_LOG=MISSING"
+#     }
+#     error "$case directed waveform config was not generated; $wave_log_text"
+# }
+# set result_path [file join $run_dir result.txt]
+# set result [open $result_path w]
+# puts $result "RUN_ID=[file tail $run_dir]"
+# puts $result "CASE=$case"
+# puts $result "SUITE=$suite"
+# puts $result "STATUS=PASS"
+# puts $result "SIM_TOP=$sim_top"
+# puts $result "PASS_MARKER=$pass_marker"
+# puts $result "PROJECT_XPR=[file join $project_dir ${project_name}.xpr]"
+# puts $result "WAVEFORM=[expr {[file isfile [file join $run_dir wave-full.wdb]] ? "wave-full.wdb" : "NOT_CAPTURED"}]"
+# if {[file isfile [file join $run_dir wave-full.wcfg]]} {
+#     puts $result "WAVEFORM_CONFIG=wave-full.wcfg"
+# }
+# if {$suite eq "directed" && [regexp {DIRECTED_CHECKS=([0-9]+)} $sim_text -> check_count]} {
+#     puts $result "DIRECTED_CHECKS=$check_count"
+# }
+# if {$case eq "lab17" && [regexp {DIRECTED_COUNTS_VALID ([^\r\n]+)} $sim_text -> directed_counts]} {
+#     puts $result "DIRECTED_COUNTS_VALID=$directed_counts"
+# }
+# if {$case eq "lab17" && [regexp {DIRECTED_FAULT_INJECTION=([^\r\n]+)} $sim_text -> fault_injection]} {
+#     puts $result "DIRECTED_FAULT_INJECTION=$fault_injection"
+# }
+# if {$case eq "lab18" && [regexp {DCache_STATS ([^\r\n]+)} $sim_text -> dcache_stats]} {
+#     puts $result "DCACHE_STATS=$dcache_stats"
+# }
+# if {$suite eq "official" && $case eq "lab13"} {
+#     puts $result "OFFICIAL_WRITE=PASS"
+#     puts $result "OFFICIAL_READ=PASS"
+#     puts $result "OFFICIAL_SEARCH=PASS"
+#     puts $result "OFFICIAL_TEST_END=PASS"
+# }
+# close $result
+# close_sim -force
+INFO: [Simtcl 6-16] Simulation closed
+# close_project
+# foreach generated [list \
+#     [file join $run_dir .Xil] \
+#     [file join $run_dir xsim.dir] \
+#     [file join $project_dir ${project_name}.cache] \
+#     [file join $project_dir ${project_name}.hw] \
+#     [file join $project_dir ${project_name}.ip_user_files] \
+#     [file join $project_dir ${project_name}.sim] \
+#     [file join $project_dir ${project_name}.gen]] {
+#     if {[file isdirectory $generated]} { file delete -force $generated }
+# }
+# puts "UNIT_SIMULATION_FINISHED=true"
+UNIT_SIMULATION_FINISHED=true
+INFO: [Common 17-206] Exiting Vivado at Thu Nov 19 03:15:52 2026...

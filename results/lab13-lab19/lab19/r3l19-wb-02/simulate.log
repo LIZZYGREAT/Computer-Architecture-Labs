@@ -1,0 +1,11 @@
+Time resolution is 1 ps
+CPU_STORE_WAY_PASS way=0 tag=10001 addr=100016a4 store=cafe0000 line_dirty=1
+CPU_STORE_WAY_PASS way=1 tag=10002 addr=100026a8 store=cafe0102 line_dirty=1
+CPU_STORE_WAY_PASS way=2 tag=10003 addr=100036ac store=cafe0204 line_dirty=1
+CPU_STORE_WAY_PASS way=3 tag=10004 addr=100046b0 store=cafe0306 line_dirty=1
+WRITEBACK_WAY_PASS way=0 tag=10001 set=35 awaddr=100016a0 beats=8 store=1 before_b_done=0 after_b_done=1
+WRITEBACK_WAY_PASS way=1 tag=10002 set=35 awaddr=100026a0 beats=8 store=1 before_b_done=0 after_b_done=1
+WRITEBACK_WAY_PASS way=2 tag=10003 set=35 awaddr=100036a0 beats=8 store=1 before_b_done=0 after_b_done=1
+WRITEBACK_WAY_PASS way=3 tag=10004 set=35 awaddr=100046a0 beats=8 store=1 before_b_done=0 after_b_done=1
+LAB19_DCache_WRITEBACK_SCOREBOARD_PASS ways=4 cpu_stores=4 refills=4 AW=4 W=32 B=4 full_data_compare=1 backpressure=stable
+$finish called at time : 3086 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/testbench/tb_lab19_dcache_writeback_scoreboard.sv" Line 432
