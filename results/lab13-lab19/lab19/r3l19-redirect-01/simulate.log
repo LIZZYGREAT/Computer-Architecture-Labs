@@ -1,0 +1,8 @@
+Time resolution is 1 ps
+IF_BRANCH_SLOT_PASS taken=1 slot_pc=bfc01000 next_pc=bfc02000
+IF_BRANCH_SLOT_PASS taken=0 slot_pc=bfc01000 next_pc=bfc01004
+IF_STALE_RESPONSE_DROPPED kind=CACHE_MAINT old_pc=00401000 replay_pc=00402000 delay_slot_cleared=1
+IF_STALE_RESPONSE_DROPPED kind=TLB_WRITE old_pc=00401000 replay_pc=00401000 delay_slot_cleared=1
+IF_REDIRECT_PRIORITY_PASS trap_over_eret_cache_tlb=1
+LAB19_IF_REDIRECT_PASS checks=7
+$finish called at time : 346 ns : File "C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/testbench/tb_lab19_if_redirect_directed.sv" Line 198

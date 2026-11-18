@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="wave-full.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_lab19_if_redirect_directed" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+   </zoom_setting>
+   <column_width_setting>
+   </column_width_setting>
+   <WVObjectSize size="67" />
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/reset" type="logic">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/ds_allowin" type="logic">
+      <obj_property name="ElementShortName">ds_allowin</obj_property>
+      <obj_property name="ObjectShortName">ds_allowin</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/br_taken" type="logic">
+      <obj_property name="ElementShortName">br_taken</obj_property>
+      <obj_property name="ObjectShortName">br_taken</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/br_target" type="array">
+      <obj_property name="ElementShortName">br_target[31:0]</obj_property>
+      <obj_property name="ObjectShortName">br_target[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/br_delay_slot" type="logic">
+      <obj_property name="ElementShortName">br_delay_slot</obj_property>
+      <obj_property name="ObjectShortName">br_delay_slot</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/br_bus" type="array">
+      <obj_property name="ElementShortName">br_bus[33:0]</obj_property>
+      <obj_property name="ObjectShortName">br_bus[33:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/trap_redirect" type="logic">
+      <obj_property name="ElementShortName">trap_redirect</obj_property>
+      <obj_property name="ObjectShortName">trap_redirect</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/eret_redirect" type="logic">
+      <obj_property name="ElementShortName">eret_redirect</obj_property>
+      <obj_property name="ObjectShortName">eret_redirect</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/cache_redirect" type="logic">
+      <obj_property name="ElementShortName">cache_redirect</obj_property>
+      <obj_property name="ObjectShortName">cache_redirect</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/tlb_redirect" type="logic">
+      <obj_property name="ElementShortName">tlb_redirect</obj_property>
+      <obj_property name="ObjectShortName">tlb_redirect</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/cache_resume_valid" type="logic">
+      <obj_property name="ElementShortName">cache_resume_valid</obj_property>
+      <obj_property name="ObjectShortName">cache_resume_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/cache_resume_pc" type="array">
+      <obj_property name="ElementShortName">cache_resume_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cache_resume_pc[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/trap_vector" type="array">
+      <obj_property name="ElementShortName">trap_vector[31:0]</obj_property>
+      <obj_property name="ObjectShortName">trap_vector[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/eret_target" type="array">
+      <obj_property name="ElementShortName">eret_target[31:0]</obj_property>
+      <obj_property name="ObjectShortName">eret_target[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/fs_to_ds_valid" type="logic">
+      <obj_property name="ElementShortName">fs_to_ds_valid</obj_property>
+      <obj_property name="ObjectShortName">fs_to_ds_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/fs_to_ds_bus" type="array">
+      <obj_property name="ElementShortName">fs_to_ds_bus[102:0]</obj_property>
+      <obj_property name="ObjectShortName">fs_to_ds_bus[102:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_req" type="logic">
+      <obj_property name="ElementShortName">inst_sram_req</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_wr" type="logic">
+      <obj_property name="ElementShortName">inst_sram_wr</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_size" type="array">
+      <obj_property name="ElementShortName">inst_sram_size[1:0]</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_size[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_wstrb" type="array">
+      <obj_property name="ElementShortName">inst_sram_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_addr" type="array">
+      <obj_property name="ElementShortName">inst_sram_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_wdata" type="array">
+      <obj_property name="ElementShortName">inst_sram_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_addr_ok" type="logic">
+      <obj_property name="ElementShortName">inst_sram_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_data_ok" type="logic">
+      <obj_property name="ElementShortName">inst_sram_data_ok</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_data_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_rdata" type="array">
+      <obj_property name="ElementShortName">inst_sram_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/checks" type="array">
+      <obj_property name="ElementShortName">checks[31:0]</obj_property>
+      <obj_property name="ObjectShortName">checks[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/reset" type="logic">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/ds_allowin" type="logic">
+      <obj_property name="ElementShortName">ds_allowin</obj_property>
+      <obj_property name="ObjectShortName">ds_allowin</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/br_taken" type="logic">
+      <obj_property name="ElementShortName">br_taken</obj_property>
+      <obj_property name="ObjectShortName">br_taken</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/br_target" type="array">
+      <obj_property name="ElementShortName">br_target[31:0]</obj_property>
+      <obj_property name="ObjectShortName">br_target[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/br_delay_slot" type="logic">
+      <obj_property name="ElementShortName">br_delay_slot</obj_property>
+      <obj_property name="ObjectShortName">br_delay_slot</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/br_bus" type="array">
+      <obj_property name="ElementShortName">br_bus[33:0]</obj_property>
+      <obj_property name="ObjectShortName">br_bus[33:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/trap_redirect" type="logic">
+      <obj_property name="ElementShortName">trap_redirect</obj_property>
+      <obj_property name="ObjectShortName">trap_redirect</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/eret_redirect" type="logic">
+      <obj_property name="ElementShortName">eret_redirect</obj_property>
+      <obj_property name="ObjectShortName">eret_redirect</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/cache_redirect" type="logic">
+      <obj_property name="ElementShortName">cache_redirect</obj_property>
+      <obj_property name="ObjectShortName">cache_redirect</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/tlb_redirect" type="logic">
+      <obj_property name="ElementShortName">tlb_redirect</obj_property>
+      <obj_property name="ObjectShortName">tlb_redirect</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/cache_resume_valid" type="logic">
+      <obj_property name="ElementShortName">cache_resume_valid</obj_property>
+      <obj_property name="ObjectShortName">cache_resume_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/cache_resume_pc" type="array">
+      <obj_property name="ElementShortName">cache_resume_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cache_resume_pc[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/trap_vector" type="array">
+      <obj_property name="ElementShortName">trap_vector[31:0]</obj_property>
+      <obj_property name="ObjectShortName">trap_vector[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/eret_target" type="array">
+      <obj_property name="ElementShortName">eret_target[31:0]</obj_property>
+      <obj_property name="ObjectShortName">eret_target[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/fs_to_ds_valid" type="logic">
+      <obj_property name="ElementShortName">fs_to_ds_valid</obj_property>
+      <obj_property name="ObjectShortName">fs_to_ds_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/fs_to_ds_bus" type="array">
+      <obj_property name="ElementShortName">fs_to_ds_bus[102:0]</obj_property>
+      <obj_property name="ObjectShortName">fs_to_ds_bus[102:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_req" type="logic">
+      <obj_property name="ElementShortName">inst_sram_req</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_wr" type="logic">
+      <obj_property name="ElementShortName">inst_sram_wr</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_size" type="array">
+      <obj_property name="ElementShortName">inst_sram_size[1:0]</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_size[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_wstrb" type="array">
+      <obj_property name="ElementShortName">inst_sram_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_addr" type="array">
+      <obj_property name="ElementShortName">inst_sram_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_wdata" type="array">
+      <obj_property name="ElementShortName">inst_sram_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_addr_ok" type="logic">
+      <obj_property name="ElementShortName">inst_sram_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_data_ok" type="logic">
+      <obj_property name="ElementShortName">inst_sram_data_ok</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_data_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_rdata" type="array">
+      <obj_property name="ElementShortName">inst_sram_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/checks" type="array">
+      <obj_property name="ElementShortName">checks[31:0]</obj_property>
+      <obj_property name="ObjectShortName">checks[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/dut/state" type="array">
+      <obj_property name="ElementShortName">state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">state[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/dut/request_pc" type="array">
+      <obj_property name="ElementShortName">request_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">request_pc[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/dut/stale_response" type="logic">
+      <obj_property name="ElementShortName">stale_response</obj_property>
+      <obj_property name="ObjectShortName">stale_response</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/dut/restart_pc" type="array">
+      <obj_property name="ElementShortName">restart_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">restart_pc[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/dut/redirect_valid" type="logic">
+      <obj_property name="ElementShortName">redirect_valid</obj_property>
+      <obj_property name="ObjectShortName">redirect_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/dut/redirect_pc" type="array">
+      <obj_property name="ElementShortName">redirect_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">redirect_pc[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/dut/delay_slot_pending" type="logic">
+      <obj_property name="ElementShortName">delay_slot_pending</obj_property>
+      <obj_property name="ObjectShortName">delay_slot_pending</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/dut/branch_target_pending" type="array">
+      <obj_property name="ElementShortName">branch_target_pending[31:0]</obj_property>
+      <obj_property name="ObjectShortName">branch_target_pending[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/cache_redirect" type="logic">
+      <obj_property name="ElementShortName">cache_redirect</obj_property>
+      <obj_property name="ObjectShortName">cache_redirect</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/tlb_redirect" type="logic">
+      <obj_property name="ElementShortName">tlb_redirect</obj_property>
+      <obj_property name="ObjectShortName">tlb_redirect</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_addr_ok" type="logic">
+      <obj_property name="ElementShortName">inst_sram_addr_ok</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_addr_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/inst_sram_data_ok" type="logic">
+      <obj_property name="ElementShortName">inst_sram_data_ok</obj_property>
+      <obj_property name="ObjectShortName">inst_sram_data_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_lab19_if_redirect_directed/fs_to_ds_valid" type="logic">
+      <obj_property name="ElementShortName">fs_to_ds_valid</obj_property>
+      <obj_property name="ObjectShortName">fs_to_ds_valid</obj_property>
+   </wvobject>
+</wave_config>
