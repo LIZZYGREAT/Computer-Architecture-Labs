@@ -251,7 +251,6 @@ close $wave_log
     set wave_hook [open $wave_hook_file w]
     puts -nonewline $wave_hook $wave_hook_text
     close $wave_hook
-    set_property xsim.simulate.tcl.post $wave_hook_file [get_filesets sim_1]
 }
 update_compile_order -fileset sim_1
 puts "CASE=$case"
@@ -261,6 +260,14 @@ puts "SIM_TOP=$sim_top"
 puts "RTL=$rtl"
 puts "SIM_FILES=[get_files -of_objects [get_filesets sim_1]]"
 launch_simulation -mode behavioral -simset sim_1
+# Run the waveform hook in Vivado's main Tcl interpreter after XSim finishes.
+# XSim's tcl.post wrapper can lose its stdout channel for some directed benches,
+# preventing the hook from being sourced and making Vivado exit nonzero.
+if {[info exists wave_hook_file] && [file isfile $wave_hook_file]} {
+    if {[catch {source $wave_hook_file} wave_hook_error]} {
+        error "waveform configuration hook failed: $wave_hook_error"
+    }
+}
 set sim_dir [file join $project_dir ${project_name}.sim sim_1 behav xsim]
 set sim_log [file join $sim_dir simulate.log]
 if {![file isfile $sim_log]} {
@@ -545,7 +552,7 @@ if {[file isfile $wave_config_path]} {
     puts -nonewline $wave_config_out $wave_config_text
     close $wave_config_out
 }
-if {($case eq "lab17" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect") && ![file isfile $wave_config_path]} {
+if {($case eq "lab17" || $case eq "lab19_maint" || $case eq "lab19_index_contract" || $case eq "lab19_writeback_scoreboard" || $case eq "lab19_if_redirect" || $case eq "lab19_tlb_redirect") && ![file isfile $wave_config_path]} {
     set wave_log_path [file join $run_dir wave-config-hook.log]
     if {[file isfile $wave_log_path]} {
         set wave_log_in [open $wave_log_path r]

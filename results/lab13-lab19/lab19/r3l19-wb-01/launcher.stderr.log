@@ -1,0 +1,2 @@
+ERROR: [USF-simtcl-1] can not find channel named "stdout"
+ERROR: [USF-simtcl-2] Script failed:C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-wb-01/wave-config-hook.tcl

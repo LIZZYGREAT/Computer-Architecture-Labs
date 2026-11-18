@@ -1,0 +1,13 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  --include "D:/Verilog/2025.2/Vivado/data/rsb/busdef" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/cache_axi3_bridge.v" \
+"../../../../../../../../../lab19/cpu_cache/rtl/myCPU/dcache.v" \
+
+sv xil_defaultlib  --include "D:/Verilog/2025.2/Vivado/data/rsb/busdef" \
+"../../../../../../../../../lab19/cpu_cache/testbench/tb_lab19_dcache_writeback_scoreboard.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

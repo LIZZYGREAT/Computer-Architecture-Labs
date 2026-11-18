@@ -1,0 +1,16 @@
+RUN_ID=r3l19-wb-01
+CASE=lab19_writeback_scoreboard
+SUITE=directed
+SIM_TOP=tb_lab19_dcache_writeback_scoreboard
+PASS_MARKER=LAB19_DCache_WRITEBACK_SCOREBOARD_PASS
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-wb-01/project/lab19_writeback_scoreboard_directed.xpr
+WAVEFORM=wave-full.wdb
+STATUS=INCOMPLETE
+SIMULATION_STATUS=PASS
+SOURCE_INTEGRITY=PASS
+VIVADO_EXIT_CODE=1
+VIVADO_PROCESS_STATUS=FAIL
+SOURCE_MANIFEST=source-manifest.csv
+INPUT_MANIFEST=input_manifest.csv
+GIT_HEAD=4276ffcf72730b4b8c2f9d81eaf3918f81be8f70
+REASON=WAVEFORM_HOOK_STDOUT_UNAVAILABLE

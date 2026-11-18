@@ -1,0 +1,5 @@
+INPUT_CHECK_STATUS=PASS
+VIVADO_CHECK_STATUS=PASS
+PROJECT_PREFLIGHT_STATUS=FAIL
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-wb-01/project/lab19_writeback_scoreboard_directed.xpr
+VIVADO_EXIT_CODE=1

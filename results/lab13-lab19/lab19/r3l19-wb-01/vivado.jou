@@ -1,0 +1,25 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Thu Nov 19 03:08:31 2026
+# Process ID         : 19636
+# Current directory  : D:/Verilog/2025.2/Vivado/bin
+# Command line       : vivado.exe -mode batch -log C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-wb-01\vivado.log -journal C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-wb-01\vivado.jou -source C:\Users\lenovo\Desktop\Projects\FPGA\scripts\tlb_cache\run_unit.tcl -tclargs lab19_writeback_scoreboard directed C:\Users\lenovo\Desktop\Projects\FPGA C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-wb-01
+# Log file           : C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-wb-01/vivado.log
+# Journal file       : C:\Users\lenovo\Desktop\Projects\FPGA\results\lab13-lab19\lab19\r3l19-wb-01\vivado.jou
+# Running On         : LAPTOP-VTCMVS9N
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 7 5700U with Radeon Graphics         
+# CPU Frequency      : 1797 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 23460 MB
+# Swap memory        : 6979 MB
+# Total Virtual      : 30439 MB
+# Available Virtual  : 10912 MB
+#-----------------------------------------------------------
+source {C:\Users\lenovo\Desktop\Projects\FPGA\scripts\tlb_cache\run_unit.tcl}
+source tb_lab19_dcache_writeback_scoreboard.tcl

@@ -1,0 +1,4 @@
+PROJECT_XPR=C:/Users/lenovo/Desktop/Projects/FPGA/results/lab13-lab19/lab19/r3l19-wb-01/project/lab19_writeback_scoreboard_directed.xpr
+SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/dcache.v
+SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/rtl/myCPU/cache_axi3_bridge.v
+SIM_SOURCE=C:/Users/lenovo/Desktop/Projects/FPGA/lab19/cpu_cache/testbench/tb_lab19_dcache_writeback_scoreboard.sv
